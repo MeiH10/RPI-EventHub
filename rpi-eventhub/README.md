@@ -1,3 +1,8 @@
+# Project description:
+RPI EventHub aims to unite the RPI community through innovation and inclusion. Our vision is to create a vibrant, interconnected campus where every student has the opportunity to engage, innovate, and enrich their college experience. By providing a comprehensive, user-friendly web platform for all events on campus, we aim to revolutionize how events are shared, discovered, and enjoyed at RPI, fostering a stronger, more inclusive community outside of academics. We are committed to offering an intuitive, all-encompassing platform that simplifies event creation, promotion, and discovery, thereby enhancing student life and showcasing RPI's spirit of technological advancement and community engagement.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
