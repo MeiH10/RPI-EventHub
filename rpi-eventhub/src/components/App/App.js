@@ -6,7 +6,6 @@ function App() {
 
   const title = "aaaaaaaaaakk World";
   return (
-    <>
     <div className="App">
 
       <Navbar />
@@ -14,9 +13,8 @@ function App() {
       <div className="content">
         <h1>{title}</h1>
       </div>
+      <Footer />
     </div>
-    <Footer />
-    </>
   )
 }
 
