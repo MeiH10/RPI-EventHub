@@ -4,10 +4,9 @@ const Navbar = () => {
     return ( 
         <nav class="crumbs">
             <ol>
-                <li class="crumb"><a href="google.com">Bikes</a></li>
-                <li class="crumb"><a href="rpi.edu">BMX</a></li>
-                <li class="crumb">Jump Bike 3000</li>
-                <li class="crumb">LOL</li>
+                <li class="crumb"><a href="/">Home</a></li>
+                <li class="crumb"><a href="events">Events</a></li>
+                <li class="crumb"><a href="about-us">About Us</a></li>
 
             </ol>
         </nav>
