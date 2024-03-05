@@ -3,9 +3,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('./models/User'); // Adjust the path as necessary based on your project structure
+const { sendEmail } = require('./services/emailService');
 
 require('dotenv').config({ path: '../.env' });
 const jwtSecret = process.env.JWT_SECRET;
+const crypto = require('crypto'); // Add this at the top of your index.js
 
 
 const app = express();
@@ -38,18 +40,57 @@ mongoose.connect(process.env.MONGODB_URI ).then(() => console.log('MongoDB Conne
 app.post('/signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    // console.log("username: ", username.trim(), " password: ", password.trim());
-      const user = new User({
+    // Check if the email is already in use
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already in use." });
+    }
+
+    // Generate a 6-digit verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    const user = new User({
       username,
       email,
-      password: password,
+      password, // Assuming password hashing is handled in User model
+      emailVerified: false,
+      verificationCode,
     });
     await user.save();
-    res.status(201).json({ message: "User created successfully" });
+    
+    // Send verification email with the code
+    sendEmail({
+      to: email,
+      subject: 'Verify Your Email',
+      text: `Your email verification code is: ${verificationCode}. Please enter this code in the app to verify your email.`,
+    });
+    
+    res.status(201).json({ message: "User created successfully. Please check your email to verify your account." });
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error: error.message });
   }
 });
+
+
+app.post('/verify-email', async (req, res) => {
+  const { email, verificationCode } = req.body;
+  const user = await User.findOne({ email, verificationCode });
+
+  if (!user) {
+    return res.status(400).json({ message: "Invalid email or verification code." });
+  }
+
+  // Check if the code is correct and not expired
+  if (user.verificationCode === verificationCode) {
+    user.emailVerified = true;
+    user.verificationCode = ''; // Clear the verification code
+    await user.save();
+    res.status(200).json({ message: "Email verified successfully." });
+  } else {
+    res.status(400).json({ message: "Invalid verification code." });
+  }
+});
+
 
 // Login Route
 app.post('/login', async (req, res) => {
