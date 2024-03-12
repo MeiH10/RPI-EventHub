@@ -20,3 +20,11 @@ yarn-error.log*
 .idea/group.iml
 .idea/modules.xml
 .idea/vcs.xml
+rpi-eventhub/.idea/workspace.xml
+rpi-eventhub/.idea/vcs.xml
+rpi-eventhub/.idea/rpi-eventhub.iml
+rpi-eventhub/.idea/modules.xml
+rpi-eventhub/.idea/misc.xml
+rpi-eventhub/.idea/inspectionProfiles/Project_Default.xml
+rpi-eventhub/.idea/copilot/chatSessions/xd.lck
+rpi-eventhub/.idea/copilot/chatSessions/blobs/version
