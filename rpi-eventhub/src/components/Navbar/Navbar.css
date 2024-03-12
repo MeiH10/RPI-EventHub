@@ -1,21 +1,27 @@
-nav {
-    border-bottom: 1px solid black;
-  }
-  
-  .crumbs ol {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
-  .crumb {
-    display: inline-block;
-  }
-  
-  .crumb a::after {
-    display: inline-block;
-    color: #000;
-    content: '>';
-    font-size: 80%;
-    font-weight: bold;
-    padding: 0 3px;
-  }
+.navbar {
+  background-color: #f8f9fa; /* Bootstrap light background */
+}
+.navbar-brand {
+  font-weight: bold; /* Makes the logo text bold */
+}
+.nav-link {
+  color: red; /* Sets the color of the navigation links to red */
+}
+/* Custom CSS to make the navbar look more like the one in the image */
+.custom-navbar {
+  padding: 10px 15px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.custom-nav-item {
+  margin-right: 25px; /* Adjust spacing between nav items */
+}
+.custom-nav-link {
+  color: black; /* Color for nav item texts */
+  text-transform: uppercase; /* Capitalize the text */
+  font-weight: bold; /* Make text bold */
+}
+.custom-nav-link:hover {
+  color: red; /* Color when hovering over nav item texts */
+}

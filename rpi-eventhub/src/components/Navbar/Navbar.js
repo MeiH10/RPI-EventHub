@@ -1,16 +1,16 @@
-import "./Navbar.css"
+import React from 'react';
+import "./Navbar.css"; // Make sure this path is correct.
 
 const Navbar = () => {
     return ( 
-        <nav class="crumbs">
-            <ol>
-                <li class="crumb"><a href="/">Home</a></li>
-                <li class="crumb"><a href="events">Events</a></li>
-                <li class="crumb"><a href="about-us">About Us</a></li>
+        <nav className="navbar navbar-light bg-light">
+            <a className="navbar-brand text-primary" href="#">
+                Bootstrap
+            </a>
+            <p className="text-primary">aaaaaaaaaa</p>
 
-            </ol>
         </nav>
-     );
+    );
 }
  
 export default Navbar;
