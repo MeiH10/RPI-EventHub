@@ -1,16 +1,15 @@
 import React from 'react';
 import "./Navbar.css"; // Make sure this path is correct.
+import eventHubLogo from '../../assets/EventHubLogo1.jpg'; // Corrected import statement
 
 const Navbar = () => {
-    return ( 
+    return (
         <nav className="navbar navbar-light bg-light">
-            <a className="navbar-brand text-primary" href="#">
-                Bootstrap
+            <a className="navbar-brand" href="#">
+                <img src={eventHubLogo} width="30" height="30" alt="" />
             </a>
-            <p className="text-primary">aaaaaaaaaa</p>
-
         </nav>
     );
 }
- 
+
 export default Navbar;
