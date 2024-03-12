@@ -1,0 +1,36 @@
+   .imagePopUp {
+    position: relative;
+    display: inline-block;
+   }
+   
+   .PopUp_image {
+    width: 400px;
+    height: 400px;
+    transition: transform 0.3s ease;
+   }
+   
+   .text {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+   }
+   
+   .imagePopUp:hover .PopUp_image {
+    transform: scale(1.1);
+   }
+   
+   .imagePopUp:hover .text {
+    visibility: visible;
+    opacity: 1;
+   }
+   

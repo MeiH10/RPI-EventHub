@@ -1,40 +1,13 @@
 import React from 'react';
+import './ImagePopUp.css';
 
-/* const HoverrImage = ({ imageSrc }) => {
-  const [hover, setHover] = useState(false);
+const ImagePopup = ({ src, alt }) => {
+ return (
+    <div className="imagePopUp">
+      <img src={src} alt={alt} className="PopUp_image" />
+      <div className="text">Some text abt event</div>
+    </div>
+ );
+};
 
-  return (
-      <div onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)}>
-          {hover && <img src={imageSrc} alt="Hover Image" />}
-      </div>
-  );
-}
- */
-
-class HoverImage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            hover: false
-        };
-    }
-
-    mouseOver = () => {
-        this.setState({ hover: true });
-    }
-
-    mouseOut = () => {
-        this.setState({ hover: false });
-    }
-
-    render() {
-        const { imageSrc } = this.props;
-        return (
-            <div onMouseOver={this.mouseOver} onMouseOut={this.mouseOut}>
-                {this.state.hover ? (<img src={imageSrc} alt="Hover Image" />) : null}
-            </div>
-        );
-    }
-}
-
-export default HoverImage;
+export default ImagePopup;
