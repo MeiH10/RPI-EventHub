@@ -8,6 +8,7 @@ const Navbar = () => {
                 Bootstrap
             </a>
             <p className="text-primary">aaaaaaaaaa</p>
+
         </nav>
     );
 }
