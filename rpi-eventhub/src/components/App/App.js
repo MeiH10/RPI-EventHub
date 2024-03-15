@@ -1,5 +1,7 @@
 import './App.css';
 import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer'; 
+import RsvpButton from '../rsvp-button/RsvpButton';
 import logo from "./logo.svg";
 import logo2 from "./nyc.jpg"
 import React from 'react';
@@ -7,7 +9,6 @@ import { motion } from 'framer-motion';
 import HoverImagePopup from '../ImagePopUp/ImagePopUp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
-import Footer from '../Footer/Footer'
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
 
       </div>
       <Footer />
+      <RsvpButton />
     </div>
   )
 }
