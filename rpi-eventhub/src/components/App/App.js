@@ -8,9 +8,7 @@ function App() {
   const title = "aaaaaaaaaakk World";
   return (
     <div className="App">
-
-      <Navbar />
-
+        <Navbar />
       <div className="content">
         <h1>{title}</h1>
       </div>

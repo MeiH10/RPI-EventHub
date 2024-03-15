@@ -1,13 +1,14 @@
+import './AboutUs.css'
 import React from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 
 function AboutUs() {
     return (
-        <div>
-            <Navbar></Navbar>
+        <div className="AboutUs">
+            <Navbar/>
             <div class="about">About Us Page</div>
-            <Footer></Footer>
+            <Footer/>
         </div>
     )
 }
