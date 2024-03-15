@@ -37,6 +37,10 @@
   }
 }
 
+.photo {
+  height: 100px;
+  width: 100px;
+}
 body {
   display: flex;
   flex-direction: column;
