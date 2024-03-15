@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from '../Navbar/Navbar';
 import logo from "./logo.svg";
+import logo2 from "./nyc.jpg"
 import React from 'react';
 import { motion } from 'framer-motion';   
 import HoverImagePopup from '../ImagePopUp/ImagePopUp';
@@ -30,7 +31,8 @@ function App() {
         
       />
       <div>
-        <HoverImagePopup src= {logo} alt="Insert image here" />
+        <HoverImagePopup src= {logo2} alt="Insert image here"/>
+
       </div>
     </div>
   )

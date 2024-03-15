@@ -5,14 +5,14 @@
    
    .PopUp_image {
     width: 400px;
-    height: 400px;
+    height: 500px;
     transition: transform 0.3s ease;
    }
    
    .text {
     visibility: hidden;
     width: 120px;
-    background-color: black;
+    background-color: rgb(232, 22, 22);
     color: #fff;
     text-align: center;
     padding: 5px 0;
@@ -23,10 +23,11 @@
     margin-left: -60px;
     opacity: 0;
     transition: opacity 0.3s ease;
+    font-family: "Times New Roman", Times, serif;
    }
    
    .imagePopUp:hover .PopUp_image {
-    transform: scale(1.1);
+    transform: scale(1.18);
    }
    
    .imagePopUp:hover .text {
