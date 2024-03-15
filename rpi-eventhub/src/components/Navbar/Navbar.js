@@ -57,7 +57,7 @@ function NavBar() {
             </li>
             <li className="nav-item">
               <AddIcon />
-              Create Post
+              <span>   Create Post</span>
             </li>
           </ul>
           <div className="nav-icon" onClick={handleClick}>
