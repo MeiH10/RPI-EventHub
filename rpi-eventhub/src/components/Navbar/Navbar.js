@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import { EventHubLogo, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
+import { EventHubLogo, HamburgetMenuClose, HamburgetMenuOpen, AddIcon } from "./Icons";
 
 function NavBar() {
   const [click, setClick] = useState(false);
@@ -53,7 +53,11 @@ function NavBar() {
               </NavLink>
             </li>
             <li className="nav-item">
-
+              Log In
+            </li>
+            <li className="nav-item">
+              <AddIcon />
+              Create Post
             </li>
           </ul>
           <div className="nav-icon" onClick={handleClick}>

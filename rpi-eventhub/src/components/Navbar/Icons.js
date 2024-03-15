@@ -40,8 +40,41 @@
     </svg>
   );
 
-// long as fuck, please do not put anything under this
+export const AddIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    viewBox="0,0,256,256"
+    width="25px"
+    height="25px"
+    {...props}
+  >
+    <g
+      fill="#ff0000"
+      fillRule="nonzero"
+      stroke="none"
+      strokeWidth={1}
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
+      strokeMiterlimit={10}
+      strokeDasharray=""
+      strokeDashoffset={0}
+      fontFamily="none"
+      fontWeight="none"
+      fontSize="none"
+      textAnchor="none"
+      style={{
+        mixBlendMode: "normal",
+      }}
+    >
+      <g transform="scale(5.12,5.12)">
+        <path d="M25,2c-12.6907,0 -23,10.3093 -23,23c0,12.69071 10.3093,23 23,23c12.69071,0 23,-10.30929 23,-23c0,-12.6907 -10.30929,-23 -23,-23zM25,4c11.60982,0 21,9.39018 21,21c0,11.60982 -9.39018,21 -21,21c-11.60982,0 -21,-9.39018 -21,-21c0,-11.60982 9.39018,-21 21,-21zM24,13v11h-11v2h11v11h2v-11h11v-2h-11v-11z" />
+      </g>
+    </g>
+  </svg>
+);
 
+//LONG AS FUCK, DONT PUT ANYTHING UNDER HERE
 export const EventHubLogo = (props) => (
   <svg
     id="Layer_1"

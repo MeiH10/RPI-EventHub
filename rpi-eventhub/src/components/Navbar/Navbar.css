@@ -58,7 +58,8 @@
 
 .nav-item {
   line-height: 40px;
-  margin-right: 1rem;
+  margin-right: 2rem;
+  color: #ff0000;
 }
 
 .nav-item:after {
