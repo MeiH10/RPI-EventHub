@@ -1,0 +1,88 @@
+React Documentation
+Here is an ongoing list of React syntax, rules, and more for those unfamiliar with React. 
+Syntax:
+Importing react:
+ import React from 'react';
+
+Functional components:
+  function MyComponent() {
+  return (
+    // JSX code here
+  );
+}
+
+class components:
+class MyClassComponent extends React.Component {
+  render() {
+    return (
+      // JSX code here
+    );
+  }
+}
+
+
+html elements:
+  const element = <h1>Hello, React!</h1>;
+
+rendering a component:
+  ReactDOM.render(<MyComponent />, document.getElementById('root'));
+
+
+properties:
+  function Greeting(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+// Usage: <Greeting name="John" />
+
+
+managing local component states:
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  render() {
+    return <p>Count: {this.state.count}</p>;
+  }
+}
+
+event handling:
+function handleClick() {
+  console.log('Button Clicked!');
+}
+// Usage: <button onClick={handleClick}>Click me</button>
+
+
+functional components:
+const FunctionalComponent = () => {
+  return <p>Hello, Functional Component!</p>;
+};
+
+
+hooks - functions that enable using state and lifecycle feautures in functional component:
+import React, { useState, useEffect } from 'react';
+
+const ExampleComponent = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data and update state
+  }, []);
+
+  return <p>Data: {data}</p>;
+};
+
+lists and keys:
+const ListComponent = () => {
+  const items = ['Item 1', 'Item 2', 'Item 3'];
+
+  return (
+    <ul>
+      {items.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+
