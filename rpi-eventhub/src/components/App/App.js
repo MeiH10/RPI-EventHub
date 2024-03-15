@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer'; 
+import RsvpButton from '../rsvp-button/RsvpButton';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <h1>{title}</h1>
       </div>
       <Footer />
+      <RsvpButton />
     </div>
   )
 }
