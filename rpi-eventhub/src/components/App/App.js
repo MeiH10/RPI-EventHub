@@ -5,15 +5,16 @@ import logo2 from "./nyc.jpg"
 import React from 'react';
 import { motion } from 'framer-motion';   
 import HoverImagePopup from '../ImagePopUp/ImagePopUp';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
+import Footer from '../Footer/Footer'
 
 function App() {
 
   const title = "Hello World";
   return (
     <div className="App">
-
-      <Navbar></Navbar>
-
+        <Navbar />
       <div className="content">
         <h1>{title}</h1>
       </div>
@@ -34,6 +35,7 @@ function App() {
         <HoverImagePopup src= {logo2} alt="Insert image here"/>
 
       </div>
+      <Footer />
     </div>
   )
 }
