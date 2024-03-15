@@ -18,7 +18,6 @@ function App() {
         <Navbar />
       <div className="content">
         <h1>{title}</h1>
-        lroIVuZlGa8ETfD7EGAADlIveuo8EVCNnTtjQUaw19L8SaPTOmw
       </div>
       <motion.img
         
