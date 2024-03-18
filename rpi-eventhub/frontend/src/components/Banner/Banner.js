@@ -1,6 +1,6 @@
 // Banner.js
 import React from 'react';
-import './Banner.css'; // Create and use Banner.css for styles
+import './Banner.css';
 
 function Banner() {
     return (

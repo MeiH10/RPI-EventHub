@@ -1,13 +1,20 @@
-// EventCard.js
 import React from 'react';
-import './EventCard.css'; // Create and use EventCard.css for styles
+import './EventCard.css';
 
-function EventCard() {
+const EventCard = ({ title, posterSrc, description }) => {
     return (
         <div className="event-card">
-            {/* Event details */}
+            <div className="event-content">
+
+                <div>
+                    <h2 className="event-title">{title}</h2>
+                    <img src={posterSrc} alt="Event Poster" className="event-poster"/>
+                    <p className="event-description">{description}</p>
+                </div>
+
+            </div>
         </div>
     );
-}
+};
 
 export default EventCard;

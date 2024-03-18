@@ -1,10 +1,10 @@
 // Event.js
 import React from 'react';
-import Navbar from '../../components/Navbar/Navbar'; // Assuming the path is correct
+import Navbar from '../../components/Navbar/Navbar';
 import Banner from '../../components/Banner/Banner';
 import PopularEvents from '../../components/PopularEvents/PopularEvents';
 import Footer from '../../components/Footer/Footer';
-import './Events.css'; // Assuming CSS Modules are not used
+import './Events.css';
 
 function Event() {
     return (
