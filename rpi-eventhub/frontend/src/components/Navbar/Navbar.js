@@ -7,7 +7,7 @@ const Navbar = () => {
             <a className="navbar-brand text-primary" href="#">
                 Bootstrap
             </a>
-            <p className="text-primary">aaaaaaaaaa</p>
+            <p className="text-primary">RPI EventHub</p>
 
         </nav>
     );

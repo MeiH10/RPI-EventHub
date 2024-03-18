@@ -1,16 +1,20 @@
-import './Events.css'
-import React from 'react'
-import Navbar from '../../components/Navbar/Navbar'
-import Footer from '../../components/Footer/Footer'
+// Event.js
+import React from 'react';
+import Navbar from '../../components/Navbar/Navbar'; // Assuming the path is correct
+import Banner from '../../components/Banner/Banner';
+import PopularEvents from '../../components/PopularEvents/PopularEvents';
+import Footer from '../../components/Footer/Footer';
+import './Events.css'; // Assuming CSS Modules are not used
 
-function Events() {
+function Event() {
     return (
-        <div className="Events">
-            <Navbar/>
-            <div class="about">Events Page</div>
-            <Footer/>
+        <div className="event-page">
+            <Navbar />
+            <Banner />
+            <PopularEvents />
+            <Footer />
         </div>
-    )
+    );
 }
 
-export default Events
+export default Event;
