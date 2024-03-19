@@ -1,0 +1,14 @@
+/* .content {
+    min-height: 100vh;
+} */
+
+
+hr {
+    width: 50%;
+}
+.grid {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 150px;
+
+}

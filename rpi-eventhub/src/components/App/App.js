@@ -1,26 +1,19 @@
 import './App.css';
-import Navbar from '../Navbar/Navbar';
+// import Navbar from '../Navbar/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
-import Footer from '../Footer/Footer'
+// import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
+// import Footer from '../Footer/Footer'
+import Home from '../../pages/Home/Home';
+
+
 
 function App() {
 
-  const title = "aaaaaaaaaakk World";
+  // const title = "aaaaaaaaaakk World";
   return (
-    <div className="App">
-        <Navbar />
+    <Home/>
+  );
 
-        <div className="pages">
-          <Routes>
-          </Routes>
-        </div>
-      <div className="content">
-        <h1>{title}</h1>
-      </div>
-      <Footer />
-    </div>
-  )
 }
 
 export default App;
