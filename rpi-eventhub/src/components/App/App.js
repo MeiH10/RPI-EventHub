@@ -11,13 +11,15 @@ import HoverImagePopup from '../ImagePopUp/ImagePopUp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
 import Home from '../../pages/Home/Home';
+import Playground from '../../pages/Playground/Playground';
 
 function App() {
 
   const title = "Hello World";
   return (
 
-    <Home></Home>
+    // <Home></Home>
+    <Playground></Playground>
     // <div className="App">
     //     <Navbar />
     //   <div className="content">
