@@ -36,7 +36,6 @@ const Home = () => {
              <hr  className="text-start" /> 
 
           </div>
-          
 
           <div className="col-5 ">
             {/* <SearchBar /> */}
