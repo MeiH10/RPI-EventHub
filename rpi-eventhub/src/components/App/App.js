@@ -1,52 +1,44 @@
-import './App.css';
-
-import Navbar from '../Navbar/Navbar';
-import Footer from '../Footer/Footer'; 
-import RsvpButton from '../rsvp-button/RsvpButton';
-import logo from "./logo.svg";
-import logo2 from "./nyc.jpg"
 import React from 'react';
-import { motion } from 'framer-motion';   
-import HoverImagePopup from '../ImagePopUp/ImagePopUp';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
-import Home from '../../pages/Home/Home';
-import Playground from '../../pages/Playground/Playground';
+import { 
+  createBrowserRouter,
+  RouterProvider,
+  Routes, 
+  Route 
+} from 'react-router-dom';
+
+// Import your page components
+import Home from '../../pages/Home/Home'; // Adjust path if needed
+import Events from '../../pages/Events/Events'; // Adjust path if needed
+import Playground from '../../pages/Playground/Playground'; // Adjust path if needed
+import AboutUs from '../../pages/AboutUs/AboutUs'; // Adjust path if needed
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "events",
+    element: <Events />,
+  },
+  {
+    path: "about-us",
+    element: <AboutUs />,
+  },
+  {
+    path: "playground",
+    element: <Playground />,
+  },
+]);
 
 function App() {
-
-  const title = "Hello World";
   return (
-
-    // <Home></Home>
-    <Playground></Playground>
-    // <div className="App">
-    //     <Navbar />
-    //   <div className="content">
-    //     <h1>{title}</h1>
-        
-    //   </div>
-    //   <motion.img
-        
-    //     src = {logo}
-    //     alt="IMAGE HERE"  
-    //     style = {{width: '400px', height: '300px'}}
-    //     animate={{ y: [10, 30, 10], x: [0,0, 0]}}
-    //     transition={{
-    //       duration:  5,
-    //       repeat: Infinity,
-    //       ease: "easeInOut",
-    //     }}
-        
-    //   />
-    //   <div>
-    //     <HoverImagePopup src= {logo2} alt="Insert image here"/>
-
-    //   </div>
-    //   <Footer />
-    //   <RsvpButton />
-    // </div>
-  )
+    <RouterProvider router={router}>
+      <Routes>
+        {/* Your existing routes will remain here.  No changes needed */}
+      </Routes>
+    </RouterProvider>
+  );
 }
 
 export default App;
