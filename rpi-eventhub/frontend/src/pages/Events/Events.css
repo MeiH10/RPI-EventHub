@@ -1,0 +1,16 @@
+/* General Layout */
+.page-container {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-bar-container, .popular-events-title {
+        width: 90%;
+    }
+}
