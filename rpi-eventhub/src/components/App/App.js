@@ -10,37 +10,40 @@ import { motion } from 'framer-motion';
 import HoverImagePopup from '../ImagePopUp/ImagePopUp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
+import Home from '../../pages/Home/Home';
 
 function App() {
 
   const title = "Hello World";
   return (
-    <div className="App">
-        <Navbar />
-      <div className="content">
-        <h1>{title}</h1>
-        
-      </div>
-      <motion.img
-        
-        src = {logo}
-        alt="IMAGE HERE"  
-        style = {{width: '400px', height: '300px'}}
-        animate={{ y: [10, 30, 10], x: [0,0, 0]}}
-        transition={{
-          duration:  5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        
-      />
-      <div>
-        <HoverImagePopup src= {logo2} alt="Insert image here"/>
 
-      </div>
-      <Footer />
-      <RsvpButton />
-    </div>
+    <Home></Home>
+    // <div className="App">
+    //     <Navbar />
+    //   <div className="content">
+    //     <h1>{title}</h1>
+        
+    //   </div>
+    //   <motion.img
+        
+    //     src = {logo}
+    //     alt="IMAGE HERE"  
+    //     style = {{width: '400px', height: '300px'}}
+    //     animate={{ y: [10, 30, 10], x: [0,0, 0]}}
+    //     transition={{
+    //       duration:  5,
+    //       repeat: Infinity,
+    //       ease: "easeInOut",
+    //     }}
+        
+    //   />
+    //   <div>
+    //     <HoverImagePopup src= {logo2} alt="Insert image here"/>
+
+    //   </div>
+    //   <Footer />
+    //   <RsvpButton />
+    // </div>
   )
 }
 
