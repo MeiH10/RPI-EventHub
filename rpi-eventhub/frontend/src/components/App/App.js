@@ -1,23 +1,38 @@
-import './App.css';
-import Navbar from '../Navbar/Navbar';
-import Footer from '../Footer/Footer'; 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import { 
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
 
+// Import your page components
+import Home from '../../pages/Home/Home'; // Adjust path if needed
+import Events from '../../pages/Events/Events'; // Adjust path if needed
+import Playground from '../../pages/Playground/Playground'; // Adjust path if needed
+import AboutUs from '../../pages/AboutUs/AboutUs'; // Adjust path if needed
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/events",
+    element: <Events />,
+  },
+  {
+    path: "/about-us",
+    element: <AboutUs />,
+  },
+  {
+    path: "/playground",
+    element: <Playground />,
+  },
+]);
 
 function App() {
-
-  const title = "aaaaaaaaaakk World";
   return (
-    <div className="App">
-
-      <Navbar />
-
-      <div className="content">
-        <h1>{title}</h1>
-      </div>
-      <Footer />
-    </div>
-  )
+    <RouterProvider router={router} />
+  );
 }
 
 export default App;
