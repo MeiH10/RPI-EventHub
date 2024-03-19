@@ -11,7 +11,6 @@ root.render(
   </React.StrictMode>
 );
 
-// ...  rest of your index.js file 
 
 
 // If you want to start measuring performance in your app, pass a function
