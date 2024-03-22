@@ -1,5 +1,5 @@
-import './AboutUs.css'
 import React from 'react'
+import AbousUsCSS from './AboutUs.modular.css'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import EventHubLogo from "../../assets/EventHubLogo1.svg";
@@ -52,8 +52,69 @@ function AboutUs() {
 
             <div class="developers">
                 <h4>Developers</h4>
-                
+                <div className="row">
+
+                  <div className="column">
+                    <img src={RPIseal} height="150"></img>
+                    <h6 className="devtext">
+                      <a href="https://www.google.com/" /* <- placeholder for email */ target="_blank">First Last</a>
+                    </h6>
+                    <p className="devtext">Position</p>
+                  </div>
+
+                  <div className="column">
+                    <img src={RPIseal} height="150"></img>
+                    <h6 className="devtext">
+                      <a href="https://www.google.com/" /* <- placeholder for email */ target="_blank">First Last</a>
+                    </h6>
+                    <p className="devtext">Position</p>
+                  </div>
+
+                  <div className="column">
+                    <img src={RPIseal} height="150"></img>
+                    <h6 className="devtext">
+                      <a href="https://www.google.com/" /* <- placeholder for email */ target="_blank">First Last</a>
+                    </h6>
+                    <p className="devtext">Position</p>
+                  </div>
+
+                  <div className="column">
+                    <img src={RPIseal} height="150"></img>
+                    <h6 className="devtext">
+                      <a href="https://www.google.com/" /* <- placeholder for email */ target="_blank">First Last</a>
+                    </h6>
+                    <p className="devtext">Position</p>
+                  </div>
+
+                  <div className="column">
+                    <img src={RPIseal} height="150"></img>
+                    <h6 className="devtext">
+                      <a href="https://www.google.com/" /* <- placeholder for email */ target="_blank">First Last</a>
+                    </h6>
+                    <p className="devtext">Position</p>
+                  </div>
+
+                  <div className="column">
+                    <img src={RPIseal} height="150"></img>
+                    <h6 className="devtext">
+                      <a href="https://www.google.com/" /* <- placeholder for email */ target="_blank">First Last</a>
+                    </h6>
+                    <p className="devtext">Position</p>
+                  </div>
+
+                  <div className="column">
+                    <img src={RPIseal} height="150"></img>
+                    <h6 className="devtext">
+                      <a href="https://www.google.com/" /* <- placeholder for email */ target="_blank">First Last</a>
+                    </h6>
+                    <p className="devtext">Position</p>
+                  </div>
+
+                </div>
+
             </div>
+
+            <hr></hr>
 
           </div>
           <Footer />

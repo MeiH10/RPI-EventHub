@@ -16,11 +16,6 @@ body {
       linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
   }
 
-
-hr {
-    width: 50%;
-}
-
 .grid {
     display: grid;
     grid-template-columns: auto;
@@ -59,13 +54,43 @@ hr {
     width: 100%;
     border: 0;
     border-top: 1px solid #ffffff;
-    border-bottom: 1px solid #9a8181;
+    border-bottom: 1px solid #2d0505;
 }
+
+.column {
+    float: center;
+    width: 20%;
+    padding: 20px;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+a:link { 
+    text-decoration: none; 
+    color: black;
+} 
+a:visited { 
+    text-decoration: none; 
+    color: black;
+} 
+a:hover { 
+    text-decoration: none; 
+    color: black;
+} 
+a:active { 
+    text-decoration: none; 
+    color: black;
+}
+  
 
 .devtext {
     flex: 1;
     position: relative;
-    top: -130px;
+    top: 10px;
 }
 
 .footer {
