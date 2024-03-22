@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('./models/User'); // Adjust the path as necessary based on your project structure
+const Event = require('./models/Event'); 
 const { sendEmail } = require('./services/emailService');
 
 require('dotenv').config({ path: '../.env' });
@@ -115,6 +116,40 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: "Login error", error: error.message });
   }
 });
+
+
+
+app.post('/events', async (req, res) => {
+  const { title, description, poster, date, location, image, tags } = req.body;
+
+  try {
+      const event = new Event({
+          title,
+          description,
+          poster,
+          date,
+          location,
+          image,
+          tags
+      });
+
+      await event.save();
+      res.status(201).json(event);
+  } catch (error) {
+      res.status(400).json({ message: "Error creating event", error: error.message });
+  }
+});
+
+// Route for fetching all events
+app.get('/events', async (req, res) => {
+  try {
+      const events = await Event.find();
+      res.status(200).json(events);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching events", error: error.message });
+  }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
