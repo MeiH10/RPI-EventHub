@@ -109,7 +109,7 @@ function AboutUs() {
                     </h6>
                     <p className="devtext">Position</p>
                   </div>
- 
+
                 </div>
 
             </div>
