@@ -1,0 +1,47 @@
+.carousel {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .main-image {
+    position: relative;
+  }
+  
+  .main-image img {
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .next-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .thumbnails {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .thumbnail {
+    width: 60px;
+    margin: 0 5px;
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  
+  .thumbnail.active {
+    opacity: 1;
+  }
+  

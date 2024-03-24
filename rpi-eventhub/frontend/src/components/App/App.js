@@ -2,8 +2,6 @@ import React from 'react';
 import { 
   createBrowserRouter,
   RouterProvider,
-  Routes, 
-  Route 
 } from 'react-router-dom';
 
 // Import your page components
@@ -18,26 +16,22 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "events",
+    path: "/events",
     element: <Events />,
   },
   {
-    path: "about-us",
+    path: "/about-us",
     element: <AboutUs />,
   },
   {
-    path: "playground",
+    path: "/playground",
     element: <Playground />,
   },
 ]);
 
 function App() {
   return (
-    <RouterProvider router={router}>
-      <Routes>
-        {/* Your existing routes will remain here.  No changes needed */}
-      </Routes>
-    </RouterProvider>
+    <RouterProvider router={router} />
   );
 }
 

@@ -1,13 +1,14 @@
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import './Home.css'
+import HomeCSS from './Home.module.css'
+
 
 const Home = () => {
   return (
     <div>
       <NavBar />
 
-      <div className="container-fluid content">
+      <div className={`${HomeCSS.content} container-fluid`}>
         {/* Hero section */}
         <div className="row">
           <div className="col-7 p-5">
@@ -18,7 +19,7 @@ const Home = () => {
             </div>
             {/* <SearchBar /> */}
 
-            <div className="grid">
+            <div className={HomeCSS.grid}>
 
               <svg width="100%" height="100" style={{ backgroundColor: '#35d415' }} className="my-5">
                 <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#6c757d">SearchBar Placeholder</text>
@@ -36,7 +37,6 @@ const Home = () => {
              <hr  className="text-start" /> 
 
           </div>
-          
 
           <div className="col-5 ">
             {/* <SearchBar /> */}
