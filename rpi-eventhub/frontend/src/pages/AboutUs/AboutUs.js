@@ -17,7 +17,7 @@ function AboutUs() {
             <div className="row">
               <div className="col-7 p-5">
     
-                <div className="title text-start">
+                <div className="title text-start first">
                   <h1>About Us</h1>
                   <h6>RPI EventHub</h6>
                 </div>
@@ -25,7 +25,7 @@ function AboutUs() {
     
                 <div className="grid">
     
-                    <div className="about-us-text">
+                    <div className="about-us-text second">
                         <h4>Mission Statement</h4>
                         EventHub is dedicated to connecting the students of RPI with events
                         happening all over campus. Through this website, we hope to foster
@@ -39,7 +39,7 @@ function AboutUs() {
                  
             </div>
     
-              <div className="col-5 p-5">
+              <div className="col-5 p-5 second">
                 <img src={RPIBridgePhoto} alt="logo" width="480"></img>
               </div>
 
@@ -47,7 +47,7 @@ function AboutUs() {
 
             <hr></hr>
 
-            <div class="developers">
+            <div class="developers third">
                 <h4>Developers</h4>
                 <div className="row">
 

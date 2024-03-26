@@ -27,6 +27,27 @@ body {
     text-align: center;
 }
 
+.first {
+    animation: fade-in 0.5s;
+}
+
+.second {
+    animation: fade-in 1s;
+}
+
+.third {
+    animation: fade-in 2s;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+
 .about {
     flex: 1;
     text-align: center;
