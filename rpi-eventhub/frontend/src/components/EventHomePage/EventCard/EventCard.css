@@ -12,7 +12,18 @@
     width: 100%;
 }
 
-.event-title, .event-description {
+.event-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500; /* Medium */
+    font-style: italic; /* Italic for Medium Italic */
+    font-size: 36px;
+    text-align: center;
+}
+
+.event-description {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 18px;
     text-align: center;
 }
 
@@ -24,7 +35,7 @@
 }
 
 .event-navigation {
-    font-size: 24px;
+    font-size: 45px;
     cursor: pointer;
-    user-select: none; /* prevent text selection */
+    user-select: none; /* Prevent text selection */
 }

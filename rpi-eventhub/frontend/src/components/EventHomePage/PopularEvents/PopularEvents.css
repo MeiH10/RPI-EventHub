@@ -23,18 +23,6 @@
     gap: 20px;
 }
 
-.event-title {
-    font-family: 'Inter Medium Italic', sans-serif;
-    font-size: 36px;
-    font-style: italic;
-    font-weight: 500; /* Medium */
-}
-
-.event-description {
-    font-family: 'Inter', sans-serif;
-    font-size: 24px;
-}
-
 /*.event-navigation {*/
 /*    font-size: 24px;*/
 /*    cursor: pointer;*/
