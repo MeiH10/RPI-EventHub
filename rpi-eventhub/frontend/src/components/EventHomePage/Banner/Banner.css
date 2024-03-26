@@ -2,12 +2,12 @@
 
 @font-face {
     font-family: "Good Times Rg";
-    src: url('../../assets/fonts/GoodTimes/GoodTimesRg-Regular.ttf') format('truetype');
+    src: url('../../../assets/fonts/GoodTimes/GoodTimesRg-Regular.ttf') format('truetype');
 }
 
 .banner {
     width: 100%;
-    height: 503px;
+    height: 403px;
     background: #D6001C;
     display: flex;
     justify-content: center;

@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "Italiana";
+    src: url('../../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+}
+
+.popular-events {
+    text-align: center;
+    padding: 20px;
+}
+
+.header2 {
+    font-family: "Italiana", serif;
+    font-size: 48px;
+    text-align: center;
+    padding: 20px;
+}
+
+.events-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.event-navigation {
+    font-size: 24px;
+    cursor: pointer;
+}
