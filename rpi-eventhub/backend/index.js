@@ -151,6 +151,64 @@ app.get('/events', async (req, res) => {
 });
 
 
+app.get('/events/:id', async (req, res) => {
+  try {
+      const { id } = req.params; // Extract the event ID from the URL parameters
+      const event = await Event.findById(id); // Use Mongoose to find the event by ID
+
+      if (!event) {
+          // If no event is found, return a 404 Not Found response
+          return res.status(404).json({ message: 'Event not found' });
+      }
+
+      // If the event is found, return it in the response
+      res.json(event);
+  } catch (err) {
+      if (err.kind === 'ObjectId') {
+          // If the error is due to an invalid Object ID, return a 400 Bad Request
+          return res.status(400).json({ message: 'Invalid event ID' });
+      }
+      res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.put('/events/:id', async (req, res) => {
+  const { id } = req.params;
+  const updateData = req.body;
+
+  try {
+      const updatedEvent = await Event.findByIdAndUpdate(id, updateData, { new: true });
+      if (!updatedEvent) {
+          return res.status(404).json({ message: 'Event not found' });
+      }
+      res.json({ message: 'Event updated successfully', updatedEvent });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to update event', error: err.message });
+  }
+});
+
+
+
+app.delete('/events/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const deletedEvent = await Event.findByIdAndDelete(id);
+      if (!deletedEvent) {
+          return res.status(404).json({ message: 'Event not found' });
+      }
+      res.json({ message: 'Event deleted successfully' });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to delete event', error: err.message });
+  }
+});
+
+
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
