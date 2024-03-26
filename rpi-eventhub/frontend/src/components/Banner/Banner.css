@@ -1,4 +1,10 @@
 /* Banner.css */
+
+@font-face {
+    font-family: "Good Times Rg";
+    src: url('../../assets/fonts/GoodTimes/GoodTimesRg-Regular.ttf') format('truetype');
+}
+
 .banner {
     width: 100%;
     height: 503px;
@@ -11,6 +17,7 @@
 }
 
 .banner h1 {
+    font-family: "Good Times Rg", sans-serif;
     margin-bottom: 110px;
     color: white;
     text-align: center;
