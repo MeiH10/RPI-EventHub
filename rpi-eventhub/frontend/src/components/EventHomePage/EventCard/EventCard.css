@@ -20,7 +20,7 @@
     font-style: italic; /* Italic for Medium Italic */
     font-size: 36px;
     text-align: center;
-    padding-top: 20px;
+    padding: 40px 0 10px;
 }
 
 .event-description {
