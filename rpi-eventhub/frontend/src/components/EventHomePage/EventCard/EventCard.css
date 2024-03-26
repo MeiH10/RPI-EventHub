@@ -21,6 +21,7 @@
 }
 
 .event-description {
+    padding: 25px 0 75px 0;
     font-family: 'Inter', sans-serif;
     font-weight: 400; /* Regular */
     font-size: 18px;
