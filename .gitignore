@@ -17,17 +17,6 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.idea/group.iml
-.idea/modules.xml
-.idea/vcs.xml
-rpi-eventhub/.idea/workspace.xml
-rpi-eventhub/.idea/vcs.xml
-rpi-eventhub/.idea/rpi-eventhub.iml
-rpi-eventhub/.idea/modules.xml
-rpi-eventhub/.idea/misc.xml
-rpi-eventhub/.idea/inspectionProfiles/Project_Default.xml
-rpi-eventhub/.idea/copilot/chatSessions/xd.lck
-rpi-eventhub/.idea/copilot/chatSessions/blobs/version
-rpi-eventhub/.idea/copilot/chatSessions/00000000000.xd
-rpi-eventhub/.idea/copilot/chatSessions/00000000000.xd
-rpi-eventhub/.idea/copilot/chatSessions/00000000000.xd
+
+# idea files
+/.idea
