@@ -13,8 +13,22 @@
     font-family: "Italiana", serif;
     font-size: 48px;
     text-align: center;
-    padding: 20px;
+    padding: 20px 20px 20px;
+    position: relative; /* Needed for the pseudo-element */
 }
+
+.header2::after {
+    content: "";
+    display: block;
+    width: 75%;
+    height: 1px;
+    background-color: black;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+}
+
 
 .events-container {
     display: flex;
