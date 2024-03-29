@@ -28,7 +28,6 @@
 .nav-logo {
   color: #ff0000;
   align-items: center;
-  margin-top: -10px;
   margin-left: 20px;
   cursor: pointer;
   text-decoration: none;
@@ -51,8 +50,7 @@
   display: flex;
   list-style: none;
   text-align: center;
-  margin-right: 0rem;
-  margin-top: 15px;
+  margin-right: 2rem;
 }
 
 .nav-links {
