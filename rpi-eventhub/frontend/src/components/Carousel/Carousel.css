@@ -1,47 +1,75 @@
 .carousel {
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .main-image {
-    position: relative;
-  }
-  
-  .main-image img {
-    width: 80%;
-    max-width: 500px;
-    margin: 0 auto;
-    display: block;
-  }
-  
-  .next-button {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-size: 24px;
-  }
-  
-  .thumbnails {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  .thumbnail {
-    width: 60px;
-    margin: 0 5px;
-    opacity: 0.6;
-    cursor: pointer;
-  }
-  
-  .thumbnail.active {
-    opacity: 1;
-  }
-  
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-image {
+  position: relative;
+  display: flex; /* Keep this to flex to use justify-content and align-items */
+  justify-content: center;
+  align-items: center; /* This will vertically center the img */
+  width: 80%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Ensure the img tag takes up the necessary space but can scale */
+.main-image img {
+  max-width: 100%; /* Allows the image to scale within the container */
+  height: auto; /* Maintain aspect ratio */
+  display: block;
+}
+
+.next-button, .prev-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 2; 
+  padding: 10px;
+  border-radius: 50%; /* Makes the button circular */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Simple shadow for depth */
+  transition: transform 0.2s ease; /* Smooth transition for click effect */
+}
+
+/* Hover effect */
+.next-button:hover, .prev-button:hover {
+  transform: translateY(-50%) scale(1.1); /* Slightly larger on hover */
+}
+
+/* Focus effect for accessibility */
+.next-button:focus, .prev-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px red;
+}
+
+.next-button {
+  right: 10px;
+}
+
+.prev-button {
+  left: 10px;
+}
+
+.thumbnails {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.thumbnail {
+  width: 60px;
+  margin: 0 5px;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.thumbnail.active {
+  opacity: 1;
+}
