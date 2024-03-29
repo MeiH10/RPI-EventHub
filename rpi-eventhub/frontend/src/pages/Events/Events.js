@@ -3,6 +3,7 @@ import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Banner from '../../components/Banner/Banner';
 import PopularEvents from '../../components/PopularEvents/PopularEvents';
+import SearchBar from '../../components/SearchBar/SearchBar';
 import Footer from '../../components/Footer/Footer';
 import './Events.css';
 
