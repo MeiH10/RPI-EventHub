@@ -9,7 +9,7 @@ import Home from '../../pages/Home/Home'; // Adjust path if needed
 import Events from '../../pages/Events/Events'; // Adjust path if needed
 import Playground from '../../pages/Playground/Playground'; // Adjust path if needed
 import AboutUs from '../../pages/AboutUs/AboutUs'; // Adjust path if needed
-
+import Experimental from '../../pages/Experimental/Experimental'; // Adjust path if needed
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/playground",
     element: <Playground />,
+  },
+  {
+    path: "/experimental",
+    element: <Experimental />,
   },
 ]);
 

@@ -1,0 +1,20 @@
+Dynamic images (for carousel):
+In creating the image carousel, to ammend the issue of 
+how determining how large the images will be and the relaive placement of the arrows,
+can use the concept of Dynamic Images.
+To maintain the aspect ratio based on the largest image, you could potentially use a "ghost" or "dummy" element that serves as a placeholder to push the container to the correct height. However, without knowing the specific aspect ratio or sizes of your images, it's challenging to implement a one-size-fits-all solution here.
+
+If you can determine the aspect ratio of your tallest image, you can use an
+invisible element with that ratio to force the container to maintain the height. 
+You would add a pseudo-element or an actual element inside .main-image that 
+has a padding-top percentage to create the desired aspect ratio. 
+This is a "padding-top hack" for creating aspect ratios:
+.main-image::before {
+  content: '';
+  display: block;
+  width: 100%;
+  /* Use padding-top to control the height; this example assumes a 4:3 aspect ratio */
+  padding-top: 75%; /* This percentage dictates the aspect ratio: height / width * 100% */
+}
+
+may change the stillness of arrows
