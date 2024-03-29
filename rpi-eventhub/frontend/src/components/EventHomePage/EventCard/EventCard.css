@@ -1,0 +1,45 @@
+.event-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.event-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.event-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500; /* Medium */
+    font-style: italic; /* Italic for Medium Italic */
+    font-size: 36px;
+    text-align: center;
+    padding: 40px 0 10px;
+}
+
+.event-description {
+    padding: 25px 0 75px 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 18px;
+    text-align: center;
+}
+
+.event-poster {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+.event-navigation {
+    font-size: 45px;
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+}

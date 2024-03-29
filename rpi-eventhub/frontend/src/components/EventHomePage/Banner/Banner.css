@@ -1,0 +1,59 @@
+/* Banner.css */
+
+@font-face {
+    font-family: "Good Times Rg";
+    src: url('../../../assets/fonts/GoodTimes/GoodTimesRg-Regular.ttf') format('truetype');
+}
+
+.banner {
+    width: 100%;
+    height: 403px;
+    background: #D6001C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 50px;
+}
+
+.banner h1 {
+    font-family: "Good Times Rg", sans-serif;
+    margin-bottom: 110px;
+    color: white;
+    text-align: center;
+}
+
+.search-bar-container {
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: -12px 12px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    width: 80%;
+    max-width: 1000px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+    margin-top: -50px;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    width: calc(100% - 100px);
+    height: 50px;
+    border-radius: 15px; /* rounded edges */
+    padding: 0 15px;
+}
+
+.search-button {
+    background: #E20612;
+    border-radius: 15px;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    height: 50px;
+}
