@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="98.479mm" height="85.934mm" version="1.1" viewBox="0 0 98.479 85.934" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-80.704 -113.44)">
+  <path d="m87.999 121.39c-4.0413 0-7.2946 3.2534-7.2946 7.2946v63.395c0 4.0413 3.2534 7.2946 7.2946 7.2946h83.889c4.0413 0 7.2946-3.2534 7.2946-7.2946v-63.395c0-4.0413-3.2534-7.2946-7.2946-7.2946h-2.9445v5.7371c0 3.3926-2.7311 6.1237-6.1237 6.1237h-0.47801c-3.3926 0-6.1237-2.7311-6.1237-6.1237v-5.7371h-8.7318v5.7604c0 3.3926-2.7311 6.1237-6.1237 6.1237h-0.47801c-3.3926 0-6.1242-2.7311-6.1242-6.1237v-5.7604h-8.7168v5.7547c0 3.3926-2.7311 6.1237-6.1237 6.1237h-0.47852c-3.3926 0-6.1237-2.7311-6.1237-6.1237v-5.7547h-8.6413v5.7304c0 3.3925-2.7311 6.1236-6.1237 6.1236h-0.47801c-3.3926 0-6.1242-2.7311-6.1242-6.1236v-5.7304zm9.2124 20.668h65.465c4.6707 0 8.431 3.7604 8.431 8.431v32.117c0 4.6706-3.7604 8.4305-8.431 8.4305h-65.465c-4.6706 0-8.431-3.7599-8.431-8.4305v-32.117c0-4.6706 3.7604-8.431 8.431-8.431z" fill="#f00" stroke-width=".27953"/>
+  <g fill="#ff0303">
+   <rect x="94.566" y="113.44" width="7.4684" height="17.426" ry="3.7342"/>
+   <rect x="158.83" y="113.44" width="7.4684" height="17.426" ry="3.7342"/>
+   <rect x="137.41" y="113.44" width="7.4684" height="17.426" ry="3.7342"/>
+   <rect x="115.99" y="113.44" width="7.4684" height="17.426" ry="3.7342"/>
+  </g>
+  <text x="92.474686" y="162.5751" fill="#ff0000" font-family="'Bauhaus 93'" font-size="23.227px" stroke-width="23.885" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal" xml:space="preserve"><tspan x="92.474686" y="162.5751" fill="#ff0000" stroke-width="23.885">EVENT</tspan></text>
+  <text x="125.50532" y="186.09262" fill="#ff0000" font-family="'Bauhaus 93'" font-size="23.227px" stroke-width="23.885" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal" xml:space="preserve"><tspan x="125.50532" y="186.09262" fill="#ff0000" stroke-width="23.885">HUB</tspan></text>
+ </g>
+</svg>
