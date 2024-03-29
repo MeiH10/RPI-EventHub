@@ -1,0 +1,43 @@
+/* PopularEvents.css */
+@font-face {
+    font-family: "Italiana";
+    src: url('../../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+}
+
+.popular-events {
+    text-align: center;
+    padding: 20px;
+}
+
+.header2 {
+    font-family: "Italiana", serif;
+    font-size: 60px;
+    text-align: center;
+    padding: 5px 20px 20px;
+    position: relative; /* Needed for the pseudo-element */
+}
+
+.header2::after {
+    content: "";
+    display: block;
+    width: 75%;
+    height: 1px;
+    background-color: black;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+}
+
+
+.events-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/*.event-navigation {*/
+/*    font-size: 24px;*/
+/*    cursor: pointer;*/
+/*}*/

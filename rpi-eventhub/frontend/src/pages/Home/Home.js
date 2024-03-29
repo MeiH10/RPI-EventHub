@@ -13,8 +13,8 @@ const Home = () => {
         <div className="row">
           <div className="col-7 p-5">
 
-            <div className="title text-start">
-              <h1>All rpi events,</h1>
+            <div className="title">
+              <h1>All RPI events,</h1>
               <h1>in one place.</h1>
             </div>
             {/* <SearchBar /> */}

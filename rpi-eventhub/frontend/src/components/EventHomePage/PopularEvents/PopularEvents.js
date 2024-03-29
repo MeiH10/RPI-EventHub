@@ -16,7 +16,7 @@ const events = [
 function PopularEvents() {
     return (
         <div className="popular-events">
-            <h2>Popular Events</h2>
+            <h2 className="header2">Popular Events</h2>
             <div className="events-container">
                 <div className="event-navigation previous">&#8592;</div>
                 {events.map(event => (

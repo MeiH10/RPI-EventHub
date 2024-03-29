@@ -1,3 +1,13 @@
+
+@font-face {
+    font-family: "Italiana";
+    src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+}
+
+cardtext{
+    font-family: 'Italiana', serif;
+}
+
 .content {
     display: flex;
     flex-direction: column;
@@ -5,7 +15,7 @@
     height: 100vh;
 
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: Italiana, serif;
     background: linear-gradient(
         217deg,
         rgba(255, 101, 101, 0.8),
@@ -24,4 +34,6 @@ hr {
     grid-template-columns: auto;
     gap: 150px;
 }
+
+
 
