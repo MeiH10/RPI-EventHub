@@ -22,35 +22,46 @@ const Navbar = () => {
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
               <NavLink
-                exact
-                to="/"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
+                  exact
+                  to="/"
+                  activeClassName="active"
+                  className="nav-links"
+                  onClick={handleClick}
               >
                 Home
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
-                exact
-                to="/about-us"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
+                  exact
+                  to="/about-us"
+                  activeClassName="active"
+                  className="nav-links"
+                  onClick={handleClick}
               >
                 About
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
-                exact
-                to="/events"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
+                  exact
+                  to="/events"
+                  activeClassName="active"
+                  className="nav-links"
+                  onClick={handleClick}
               >
                 Events
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                  exact
+                  to="/login"
+                  activeClassName="active"
+                  className="nav-links"
+                  onClick={handleClick}
+              >
+                Login
               </NavLink>
             </li>
             <li className="nav-item">
@@ -61,11 +72,11 @@ const Navbar = () => {
             {/* <i className={click ? "fas fa-times" : "fas fa-bars"}></i> */}
 
             {click ? (
-              <span className="icon">
-                <HamburgetMenuOpen />{" "}
+                <span className="icon">
+                <HamburgetMenuOpen/>{" "}
               </span>
             ) : (
-              <span className="icon">
+                <span className="icon">
                 <HamburgetMenuClose />
               </span>
             )}
