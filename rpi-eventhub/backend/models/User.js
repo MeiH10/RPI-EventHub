@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   emailVerified: { type: Boolean, default: false }, // Added for email verification
   verificationCode: { type: String, required: false }, // Optional: For storing the email verification code
+  likedEvents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event'
+  }]
   // Consider adding an expiry date for the verification code if implementing a timeout feature
 });
 
