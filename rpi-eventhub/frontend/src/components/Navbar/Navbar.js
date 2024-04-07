@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import { EventHubLogo, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
+import { EventHubLogo2, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
 
 const Navbar = () => {
 
@@ -15,7 +15,7 @@ const Navbar = () => {
           <NavLink exact to="/" className="nav-logo">
             {/* <i className="fas fa-code"></i> */}
             <span className="icon">
-              <EventHubLogo />
+              <EventHubLogo2 />
             </span>
           </NavLink>
 

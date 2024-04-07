@@ -2,6 +2,7 @@ import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import HomeCSS from './Home.module.css';
 import ImageCarousel from "../../components/Carousel/Carousel";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 
 const Home = () => {
@@ -22,9 +23,13 @@ const Home = () => {
 
             <div className={HomeCSS.grid}>
 
-              <svg width="100%" height="100" style={{ backgroundColor: '#35d415' }} className="my-5">
+              {/* <svg width="100%" height="100" style={{ backgroundColor: '#35d415' }} className="my-5">
                 <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#6c757d">SearchBar Placeholder</text>
-              </svg> 
+              </svg>  */}
+              
+              <div className={HomeCSS.searchBarWrapper}>
+              <SearchBar></SearchBar>
+              </div>
               <div className="card text-start bg-transparent border-0 p-0">
                 <div class="card-body p-0">
                   <h5 class="card-title">About the website</h5>
