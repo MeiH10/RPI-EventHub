@@ -1,6 +1,7 @@
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import HomeCSS from './Home.module.css'
+import HomeCSS from './Home.module.css';
+import ImageCarousel from "../../components/Carousel/Carousel";
 
 
 const Home = () => {
@@ -38,24 +39,9 @@ const Home = () => {
 
           </div>
 
-          <div className="col-5 ">
+          <div className={`${HomeCSS.carouselContainer} col-5`}>
             {/* <SearchBar /> */}
-            <svg
-            className="mt-5"
-              width="360"
-              height="450"
-              style={{ backgroundColor: "#35d415" }}
-            >
-              <text
-                x="50%"
-                y="50%"
-                dominant-baseline="middle"
-                text-anchor="middle"
-                fill="#6c757d"
-              >
-                Carousel Placeholder
-              </text>
-            </svg>
+            <ImageCarousel></ImageCarousel>
           </div>
         </div>
       </div>
