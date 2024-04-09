@@ -15,6 +15,46 @@ const app = express();
 
 
 
+const authenticate = async (req, res, next) => {
+  try {
+    const token = req.header('Authorization').replace('Bearer ', '');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({ _id: decoded.userId });
+
+    if (!user) {
+      throw new Error();
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    res.status(401).send({ message: 'Please authenticate.' });
+  }
+};
+
+
+const authenticateAndVerify = async (req, res, next) => {
+  try {
+    const token = req.header('Authorization').replace('Bearer ', '');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({ _id: decoded.userId });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    if (!user.emailVerified) {
+      return res.status(403).json({ message: 'Please verify your email to perform this action.' });
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    res.status(401).send({ message: 'Please authenticate.' });
+  }
+};
+
+
 
 
 async function testBcrypt() {
@@ -149,6 +189,37 @@ app.get('/events', async (req, res) => {
       res.status(500).json({ message: "Error fetching events", error: error.message });
   }
 });
+
+
+
+app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Increment the likes count for the event
+    event.likes += 1;
+    await event.save();
+
+    // Add the event ID to the user's likedEvents array if not already liked
+    if (!user.likedEvents.includes(id)) {
+      user.likedEvents.push(id);
+      await user.save();
+    }
+
+    res.json({ message: 'Event liked successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to like event', error: error.message });
+  }
+});
+
 
 
 const PORT = process.env.PORT || 5000;
