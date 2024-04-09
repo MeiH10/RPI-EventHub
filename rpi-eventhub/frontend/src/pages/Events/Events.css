@@ -14,3 +14,18 @@
         width: 90%;
     }
 }
+
+.anim {
+    animation: fade-in-and-scale 0.5s;
+}
+
+@keyframes fade-in-and-scale {
+    from {
+        opacity: 0;
+        scale: 105%;
+    }
+    to {
+        opacity: 100;
+        scale: 100%;
+    }
+}

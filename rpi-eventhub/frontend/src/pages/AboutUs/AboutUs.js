@@ -8,6 +8,7 @@ import RPIBridgePhoto from '../../assets/RPIBridgePhoto.jpg'
 import ProfilePicImage from '../../assets/ProfilePicImage.svg'
 
 function AboutUs() {
+  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     return (
         <div>
           <Navbar />
@@ -39,8 +40,8 @@ function AboutUs() {
                  
             </div>
     
-              <div className="col-5 p-5 second">
-                <img src={RPIBridgePhoto} alt="logo" width="480"></img>
+              <div className="anim col-5 p-5 second">
+                <img src={RPIBridgePhoto} id="bridge" alt="bridge" width="480"></img>
               </div>
 
             </div>

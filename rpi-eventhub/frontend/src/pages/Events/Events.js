@@ -7,11 +7,18 @@ import Footer from '../../components/Footer/Footer';
 import './Events.css';
 
 function Event() {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     return (
         <div className="event-page">
             <Navbar />
-            <Banner />
-            <PopularEvents />
+            <div className="anim">
+                <Banner />
+            </div>
+            
+            <div className="anim">
+                <PopularEvents />
+            </div>
+            
             <Footer />
         </div>
     );
