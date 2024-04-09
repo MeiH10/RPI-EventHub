@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import LoginButton from "../LoginButton/LoginButton";
 import { EventHubLogo2, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
 
 const Navbar = () => {
@@ -56,6 +57,9 @@ const Navbar = () => {
             <li className="nav-item">
 
             </li>
+
+            <LoginButton></LoginButton>
+            
           </ul>
           <div className="nav-icon" onClick={handleClick}>
             {/* <i className={click ? "fas fa-times" : "fas fa-bars"}></i> */}
