@@ -6,6 +6,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 
 
 const Home = () => {
+  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   return (
     <div>
       <NavBar />
@@ -15,7 +16,7 @@ const Home = () => {
         <div className="row">
           <div className="col-7 p-5">
 
-            <div className="title">
+            <div className={`${HomeCSS.anim1} title`}>
               <h1>All RPI events,</h1>
               <h1>in one place.</h1>
             </div>
@@ -27,10 +28,10 @@ const Home = () => {
                 <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#6c757d">SearchBar Placeholder</text>
               </svg>  */}
               
-              <div className={HomeCSS.searchBarWrapper}>
+              <div className={`${HomeCSS.searchBarWrapper} ${HomeCSS.anim2}`}>
               <SearchBar></SearchBar>
               </div>
-              <div className="card text-start bg-transparent border-0 p-0">
+              <div className={`${HomeCSS.anim1} card text-start bg-transparent border-0 p-0`}>
                 <div class="card-body p-0">
                   <h5 class="card-title">About the website</h5>
                   <p class="card-text">A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.</p>
@@ -44,7 +45,7 @@ const Home = () => {
 
           </div>
 
-          <div className={`${HomeCSS.carouselContainer} col-5`}>
+          <div className={`${HomeCSS.carouselContainer} ${HomeCSS.anim2} col-5`}>
             {/* <SearchBar /> */}
             <ImageCarousel></ImageCarousel>
           </div>

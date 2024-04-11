@@ -39,12 +39,27 @@ body {
     animation: fade-in 2s;
 }
 
+.anim {
+    animation: fade-in-and-scale 0.5s;
+}
+
 @keyframes fade-in {
     from {
         opacity: 0;
     }
     to {
         opacity: 100;
+    }
+}
+
+@keyframes fade-in-and-scale {
+    from {
+        opacity: 0;
+        scale: 95%;
+    }
+    to {
+        opacity: 100;
+        scale: 100%;
     }
 }
 
