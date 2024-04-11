@@ -19,7 +19,6 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar">
-        <LoginModal></LoginModal>
         <div className="nav-container">
           <NavLink exact to="/" className="nav-logo">
             {/* <i className="fas fa-code"></i> */}
@@ -86,9 +85,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <LoginModal show={showLogin} onHide={() => setShowLogin(false)} />
-      <SignupModal show={showSignup} onHide={() => setShowSignup(false)} />
-      <CreateEventModal show={showCreateEvent} onHide={() => setShowCreateEvent(false)} />
     </>
   );
 }
