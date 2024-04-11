@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import LoginButton from "../LoginButton/LoginButton";
-import { EventHubLogo2, HamburgetMenuClose, HamburgetMenuOpen } from "./Icons";
+import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
+import CreateEventModal from "../CreateEventModal/CreateEventModal";
+import LoginModal from "../LoginModal/LoginModal";
+import SignupModal from "../SignupModal/SignupModal";
+
 
 const Navbar = () => {
 
-    const [click, setClick] = useState(false);
-
+  const [click, setClick] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
+  const [showCreateEvent, setShowCreateEvent] = useState(false);
   const handleClick = () => setClick(!click);
+  
+  
   return (
     <>
       <nav className="navbar">
+        <LoginModal></LoginModal>
         <div className="nav-container">
           <NavLink exact to="/" className="nav-logo">
             {/* <i className="fas fa-code"></i> */}
@@ -54,11 +62,12 @@ const Navbar = () => {
                 Events
               </NavLink>
             </li>
-            <li className="nav-item">
+            <div className="modal-buttons">
+              <LoginModal></LoginModal>
+              <SignupModal></SignupModal>
+              <CreateEventModal></CreateEventModal>
+            </div>
 
-            </li>
-
-            <LoginButton></LoginButton>
             
           </ul>
           <div className="nav-icon" onClick={handleClick}>
@@ -66,16 +75,20 @@ const Navbar = () => {
 
             {click ? (
               <span className="icon">
-                <HamburgetMenuOpen />{" "}
+                <HamburgerMenuOpen />{" "}
               </span>
             ) : (
               <span className="icon">
-                <HamburgetMenuClose />
+                <HamburgerMenuClose />
               </span>
             )}
           </div>
         </div>
       </nav>
+
+      <LoginModal show={showLogin} onHide={() => setShowLogin(false)} />
+      <SignupModal show={showSignup} onHide={() => setShowSignup(false)} />
+      <CreateEventModal show={showCreateEvent} onHide={() => setShowCreateEvent(false)} />
     </>
   );
 }
