@@ -18,9 +18,17 @@
 
 .banner h1 {
     font-family: "Good Times Rg", sans-serif;
-    margin-bottom: 110px;
+    margin-bottom: 30px;
     color: white;
     text-align: center;
+}
+
+.banner h2 {
+    font-family: "Good Times Rg", sans-serif;
+    font-size: large;
+    color: white;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .search-bar-container {
@@ -34,7 +42,7 @@
     align-items: center;
     padding: 0 20px;
     position: relative;
-    margin-top: -50px;
+    margin-bottom: 50px;
 }
 
 .search-input {
@@ -57,3 +65,9 @@
     right: 20px;
     height: 50px;
 }
+
+.banner h2 a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Inherits text color from parent */
+}
+
