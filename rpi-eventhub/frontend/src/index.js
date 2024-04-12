@@ -7,8 +7,10 @@ import reportWebVitals from './reportWebVitals'; // Utility for measuring perfor
 // Create a root container instance using ReactDOM and bind it to the 'root' element in the HTML
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  // Render the App component inside React's Strict Mode
   <React.StrictMode>
-    <App /> // Render the App component inside React's Strict Mode
+    
+    <App /> 
   </React.StrictMode>
 );
 
