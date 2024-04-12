@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Modal, Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 function SignupModal() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const { login } = useAuth();  // Use the login method from AuthContext
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleSignup = () => {
-    // Here you would handle the signup logic, possibly sending a request to your backend
-    console.log('Signup Email:', email, 'Password:', password);
-    handleClose(); // Close the modal after signup attempt
+  const handleSignup = async () => {
+    const user = {
+      email,
+      password,
+      username
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5000/signup', user);
+      console.log('Signup successful:', response.data);
+      login();  // Log the user in
+      localStorage.setItem('token', response.data.token);  // Save the token
+      handleClose();
+    } catch (error) {
+      console.error('Signup failed:', error.response ? error.response.data : error.message);
+    }
   };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="secondary" onClick={handleShow}>
         Sign Up
       </Button>
 
@@ -34,6 +48,15 @@ function SignupModal() {
         </Modal.Header>
         <Modal.Body>
           <Form>
+            <Form.Group controlId="signupUsername">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Form.Group>
             <Form.Group controlId="signupEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control

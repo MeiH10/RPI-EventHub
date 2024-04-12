@@ -9,10 +9,14 @@ const { sendEmail } = require('./services/emailService');
 require('dotenv').config({ path: '../.env' });
 const jwtSecret = process.env.JWT_SECRET;
 const crypto = require('crypto'); // Add this at the top of your index.js
+const cors = require('cors');
+
+
 
 
 const app = express();
 
+app.use(cors());
 
 
 const authenticate = async (req, res, next) => {
@@ -98,20 +102,25 @@ app.post('/signup', async (req, res) => {
       verificationCode,
     });
     await user.save();
-    
+
     // Send verification email with the code
     sendEmail({
       to: email,
       subject: 'Verify Your Email',
       text: `Your email verification code is: ${verificationCode}. Please enter this code in the app to verify your email.`,
     });
-    
-    res.status(201).json({ message: "User created successfully. Please check your email to verify your account." });
+
+    // Generate a JWT token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+    res.status(201).json({
+      message: "User created successfully. Please check your email to verify your account.",
+      token: token  // Send the token to the client
+    });
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error: error.message });
   }
 });
-
 
 app.post('/verify-email', async (req, res) => {
   const { email, verificationCode } = req.body;

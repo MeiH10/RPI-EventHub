@@ -3,14 +3,18 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
+import { AuthProvider } from '../../context/AuthContext';
+
 
 // Import your page components
+
 import Home from '../../pages/Home/Home'; // Adjust path if needed
 import Events from '../../pages/Events/Events'; // Adjust path if needed
 import Playground from '../../pages/Playground/Playground'; // Adjust path if needed
 import AboutUs from '../../pages/AboutUs/AboutUs'; // Adjust path if needed
 import Experimental from '../../pages/Experimental/Experimental'; // Adjust path if needed
 import AllEvents from "../../pages/Events/AllEventPage/AllEvents";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -40,7 +44,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <AuthProvider> {/* Wrap RouterProvider with AuthProvider */}
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
 }
 
