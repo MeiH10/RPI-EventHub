@@ -1,39 +1,44 @@
+/* Overlay covering the entire screen, creates a dimming effect for focus on the modal */
 .modal-overlay {
-  position: fixed;
+  position: fixed; /* Fixing position relative to the viewport */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  z-index: 1000; /* Ensures overlay is above most other content */
 }
 
+/* The main container for modal content */
 .modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  width: 30%; /* You can adjust the width as needed */
-  max-width: 500px; /* Set a max-width to ensure it looks good on all screens */
-  z-index: 1001;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for better focus */
-  border-radius: 10px; /* Optional: rounds the corners */
+  position: fixed; /* Fixing position relative to the viewport */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Offset the modal to truly center it */
+  background: white; /* Background color of the modal */
+  padding: 20px; /* Padding inside the modal */
+  width: 30%; /* Width of the modal, adjustable */
+  max-width: 500px; /* Maximum width for responsiveness */
+  z-index: 1001; /* Ensures modal is above the overlay */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for 3D effect */
+  border-radius: 10px; /* Rounded corners */
 }
 
+/* Container for modal header components (e.g., close button) */
 .modal-header {
-  display: flex;
-  justify-content: flex-end;
+  display: flex; /* Uses flexbox for layout */
+  justify-content: flex-end; /* Aligns close button to the right */
 }
 
+/* Styling for the close button of the modal */
 .modal-close-button {
-  border: none;
-  background: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  border: none; /* Removes border */
+  background: none; /* Removes background */
+  font-size: 1.5rem; /* Larger icon font size */
+  cursor: pointer; /* Changes cursor to pointer to indicate clickable */
 }
 
+/* Container for the main content of the modal */
 .modal-body {
-  margin-top: 10px;
+  margin-top: 10px; /* Top margin for spacing from header */
 }
