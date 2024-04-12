@@ -9,10 +9,14 @@ const { sendEmail } = require('./services/emailService');
 require('dotenv').config({ path: '../.env' });
 const jwtSecret = process.env.JWT_SECRET;
 const crypto = require('crypto'); // Add this at the top of your index.js
+const cors = require('cors');
+
+
 
 
 const app = express();
 
+app.use(cors());
 
 
 const authenticate = async (req, res, next) => {
