@@ -10,6 +10,9 @@ function Banner() {
                 <input className="search-input" type="text" placeholder="Search for an event!" />
                 <button className="search-button">Search</button>
             </div>
+            <div>
+                <h2>See all events</h2>
+            </div>
         </div>
     );
 }
