@@ -1,6 +1,7 @@
 // Banner.js
 import React from 'react';
 import './Banner.css';
+import { Link } from 'react-router-dom';
 
 function Banner() {
     return (
@@ -11,7 +12,7 @@ function Banner() {
                 <button className="search-button">Search</button>
             </div>
             <div>
-                <h2>See all events</h2>
+                <h2><Link to="/all-events">See all events</Link></h2>
             </div>
         </div>
     );
