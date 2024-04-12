@@ -49,7 +49,7 @@ function LoginModal() {
           <Modal.Title>Log In</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {error && <Alert variant="danger">{error}</Alert>}  // Display error message if any
+          {error && <Alert variant="danger">{error}</Alert>} 
           <Form>
             <Form.Group controlId="loginEmail">
               <Form.Label>Email address</Form.Label>

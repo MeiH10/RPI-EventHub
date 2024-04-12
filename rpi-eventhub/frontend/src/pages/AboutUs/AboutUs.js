@@ -48,7 +48,7 @@ function AboutUs() {
 
             <hr></hr>
 
-            <div class="developers third">
+            <div className="developers third">
                 <h4>Developers</h4>
                 <div className="row">
 
