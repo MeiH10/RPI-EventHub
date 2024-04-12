@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 
@@ -7,9 +7,13 @@ function LoginModal() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');  // State to hold login error message
   const { login } = useAuth();  // Destructure the login function from useAuth
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setError('');  // Clear any errors on close
+  };
   const handleShow = () => setShow(true);
 
   const handleLogin = async () => {
@@ -20,11 +24,17 @@ function LoginModal() {
 
     try {
       const response = await axios.post('http://localhost:5000/login', credentials);
-      console.log('Login successful:', response.data);
-      login();  // Call login to update the global state
-      handleClose(); // Close the modal on successful login
+      if (response.data.token) {
+        login(response.data.token, response.data.emailVerified);  // Pass token and emailVerified status
+        handleClose(); // Close the modal on successful login
+      } else {
+        throw new Error('Login failed, no token received.');  // Ensure token is received
+      }
+
+      console.log(response.data.emailVerified);
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data : error.message);
+      setError(error.response ? error.response.data.message : 'Login failed, please try again.');  // Set error message for user feedback
     }
   };
 
@@ -34,16 +44,12 @@ function LoginModal() {
         Log In
       </Button>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
+      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>Log In</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {error && <Alert variant="danger">{error}</Alert>}  // Display error message if any
           <Form>
             <Form.Group controlId="loginEmail">
               <Form.Label>Email address</Form.Label>
@@ -54,7 +60,6 @@ function LoginModal() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
-
             <Form.Group controlId="loginPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control

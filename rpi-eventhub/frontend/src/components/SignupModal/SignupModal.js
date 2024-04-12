@@ -19,17 +19,21 @@ function SignupModal() {
       password,
       username
     };
-
+  
     try {
       const response = await axios.post('http://localhost:5000/signup', user);
-      console.log('Signup successful:', response.data);
-      login();  // Log the user in
-      localStorage.setItem('token', response.data.token);  // Save the token
-      handleClose();
+      if (response.data.token) {
+        // Ensure that the login function in your AuthContext also sets the emailVerified state
+        login(response.data.token, response.data.emailVerified);
+        handleClose(); // Close the modal on successful signup and login
+      } else {
+        throw new Error('Signup successful but no token received, login not possible.');
+      }
     } catch (error) {
-      console.error('Signup failed:', error.response ? error.response.data : error.message);
+      console.error('Signup failed:', error.response ? error.response.data.message : error.message);
     }
   };
+  
 
   return (
     <>

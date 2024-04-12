@@ -115,8 +115,11 @@ app.post('/signup', async (req, res) => {
 
     res.status(201).json({
       message: "User created successfully. Please check your email to verify your account.",
-      token: token  // Send the token to the client
+      token: token,
+      emailVerified: user.emailVerified  // Include emailVerified status
     });
+
+
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error: error.message });
   }
@@ -160,7 +163,16 @@ app.post('/login', async (req, res) => {
     }
     // Generate a token
     const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '24h' });
-    res.status(200).json({ token, userId: user._id, message: "Logged in successfully" });
+
+    
+    res.status(200).json({
+      message: "Logged in successfully",
+      token: token,
+      userId: user._id,
+      emailVerified: user.emailVerified  // Include emailVerified status
+    });
+
+
   } catch (error) {
     res.status(500).json({ message: "Login error", error: error.message });
   }

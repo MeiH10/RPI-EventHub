@@ -6,11 +6,11 @@ import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
 import { useAuth } from "../../context/AuthContext";
+import VerifyModal from "../VerifyModal/VerifyModal";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, logout } = useAuth(); // Destructure isLoggedIn and logout from useAuth
-
+  const { isLoggedIn, logout, emailVerified } = useAuth(); // Destructure isLoggedIn and logout from useAuth
   const handleClick = () => setClick(!click);
   const handleLogout = () => {
     logout();
@@ -73,6 +73,12 @@ const Navbar = () => {
                   <SignupModal />
                 </>
               )}
+
+              {/* <VerifyModal></VerifyModal> */}
+
+            {isLoggedIn && emailVerified === false && <VerifyModal />}
+
+
             </div>
           </ul>
           <div className="nav-icon" onClick={handleClick}>
