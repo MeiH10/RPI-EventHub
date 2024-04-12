@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 function SignupModal() {
   const [show, setShow] = useState(false);
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const { login } = useAuth();  // Use the login method from AuthContext
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleSignup = async () => {
-    const userData = {
-      username: username,
-      email: email,
-      password: password
+    const user = {
+      email,
+      password,
+      username
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/signup', userData);
+      const response = await axios.post('http://localhost:5000/signup', user);
       console.log('Signup successful:', response.data);
-      handleClose(); // Close the modal on successful signup
-      // Optionally reset form or handle next steps
+      login();  // Log the user in
+      localStorage.setItem('token', response.data.token);  // Save the token
+      handleClose();
     } catch (error) {
       console.error('Signup failed:', error.response ? error.response.data : error.message);
-      // Handle errors here, such as displaying a notification to the user
     }
   };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="secondary" onClick={handleShow}>
         Sign Up
       </Button>
 
@@ -53,10 +55,8 @@ function SignupModal() {
                 placeholder="Enter username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                required
               />
             </Form.Group>
-
             <Form.Group controlId="signupEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -64,10 +64,8 @@ function SignupModal() {
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
             </Form.Group>
-
             <Form.Group controlId="signupPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -75,7 +73,6 @@ function SignupModal() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
             </Form.Group>
           </Form>
