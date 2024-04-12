@@ -1,0 +1,15 @@
+.all-events {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.events-display-container {
+    width: 90%; /* slightly smaller than the full screen */
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* space between cards */
+}
