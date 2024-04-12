@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Modal, Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 function LoginModal() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();  // Destructure the login function from useAuth
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleLogin = () => {
-    // Here you would handle the login logic, possibly sending a request to your backend
-    console.log('Email:', email, 'Password:', password);
-    handleClose(); // Close the modal after login attempt
+  const handleLogin = async () => {
+    const credentials = {
+      email: email,
+      password: password
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5000/login', credentials);
+      console.log('Login successful:', response.data);
+      login();  // Call login to update the global state
+      handleClose(); // Close the modal on successful login
+    } catch (error) {
+      console.error('Login failed:', error.response ? error.response.data : error.message);
+    }
   };
 
   return (
@@ -43,6 +54,7 @@ function LoginModal() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
+
             <Form.Group controlId="loginPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control

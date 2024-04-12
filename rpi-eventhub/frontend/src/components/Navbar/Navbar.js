@@ -5,23 +5,23 @@ import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
 import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
-
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
-
   const [click, setClick] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
-  const [showCreateEvent, setShowCreateEvent] = useState(false);
+  const { isLoggedIn, logout } = useAuth(); // Destructure isLoggedIn and logout from useAuth
+
   const handleClick = () => setClick(!click);
-  
-  
+  const handleLogout = () => {
+    logout();
+    handleClick(); // Optionally close any open menus
+  };
+
   return (
     <>
       <nav className="navbar">
         <div className="nav-container">
           <NavLink exact to="/" className="nav-logo">
-            {/* <i className="fas fa-code"></i> */}
             <span className="icon">
               <EventHubLogo2 />
             </span>
@@ -61,20 +61,24 @@ const Navbar = () => {
                 Events
               </NavLink>
             </li>
+            <li className="nav-item">
+              <CreateEventModal /> {/* Always visible regardless of auth status */}
+            </li>
             <div className="modal-buttons">
-              <LoginModal></LoginModal>
-              <SignupModal></SignupModal>
-              <CreateEventModal></CreateEventModal>
+              {isLoggedIn ? (
+                <button onClick={handleLogout}>Sign Out</button>
+              ) : (
+                <>
+                  <LoginModal />
+                  <SignupModal />
+                </>
+              )}
             </div>
-
-            
           </ul>
           <div className="nav-icon" onClick={handleClick}>
-            {/* <i className={click ? "fas fa-times" : "fas fa-bars"}></i> */}
-
             {click ? (
               <span className="icon">
-                <HamburgerMenuOpen />{" "}
+                <HamburgerMenuOpen />
               </span>
             ) : (
               <span className="icon">
@@ -84,7 +88,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
     </>
   );
 }
