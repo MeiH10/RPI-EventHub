@@ -1,62 +1,70 @@
+/* Overlay to cover the entire viewport, dims the background and provides a base for modal content */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-  }
-  
-  .modal-content {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    width: auto;
-    max-width: 500px;
-    z-index: 1001;
-  }
-  
-  .modal-header {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .modal-close-button {
-    border: none;
-    background: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
-  .modal-body {
-    margin-top: 10px;
-  }
-  
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  .form-group label {
-    display: block;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 0.5rem;
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;  /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  z-index: 1000; /* Ensures overlay is above other content but below modal */
+}
+
+/* Container for modal elements, centered on the screen */
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centering the modal */
+  background: white; /* Background color of the modal */
+  padding: 20px; /* Padding inside the modal for spacing */
+  width: auto; /* Width adjusts to content up to the max-width */
+  max-width: 500px; /* Maximum width to ensure it doesn't become too large */
+  z-index: 1001; /* Above the overlay to be visible */
+}
+
+/* Header of the modal, typically contains the close button */
+.modal-header {
+  display: flex; /* Flexbox for positioning children */
+  justify-content: flex-end; /* Aligns the close button to the right */
+}
+
+/* Close button styling */
+.modal-close-button {
+  border: none; /* No border for a clean look */
+  background: none; /* No background */
+  font-size: 1.5rem; /* Larger font size for better visibility */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+/* Body of the modal, holds content like forms or text */
+.modal-body {
+  margin-top: 10px; /* Spacing from the header */
+}
+
+/* Styling for groups of form elements */
+.form-group {
+  margin-bottom: 1rem; /* Bottom margin for spacing between groups */
+}
+
+/* Label styling within form groups */
+.form-group label {
+  display: block; /* Ensures labels are on their own line */
+}
+
+/* Unified styling for input and textarea elements within form groups */
+.form-group input,
+.form-group textarea {
+  width: 100%; /* Full width to align with form structure */
+  padding: 0.5rem; /* Padding for better text visibility */
+  margin-top: 0.5rem; /* Space between label and input/textarea */
+}
+
+/* Submit button styling */
+.submit-button {
+  width: 100%; /* Full width to match input fields */
+  padding: 0.5rem; /* Padding for aesthetics and usability */
+  background: #007bff; /* Bright blue background for visibility */
+  color: white; /* White text for contrast */
+  border: none; /* No border for a cleaner appearance */
+  cursor: pointer; /* Indicates clickable */
+}
