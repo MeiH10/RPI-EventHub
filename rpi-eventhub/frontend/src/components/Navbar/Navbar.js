@@ -53,6 +53,18 @@ const Navbar = () => {
                 Events
               </NavLink>
             </li>
+
+            <li className="nav-item">
+              <NavLink
+                exact
+                to="/specficEvent"
+                activeClassName="active"
+                className="nav-links"
+                onClick={handleClick}
+              >
+                EventCheck
+              </NavLink>
+            </li>
             <li className="nav-item">
 
             </li>

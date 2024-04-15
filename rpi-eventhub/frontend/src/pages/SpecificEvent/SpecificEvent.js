@@ -1,5 +1,5 @@
 import React from 'react'
-import AbousUsCSS from './SpecificEvent.modular.css'
+import SpecificEventCSS from './SpecificEvent.modular.css'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import EventHubLogo from "../../assets/EventHubLogo1.svg";
@@ -29,7 +29,7 @@ function SpecificEvent() {
                         <h4>Picture</h4>
                         <img 
                         src={EventHubLogo} alt = "EVENT PICTURE"
-                        style = {{float: 'right', width: '50%', height: 'auto'}} 
+                        style = {{float: 'left', width: '50%', height: '350px'}} 
                         />
                     </div>
                     
@@ -38,7 +38,7 @@ function SpecificEvent() {
             </div>
     
               <div className="Event Information">
-                        <h4>Event Info</h4>
+                        <h4 className = "textRight">Event Info</h4>
                         Text file that needs to be a argument
               </div>
 

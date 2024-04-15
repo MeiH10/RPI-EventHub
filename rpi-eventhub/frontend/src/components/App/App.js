@@ -9,7 +9,9 @@ import Home from '../../pages/Home/Home'; // Adjust path if needed
 import Events from '../../pages/Events/Events'; // Adjust path if needed
 import Playground from '../../pages/Playground/Playground'; // Adjust path if needed
 import AboutUs from '../../pages/AboutUs/AboutUs'; // Adjust path if needed
+import SpecificEvent from '../../pages/SpecificEvent/SpecificEvent'; // Adjust path if needed
 import Experimental from '../../pages/Experimental/Experimental'; // Adjust path if needed
+import RsvpButton from '../rsvp-button/RsvpButton';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/experimental",
     element: <Experimental />,
+  },
+  {
+    path: "/specficEvent",
+    element: < SpecificEvent/>,
   },
 ]);
 

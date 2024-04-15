@@ -109,6 +109,16 @@ a:active {
     top: 10px;
 }
 
+.makeLeft { 
+    float: left;
+}
+
+.textRight {
+    right: -90px;
+    position: relative;
+    top: -460px;
+   }
+
 .footer {
     margin-top: auto; /* Push the footer to the bottom */
 }
