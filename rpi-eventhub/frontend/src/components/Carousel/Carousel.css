@@ -24,11 +24,14 @@
 }
 
 .caption-above {
-  margin-bottom: 20px; /* Adjust as needed for spacing above the image */
-  color: #333; /* Change the color based on your design */
-  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: white; /* Change the color to white for better readability */
+  font-size: 1.5em; /* Increase the font size for better visibility */
   text-align: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
+  padding: 10px 20px; /* Add padding for better spacing */
 }
+
 
 
 .next-button, .prev-button {
