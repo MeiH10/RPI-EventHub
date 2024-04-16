@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Carousel.css'; // Ensure this CSS file contains your styles
-import image1 from './image1.jpg';
-import image2 from './image2.jpg';
-import image3 from './image3.jpg';
-import image4 from './image4.jpg';
-import image5 from './image5.jpg';
+import poster1 from './poster1.jpeg';
+import poster2 from './poster2.jpeg';
+import poster3 from './poster3.png';
+import poster4 from './poster4.jpeg';
+import poster5 from './poster5.png';
 
-const images = [image1, image2, image3, image4, image5];
+const images = [poster1, poster2, poster3, poster4, poster5];
 
 const ImageCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
