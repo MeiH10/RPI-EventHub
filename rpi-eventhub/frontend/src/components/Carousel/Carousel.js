@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Carousel.css'; // Ensure this CSS file contains your styles
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+// Import posters
 import poster1 from './poster1.jpeg';
 import poster2 from './poster2.jpeg';
 import poster3 from './poster3.png';
@@ -19,11 +22,11 @@ const ImageCarousel = () => {
   const intervalRef = useRef(null);
 
   const goToNext = () => {
-    setActiveIndex((current) => (current === images.length - 1 ? 0 : current + 1));
+    setActiveIndex(current => current === images.length - 1 ? 0 : current + 1);
   };
 
   const goToPrev = () => {
-    setActiveIndex((current) => (current === 0 ? images.length - 1 : current - 1));
+    setActiveIndex(current => current === 0 ? images.length - 1 : current - 1);
   };
 
   const resetTimer = () => {
@@ -41,8 +44,12 @@ const ImageCarousel = () => {
       <div className="main-image">
         <div className="caption-above">{images[activeIndex].caption}</div>
         <img src={images[activeIndex].src} alt={`Slide ${activeIndex}`} />
-        <button onClick={() => { goToPrev(); resetTimer(); }} className="prev-button">←</button>
-        <button onClick={() => { goToNext(); resetTimer(); }} className="next-button">→</button>
+        <button onClick={() => { goToPrev(); resetTimer(); }} className="prev-button">
+          <i className="bi bi-chevron-left"></i>
+        </button>
+        <button onClick={() => { goToNext(); resetTimer(); }} className="next-button">
+          <i className="bi bi-chevron-right"></i>
+        </button>
       </div>
     </div>
   );
