@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Carousel.css'; // Ensure this CSS file contains your styles
-import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS
 import poster1 from './poster1.jpeg';
 import poster2 from './poster2.jpeg';
 import poster3 from './poster3.png';
@@ -40,10 +39,8 @@ const ImageCarousel = () => {
   return (
     <div className="carousel">
       <div className="main-image">
-        <img src={images[activeIndex].src} alt={`Slide ${activeIndex}`} className="img-fluid" />
-        <div className="carousel-caption d-none d-md-block">
-          <h5>{images[activeIndex].caption}</h5>
-        </div>
+        <div className="caption-above">{images[activeIndex].caption}</div>
+        <img src={images[activeIndex].src} alt={`Slide ${activeIndex}`} />
         <button onClick={() => { goToPrev(); resetTimer(); }} className="prev-button">←</button>
         <button onClick={() => { goToNext(); resetTimer(); }} className="next-button">→</button>
       </div>

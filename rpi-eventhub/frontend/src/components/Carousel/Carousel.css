@@ -8,9 +8,10 @@
 
 .main-image {
   position: relative;
-  display: flex; /* Keep this to flex to use justify-content and align-items */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
   justify-content: center;
-  align-items: center; /* This will vertically center the img */
+  align-items: center;
   width: 80%;
   max-width: 500px;
   margin: 0 auto;
@@ -20,6 +21,13 @@
   max-width: 100%;
   max-height: 70vh; /* Adjust based on your needs */
   object-fit: cover; /* This can help keep aspect ratio without stretching images. */
+}
+
+.caption-above {
+  margin-bottom: 20px; /* Adjust as needed for spacing above the image */
+  color: #333; /* Change the color based on your design */
+  font-size: 1.2em;
+  text-align: center;
 }
 
 
