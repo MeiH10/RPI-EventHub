@@ -14,13 +14,13 @@ const events = [
     {
         id: 2,
         title: 'RPI Chess Club Finals',
-        posterSrc: 'https://via.placeholder.com/350x500',
+        posterSrc: 'https://venngage-wordpress-gallery.s3.amazonaws.com/uploads/2018/09/Bike-To-Work-Day-Creative-Horizontal-Event-Flyer-Example4.jpg',
         description: 'Witness the grand finals of the RPI Chess Club on August 15th, 2024; from 2pm to 5pm at the Union Games Room.'
     },
     {
         id: 3,
         title: 'Tech Talks',
-        posterSrc: 'https://via.placeholder.com/300x450',
+        posterSrc: 'https://media.discordapp.net/attachments/665684489174777884/1196944218229309541/RPI_Chess_Tournament_Jan_27.png?ex=663170ab&is=661efbab&hm=57d8dd02b652839e5dcf4fb2d0094a34c1175c96d013dde1efb2cb470a8e5484&=&format=webp&quality=lossless&width=521&height=675',
         description: 'Explore the latest in technology innovations.'
     },
     {
