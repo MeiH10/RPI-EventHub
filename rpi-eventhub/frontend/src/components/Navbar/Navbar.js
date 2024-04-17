@@ -62,18 +62,26 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-              <CreateEventModal /> {/* Always visible regardless of auth status */}
+              <CreateEventModal /> 
             </li>
-            <div className="modal-buttons">
               {isLoggedIn ? (
-                <button onClick={handleLogout}>Sign Out</button>
+
+<button onClick={handleLogout} className="nav-item btn-danger btn">Sign Out</button>
+
+
               ) : (
                 <>
-                  <LoginModal />
-                  <SignupModal />
+                <li className="nav-item">
+                <LoginModal />
+
+                </li>
+                <li className="nav-item">
+                <SignupModal />
+
+                </li>
+
                 </>
               )}
-            </div>
           </ul>
           <div className="nav-icon" onClick={handleClick}>
             {click ? (

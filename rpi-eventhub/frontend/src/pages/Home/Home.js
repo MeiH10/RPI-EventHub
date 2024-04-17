@@ -17,7 +17,7 @@ const Home = () => {
           <div className="col-7 p-5">
 
             <div className={`${HomeCSS.anim1} title`}>
-              <h1>All RPI events,</h1>
+              <h1 id="red">All RPI events,</h1>
               <h1>in one place.</h1>
             </div>
             {/* <SearchBar /> */}
