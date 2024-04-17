@@ -23,7 +23,7 @@ function CreateEventModal() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="success" onClick={handleShow}>
         Create Event
       </Button>
 

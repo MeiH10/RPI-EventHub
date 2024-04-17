@@ -19,11 +19,11 @@ const poster5_link = "https://media.discordapp.net/attachments/92520875926814732
 
 
 const images = [
-  { src: poster1_link, caption: "Caption for Poster 1" },
-  { src: poster2_link, caption: "Caption for Poster 2" },
-  { src: poster3_link, caption: "Caption for Poster 3" },
-  { src: poster4_link, caption: "Caption for Poster 4" },
-  { src: poster5_link, caption: "Caption for Poster 5" }
+  { src: poster1_link, caption: "Chess Tournament" },
+  { src: poster2_link, caption: "Of a Cappella" },
+  { src: poster3_link, caption: "Partial Credit Acapocalypse" },
+  { src: poster4_link, caption: "Lost In Space" },
+  { src: poster5_link, caption: "Rayrheon Q&A Session" }
 ];
 
 const ImageCarousel = () => {
