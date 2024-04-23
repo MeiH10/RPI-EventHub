@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-
+import { useEvents } from '../../context/EventsContext';
 
 const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID; 
 const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY; 
@@ -20,76 +20,48 @@ function CreateEventModal() {
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState('');
 
+  const { addEvent } = useEvents(); // Use addEvent from EventsContext
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const uploadImageToImgur = async (file) => {
-    const formData = new FormData();
-    formData.append('image', file);
-
-
-    try {
-      const response = await axios.post('https://api.imgur.com/3/image', formData, {
-
-      headers: {
-        'Authorization': `Client-ID ${clientId}`
-      }
-
-    });
-
-      console.log("imageurl: ", response.data.data.link);
-      return response.data.data.link; // Return the URL of the uploaded image
-    } catch (error) {
-      console.error('Failed to upload image:', error);
-      return null; // In case of error, return null
-    }
-  };
-
-
   const uploadImage = async (imageFile) => {
+    // Assume using ImgBB or similar for simplicity
     const formData = new FormData();
     formData.append('image', imageFile);
-  
+
     try {
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgBB_API_KEY}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log("response.data.data.url: ", response.data.data.url);
-      return response.data.data.url;  // This will return the URL of the uploaded image
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_imgBB_API_KEY}`, formData);
+      return response.data.data.url; // Return URL of uploaded image
     } catch (error) {
       console.error('Failed to upload image:', error);
+      return ''; // Return empty string if upload fails
     }
   };
 
   const handleCreateEvent = async () => {
-    let imageUrl = null;
-    if (file) {
-      imageUrl = await uploadImage(file);
-    }
+    let imageUrl = await uploadImage(file);
 
     const eventData = {
       title,
       description,
-      poster: "admin",  // Hardcoded poster value
-      image: imageUrl, // Use the uploaded image URL
+      poster: "admin", // Temporary hardcode
+      image: imageUrl || 'default-placeholder-image-url', // Use placeholder if upload fails
       date,
       location,
-      tags: tags.split(',').map(tag => tag.trim()) // Convert tags string to array
+      tags: tags.split(',').map(tag => tag.trim()),
     };
 
-    console.log("eventData: ", eventData);
-
     try {
-      await axios.post('http://localhost:5000/events', eventData); // Adjust the URL to your API endpoint
-      console.log('Event created successfully');
-      handleClose();
+      const { data } = await axios.post('http://localhost:5000/events', eventData);
+      addEvent(data); // Add the new event to the global context
+      handleClose(); // Close the modal
     } catch (error) {
       console.error('Failed to create event:', error);
     }
   };
 
+  
   return (
     <>
       <Button variant="success" onClick={handleShow}>

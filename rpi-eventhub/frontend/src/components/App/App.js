@@ -4,6 +4,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { AuthProvider } from '../../context/AuthContext';
+import { EventsProvider } from '../../context/EventsContext';
 
 
 // Import your page components
@@ -45,7 +46,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AuthProvider> {/* Wrap RouterProvider with AuthProvider */}
-      <RouterProvider router={router} />
+      <EventsProvider>
+        <RouterProvider router={router} />
+      </EventsProvider>
     </AuthProvider>
   );
 }
