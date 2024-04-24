@@ -9,6 +9,8 @@ const ImageCarousel = () => {
   const [events, setEvents] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -29,12 +31,22 @@ const ImageCarousel = () => {
   }, []);
 
   const goToNext = () => {
-    setActiveIndex(current => current === events.length - 1 ? 0 : current + 1);
+    setIsTransitioning(true); // Start transition
+    setTimeout(() => {
+      setActiveIndex(current => current === events.length - 1 ? 0 : current + 1);
+      setIsTransitioning(false); // End transition
+    }, 500); // Match the duration of the CSS opacity transition
   };
-
+  
   const goToPrev = () => {
-    setActiveIndex(current => current === 0 ? events.length - 1 : current - 1);
+    setIsTransitioning(true); // Start transition
+    setTimeout(() => {
+      setActiveIndex(current => current === 0 ? events.length - 1 : current - 1);
+      setIsTransitioning(false); // End transition
+    }, 500); // Match the duration of the CSS opacity transition
   };
+  
+  
 
   const resetTimer = () => {
     clearInterval(intervalRef.current);
@@ -52,7 +64,11 @@ const ImageCarousel = () => {
         {events.length > 0 && (
           <>
             <div className="caption-above">{`${events[activeIndex].caption} - ${events[activeIndex].location} - ${events[activeIndex].date}`}</div>
-            <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
+            <img
+            src={events[activeIndex].src}
+            alt={`Slide ${activeIndex}`}
+            style={{ opacity: isTransitioning ? 0 : 1 }}
+          />
             <button onClick={() => { goToPrev(); resetTimer(); }} className="prev-button">
               <i className="bi bi-chevron-left"></i>
             </button>
