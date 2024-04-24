@@ -17,7 +17,7 @@ function AboutUs() {
             
             <div className="row">
               <div className="col-7 p-5">
-    
+                
                 <div className="title text-start first">
                   <h1>About Us</h1>
                   <h6>RPI EventHub</h6>
@@ -49,7 +49,7 @@ function AboutUs() {
             <hr></hr>
 
             <div class="developers third">
-                <h4>Developers</h4>
+                <h4 className="title">Developers</h4>
                 <div className="row">
 
                   <div className="column">
