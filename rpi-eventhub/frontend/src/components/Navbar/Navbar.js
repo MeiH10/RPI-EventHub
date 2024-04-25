@@ -53,7 +53,7 @@ const Navbar = () => {
             <li className="nav-item">
               <NavLink
                 exact
-                to="/events"
+                to="/all-events"
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}

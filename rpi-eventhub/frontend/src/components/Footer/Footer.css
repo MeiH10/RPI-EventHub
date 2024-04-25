@@ -1,12 +1,20 @@
+.footer-container { 
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+.page-content {
+  flex-grow: 1; 
+}
+
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
   background: #e85635;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 15px 30px; 
 }
 
 .footer_text {
@@ -14,6 +22,4 @@
   font-family: 'Chakra Petch';
   font-size: 15px;
   line-height: 1.5;
-  padding-left: 30px;
-  padding-top: 15px;
 }
