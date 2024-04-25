@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Mei H - Project Lead",
+    "imagePath": "./ProfilePicImage.svg",
+    "email": "huangm10@rpi.edu"
+  },
+  {
+    "name": "William F",
+    "imagePath": "./ProfilePicImage.svg",
+    "email": "fernaw@rpi.edu"
+  },
+  {
+    "name": "Nithin V",
+    "imagePath": "./ProfilePicImage.svg",
+    "email": "vadakn@rpi.edu"
+  },
+  {
+    "name": "Jordyn Y",
+    "imagePath": "./ProfilePicImage.svg",
+    "email": "youngj22@rpi.edu"
+  },
+  {
+    "name": "Henry T",
+    "imagePath": "./ProfilePicImage.svg",
+    "email": "thealh@rpi.edu"
+  },
+  {
+    "name": "Hari K",
+    "imagePath": "./ProfilePicImage.svg",
+    "email": "kimh21@rpi.edu"
+  },
+  {
+    "name": "Felix T",
+    "imagePath": "./ProfilePicImage.svg",
+    "email": "tianf2@rpi.edu"
+  }
+]
