@@ -1,0 +1,161 @@
+React Documentation
+Here is an ongoing list of React syntax, rules, and more for those unfamiliar with React. 
+Syntax:
+Importing react:
+ import React from 'react';
+
+Functional components:
+  function MyComponent() {
+  return (
+    // JSX code here
+  );
+}
+
+class components:
+class MyClassComponent extends React.Component {
+  render() {
+    return (
+      // JSX code here
+    );
+  }
+}
+
+
+html elements:
+  const element = <h1>Hello, React!</h1>;
+
+rendering a component:
+  ReactDOM.render(<MyComponent />, document.getElementById('root'));
+
+
+properties:
+  function Greeting(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+// Usage: <Greeting name="John" />
+
+
+managing local component states:
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  render() {
+    return <p>Count: {this.state.count}</p>;
+  }
+}
+
+event handling:
+function handleClick() {
+  console.log('Button Clicked!');
+}
+// Usage: <button onClick={handleClick}>Click me</button>
+
+
+functional components:
+const FunctionalComponent = () => {
+  return <p>Hello, Functional Component!</p>;
+};
+
+
+hooks - functions that enable using state and lifecycle feautures in functional component:
+import React, { useState, useEffect } from 'react';
+
+const ExampleComponent = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data and update state
+  }, []);
+
+  return <p>Data: {data}</p>;
+};
+
+lists and keys:
+const ListComponent = () => {
+  const items = ['Item 1', 'Item 2', 'Item 3'];
+
+  return (
+    <ul>
+      {items.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+
+
+William: 
+Here is some of the example code that I submitted earlier on in the year (that i had on google docs but never commited):
+
+here is how I tested and learned react while trying to write rudimentary versions of the navbar:
+import "./Navbar.css"
+
+
+const Navbar = () => {
+    return (
+        <nav class="crumbs">
+            <ol>
+                <li class="crumb"><a href="google.com" style = {{color:"red", textDecoration: 'none' }}>EVENTS</a></li>
+                <li class="crumb"><a href="rpi.edu" style = {{color:"red", textDecoration: 'none' }}>CALENDER</a></li>
+                <li class="crumb"><a href = "https://submitty.cs.rpi.edu/home" style = {{color:"red", textDecoration: 'none' }}> CREATE EVENT</a></li>
+                <li class = "crumbs"><a href = "code.visualcode.com" style = {{color:"red", textDecoration: 'none' }}>SIGN IN</a></li>
+            </ol>
+        </nav>
+     );
+}
+ 
+export default Navbar;
+
+import './App.css';
+import Navbar from '../Navbar/Navbar';
+
+
+
+The following version of the code shows some of the updates to very early versions of the app class. 
+
+
+
+import React from 'react';
+import { motion } from 'framer-motion';
+
+
+function App() {
+
+
+  const title = "aaaaaaaaaakk World";
+  return (
+    <div className="App">
+
+
+      <Navbar></Navbar>
+
+
+      <div className="content">
+        <h1>{title}</h1>
+      </div>
+      <motion.img
+        src=".../assets/logo.svg"
+        alt="IMAGE HERE"  
+
+        //I was working with image animation here to get a few things to move around so that eventually I could do more complex things
+
+
+        animate={{ y: [-10,  30, -10], x: [-10, 30, -10]}}
+        transition={{
+          duration:  10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+    </div>
+  )
+}
+
+
+export default App;
+
+Most of my contribution to the project was image animation and then coding the specific event page. Here is how I started to figure 
+react out. From here, is how I learned to code everything else in react js. 
