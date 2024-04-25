@@ -23,3 +23,9 @@
   font-size: 15px;
   line-height: 1.5;
 }
+
+.footer_text::after {
+  content: "@RPI EventHub | An RCOS project";
+  display: block;
+  margin-top: 5px;
+}
