@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 
-const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID; 
-const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY; 
-
-
-
+const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID;
+const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY;
 
 function CreateEventModal() {
   const [show, setShow] = useState(false);
@@ -19,19 +17,22 @@ function CreateEventModal() {
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState('');
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
-  const { addEvent } = useEvents(); // Use addEvent from EventsContext
+  const { addEvent } = useEvents();
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setAlert({ show: false, message: '', type: '' });
+  };
   const handleShow = () => setShow(true);
 
   const uploadImage = async (imageFile) => {
-    // Assume using ImgBB or similar for simplicity
     const formData = new FormData();
     formData.append('image', imageFile);
 
     try {
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_imgBB_API_KEY}`, formData);
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgBB_API_KEY}`, formData);
       return response.data.data.url; // Return URL of uploaded image
     } catch (error) {
       console.error('Failed to upload image:', error);
@@ -54,30 +55,29 @@ function CreateEventModal() {
 
     try {
       const { data } = await axios.post('http://localhost:5000/events', eventData);
-      addEvent(data); // Add the new event to the global context
-      handleClose(); // Close the modal
+      addEvent(data);
+      setAlert({ show: true, message: 'Event created successfully!', type: 'success' });
+      setTimeout(handleClose, 2000);
     } catch (error) {
       console.error('Failed to create event:', error);
+      setAlert({ show: true, message: 'Failed to create event.', type: 'danger' });
     }
   };
 
-  
   return (
     <>
-      <Button variant="success" onClick={handleShow}>
-        Create Event
-      </Button>
+      <Button variant="success" onClick={handleShow}>Create Event</Button>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
+      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>Create an Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {alert.show && (
+            <Alert variant={alert.type}>
+              {alert.message}
+            </Alert>
+          )}
           <Form>
             <Form.Group controlId="eventTitle">
               <Form.Label>Title</Form.Label>
@@ -143,12 +143,8 @@ function CreateEventModal() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleCreateEvent}>
-            Create Event
-          </Button>
+          <Button variant="secondary" onClick={handleClose}>Close</Button>
+          <Button variant="primary" onClick={handleCreateEvent}>Create Event</Button>
         </Modal.Footer>
       </Modal>
     </>
