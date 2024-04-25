@@ -122,3 +122,29 @@ a:active {
 .footer {
     margin-top: auto; /* Push the footer to the bottom */
 }
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .image-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .text-container {
+    flex: 1;
+    padding: 20px;
+    background-color: #f0f0f0;
+  }
+  
+  .image {
+    width: 80%;
+    height: 80%;
+    object-fit: fill;
+  }
