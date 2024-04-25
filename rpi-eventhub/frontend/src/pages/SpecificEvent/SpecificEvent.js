@@ -58,18 +58,27 @@ import ProfilePicImage from '../../assets/ProfilePicImage.svg'
       );
 } */
 
-function SpecificEvent() {
+
+//Specific event page for horizontal page
+//above is what the vertial page might look like but it needs more work
+//the image input right now is just the rpi bidge photo, but it can be replace with anything 
+//The description bar is set into 3 different text values that need to be added 
+
+//the function would need to have 4 parameters
+//the first would be the image, then the text for location, then time, and then lastly the type
+
+function SpecificEvent({src, location, time, type}) {
   return (
     <div><Navbar />
     <div className="container">
-      <div className="image-container">
-        <img src= {RPIBridgePhoto} alt="Your Image" className="image" />
+      <div className="image-container"> 
+        <img src= {RPIBridgePhoto} alt={src} className="image" />
       </div>
       <div className="text-container">
         <h1>Description of the Events</h1>
-        <p>Location: XXX</p>
-        <p1>Time: XX/XX/XXXX</p1>
-        <p2> Type: XXXXXX</p2>
+        <p>Location: {location} XXX</p>
+        <p1>Time: {time} XX/XX/XXXX</p1>
+        <p2> Type: {type} XXXXXX</p2>
       </div>
     </div>
     <Footer />
