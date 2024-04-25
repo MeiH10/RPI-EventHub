@@ -134,17 +134,22 @@ a:active {
     flex: 2;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    border-bottom: 2px solid #db0f0f
   }
   
   .text-container {
-    flex: 1;
-    padding: 20px;
-    background-color: #f0f0f0;
+    flex: 2;
+    padding: 10px;
+    background-color: #d30606;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    width: 100%;
   }
   
   .image {
-    width: 80%;
+    width: 113.5%;
     height: 80%;
-    object-fit: fill;
+    object-fit: cover;
   }

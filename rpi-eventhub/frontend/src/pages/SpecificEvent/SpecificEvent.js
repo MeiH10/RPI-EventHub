@@ -63,11 +63,13 @@ function SpecificEvent() {
     <div><Navbar />
     <div className="container">
       <div className="image-container">
-        <img src= {EventHubLogo} alt="Your Image" className="image" />
+        <img src= {RPIBridgePhoto} alt="Your Image" className="image" />
       </div>
       <div className="text-container">
-        <h1>Text related to the image</h1>
-        <p>This is where you can add your text related to the image.</p>
+        <h1>Description of the Events</h1>
+        <p>Location: XXX</p>
+        <p1>Time: XX/XX/XXXX</p1>
+        <p2> Type: XXXXXX</p2>
       </div>
     </div>
     <Footer />
