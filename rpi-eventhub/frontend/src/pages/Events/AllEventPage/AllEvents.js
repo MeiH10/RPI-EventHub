@@ -20,7 +20,7 @@ function AllEvents() {
                     <EventPoster
                         key={event._id}
                         title={event.title}
-                        posterSrc={event.image || 'https://via.placeholder.com/300x450'} // Placeholder if no image URL
+                        posterSrc={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'} // Placeholder if no image URL
                         description={event.description}
                         width={300}  // Fake width for now
                         height={450}  // Fake height for now
