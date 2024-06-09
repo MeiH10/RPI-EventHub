@@ -1,9 +1,9 @@
 import React from 'react'
-import AbousUsCSS from './AboutUs.modular.css'
+// import AbousUsCSS from './AboutUs.modular.css'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
-import EventHubLogo from "../../assets/EventHubLogo1.svg";
-import RPIseal from '../../assets/RF0010-04 Small Seal-RGB-White.svg';
+// import EventHubLogo from "../../assets/EventHubLogo1.svg";
+// import RPIseal from '../../assets/RF0010-04 Small Seal-RGB-White.svg';
 import RPIBridgePhoto from '../../assets/RPIBridgePhoto.jpg'
 import ProfilePicImage from '../../assets/ProfilePicImage.svg'
 
@@ -53,58 +53,58 @@ function AboutUs() {
                 <div className="row">
 
                   <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
+                    <img src={ProfilePicImage} height="150" alt='profile pic'></img>
                     <h6 className="devtext">Mei H - Project Lead</h6>
                     <p className="devtext">
-                      <a href="mailto:huangm10@rpi.edu" target="_blank">huangm10@rpi.edu</a>
+                      <a href="mailto:huangm10@rpi.edu" target="_blank" rel="noopener noreferrer" >huangm10@rpi.edu</a>
                     </p>
                   </div>
 
                   <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
+                    <img src={ProfilePicImage} height="150" alt='profile pic'></img>
                     <h6 className="devtext">William F</h6>
                     <p className="devtext">
-                      <a href="mailto:fernaw@rpi.edu" target="_blank">fernaw@rpi.edu</a>
+                      <a href="mailto:fernaw@rpi.edu" target="_blank" rel="noopener noreferrer" >fernaw@rpi.edu</a>
                     </p>
                   </div>
 
                   <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
+                    <img src={ProfilePicImage} height="150" alt='profile pic'></img>
                     <h6 className="devtext">Nithin V</h6>
                     <p className="devtext">
-                      <a href="mailto:vadakn@rpi.edu" target="_blank">vadakn@rpi.edu</a>
+                      <a href="mailto:vadakn@rpi.edu" target="_blank" rel="noopener noreferrer" >vadakn@rpi.edu</a>
                     </p>
                   </div>
 
                   <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
+                    <img src={ProfilePicImage} height="150" alt='profile pic'></img>
                     <h6 className="devtext">Jordyn Y</h6>
                     <p className="devtext">
-                      <a href="mailto:youngj22@rpi.edu" target="_blank">youngj22@rpi.edu</a>
+                      <a href="mailto:youngj22@rpi.edu" target="_blank" rel="noopener noreferrer" >youngj22@rpi.edu</a>
                     </p>
                   </div>
 
                   <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
+                    <img src={ProfilePicImage} height="150" alt='profile pic'></img>
                     <h6 className="devtext">Henry T</h6>
                     <p className="devtext">
-                      <a href="mailto:thealh@rpi.edu" target="_blank">thealh@rpi.edu</a>
+                      <a href="mailto:thealh@rpi.edu" target="_blank" rel="noopener noreferrer" >thealh@rpi.edu</a>
                     </p>
                   </div>
 
                   <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
+                    <img src={ProfilePicImage} height="150" alt='profile pic'></img>
                     <h6 className="devtext">Hari K</h6>
                     <p className="devtext">
-                      <a href="mailto:kimh21@rpi.edu" target="_blank">kimh21@rpi.edu</a>
+                      <a href="mailto:kimh21@rpi.edu" target="_blank" rel="noopener noreferrer" >kimh21@rpi.edu</a>
                     </p>
                   </div>
 
                   <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
+                    <img src={ProfilePicImage} height="150" alt='profile pic'></img>
                     <h6 className="devtext">Felix T</h6>
                     <p className="devtext">
-                      <a href="mailto:tianf2@rpi.edu" target="_blank">tianf2@rpi.edu</a>
+                      <a href="mailto:tianf2@rpi.edu" target="_blank" rel="noopener noreferrer" >tianf2@rpi.edu</a>
                     </p>
                   </div>
 

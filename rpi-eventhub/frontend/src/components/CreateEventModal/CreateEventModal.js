@@ -5,10 +5,6 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 
-const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID; 
-const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY; 
-
-
 
 
 function CreateEventModal() {
