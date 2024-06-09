@@ -10,6 +10,8 @@ require('dotenv').config({ path: '../.env' });
 const jwtSecret = process.env.JWT_SECRET;
 const crypto = require('crypto'); // Add this at the top of your index.js
 const cors = require('cors');
+const path = require('path');
+
 
 
 
@@ -228,6 +230,13 @@ app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
     res.status(500).json({ message: 'Failed to like event', error: error.message });
   }
 });
+
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
+
 
 
 
