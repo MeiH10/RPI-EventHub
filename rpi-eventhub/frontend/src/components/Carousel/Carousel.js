@@ -15,7 +15,7 @@ const ImageCarousel = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/events'); // Adjust the URL to your backend endpoint
+        const response = await axios.get('https://rpi-eventhub-production.up.railway.app/events'); // Adjust the URL to your backend endpoint
         const events = response.data.map(event => ({
           src: event.image || placeholderImage,
           caption: `${event.title} - ${event.location} - ${new Date(event.date).toLocaleDateString()}`,

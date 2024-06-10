@@ -49,7 +49,7 @@ function CreateEventModal() {
     };
 
     try {
-      const { data } = await axios.post('http://localhost:5000/events', eventData);
+      const { data } = await axios.post('https://rpi-eventhub-production.up.railway.app/events', eventData);
       addEvent(data); // Add the new event to the global context
       handleClose(); // Close the modal
     } catch (error) {
