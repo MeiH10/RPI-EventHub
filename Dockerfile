@@ -1,6 +1,6 @@
 # Stage 1: Build React frontend
 FROM node:20.14.0 AS build-frontend
-WORKDIR /rpi-eventhub/frontend
+WORKDIR /app/frontend
 COPY rpi-eventhub/frontend/package*.json ./
 RUN npm install
 COPY rpi-eventhub/frontend ./
@@ -8,13 +8,13 @@ RUN npm run build
 
 # Stage 2: Set up backend
 FROM node:20.14.0
-WORKDIR /rpi-eventhub/backend
+WORKDIR /app/backend
 COPY rpi-eventhub/backend/package*.json ./
 RUN npm install
 COPY rpi-eventhub/backend ./
 
 # Copy frontend build to backend's public directory
-COPY --from=build-frontend /rpi-eventhub/frontend/build /rpi-eventhub/backend/public
+COPY --from=build-frontend /app/frontend/build /app/backend/public
 
 # Expose the port the backend runs on
 EXPOSE 5000
