@@ -13,8 +13,8 @@ COPY rpi-eventhub/backend/package*.json ./
 RUN npm install
 COPY rpi-eventhub/backend ./
 
-# Copy frontend build to backend's public directory
-COPY --from=build-frontend /app/frontend/build /app/backend/public
+# Copy frontend build to backend's build directory
+COPY --from=build-frontend /app/frontend/build /app/frontend/build
 
 # Expose the port the backend runs on
 EXPOSE 5000
