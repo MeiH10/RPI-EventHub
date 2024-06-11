@@ -22,6 +22,10 @@ function SignupModal() {
       setError('Please fill in all fields.');
       return;
     }
+    if (!(email.endsWith('@rpi.edu'))){
+      setError('Please enter an RPI email') 
+      return;
+    }
     // Optionally, add more specific validations here
 
     const user = {
@@ -67,11 +71,7 @@ function SignupModal() {
                 placeholder="Enter username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                isInvalid={!username}
               />
-              <Form.Control.Feedback type="invalid">
-                Username is required.
-              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="signupEmail">
               <Form.Label>Email address</Form.Label>
@@ -80,11 +80,8 @@ function SignupModal() {
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                isInvalid={!email}
               />
-              <Form.Control.Feedback type="invalid">
-                Email is required.
-              </Form.Control.Feedback>
+              
             </Form.Group>
             <Form.Group controlId="signupPassword">
               <Form.Label>Password</Form.Label>
@@ -93,11 +90,7 @@ function SignupModal() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                isInvalid={!password}
               />
-              <Form.Control.Feedback type="invalid">
-                Password is required.
-              </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
