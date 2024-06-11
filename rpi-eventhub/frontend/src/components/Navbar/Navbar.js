@@ -26,9 +26,20 @@ const Navbar = () => {
               <EventHubLogo2 />
             </span>
           </NavLink>
-
+            
           <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li className="nav-item">
+          <li className="nav-item">
+              <NavLink
+                exact
+                to="/all-events"
+                activeClassName="active"
+                className="nav-links"
+                onClick={handleClick}
+              >
+                Events
+              </NavLink>
+            </li>
+           {/*} <li className="nav-item">
               <NavLink
                 exact
                 to="/"
@@ -38,7 +49,7 @@ const Navbar = () => {
               >
                 Home
               </NavLink>
-            </li>
+            </li>*/}
             <li className="nav-item">
               <NavLink
                 exact
@@ -50,17 +61,7 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink
-                exact
-                to="/all-events"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
-              >
-                Events
-              </NavLink>
-            </li>
+            
             <li className="nav-item">
               <CreateEventModal /> 
             </li>
