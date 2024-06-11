@@ -23,7 +23,7 @@ function SignupModal() {
       return;
     }
     if (!(email.endsWith('@rpi.edu'))){
-      setError('Please enter an RPI email') ;
+      setError('Please enter an RPI email'); 
       return;
     }
     // Optionally, add more specific validations here
@@ -42,7 +42,9 @@ function SignupModal() {
       handleClose();
     } catch (error) {
       console.error('Signup failed:', error.response ? error.response.data : error.message);
-      setError(error.response ? error.response.data : error.message);
+      // Ensure error is always a string
+      const errorMessage = error.response ? error.response.data.message || error.response.data : error.message;
+      setError(errorMessage);
     }
   };
 
