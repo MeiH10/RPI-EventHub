@@ -6,6 +6,9 @@ import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 
 const imgBB_API_KEY = process.env.REACT_APP_ImgBB_API_KEY; 
+const testString = process.env.REACT_APP_Test_String;
+
+console.log('testString: ', testString);
 
 
 function CreateEventModal() {
@@ -28,7 +31,7 @@ function CreateEventModal() {
     formData.append('image', imageFile);
 
     try {
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=93aaa711f2164fcac192adbea2714c2b`, formData);
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgBB_API_KEY}`, formData);
       return response.data.data.url; // Return URL of uploaded image
     } catch (error) {
       console.error('Failed to upload image:', error);
