@@ -28,7 +28,7 @@ function CreateEventModal() {
     formData.append('image', imageFile);
 
     try {
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgBB_API_KEY}`, formData);
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=93aaa711f2164fcac192adbea2714c2b`, formData);
       return response.data.data.url; // Return URL of uploaded image
     } catch (error) {
       console.error('Failed to upload image:', error);
