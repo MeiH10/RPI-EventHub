@@ -1,5 +1,5 @@
 import React from 'react'
-import AbousUsCSS from './AboutUs.modular.css'
+import AboutUsCSS from './AboutUs.modular.css'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import EventHubLogo from "../../assets/EventHubLogo1.svg";
@@ -10,7 +10,7 @@ import ProfilePicImage from '../../assets/ProfilePicImage.svg'
 function AboutUs() {
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     return (
-        <div>
+        <div className='footer-container'>
           <Navbar />
     
           <div className="container-fluid content">
@@ -22,8 +22,6 @@ function AboutUs() {
                   <h1>About Us</h1>
                   <h6>RPI EventHub</h6>
                 </div>
-                
-    
                 <div className="grid">
     
                     <div className="about-us-text second">
