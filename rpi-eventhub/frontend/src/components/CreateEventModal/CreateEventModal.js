@@ -7,8 +7,13 @@ import { useEvents } from '../../context/EventsContext';
 
 const imgBB_API_KEY = process.env.REACT_APP_ImgBB_API_KEY; 
 const testString = process.env.REACT_APP_Test_String;
+const Banana = process.env.Banana;
+
+
 
 console.log('testString: ', testString);
+console.log('banana: ', Banana);
+
 
 
 function CreateEventModal() {
