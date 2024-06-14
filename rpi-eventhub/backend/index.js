@@ -15,6 +15,10 @@ const path = require('path');
 
 
 
+const Banana = process.env.Banana;
+
+console.log('banana: ', Banana);
+
 
 const app = express();
 

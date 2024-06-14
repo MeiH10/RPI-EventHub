@@ -1,5 +1,7 @@
 # Stage 1: Build React frontend
 FROM node:20.14.0 AS build-frontend
+ARG REACT_APP_ImgBB_API_KEY
+ENV REACT_APP_ImgBB_API_KEY=${REACT_APP_ImgBB_API_KEY}
 WORKDIR /app/frontend
 COPY rpi-eventhub/frontend/package*.json ./
 RUN npm install
