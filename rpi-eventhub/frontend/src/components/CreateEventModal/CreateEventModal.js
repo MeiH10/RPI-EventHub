@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 
+const imgBB_API_KEY = process.env.REACT_APP_ImgBB_API_KEY; 
 
 
 function CreateEventModal() {
@@ -27,7 +28,7 @@ function CreateEventModal() {
     formData.append('image', imageFile);
 
     try {
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData);
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgBB_API_KEY}`, formData);
       return response.data.data.url; // Return URL of uploaded image
     } catch (error) {
       console.error('Failed to upload image:', error);
