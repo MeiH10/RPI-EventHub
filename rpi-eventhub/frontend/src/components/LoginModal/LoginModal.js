@@ -20,7 +20,7 @@ function LoginModal() {
 
     try {
       const response = await axios.post('http://localhost:5000/login', credentials);
-      console.log('Login successful:', response.data);
+      console.log('Login successful');
       login();  // Call login to update the global state
       handleClose(); // Close the modal on successful login
     } catch (error) {
