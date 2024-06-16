@@ -249,6 +249,24 @@ app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
   }
 });
 
+app.delete('/events/:id', async (req, res) => {
+  const { id } = req.params;
+  console.log("Trying to delete event:", id);
+
+  try {
+    const event = await Event.findByIdAndDelete(id);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json({ message: 'Event deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting event', error: error.message });
+  }
+});
+
+
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.get('*', (req, res) => {
