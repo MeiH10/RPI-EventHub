@@ -2,18 +2,21 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const multer = require('multer'); // Add this line to require multer
 const User = require('./models/User'); // Adjust the path as necessary based on your project structure
 const Event = require('./models/Event'); 
 const { sendEmail } = require('./services/emailService');
+const axios = require('axios');
+const FormData = require('form-data');
+const path = require('path');
+const cors = require('cors');
+
 
 require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
-const crypto = require('crypto'); // Add this at the top of your index.js
-const cors = require('cors');
-const path = require('path');
 
 
-
+const upload = multer(); 
 
 
 const app = express();
@@ -169,25 +172,40 @@ app.post('/login', async (req, res) => {
 });
 
 
-
-app.post('/events', async (req, res) => {
-  const { title, description, poster, date, location, image, tags } = req.body;
+app.post('/events', upload.single('file'), async (req, res) => {
+  const { title, description, poster, date, location, tags } = req.body;
+  const file = req.file;
 
   try {
-      const event = new Event({
-          title,
-          description,
-          poster,
-          date,
-          location,
-          image,
-          tags
+    let imageUrl = '';
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file.buffer.toString('base64'));
+
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      await event.save();
-      res.status(201).json(event);
+      imageUrl = response.data.data.url;
+    }
+
+    const event = new Event({
+      title,
+      description,
+      poster: poster || 'admin', // Use 'admin' as the default value
+      date,
+      location,
+      image: imageUrl,
+      tags: tags ? tags.split(',').map(tag => tag.trim()) : []
+    });
+
+    await event.save();
+    res.status(201).json(event);
   } catch (error) {
-      res.status(400).json({ message: "Error creating event", error: error.message });
+    res.status(400).json({ message: "Error creating event", error: error.message });
   }
 });
 
