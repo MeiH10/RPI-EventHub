@@ -7,9 +7,12 @@ import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
 import { useAuth } from "../../context/AuthContext";
 
+import { useLocation } from 'react-router-dom';
+
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const { isLoggedIn, logout } = useAuth(); // Destructure isLoggedIn and logout from useAuth
+  const location = useLocation();
 
   const handleClick = () => setClick(!click);
   const handleLogout = () => {
@@ -17,11 +20,15 @@ const Navbar = () => {
     handleClick(); // Optionally close any open menus
   };
 
+  const getNavLinkClass = (path) => {
+    return location.pathname === path ? 'nav-links active' : 'nav-links';
+  };
+
   return (
     <>
       <nav className="navbar">
         <div className="nav-container">
-          <NavLink exact to="/" className="nav-logo">
+          <NavLink to="/" className="nav-logo">
             <span className="icon">
               <EventHubLogo2 />
             </span>
@@ -30,10 +37,8 @@ const Navbar = () => {
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
               <NavLink
-                exact
                 to="/"
-                activeClassName="active"
-                className="nav-links"
+                className={getNavLinkClass('/')}
                 onClick={handleClick}
               >
                 Home
@@ -41,10 +46,8 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <NavLink
-                exact
                 to="/about-us"
-                activeClassName="active"
-                className="nav-links"
+                className={getNavLinkClass('/about-us')}
                 onClick={handleClick}
               >
                 About
@@ -52,34 +55,26 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <NavLink
-                exact
                 to="/all-events"
-                activeClassName="active"
-                className="nav-links"
+                className={getNavLinkClass('/all-events')}
                 onClick={handleClick}
               >
                 Events
               </NavLink>
             </li>
             <li className="nav-item">
-              <CreateEventModal /> 
+              <CreateEventModal />
             </li>
               {isLoggedIn ? (
-
-<button onClick={handleLogout} className="nav-item btn-danger btn">Sign Out</button>
-
-
+                <button onClick={handleLogout} className="nav-item btn-danger btn">Sign Out</button>
               ) : (
                 <>
-                <li className="nav-item">
-                <LoginModal />
-
-                </li>
-                <li className="nav-item">
-                <SignupModal />
-
-                </li>
-
+                  <li className="nav-item">
+                    <LoginModal />
+                  </li>
+                  <li className="nav-item">
+                    <SignupModal />
+                  </li>
                 </>
               )}
           </ul>
