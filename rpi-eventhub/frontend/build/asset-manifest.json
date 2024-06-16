@@ -1,16 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.df0bd1d4.css",
-    "main.js": "/static/js/main.641f687a.js",
     "static/js/453.4699f3ac.chunk.js": "/static/js/453.4699f3ac.chunk.js",
     "static/media/RPIBridgePhoto.jpg": "/static/media/RPIBridgePhoto.d83155ac455be665d12f.jpg",
     "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
     "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
-    "static/media/RF0010-04 Small Seal-RGB-White.svg": "/static/media/RF0010-04 Small Seal-RGB-White.d0dd98e1597853a675b7a12dbcdc61e0.svg",
+    "static/media/RF0010-04 Small Seal-RGB-White.svg": "/static/media/RF0010-04 Small Seal-RGB-White.4978ee300c7be129e5b91ee620c51cc4.svg",
     "static/media/nyc.jpg": "/static/media/nyc.2eb198b1872aece9f865.jpg",
     "static/media/GoodTimesRg-Regular.ttf": "/static/media/GoodTimesRg-Regular.d9327db670f1282384cb.ttf",
     "static/media/Italiana-Regular.ttf": "/static/media/Italiana-Regular.2d0e370dde5190d0d6a0.ttf",
-    "static/media/EventHubLogo1.svg": "/static/media/EventHubLogo1.666d38e9c2e99f83b4027c63d9b35473.svg",
+    "static/media/EventHubLogo1.svg": "/static/media/EventHubLogo1.0b36a896d073a7701dfc0e9fa6d629c4.svg",
     "static/media/logo.svg": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/index.html",
     "static/media/ProfilePicImage.svg": "/static/media/ProfilePicImage.3fbe09aa49bf101ab7bc5f4a77fa5218.svg",
@@ -21,5 +19,12 @@
   "entrypoints": [
     "static/css/main.df0bd1d4.css",
     "static/js/main.641f687a.js"
+    "main.a2643bc4.css.map": "/static/css/main.a2643bc4.css.map",
+    "main.eeebe8a6.js.map": "/static/js/main.eeebe8a6.js.map",
+    "453.4699f3ac.chunk.js.map": "/static/js/453.4699f3ac.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a2643bc4.css",
+    "static/js/main.eeebe8a6.js"
   ]
 }

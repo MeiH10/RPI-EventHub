@@ -23,16 +23,31 @@
   object-fit: cover; /* This can help keep aspect ratio without stretching images. */
 }
 
+
+
+
 .caption-above {
-  margin-bottom: 20px;
+  width: 100%; /* Same width as the image container */
+  max-width: 500px;
   color: white; /* Change the color to white for better readability */
   font-size: 1.5em; /* Increase the font size for better visibility */
   text-align: center;
   background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
   padding: 10px 20px; /* Add padding for better spacing */
+  margin-bottom: 10px; /* Add some space between the caption and the image */
 }
 
-
+.caption-below {
+  width: 100%; /* Same width as the image container */
+  max-width: 500px;
+  color: white; /* Change the color to white for better readability */
+  font-size: 1em; /* Font size for location and date */
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
+  padding: 10px 20px; /* Add padding for better spacing */
+  margin-top: 10px; /* Add some space between the image and the caption */
+  font-family: 'Arial', sans-serif;
+}
 
 .next-button, .prev-button {
   position: absolute;

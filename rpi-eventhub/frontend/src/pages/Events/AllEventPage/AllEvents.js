@@ -12,11 +12,12 @@ function AllEvents() {
         fetchEvents(); // Call fetchEvents from context on component mount
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
 
+  
     return (
         <div className="all-events">
             <Navbar />
             <div className="events-display-container">
-                {events.map(event => (
+                {events.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
                     <EventPoster
                         key={event._id}
                         title={event.title}
