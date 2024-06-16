@@ -21,8 +21,12 @@ const upload = multer();
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://rpi-eventhub-production.up.railway.app/'], // Add your deployed frontend domain here
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 
 const authenticate = async (req, res, next) => {
   try {

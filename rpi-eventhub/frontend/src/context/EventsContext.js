@@ -12,7 +12,7 @@ export const EventsProvider = ({ children }) => {
 
     const fetchEvents = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:5000/events');
+            const response = await axios.get('https://rpi-eventhub-production.up.railway.app/events');
             setEvents(response.data);
         } catch (error) {
             console.error('Error fetching events:', error);

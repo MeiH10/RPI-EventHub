@@ -30,7 +30,7 @@ function CreateEventModal() {
     formData.append('tags', tags);
 
     try {
-      const { data } = await axios.post('http://localhost:5000/events', formData, {
+      const { data } = await axios.post('https://rpi-eventhub-production.up.railway.app/events', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

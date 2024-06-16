@@ -1,25 +1,26 @@
-# Stage 1: Build React frontend
-FROM node:20.14.0 AS build-frontend
-ARG REACT_APP_ImgBB_API_KEY
-ENV REACT_APP_ImgBB_API_KEY=${REACT_APP_ImgBB_API_KEY}
-WORKDIR /app/frontend
-COPY rpi-eventhub/frontend/package*.json ./
+# Use Node.js as the base image
+FROM node:20
+
+WORKDIR /app
+
+COPY rpi-eventhub/backend /app/backend
+COPY rpi-eventhub/frontend /app/frontend
+
+WORKDIR /app/backend
+
 RUN npm install
-COPY rpi-eventhub/frontend ./
+
+# Build frontend
+WORKDIR /app/frontend
+RUN npm install
 RUN npm run build
 
-# Stage 2: Set up backend
-FROM node:20.14.0
+# Move the build to the backend public directory
+RUN mkdir -p /app/backend/public
+RUN cp -r build/* /app/backend/public/
+
 WORKDIR /app/backend
-COPY rpi-eventhub/backend/package*.json ./
-RUN npm install
-COPY rpi-eventhub/backend ./
 
-# Copy frontend build to backend's build directory
-COPY --from=build-frontend /app/frontend/build /app/frontend/build
-
-# Expose the port the backend runs on
 EXPOSE 5000
 
-# Command to run the backend
 CMD ["npm", "start"]
