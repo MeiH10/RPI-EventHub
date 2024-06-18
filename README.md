@@ -11,9 +11,7 @@ Test - Git Perms.
 How to startup application in local host:
 
     1. Adding .env files:
-        a. In backend/services folder, create a file named .env and type in API keys
-        b. In the frontend folder,  create a file named .env, and type in API keys
-        c. Lastly, do the same in the rpi-eventhub folder, and type in API keys
+        a. In the /backend folder, create a file named .env and type in API keys
 
     2. Open a terminal, run the following command in 'backend' folder: 
         a. node index
