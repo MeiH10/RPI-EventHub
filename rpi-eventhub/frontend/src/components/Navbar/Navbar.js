@@ -40,17 +40,17 @@ const Navbar = () => {
                 Events
               </NavLink>
             </li>
-           {/*} <li className="nav-item">
+           { <li className="nav-item">
               <NavLink
                 exact
-                to="/"
+                to="/calendar"
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}
               >
-                Home
+                Calendar
               </NavLink>
-            </li>*/}
+            </li>}
             <li className="nav-item">
               <NavLink
                 exact

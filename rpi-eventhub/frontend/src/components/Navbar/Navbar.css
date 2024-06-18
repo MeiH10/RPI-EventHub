@@ -3,6 +3,8 @@
   src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
 
+
+
 .navbar {
   height: 70px;
   display: flex;
@@ -29,24 +31,31 @@
 .nav-logo {
   color: #ff0000;
   align-items: left;
-  margin-left: 2px;
-  margin-bottom: 4rem;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-bottom: 200px;
+  margin-right: 10px;
   cursor: pointer;
   text-decoration: none;
   font-size: 2rem;
   flex-grow: .1;
   display: flex;
-  justify-items: left;
-  padding: 0 0 10px 0;
+  justify-content: left;
+  padding: 0 0 0 0;
+  
+ 
+  
   
 }
 
 .nav-logo .icon {
   display: inline-block;
-  vertical-align: left;
+  vertical-align: top;
+  justify-self: left;
   width: 3rem;
   height: 6rem;
-  margin-left: 5px;
+  
+
   
 }
 
@@ -80,6 +89,7 @@
   line-height: 40px;
   margin-right: 1rem;
   justify-self: space-between;
+
 }
 
 .nav-item:after {
@@ -89,17 +99,22 @@
   width: 0;
   background: transparent;
   transition: width 0.7s ease, background-color 0.5s ease;
+  color: #000000;
+
 
 }
 
 .nav-item:hover:after {
   width: 100%;
   background: #ff0000;
+  color: #000000;
+
 
 }
 
 .nav-item .active {
-  color: #ff0000;
+  color: #000000;
+
   border: 1px solid #ff0000;
 ;
 }
@@ -117,6 +132,7 @@
   vertical-align: left;
   width: 5rem;
   height: 5rem;
+  border: 20px solid #000000;
 }
 
 
@@ -143,7 +159,8 @@
     justify-content: space-between;
   }
   .nav-item .active {
-    color: #ffdd40;
+    color: #000000;
+
     border: none;
 
   }
@@ -156,6 +173,7 @@
   .nav-logo .icon {
     width: 2rem;
     height: 2rem;
+    border: 20px solid #000000;
   }
 
   .nav-icon {
@@ -168,6 +186,7 @@
     height: 2rem;
     cursor: pointer;
     color: #ffdd40;
+    border: 20px solid #000000;
     
   }
 }
