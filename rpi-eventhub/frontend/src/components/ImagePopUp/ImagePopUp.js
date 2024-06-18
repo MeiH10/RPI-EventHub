@@ -1,11 +1,11 @@
 import React from 'react';
-import './ImagePopUp.css';
+import ImagePopUpCSS from './ImagePopUp.module.css'
 
 const ImagePopup = ({ src, alt, txt }) => {
  return (
-    <div className="imagePopUp">
-      <img src={src} alt={alt} className="PopUp_image" />
-      <div className="text"> txt </div>
+    <div className={ImagePopUpCSS.imagePopUp}>
+      <img src={src} alt={alt} className={ImagePopUpCSS.PopUp_image} />
+      <div className={ImagePopUpCSS.text}> txt </div>
     </div>
  );
 };

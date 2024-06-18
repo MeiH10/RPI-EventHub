@@ -1,5 +1,5 @@
 
-.rsvp-button {
+.rsvp_button {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -11,7 +11,7 @@
     font-size: 16px;
   }
   
-  .rsvp-button:hover {
+  .rsvp_button:hover {
     background-color: #0056b3;
   }
   

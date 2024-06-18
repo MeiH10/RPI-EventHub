@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import './RsvpButton.css';
+import RsvpButtonCSS from './RsvpButton.module.css'
 
 const RsvpButton = () => {
     return ( 
         //replace /rsvp with link to google form given by club officer
-        <Link to="/rsvp" className='rsvp-button'>
+        <Link to="/rsvp" className={RsvpButtonCSS.rsvp_button}>
             RSVP
         </Link>
 
