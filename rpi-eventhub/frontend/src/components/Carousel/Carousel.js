@@ -58,6 +58,10 @@ const ImageCarousel = () => {
     intervalRef.current = setInterval(goToNext, 3000);
   };
 
+  const pauseAutoplay = () => {
+    clearInterval(intervalRef.current);
+  };
+
   useEffect(() => {
     resetTimer();
     return () => clearInterval(intervalRef.current);
@@ -66,7 +70,10 @@ const ImageCarousel = () => {
 
 
   return (
-    <div className="carousel">
+    <div className="carousel"
+         onMouseEnter={pauseAutoplay} //pause carousel when on hover
+         onMouseLeave={resetTimer}>
+          
       <div className="main-image">
         {events.length > 0 && (
           <>
