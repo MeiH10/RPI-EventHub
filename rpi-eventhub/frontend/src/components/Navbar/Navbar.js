@@ -96,7 +96,15 @@ const Navbar = () => {
                 <HamburgerMenuClose />
               </span>
             )}
+          </div> 
+            
+          <div className ="hamburger">
+                <span className="bar"></span>
+                <span className="bar"></span>
+                <span className="bar"></span>
+                
           </div>
+            
         </div>
       </nav>
     </>

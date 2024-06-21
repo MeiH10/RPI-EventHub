@@ -135,9 +135,12 @@
   border: 20px solid #000000;
 }
 
+.hamburger {
+  display: none;
+}
 
 
-@media screen and (max-width: 960px) {
+@media only screen and (max-width: 600px) {
   .nav-menu {
     display: flex;
     flex-direction: column;
@@ -150,6 +153,10 @@
     transition: all 0.5s ease;
   }
 
+  .nav-item{
+    display: none;
+  }
+  
   .nav-menu.active {
     background: #1f5156;
     left: 0px;
@@ -189,4 +196,12 @@
     border: 20px solid #000000;
     
   }
+
+  .hamburger {
+    display: block;
+    cursor: pointer;
+    color:#000000;
+    
+  }
+
 }
