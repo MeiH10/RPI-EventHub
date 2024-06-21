@@ -12,6 +12,7 @@ function AllEvents() {
         fetchEvents(); // Call fetchEvents from context on component mount
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
 
+    //console.log(events[2].date);
   
     return (
         <div className="all-events">
