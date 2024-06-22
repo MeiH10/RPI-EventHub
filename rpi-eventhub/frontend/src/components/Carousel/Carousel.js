@@ -66,27 +66,26 @@ const ImageCarousel = () => {
 
   return (
     <div className="carousel"
-         onMouseEnter={pauseAutoplay} //pause carousel when on hover
+         onMouseEnter={pauseAutoplay} // pause carousel when on hover
          onMouseLeave={resetTimer}>
-          
-      <div className="main-image">
-    <div className={styles.carousel}>
-      <div className={styles.mainImage}>
-        {events.length > 0 && (
-          <>
-            <div className={styles.captionAbove}>{`${events[activeIndex].caption.toUpperCase()}`}</div>
-            <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
-            <div className={styles.captionBelow}>
-              {`${events[activeIndex].location.toUpperCase()}  - ${events[activeIndex].date}`}
-            </div>
-            <button onClick={() => { goToPrev(); resetTimer(); }} className={styles.prevButton}>
-              <i className="bi bi-chevron-left"></i>
-            </button>
-            <button onClick={() => { goToNext(); resetTimer(); }} className={styles.nextButton}>
-              <i className="bi bi-chevron-right"></i>
-            </button>
-          </>
-        )}
+      <div className={styles.carousel}>
+        <div className={styles.mainImage}>
+          {events.length > 0 && (
+            <>
+              <div className={styles.captionAbove}>{`${events[activeIndex].caption.toUpperCase()}`}</div>
+              <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
+              <div className={styles.captionBelow}>
+                {`${events[activeIndex].location.toUpperCase()}  - ${events[activeIndex].date}`}
+              </div>
+              <button onClick={() => { goToPrev(); resetTimer(); }} className={styles.prevButton}>
+                <i className="bi bi-chevron-left"></i>
+              </button>
+              <button onClick={() => { goToNext(); resetTimer(); }} className={styles.nextButton}>
+                <i className="bi bi-chevron-right"></i>
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
