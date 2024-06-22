@@ -1,4 +1,4 @@
-.event-card {
+.eventCard {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,7 +6,7 @@
     padding-bottom: 20px;
 }
 
-.event-content {
+.eventContent {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +14,7 @@
     width: 100%;
 }
 
-.event-title {
+.eventTitle {
     font-family: 'Inter', sans-serif;
     font-weight: 500; /* Medium */
     font-style: italic; /* Italic for Medium Italic */
@@ -23,7 +23,7 @@
     padding: 40px 0 10px;
 }
 
-.event-description {
+.eventDescription {
     padding: 25px 0 75px 0;
     font-family: 'Inter', sans-serif;
     font-weight: 400; /* Regular */
@@ -31,14 +31,14 @@
     text-align: center;
 }
 
-.event-poster {
+.eventPoster {
     max-width: 100%;
     height: auto;
     margin: 0 auto;
     display: block;
 }
 
-.event-navigation {
+.eventNavigation {
     font-size: 45px;
     cursor: pointer;
     user-select: none; /* Prevent text selection */
