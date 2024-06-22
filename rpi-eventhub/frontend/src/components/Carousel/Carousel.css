@@ -18,9 +18,11 @@
 }
 
 .main-image img {
-  max-width: 100%;
-  max-height: 70vh; /* Adjust based on your needs */
-  object-fit: cover; /* This can help keep aspect ratio without stretching images. */
+  width: 90%; /* Ensures all images take up the full width of the container */
+  height: auto; /* Maintains the aspect ratio */
+  max-width: 450px;
+  max-height: 75vh; /* Adjust based on your needs */
+  object-fit: cover; /* This can help keep aspect ratio without stretching images */
 }
 
 
@@ -80,9 +82,9 @@
 }
 
 .next-button {
-  right: -87px;
+  right: -80px;
 }
 
 .prev-button {
-  left: -87px;
+  left: -80px;
 }
