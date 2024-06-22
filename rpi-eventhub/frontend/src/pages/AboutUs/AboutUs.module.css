@@ -1,17 +1,18 @@
+/* AboutUs.module.css */
 @font-face {
     font-family: "Italiana";
     src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
 
-
-.AboutUs {
+.aboutUs {
     text-align: center;
 }
 
-body {
+
+
+.footerContainer {
     display: flex;
     flex-direction: column;
-    min-height: 130vh;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: linear-gradient(
@@ -20,7 +21,7 @@ body {
         rgb(255 0 0 / 0%) 70.71%
       ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
       linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
-  }
+}
 
 /* set up grid for text elements*/
 .grid { 
@@ -36,23 +37,23 @@ body {
 
 /* first, second, third, and anim are all for animations */
 .first {
-    animation: fade-in 0.5s;
+    animation: fadeIn 0.5s;
 }
 
 .second {
-    animation: fade-in 1s;
+    animation: fadeIn 1s;
 }
 
 .third {
-    animation: fade-in 2s;
+    animation: fadeIn 2s;
 }
 
 .anim {
-    animation: fade-in-and-scale 0.5s;
+    animation: fadeInAndScale 0.5s;
 }
 
 /* fade in animation from 0 to 100 opacity */
-@keyframes fade-in {
+@keyframes fadeIn {
     from {
         opacity: 0;
     }
@@ -62,7 +63,7 @@ body {
 }
 
 /* fade in and scale up animation */
-@keyframes fade-in-and-scale {
+@keyframes fadeInAndScale {
     from {
         opacity: 0;
         scale: 95%;
@@ -85,7 +86,7 @@ body {
 }
 
 /* mission statement text, left aligned */
-.about-us-text {
+.aboutUsText {
     flex: 1;
     text-align: left;
     position: relative;
@@ -101,7 +102,7 @@ body {
 
 /* page break css */
 hr {
-    position:relative;
+    position: relative;
     margin: 20px 0;
     width: 100%;
     border: 0;
@@ -142,7 +143,7 @@ a:active {
 }
   
 /* text in the developer section, moves text down 10px */
-.devtext {
+.devText {
     flex: 1;
     position: relative;
     top: 10px;

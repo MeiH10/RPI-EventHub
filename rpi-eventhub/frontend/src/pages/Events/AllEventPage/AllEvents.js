@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import './AllEvents.css';
+import styles from './AllEvents.module.css'
+
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import EventPoster from "../../../components/EventPosterOnly/EventPoster";
@@ -13,9 +14,9 @@ function AllEvents() {
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
 
     return (
-        <div className="all-events">
+        <div className="allEvents">
             <Navbar />
-            <div className="events-display-container">
+            <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
                 {events.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
                     <EventPoster
                         key={event._id}

@@ -1,15 +1,17 @@
-.all-events {
+.allEvents {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     min-height: 100vh;
 }
 
-.events-display-container {
-    width: 90%;
+.eventsDisplayContainer {
+    width: 100%;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    margin-bottom: 100px;
+    padding-top: 100px;
 }

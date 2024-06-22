@@ -1,6 +1,6 @@
 import React from 'react';
-import './PopularEvents.css';
 import EventCard from '../EventCard/EventCard';
+import style from './PopularEvents.module.css'
 
 // Sample data for popular events
 const events = [
@@ -15,10 +15,10 @@ const events = [
 
 function PopularEvents() {
     return (
-        <div className="popular-events">
-            <h2 className="header2">Popular Events</h2>
-            <div className="events-container">
-                <div className="event-navigation previous">&#8592;</div>
+        <div className={style.popularEvents}>
+            <h2 className={style.headers}>Popular Events</h2>
+            <div className={style.eventsContainer}>
+                <div className={`${style.eventNavigation} ${style.previous}`}>&#8592;</div>
                 {events.map(event => (
                     <EventCard
                         key={event.id}
@@ -27,7 +27,7 @@ function PopularEvents() {
                         description={event.description}
                     />
                 ))}
-                <div className="event-navigation next">&#8594;</div>
+                <div className={`${style.eventNavigation} ${style.next}`}>&#8594;</div>
             </div>
         </div>
     );

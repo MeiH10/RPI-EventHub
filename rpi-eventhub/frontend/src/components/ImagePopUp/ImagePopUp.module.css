@@ -3,7 +3,7 @@
     display: inline-block;
    }
    
-   .PopUp_image {
+   .PopUpImage {
     width: 400px;
     height: 500px;
     transition: transform 0.3s ease;
@@ -26,7 +26,7 @@
     font-family: "Times New Roman", Times, serif;
    }
    
-   .imagePopUp:hover .PopUp_image {
+   .imagePopUp:hover .PopUpImage {
     transform: scale(1.18);
    }
    

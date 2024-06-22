@@ -1,24 +1,21 @@
-import LoginButtonCSS from './LoginButton.module.css'
+import styles from './LoginButton.module.css';
 
 const LoginButton = () => {
     return ( 
         <div>
             <button>Login</button>
-            <div className={LoginButtonCSS.modal} id="modal">
-                <div className={LoginButtonCSS['modal-header']}>
+            <div className={styles.modal} id="modal">
+                <div className={styles.modalHeader}>
                     Header
                 </div>
 
-                <div className={LoginButtonCSS['modal-body']}>
+                <div className={styles.modalBody}>
                     dksamdlksamdlksamdlksamd
-        
                 </div>
-
             </div>
         </div>
     );
 };
 
-
-//allows other files to import and use the RSVP button
+// Allows other files to import and use the RSVP button
 export default LoginButton;
