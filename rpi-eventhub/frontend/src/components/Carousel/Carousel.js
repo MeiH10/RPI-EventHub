@@ -55,19 +55,23 @@ const ImageCarousel = () => {
     intervalRef.current = setInterval(goToNext, 3000);
   };
 
+  const pauseAutoplay = () => {
+    clearInterval(intervalRef.current);
+  };
+
   useEffect(() => {
     resetTimer();
     return () => clearInterval(intervalRef.current);
   }, [events]);
 
   return (
-<<<<<<< Updated upstream
-    <div className="carousel">
+    <div className="carousel"
+         onMouseEnter={pauseAutoplay} //pause carousel when on hover
+         onMouseLeave={resetTimer}>
+          
       <div className="main-image">
-=======
     <div className={styles.carousel}>
       <div className={styles.mainImage}>
->>>>>>> Stashed changes
         {events.length > 0 && (
           <>
             <div className={styles.captionAbove}>{`${events[activeIndex].caption.toUpperCase()}`}</div>
