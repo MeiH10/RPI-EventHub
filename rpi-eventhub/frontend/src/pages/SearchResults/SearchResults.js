@@ -5,13 +5,14 @@ import { useLocation } from 'react-router-dom';
 import EventPoster from '../../components/EventPosterOnly/EventPoster'; // Adjust the import path if necessary
 import styles from './SearchResults.module.css';
 import Navbar from "../../components/Navbar/Navbar";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SearchResults = () => {
     const location = useLocation();
     const { results } = location.state || { results: [] };
 
     return (
-        <div className={`${styles.container} container-fluid containerFluid`}>
+        <div >
             <Navbar />
         <div className={styles.container }>
             

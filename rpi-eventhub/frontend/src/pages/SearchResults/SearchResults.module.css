@@ -2,6 +2,7 @@
 
 .container {
     padding: 20px;
+    padding-top: 70px; 
     background: linear-gradient(
     217deg,
     rgba(255, 101, 101, 0.8),
