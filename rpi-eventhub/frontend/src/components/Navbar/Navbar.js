@@ -17,6 +17,14 @@ const Navbar = () => {
     handleClick(); // Optionally close any open menus
   };
 
+  const hamburger = document.querySelector(".hamburger");
+  const navMenu = document.querySelector(".nav-menu");
+  
+
+ 
+
+ 
+
   return (
     <>
       <nav className="navbar">
@@ -97,13 +105,15 @@ const Navbar = () => {
               </span>
             )}
           </div> 
+          
             
           <div className ="hamburger">
                 <span className="bar"></span>
                 <span className="bar"></span>
                 <span className="bar"></span>
-                
+                onClick={handleClick}
           </div>
+
             
         </div>
       </nav>
