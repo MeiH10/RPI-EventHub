@@ -30,9 +30,8 @@ function AllEvents() {
                     />
                 ))}
             </div>
-            <Footer />
         </div>
     );
-}
+};
 
 export default AllEvents;
