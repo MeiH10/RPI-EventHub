@@ -84,7 +84,9 @@ async function testBcrypt() {
 // testBcrypt().catch(console.error);
 
 // Middleware
-app.use(express.json()); // for parsing application/json
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI ).then(() => console.log('MongoDB Connected'))
@@ -194,6 +196,7 @@ app.post('/events', upload.single('file'), async (req, res) => {
       });
 
       imageUrl = response.data.data.url;
+      console.log(imageUrl);
     }
 
     const event = new Event({
