@@ -28,6 +28,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Middleware
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+
 const authenticate = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
@@ -83,10 +88,6 @@ async function testBcrypt() {
 
 // testBcrypt().catch(console.error);
 
-// Middleware
-
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI ).then(() => console.log('MongoDB Connected'))
