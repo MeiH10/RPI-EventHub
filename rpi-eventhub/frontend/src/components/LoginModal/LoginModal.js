@@ -19,7 +19,7 @@ function LoginModal() {
     };
 
     try {
-      const response = await axios.post('https://rpi-eventhub-production.up.railway.app/login', credentials);
+      const response = await axios.post('http://rpieventhub.cs.rpi.edu/login', credentials);
       console.log('Login successful');
       login();  // Call login to update the global state
       handleClose(); // Close the modal on successful login
