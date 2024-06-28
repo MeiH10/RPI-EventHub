@@ -22,65 +22,6 @@ function SuccessAlert({ open, handleClose }) {
   );
 }
 
-function FailureToEnterTitle({ open, handleClose }) {
-  return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert onClose={handleClose} icon={<CheckIcon fontSize="inherit" />} severity="error">
-        Need to enter title!
-      </Alert>
-    </Snackbar>
-  );
-}
-
-function FailureToEnterDescription({ open, handleClose }) {
-  return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert onClose={handleClose} icon={<CheckIcon fontSize="inherit" />} severity="error">
-        Need to enter a description!
-      </Alert>
-    </Snackbar>
-  );
-}
-
-function FailureToUploadFile({ open, handleClose }) {
-  return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert onClose={handleClose} icon={<CheckIcon fontSize="inherit" />} severity="error">
-        Need to upload a file!
-      </Alert>
-    </Snackbar>
-  );
-}
-
-function FailureToEnterDate({ open, handleClose }) {
-  return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert onClose={handleClose} icon={<CheckIcon fontSize="inherit" />} severity="error">
-        Need to enter a date!
-      </Alert>
-    </Snackbar>
-  );
-}
-
-function FailureToEnterLocation({ open, handleClose }) {
-  return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert onClose={handleClose} icon={<CheckIcon fontSize="inherit" />} severity="error">
-        Need to enter a location!
-      </Alert>
-    </Snackbar>
-  );
-}
-
-function FailureToEnterTags({ open, handleClose }) {
-  return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert onClose={handleClose} icon={<CheckIcon fontSize="inherit" />} severity="error">
-        Need to enter tags!
-      </Alert>
-    </Snackbar>
-  );
-}
 
 function CreateEventModal() {
   const [message, setMessage] = useState('');
@@ -95,10 +36,15 @@ function CreateEventModal() {
   const [successOpen, setSuccessOpen] = useState(false); // State for success alert
   const [failureClose, setClose] = useState(false); // State for success alert
   const [errorOpen, setErrorOpen] = useState({});
+  const [error, setError] = useState('');
 
   const { addEvent } = useEvents(); // Use addEvent from EventsContext
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setError('');  // Clear errors when closing modal
+  };
+
   const handleShow = () => setShow(true);
 
   const handleSuccessClose = () => {
@@ -124,15 +70,19 @@ function CreateEventModal() {
 
   const handleCreateEvent = async () => {
     let imageUrl = await uploadImage(file);
+
     let errors = {};
-    if (!title) errors.title = true;
-    if (!description) errors.description = true;
+    if (!title) errors.title= true; 
+    if (!description) errors.description = true; 
     if (!file) errors.file = true;
     if (!date) errors.date = true;
     if (!location) errors.location = true;
-    if (!tags) errors.tags = true;
+    if (!tags) errors.tags = true; 
 
-    setErrorOpen(errors);
+    if (!description || !title || !location || !file || !tags || !date) {
+      setError('Please fill in all fields.');
+      return;
+    }
 
     if (Object.keys(errors).length === 0) {
       setSuccessOpen(true);
@@ -152,10 +102,10 @@ function CreateEventModal() {
         addEvent(data); // Add the new event to the global context
         handleClose(); // Close the modal
       } catch (error) {
-        alert("not working");
+        //alert("not working");
         console.error('Failed to create event:', error);
-        setClose(true); // Show success alert
-        handleClose(); // Close the modal
+        setError(error.response ? error.response.data : error.message);
+        //setClose(true); // Show success alert
       }
     }
   };
@@ -206,6 +156,7 @@ function CreateEventModal() {
                 placeholder="Enter event title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                isInvalid={!title}
               />
             </Form.Group>
 
@@ -218,6 +169,7 @@ function CreateEventModal() {
                 placeholder="Event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                isInvalid={!description}
               />
             </Form.Group>
 
@@ -226,6 +178,7 @@ function CreateEventModal() {
               <Form.Control
                 type="file"
                 onChange={(e) => setFile(e.target.files[0])}
+                isInvalid={!file}
               />
             </Form.Group>
 
@@ -236,6 +189,7 @@ function CreateEventModal() {
                 placeholder="Event date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                isInvalid={!date}
               />
             </Form.Group>
 
@@ -247,6 +201,7 @@ function CreateEventModal() {
                 placeholder="Event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+                isInvalid={!location}
               />
             </Form.Group>
 
@@ -257,6 +212,7 @@ function CreateEventModal() {
                 placeholder="e.g., workshop, seminar"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
+                isInvalid={!tags}
               />
             </Form.Group>
           </Form>
@@ -271,12 +227,7 @@ function CreateEventModal() {
         </Modal.Footer>
       </Modal>
       <SuccessAlert open={successOpen} handleClose={handleSuccessClose} />
-      <FailureToEnterTitle open={errorOpen.title} handleClose={() => handleErrorClose('title')} />
-      <FailureToEnterDescription open={errorOpen.description} handleClose={() => handleErrorClose('description')} />
-      <FailureToUploadFile open={errorOpen.file} handleClose={() => handleErrorClose('file')} />
-      <FailureToEnterDate open={errorOpen.date} handleClose={() => handleErrorClose('date')} />
-      <FailureToEnterLocation open={errorOpen.location} handleClose={() => handleErrorClose('location')} />
-      <FailureToEnterTags open={errorOpen.tags} handleClose={() => handleErrorClose('tags')} />
+
     </>
   );
 }
