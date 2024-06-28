@@ -37,7 +37,10 @@ function SignupModal() {
     try {
       const response = await axios.post('http://localhost:5000/signup', user);
       console.log('Signup successful');
-      login();  // Log the user in
+      login(response.data.token);  
+      localStorage.setItem('token', response.data.token); 
+
+
       localStorage.setItem('token', response.data.token);  // Save the token
       handleClose();
     } catch (error) {

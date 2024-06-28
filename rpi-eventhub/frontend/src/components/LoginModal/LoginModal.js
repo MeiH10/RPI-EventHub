@@ -21,7 +21,7 @@ function LoginModal() {
     try {
       const response = await axios.post('http://localhost:5000/login', credentials);
       console.log('Login successful');
-      login();  // Call login to update the global state
+      login(response.data.token);
       handleClose(); // Close the modal on successful login
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data : error.message);
