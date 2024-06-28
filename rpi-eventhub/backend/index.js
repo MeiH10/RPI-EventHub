@@ -267,6 +267,11 @@ app.delete('/events/:id', async (req, res) => {
 });
 
 
+app.get('/verify-token', authenticate, (req, res) => {
+  res.sendStatus(200);
+});
+
+
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.get('*', (req, res) => {
