@@ -1,0 +1,19 @@
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filter-search {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filter-category {
+  width: 28%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
