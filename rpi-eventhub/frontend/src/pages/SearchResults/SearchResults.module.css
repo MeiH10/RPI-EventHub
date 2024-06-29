@@ -1,0 +1,82 @@
+/* src/pages/SearchResults/SearchResults.module.css */
+
+.container {
+    padding: 20px;
+    padding-top: 70px; 
+    background: linear-gradient(
+    217deg,
+    rgba(255, 101, 101, 0.8),
+    rgb(255 0 0 / 0%) 70.71%
+  ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+  linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
+    min-height: 100vh;
+}
+
+.titleContainer {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.title {
+    font-size: 2.5em;
+    color: #333;
+    position: relative;
+    display: inline-block;
+}
+
+.title::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% + 10px);
+    height: 2px;
+    background-color: #333;
+}
+
+.eventsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.eventCard {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.eventCard:hover {
+    transform: scale(1.05);
+}
+
+.eventImage {
+    width: 100%;
+    height: auto;
+}
+
+.eventDetails {
+    padding: 15px;
+}
+
+.eventTitle {
+    font-size: 1.5em;
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.eventDescription {
+    font-size: 1em;
+    color: #666;
+}
+
+.noResults {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+}
