@@ -30,6 +30,7 @@ function AllEvents() {
                     />
                 ))}
             </div>
+            <Footer></Footer>
         </div>
     );
 };
