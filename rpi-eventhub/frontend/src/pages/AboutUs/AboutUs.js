@@ -3,7 +3,6 @@ import styles from './AboutUs.module.css'; // Import the CSS Module
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import RPIBridgePhoto from '../../assets/RPIBridgePhoto.jpg';
-import ProfilePicImage from '../../assets/ProfilePicImage.svg';
 
 function AboutUs() {
   const [contributors, setContributors] = useState([]);
@@ -56,7 +55,7 @@ function AboutUs() {
           <div className="row">
             {contributors.map(contributor => (
               <div className={styles.column} key={contributor.login}>
-                <img src={contributor.avatar_url} height="150" alt="Profile"></img>
+                <img src={contributor.avatar_url} className={styles.profilePic} alt="Profile"></img>
                 <h6 className={styles.devText}>{contributor.login}</h6>
                 <p className={styles.devText}>
                   <a href={`mailto:${contributor.email}`} target="_blank" rel="noopener noreferrer">{contributor.email}</a>
