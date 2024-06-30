@@ -19,49 +19,31 @@ const Navbar = () => {
     handleClick(); // Optionally close any open menus
   };
 
-  const hamburger = document.querySelector(".hamburger");
-  const navMenu = document.querySelector(".nav-menu");
-  
-
- 
-
- 
+  const getNavLinkClass = (path) => {
+    return location.pathname === path ? `${styles.navLinks} ${styles.active}` : styles.navLinks;
+  };
 
   return (
     <>
-      <nav className="navbar">
-        <div className="nav-container">
-          
-            
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
-          <NavLink exact to="/" className="nav-logo">
-            <span className="icon">
+      <nav className={styles.navbar}>
+        <div className={styles.navContainer}>
+          <NavLink to="/" className={styles.navLogo}>
+            <span className={styles.icon}>
               <EventHubLogo2 />
             </span>
           </NavLink>
-          <li className="nav-item">
+
+          <ul className={click ? `${styles.navMenu} ${styles.active}` : styles.navMenu}>
+            <li className={styles.navItem}>
               <NavLink
-                exact
-                to="/all-events"
-                activeClassName="active"
-                className="nav-links"
+                to="/"
+                className={getNavLinkClass('/')}
                 onClick={handleClick}
               >
-                Events
+                Home
               </NavLink>
             </li>
-           { <li className="nav-item">
-              <NavLink
-                exact
-                to="/calendar"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
-              >
-                Calendar
-              </NavLink>
-            </li>}
-            <li className="nav-item">
+            <li className={styles.navItem}>
               <NavLink
                 to="/about-us"
                 className={getNavLinkClass('/about-us')}
@@ -70,16 +52,20 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            </ul>
-            <ul className={click ? "nav-menu active" : "nav-menu2"}>
-            <li className="nav-item">
-              <CreateEventModal /> 
+            <li className={styles.navItem}>
+              <NavLink
+                to="/all-events"
+                className={getNavLinkClass('/all-events')}
+                onClick={handleClick}
+              >
+                Events
+              </NavLink>
+            </li>
+            <li className={styles.navItem}>
+              <CreateEventModal />
             </li>
               {isLoggedIn ? (
-
-            <button onClick={handleLogout} className="nav-item btn-danger btn">Sign Out</button>
-
-
+                <button onClick={handleLogout} className={`${styles.navItem} btn-danger btn`}>Sign Out</button>
               ) : (
                 <>
                   <li className={styles.navItem}>
@@ -101,17 +87,7 @@ const Navbar = () => {
                 <HamburgerMenuClose />
               </span>
             )}
-          </div> 
-          
-            
-          <div className ="hamburger">
-                <span className="bar"></span>
-                <span className="bar"></span>
-                <span className="bar"></span>
-                onClick={handleClick}
           </div>
-
-            
         </div>
       </nav>
     </>
