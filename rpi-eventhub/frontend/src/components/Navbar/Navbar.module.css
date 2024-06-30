@@ -3,8 +3,6 @@
   src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
 
-
-
 .navbar {
   width: 100%;
   height: 70px;
@@ -22,44 +20,33 @@
   /* width: 100%; */
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
-  justify-content: left;
-  align-items: left;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 70px;
   padding: 20px 0 0 0;
   position: fixed;
-  justify-content: space-between;
 }
 
 .navLogo {
   color: #ff0000;
-  align-items: left;
-  margin-top: -10px;
-  margin-left: -10px;
-  margin-bottom: 200px;
-  margin-right: 10px;
+  align-items: center;
+  margin-left: 20px;
   cursor: pointer;
   text-decoration: none;
   font-size: 2rem;
-  flex-grow: .1;
+  flex-grow: 1;
   display: flex;
-  justify-content: left;
-  padding: 0 0 0 0;
-  
- 
-  
-  
+  justify-items: center;
+  padding: 0 0 10px 0;
 }
 
 .navLogo .icon {
   display: inline-block;
-  vertical-align: top;
-  justify-self: left;
-  width: 3rem;
-  height: 6rem;
-  
-
-  
+  vertical-align: middle;
+  width: 4rem;
+  height: 4rem;
+  margin-left: 5px;
 }
 
 .navMenu {
@@ -67,19 +54,6 @@
   list-style: none;
   text-align: center;
   margin-right: 2rem;
-  justify-self: right;
-
-}
-.nav-menu2 {
-  display: flex;
-  list-style: none;
-  text-align: center;
-  margin-right: 2rem;
-  justify-content: space-evenly;
-
-}
-.nav-menu3 {
-  display: none;
 }
 
 .navLinks {
@@ -88,14 +62,11 @@
   padding: 0.5rem 1rem;
   height: 100%;
   border-bottom: 3px solid transparent;
-
 }
 
 .navItem {
   line-height: 40px;
   margin-right: 1rem;
-  justify-self: space-between;
-
 }
 
 .navItem:after {
@@ -105,60 +76,33 @@
   width: 0;
   background: transparent;
   transition: width 0.7s ease, background-color 0.5s ease;
-  color: #000000;
-
-
 }
 
 .navItem:hover:after {
   width: 100%;
   background: #ff0000;
-  color: #000000;
-
-
 }
 
-.nav-item .active {
-  color: #000000;
-
+.navItem .active {
+  color: #ff0000;
   border: 1px solid #ff0000;
-;
 }
 
 .navIcon {
   display: none;
   color: #ff0000;
-  vertical-align: left;
-  padding-bottom: 50rem;
-  
+  vertical-align: middle;
 }
 
 .navIcon .icon {
   display: inline-block;
-  vertical-align: left;
+  vertical-align: middle;
   width: 5rem;
   height: 5rem;
-  border: 20px solid #000000;
 }
 
-.hamburger {
-  display: none;
-}
-.bar {
-  display: block;
-  width: 25px;
-  height: 3px;
-  margin: 5px auto;
-  margin-right: 2rem;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-  background-color: #101010;
-}
-
-
-
-@media only screen and (max-width: 600px) {
-  .nav-menu {
+@media screen and (max-width: 960px) {
+  .navMenu {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -170,34 +114,26 @@
     transition: all 0.5s ease;
   }
 
-  .nav-item{
-    display: none;
-  }
-  
-  .nav-menu.active {
+  .navMenu.active {
     background: #1f5156;
     left: 0px;
     opacity: 1;
     transition: all 0.5s ease;
     z-index: 1;
-    justify-content: space-between;
   }
-  .nav-item .active {
-    color: #000000;
-
+  .navItem .active {
+    color: #ffdd40;
     border: none;
-
   }
   .navLinks {
     padding: 1.5rem;
     width: 100%;
-    display: none;
+    display: table;
   }
 
   .navLogo .icon {
     width: 2rem;
     height: 2rem;
-    border: 20px solid #000000;
   }
 
   .navIcon {
@@ -205,45 +141,10 @@
     position: fixed;
     top: 50%;
     right: 0;
-    transform: translate(100%, -50%);
+    transform: translate(-100%, -50%);
     width: 2rem;
     height: 2rem;
     cursor: pointer;
     color: #ffdd40;
-    border: 20px solid #000000;
-    
   }
-  
-  .nav-menu.active {
-    left: 0;
-}
-
-.menu {
-  grid-auto-flow: row;
-  list-style-type: none;
-  row-gap: 40px;
-  column-gap: 0;
-  justify-items: center;
-}
-
-
-  .hamburger {
-    display: block;
-    cursor: pointer;
-    color:#000000;
-    
-  }
-  .hamburger.active .bar:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-}
-
-.hamburger.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-}
-
-
 }

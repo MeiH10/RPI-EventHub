@@ -4,15 +4,15 @@
     bottom: 20px;
     right: 20px;
     padding: 10px 20px;
-    background-color: #0000;
-    color: #000000;
+    background-color: #007bff;
+    color: #050087;
     text-decoration: none;
     border-radius: 5px;
     font-size: 16px;
 }
 
-.login-button:hover {
-    background-color: #000000;
+.loginButton:hover {
+    background-color: #0056b3;
 }
 
 .modal {
@@ -26,9 +26,6 @@
     background-color: white;
     width: 500px;
     max-width: 80%;
-    color: #000000;
-
-    
 }
 
 .modalHeader {
@@ -51,9 +48,6 @@
     background: none;
     font-size: 1.25rem;
     font-weight: bold;
-    color: #000000;
-
-    
 }
 
 .modalBody {
