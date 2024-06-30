@@ -23,8 +23,17 @@ export const EventsProvider = ({ children }) => {
         setEvents(currentEvents => [...currentEvents, newEvent]);
     };
 
+    const deleteEvent = useCallback(async (id) => {
+        try {
+            await axios.delete(`http://localhost:5000/events/${id}`);
+            setEvents((prevEvents) => prevEvents.filter(event => event._id !== id));
+        } catch (error) {
+            console.error('Failed to delete event:', error);
+        }
+    }, []);
+
     return (
-        <EventsContext.Provider value={{ events, fetchEvents, addEvent }}>
+        <EventsContext.Provider value={{ events, fetchEvents, addEvent, deleteEvent }}>
             {children}
         </EventsContext.Provider>
     );

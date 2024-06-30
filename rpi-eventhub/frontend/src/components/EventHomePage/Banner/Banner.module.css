@@ -31,7 +31,7 @@
     margin-top: 20px;
 }
 
-.search-bar-container {
+.searchBarContainer {
     background: rgba(255, 255, 255, 0.75);
     box-shadow: -12px 12px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
@@ -45,7 +45,7 @@
     margin-bottom: 50px;
 }
 
-.search-input {
+.searchInput {
     border: none;
     outline: none;
     width: calc(100% - 100px);
@@ -54,7 +54,7 @@
     padding: 0 15px;
 }
 
-.search-button {
+.searchButton {
     background: #E20612;
     border-radius: 15px;
     color: white;

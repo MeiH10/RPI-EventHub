@@ -4,18 +4,18 @@ import Navbar from '../../components/Navbar/Navbar';
 import Banner from '../../components/EventHomePage/Banner/Banner';
 import PopularEvents from '../../components/EventHomePage/PopularEvents/PopularEvents';
 import Footer from '../../components/Footer/Footer';
-import './Events.css';
+import styles from './Events.module.css'
 
 function Event() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     return (
-        <div className="event-page">
+        <div className={styles.eventPage}>
             <Navbar />
-            <div className="anim">
+            <div className={styles.anim}>
                 <Banner />
             </div>
             
-            <div className="anim">
+            <div className={styles.anim}>
                 <PopularEvents />
             </div>
             

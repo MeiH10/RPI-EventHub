@@ -1,4 +1,4 @@
-.events-display-container {
+.eventsDisplayContainer {
     padding: 20px 0 60px 0;
     width: 100%;
     margin: auto;
@@ -8,7 +8,7 @@
     gap: 20px;
 }
 
-.event-poster-container {
+.eventPosterContainer {
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -17,14 +17,14 @@
     aspect-ratio: auto 3 / 4;
 }
 
-.event-poster-img {
+.eventPosterImg {
     width: 100%;
     height: auto;
     object-fit: cover;
 }
 
 
-.event-poster-details {
+.eventPosterDetails {
     position: absolute;
     top: 0;
     left: 0;
@@ -42,20 +42,20 @@
     transition: opacity 0.5s ease;
 }
 
-.event-poster-title {
+.eventPosterTitle {
     margin-bottom: 10px;
     font-size: 20px;
 }
 
-.event-poster-description {
+.eventPosterDescription {
     text-align: center;
     font-size: 16px;
 }
 
-.event-poster-container:hover .event-poster-img {
+.eventPosterContainer:hover .eventPosterImg {
     transform: scale(1.1); /* Slight zoom effect */
 }
 
-.event-poster-container:hover .event-poster-details {
+.eventPosterContainer:hover .eventPosterDetails {
     opacity: 1;
 }

@@ -1,5 +1,5 @@
 
-.login-button {
+.loginButton {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -31,7 +31,7 @@
     
 }
 
-.modal-header {
+.modalHeader {
     padding: 10px 15px;
     display: flex;
     justify-content: space-between;
@@ -39,12 +39,12 @@
     border-bottom: 1px solid black;
 }
 
-.modal-header .title {
+.modalHeader .title {
     font-size: 1.25rem;
     font-weight: bold;
 }
 
-.modal-header .close-button {
+.modalHeader .close-button {
     cursor: pointer;
     border: none;
     outline: none;
@@ -56,7 +56,7 @@
     
 }
 
-.modal-body {
+.modalBody {
     padding: 10px 15px;
 }
 

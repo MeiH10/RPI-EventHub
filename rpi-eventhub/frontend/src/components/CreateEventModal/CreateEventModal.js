@@ -5,12 +5,6 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 
-const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID; 
-const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY; 
-
-
-
-
 function CreateEventModal() {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
@@ -20,40 +14,27 @@ function CreateEventModal() {
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState('');
 
-  const { addEvent } = useEvents(); // Use addEvent from EventsContext
+  const { addEvent } = useEvents();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const uploadImage = async (imageFile) => {
-    // Assume using ImgBB or similar for simplicity
-    const formData = new FormData();
-    formData.append('image', imageFile);
-
-    try {
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_imgBB_API_KEY}`, formData);
-      return response.data.data.url; // Return URL of uploaded image
-    } catch (error) {
-      console.error('Failed to upload image:', error);
-      return ''; // Return empty string if upload fails
-    }
-  };
-
   const handleCreateEvent = async () => {
-    let imageUrl = await uploadImage(file);
-
-    const eventData = {
-      title,
-      description,
-      poster: "admin", // Temporary hardcode
-      image: imageUrl || 'default-placeholder-image-url', // Use placeholder if upload fails
-      date,
-      location,
-      tags: tags.split(',').map(tag => tag.trim()),
-    };
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('poster', 'admin'); // Hardcoded poster value
+    formData.append('file', file); // Attach the file
+    formData.append('date', date);
+    formData.append('location', location);
+    formData.append('tags', tags);
 
     try {
-      const { data } = await axios.post('http://localhost:5000/events', eventData);
+      const { data } = await axios.post('http://localhost:5000/events', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       addEvent(data); // Add the new event to the global context
       handleClose(); // Close the modal
     } catch (error) {
@@ -61,7 +42,6 @@ function CreateEventModal() {
     }
   };
 
-  
   return (
     <>
       <Button variant="success" onClick={handleShow}>
