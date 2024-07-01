@@ -1,9 +1,9 @@
-import './Footer.css';
+import FooterCSS from './Footer.module.css'
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <p className="footer_text">@2024 RPI EventHub</p>
+    <footer className={FooterCSS.footer}>
+      <p className={FooterCSS.footerText}></p>
     </footer>
   );
 };

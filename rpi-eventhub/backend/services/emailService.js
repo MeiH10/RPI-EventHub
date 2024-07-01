@@ -4,7 +4,7 @@ const sgTransport = require('nodemailer-sendgrid');
 
 const path = require('path');
 
-require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 
 const mailer = nodemailer.createTransport(sgTransport({

@@ -1,3 +1,4 @@
+/* Carousel.module.css */
 .carousel {
   position: relative;
   width: 100%;
@@ -6,7 +7,7 @@
   align-items: center;
 }
 
-.main-image {
+.mainImage {
   position: relative;
   display: flex;
   flex-direction: column; /* Stack children vertically */
@@ -17,57 +18,65 @@
   margin: 0 auto;
 }
 
-.main-image img {
+.mainImage img {
   max-width: 100%;
   max-height: 70vh; /* Adjust based on your needs */
   object-fit: cover; /* This can help keep aspect ratio without stretching images. */
 }
 
-.caption-above {
-  margin-bottom: 20px;
+.captionAbove {
+  width: 100%; /* Same width as the image container */
+  max-width: 500px;
   color: white; /* Change the color to white for better readability */
   font-size: 1.5em; /* Increase the font size for better visibility */
   text-align: center;
   background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
   padding: 10px 20px; /* Add padding for better spacing */
+  margin-bottom: 10px; /* Add some space between the caption and the image */
 }
 
+.captionBelow {
+  width: 100%; /* Same width as the image container */
+  max-width: 500px;
+  color: white; /* Change the color to white for better readability */
+  font-size: 1em; /* Font size for location and date */
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
+  padding: 10px 20px; /* Add padding for better spacing */
+  margin-top: 10px; /* Add some space between the image and the caption */
+  font-family: 'Arial', sans-serif;
+}
 
-
-.next-button, .prev-button {
+.nextButton, .prevButton {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  /* background-color: rgba(255, 255, 255, 0.5); Semi-transparent white */
   cursor: pointer;
   font-size: 24px;
   z-index: 2;
-  /* border: none; */
   padding: 10px;
   font-size: 45px;
   background-color: transparent;
   border: none;
-  /* border-radius: 50%; */
-  /* box-shadow: 0 2px 5px rgba(0,0,0,0.2); */
   transition: transform 0.2s ease;
   color: red;
 }
 
 /* Hover effect */
-.next-button:hover, .prev-button:hover {
+.nextButton:hover, .prevButton:hover {
   transform: translateY(-50%) scale(1.1);
 }
 
 /* Focus effect for accessibility */
-.next-button:focus, .prev-button:focus {
+.nextButton:focus, .prevButton:focus {
   outline: none;
   box-shadow: 0 0 0 2px red;
 }
 
-.next-button {
+.nextButton {
   right: -87px;
 }
 
-.prev-button {
+.prevButton {
   left: -87px;
 }

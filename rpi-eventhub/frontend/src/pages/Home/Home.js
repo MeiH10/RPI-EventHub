@@ -11,7 +11,7 @@ const Home = () => {
     <div>
       <NavBar />
 
-      <div className={`${HomeCSS.content} container-fluid`}>
+      <div className={`${HomeCSS.content} container-fluid containerFluid`}>
         {/* Hero section */}
         <div className="row">
           <div className="col-7 p-5">
@@ -32,9 +32,9 @@ const Home = () => {
               <SearchBar></SearchBar>
               </div>
               <div className={`${HomeCSS.anim1} card text-start bg-transparent border-0 p-0`}>
-                <div class="card-body p-0">
-                  <h5 class="card-title">About the website</h5>
-                  <p class="card-text">A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.</p>
+                <div className="card-body p-0">
+                  <h5 className="card-title">About the website</h5>
+                  <p className="card-text">A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.</p>
                 </div>           
               </div>
 

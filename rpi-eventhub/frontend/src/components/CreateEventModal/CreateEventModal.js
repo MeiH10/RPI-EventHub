@@ -35,7 +35,7 @@ function CreateEventModal() {
   const [errorOpen, setErrorOpen] = useState({});
   const [error, setError] = useState('');
 
-  const { addEvent } = useEvents(); // Use addEvent from EventsContext
+  const { addEvent } = useEvents();
 
   const handleClose = () => {
     setShow(false);
@@ -52,58 +52,7 @@ function CreateEventModal() {
     setErrorOpen((prev) => ({ ...prev, [field]: false }));
   };
 
-  const uploadImage = async (imageFile) => {
-    const formData = new FormData();
-    formData.append('image', imageFile);
 
-    try {
-      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgBB_API_KEY}`, formData);
-      return response.data.data.url; // Return URL of uploaded image
-    } catch (error) {
-      console.error('Failed to upload image:', error);
-      return ''; // Return empty string if upload fails
-    }
-  };
-
-  const handleCreateEvent = async () => {
-    let imageUrl = await uploadImage(file);
-
-    let errors = {};
-    if (!title) errors.title= true; 
-    if (!description) errors.description = true; 
-    if (!date) errors.date = true;
-    if (!location) errors.location = true;
-
-    if (!description || !title || !location || !date) {
-      setError('Please fill in all fields. Tags and File are optional!');
-      return;
-    }
-
-    if (Object.keys(errors).length === 0) {
-      setSuccessOpen(true);
-
-      const eventData = {
-        title,
-        description,
-        poster: "admin", // Temporary hardcode
-        image: imageUrl || 'default-placeholder-image-url', // Use placeholder if upload fails
-        date,
-        location,
-        tags: tags.split(',').map(tag => tag.trim()),
-      };
-
-      try {
-        const { data } = await axios.post('http://localhost:5000/events', eventData);
-        addEvent(data); // Add the new event to the global context
-        handleClose(); // Close the modal
-      } catch (error) {
-        //alert("not working");
-        console.error('Event creation failed:', error.response ? error.response.data : error.message);
-        setError(error.response ? error.response.data : error.message);
-        //setClose(true); // Show success alert
-      }
-    }
-  };
 
   useEffect(() => {
     if (isSuccess !== null) {
@@ -125,6 +74,44 @@ function CreateEventModal() {
     });
     return () => timers.forEach((timer) => timer && clearTimeout(timer));
   }, [errorOpen]);
+
+  const handleCreateEvent = async () => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('poster', 'admin'); // Hardcoded poster value
+    formData.append('file', file); // Attach the file
+    formData.append('date', date);
+    formData.append('location', location);
+    formData.append('tags', tags);
+    
+    
+    let errors = {};
+    if (!title) errors.title= true; 
+    if (!description) errors.description = true; 
+    if (!date) errors.date = true;
+    if (!location) errors.location = true;
+
+    if (!description || !title || !location || !date) {
+      setError('Please fill in all fields. Tags and File are optional!');
+      return;
+    }
+
+    if (Object.keys(errors).length === 0) {
+      setSuccessOpen(true);
+
+    try {
+      const { data } = await axios.post('http://localhost:5000/events', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      addEvent(data); // Add the new event to the global context
+      handleClose(); // Close the modal
+    } catch (error) {
+      console.error('Failed to create event:', error);
+    }
+  };
 
   return (
     <>

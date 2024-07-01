@@ -1,5 +1,3 @@
-import './Playground.css';
-
 import Footer from '../../components/Footer/Footer';
 import RsvpButton from '../../components/rsvp-button/RsvpButton';
 import logo from "./logo.svg";
@@ -8,7 +6,8 @@ import React from 'react';
 import { motion } from 'framer-motion';   
 import HoverImagePopup from '../../components/ImagePopUp/ImagePopUp';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
+import styles from './Playground.module.css'
+// import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
 import Home from '../../pages/Home/Home';
 import Navbar from '../../components/Navbar/Navbar';
 
@@ -17,9 +16,9 @@ const Playground = () => {
     const title = "Hello World";
     return (
   
-      <div className="App">
+      <div className={styles.App}>
           <Navbar />
-        <div className="content">
+        <div className={`${styles.content} containerFluid`}>
           <h1>{title}</h1>
         </div>
         <motion.img

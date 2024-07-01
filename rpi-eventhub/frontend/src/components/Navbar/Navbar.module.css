@@ -4,6 +4,7 @@
 }
 
 .navbar {
+  width: 100%;
   height: 70px;
   display: flex;
   justify-content: center;
@@ -12,9 +13,11 @@
   font-size: 1.4rem;
   position: fixed;
   z-index: 20;
+  
 }
 
-.nav-container {
+.navContainer {
+  /* width: 100%; */
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
   justify-content: center;
@@ -25,7 +28,7 @@
   position: fixed;
 }
 
-.nav-logo {
+.navLogo {
   color: #ff0000;
   align-items: center;
   margin-left: 20px;
@@ -38,7 +41,7 @@
   padding: 0 0 10px 0;
 }
 
-.nav-logo .icon {
+.navLogo .icon {
   display: inline-block;
   vertical-align: middle;
   width: 4rem;
@@ -46,14 +49,14 @@
   margin-left: 5px;
 }
 
-.nav-menu {
+.navMenu {
   display: flex;
   list-style: none;
   text-align: center;
   margin-right: 2rem;
 }
 
-.nav-links {
+.navLinks {
   color: #ff0000;
   text-decoration: none;
   padding: 0.5rem 1rem;
@@ -61,12 +64,12 @@
   border-bottom: 3px solid transparent;
 }
 
-.nav-item {
+.navItem {
   line-height: 40px;
   margin-right: 1rem;
 }
 
-.nav-item:after {
+.navItem:after {
   content: "";
   display: block;
   height: 3px;
@@ -75,23 +78,23 @@
   transition: width 0.7s ease, background-color 0.5s ease;
 }
 
-.nav-item:hover:after {
+.navItem:hover:after {
   width: 100%;
   background: #ff0000;
 }
 
-.nav-item .active {
+.navItem .active {
   color: #ff0000;
   border: 1px solid #ff0000;
 }
 
-.nav-icon {
+.navIcon {
   display: none;
   color: #ff0000;
   vertical-align: middle;
 }
 
-.nav-icon .icon {
+.navIcon .icon {
   display: inline-block;
   vertical-align: middle;
   width: 5rem;
@@ -99,7 +102,7 @@
 }
 
 @media screen and (max-width: 960px) {
-  .nav-menu {
+  .navMenu {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -111,29 +114,29 @@
     transition: all 0.5s ease;
   }
 
-  .nav-menu.active {
+  .navMenu.active {
     background: #1f5156;
     left: 0px;
     opacity: 1;
     transition: all 0.5s ease;
     z-index: 1;
   }
-  .nav-item .active {
+  .navItem .active {
     color: #ffdd40;
     border: none;
   }
-  .nav-links {
+  .navLinks {
     padding: 1.5rem;
     width: 100%;
     display: table;
   }
 
-  .nav-logo .icon {
+  .navLogo .icon {
     width: 2rem;
     height: 2rem;
   }
 
-  .nav-icon {
+  .navIcon {
     display: block;
     position: fixed;
     top: 50%;

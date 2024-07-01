@@ -4,7 +4,7 @@
     src: url('../../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
 
-.popular-events {
+.popularEvents {
     text-align: center;
     padding: 20px;
 }
@@ -30,7 +30,7 @@
 }
 
 
-.events-container {
+.eventsContainer {
     display: flex;
     justify-content: center;
     align-items: center;
