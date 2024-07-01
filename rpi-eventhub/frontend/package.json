@@ -11,6 +11,7 @@
     "bootstrap-icons": "^1.11.3",
     "express": "^4.18.2",
     "framer-motion": "^11.0.20",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18.2.0",
