@@ -112,6 +112,7 @@ function CreateEventModal() {
       console.error('Failed to create event:', error);
     }
   };
+}
 
   return (
     <>
