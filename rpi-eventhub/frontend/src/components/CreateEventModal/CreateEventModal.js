@@ -71,13 +71,11 @@ function CreateEventModal() {
     let errors = {};
     if (!title) errors.title= true; 
     if (!description) errors.description = true; 
-    if (!file) errors.file = true;
     if (!date) errors.date = true;
     if (!location) errors.location = true;
-    if (!tags) errors.tags = true; 
 
-    if (!description || !title || !location || !file || !tags || !date) {
-      setError('Please fill in all fields.');
+    if (!description || !title || !location || !date) {
+      setError('Please fill in all fields. Tags and File are optional!');
       return;
     }
 
@@ -176,7 +174,6 @@ function CreateEventModal() {
               <Form.Control
                 type="file"
                 onChange={(e) => setFile(e.target.files[0])}
-                isInvalid={!file}
               />
             </Form.Group>
 
@@ -210,7 +207,6 @@ function CreateEventModal() {
                 placeholder="e.g., workshop, seminar"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                isInvalid={!tags}
               />
             </Form.Group>
           </Form>
