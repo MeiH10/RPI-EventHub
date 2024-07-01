@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
-import Alert from '@mui/material/Alert'; // Import Alert from Material-UI
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from Material-UI
 import CheckIcon from '@mui/icons-material/Check';
 import { TextField } from '@mui/material';
@@ -103,7 +100,7 @@ function CreateEventModal() {
         handleClose(); // Close the modal
       } catch (error) {
         //alert("not working");
-        console.error('Failed to create event:', error);
+        console.error('Event creation failed:', error.response ? error.response.data : error.message);
         setError(error.response ? error.response.data : error.message);
         //setClose(true); // Show success alert
       }
@@ -147,6 +144,7 @@ function CreateEventModal() {
           <Modal.Title>Create an Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        {error && <Alert variant="danger">{error}</Alert>}
           <Form>
             <Form.Group controlId="eventTitle">
               <Form.Label>Title</Form.Label>
