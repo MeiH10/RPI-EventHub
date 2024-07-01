@@ -33,6 +33,12 @@ const SearchBar = () => {
         setSearchTerm(event.target.value);
     };
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearchClick();
+        }
+    };
+
     return (
         <div className={SearchBarCSS.searchBarContainer}>
             <input
@@ -40,6 +46,7 @@ const SearchBar = () => {
                 type="text"
                 placeholder="Search for an event!"
                 onChange={handleSearchInputChange}
+                onKeyPress={handleKeyPress}
             />
             <button className={SearchBarCSS.searchButton} onClick={handleSearchClick}>Search</button>
         </div>
