@@ -7,7 +7,7 @@ import {jwtDecode} from 'jwt-decode';
 function VerifyModal() {
   const [show, setShow] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, login } = useAuth();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -24,7 +24,7 @@ function VerifyModal() {
 
     try {
 
-      console.log(email, verificationCode);
+      // console.log(email, verificationCode);
 
 
       const response = await axios.post('http://localhost:5000/verify-email', {
@@ -37,7 +37,11 @@ function VerifyModal() {
       });
 
       if (response.status === 200) {
-        console.log('Email verified successfully');
+        // console.log('Email verified successfully');
+        // console.log("response.data: ", response.data);
+        const newToken = response.data.token; 
+        
+        login(newToken);
         handleClose();
       }
     } catch (error) {

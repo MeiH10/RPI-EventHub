@@ -139,11 +139,15 @@ app.post('/verify-email', async (req, res) => {
     return res.status(400).json({ message: "Invalid email or verification code." });
   }
 
+
+
   if (user.verificationCode === verificationCode) {
     user.emailVerified = true;
     user.verificationCode = '';
     await user.save();
-    res.status(200).json({ message: "Email verified successfully." });
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified}, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+    res.status(200).json({ message: "Email verified successfully.", token});
   } else {
     res.status(400).json({ message: "Invalid verification code." });
   }

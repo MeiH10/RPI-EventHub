@@ -9,13 +9,13 @@ export const AuthProvider = ({ children }) => {
     const [emailVerified, setEmailVerified] = useState(false);
 
     const login = (token) => {
-        console.log("Logging in");
+        // console.log("Logging in");
         localStorage.setItem('token', token);
         const decodedToken = jwtDecode(token);
-        console.log("Decoded Token on login: ", decodedToken);
+        // console.log("Decoded Token on login: ", decodedToken);
         setIsLoggedIn(true);
         setEmailVerified(decodedToken.emailVerified);
-        console.log("emailVerified state after login: ", decodedToken.emailVerified);
+        // console.log("emailVerified state after login: ", decodedToken.emailVerified);
     };
 
     const logout = () => {
@@ -37,10 +37,10 @@ export const AuthProvider = ({ children }) => {
                     });
                     if (response.status === 200) {
                         const decodedToken = jwtDecode(token);
-                        console.log("Decoded Token on verify: ", decodedToken);
+                        // console.log("Decoded Token on verify: ", decodedToken);
                         setIsLoggedIn(true);
                         setEmailVerified(decodedToken.emailVerified);
-                        console.log("emailVerified state after verify: ", decodedToken.emailVerified);
+                        // console.log("emailVerified state after verify: ", decodedToken.emailVerified);
                     }
                 } catch (error) {
                     console.error('Token verification failed:', error);
