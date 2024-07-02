@@ -1,3 +1,27 @@
+
+.footer a.gitHubURL {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.footer i {
+  color: white;
+}
+
+.footer i:hover {
+  color: white;
+  color: blue;
+}
+
+
+.footer a.gitHubURL:hover {
+  text-decoration: none;
+  color: blue;
+
+}
+
+
 .footerContainer { 
   display: flex;
   flex-direction: column;
@@ -14,18 +38,24 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 15px 30px; 
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+
+
 }
 
 .footerText {
   color: white;
   font-family: 'Chakra Petch';
   font-size: 15px;
-  line-height: 1.5;
+  margin: 0;
+}
+.flexItem {
+  margin-left: 10px;
+  margin-right: 10px;
+
 }
 
-.footerText::after {
-  content: "@RPI EventHub | An RCOS project";
-  display: block;
-  margin-top: 5px;
-}
+
+
