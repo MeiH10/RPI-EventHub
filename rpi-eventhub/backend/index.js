@@ -116,11 +116,13 @@ app.post('/signup', async (req, res) => {
     });
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified}, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     res.status(201).json({
       message: "User created successfully. Please check your email to verify your account.",
-      token: token  // Send the token to the client
+      token: token,
+      email: user.email, 
+      emailVerified: user.emailVerified
     });
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error: error.message });
@@ -129,18 +131,23 @@ app.post('/signup', async (req, res) => {
 
 app.post('/verify-email', async (req, res) => {
   const { email, verificationCode } = req.body;
+
+  console.log(email, verificationCode);
   const user = await User.findOne({ email, verificationCode });
 
   if (!user) {
     return res.status(400).json({ message: "Invalid email or verification code." });
   }
 
-  // Check if the code is correct and not expired
+
+
   if (user.verificationCode === verificationCode) {
     user.emailVerified = true;
-    user.verificationCode = ''; // Clear the verification code
+    user.verificationCode = '';
     await user.save();
-    res.status(200).json({ message: "Email verified successfully." });
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified}, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+    res.status(200).json({ message: "Email verified successfully.", token});
   } else {
     res.status(400).json({ message: "Invalid verification code." });
   }
@@ -164,8 +171,10 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Password is incorrect" });
     }
     // Generate a token
-    const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '24h' });
-    res.status(200).json({ token, userId: user._id, message: "Logged in successfully" });
+    
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified  }, jwtSecret, { expiresIn: '24h' });
+    res.status(200).json({ token, userId: user._id, emailVerified: user.emailVerified, message: "Logged in successfully" });
+    
   } catch (error) {
     res.status(500).json({ message: "Login error", error: error.message });
   }
