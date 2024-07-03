@@ -27,6 +27,7 @@ function AllEvents() {
                         width={300}  // Fake width for now
                         height={450}  // Fake height for now
                         onDelete={deleteEvent} // Pass deleteEvent function
+                        author={event.poster}
                     />
                 ))}
             </div>
