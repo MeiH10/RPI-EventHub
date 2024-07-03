@@ -5,9 +5,13 @@ import { useEvents } from '../../context/EventsContext';
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from Material-UI
 import CheckIcon from '@mui/icons-material/Check';
 import { TextField } from '@mui/material';
+import { useAuth } from "../../context/AuthContext";
+
 
 const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID;
 const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY;
+
+
 
 function SuccessAlert({ open, handleClose }) {
   return (
@@ -36,6 +40,10 @@ function CreateEventModal() {
   const [error, setError] = useState('');
 
   const { addEvent } = useEvents();
+
+
+  const { isLoggedIn, emailVerified, username } = useAuth();
+
 
   const handleClose = () => {
     setShow(false);
@@ -79,7 +87,8 @@ function CreateEventModal() {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('poster', 'admin'); // Hardcoded poster value
+    console.log('username: ', username);
+    formData.append('poster', username); 
     formData.append('file', file); // Attach the file
     formData.append('date', date);
     formData.append('location', location);

@@ -30,6 +30,8 @@ const SearchResults = () => {
                             description={event.description}
                             width={300}
                             height={450}
+                            author={event.poster}
+
                         />
                     ))
                 ) : (

@@ -116,7 +116,7 @@ app.post('/signup', async (req, res) => {
     });
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified}, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username}, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     res.status(201).json({
       message: "User created successfully. Please check your email to verify your account.",
@@ -172,7 +172,7 @@ app.post('/login', async (req, res) => {
     }
     // Generate a token
     
-    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified  }, jwtSecret, { expiresIn: '24h' });
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username  }, jwtSecret, { expiresIn: '24h' });
     res.status(200).json({ token, userId: user._id, emailVerified: user.emailVerified, message: "Logged in successfully" });
     
   } catch (error) {

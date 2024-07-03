@@ -7,6 +7,8 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [emailVerified, setEmailVerified] = useState(false);
+    const [username, setUsername] = useState('');
+
 
     const login = (token) => {
         // console.log("Logging in");
@@ -14,7 +16,11 @@ export const AuthProvider = ({ children }) => {
         const decodedToken = jwtDecode(token);
         // console.log("Decoded Token on login: ", decodedToken);
         setIsLoggedIn(true);
+        setUsername(decodedToken.username);
         setEmailVerified(decodedToken.emailVerified);
+        // console.log("username after login: ", decodedToken.username);
+
+
         // console.log("emailVerified state after login: ", decodedToken.emailVerified);
     };
 
@@ -23,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
         setEmailVerified(false);
+        setUsername(''); 
     };
 
     useEffect(() => {
@@ -39,6 +46,7 @@ export const AuthProvider = ({ children }) => {
                         const decodedToken = jwtDecode(token);
                         // console.log("Decoded Token on verify: ", decodedToken);
                         setIsLoggedIn(true);
+                        setUsername(decodedToken.username);
                         setEmailVerified(decodedToken.emailVerified);
                         // console.log("emailVerified state after verify: ", decodedToken.emailVerified);
                     }
@@ -51,8 +59,12 @@ export const AuthProvider = ({ children }) => {
         verifyToken();
     }, []);
 
+    useEffect(() => {
+      console.log("Username state updated: ", username);
+  }, [username]);
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, emailVerified, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, emailVerified, login, logout, username }}>
             {children}
         </AuthContext.Provider>
     );
