@@ -38,6 +38,7 @@ function CreateEventModal() {
   const [failureClose, setClose] = useState(false); // State for success alert
   const [errorOpen, setErrorOpen] = useState({});
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { addEvent } = useEvents();
 
@@ -83,7 +84,12 @@ function CreateEventModal() {
     return () => timers.forEach((timer) => timer && clearTimeout(timer));
   }, [errorOpen]);
 
-  const handleCreateEvent = async () => {
+  const handleCreateEvent = async (e) => {
+    e.preventDefault();
+    if(isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -125,6 +131,8 @@ function CreateEventModal() {
       handleClose(); // Close the modal
     } catch (error) {
       console.error('Failed to create event:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 }
@@ -218,7 +226,7 @@ function CreateEventModal() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCreateEvent}>
+          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting}>
             Create Event
           </Button>
         </Modal.Footer>

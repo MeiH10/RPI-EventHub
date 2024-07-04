@@ -7,12 +7,19 @@ function LoginModal() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();  // Destructure the login function from useAuth
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if(isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);    
+
     const credentials = {
       email: email,
       password: password
@@ -70,7 +77,7 @@ function LoginModal() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleLogin}>
+          <Button variant="primary" onClick={handleLogin} disabled={isSubmitting}>
             Log In
           </Button>
         </Modal.Footer>
