@@ -106,6 +106,12 @@ function CreateEventModal() {
       return;
     }
 
+
+    if (!isLoggedIn || !emailVerified) {
+      setError('Only verified users can create event. Please login or get verified');
+      return;
+    }
+
     if (Object.keys(errors).length === 0) {
       setSuccessOpen(true);
 
