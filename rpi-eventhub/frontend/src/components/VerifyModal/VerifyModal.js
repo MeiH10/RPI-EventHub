@@ -8,11 +8,20 @@ function VerifyModal() {
   const [show, setShow] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const { isLoggedIn, login } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleVerify = async () => {
+  const handleVerify = async (e) => {
+    e.preventDefault();
+    if(isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);    
+
+
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
@@ -83,7 +92,7 @@ function VerifyModal() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleVerify}>
+          <Button variant="primary" onClick={handleVerify} disabled={isSubmitting}>
             Verify
           </Button>
         </Modal.Footer>
