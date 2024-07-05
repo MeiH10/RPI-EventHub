@@ -3,7 +3,7 @@ import style from './EventPoster.module.css';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
 
-const EventPoster = ({ id, title, posterSrc, description, author }) => {
+const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   const { username } = useAuth();  // Destructure username from useAuth
   const { deleteEvent } = useEvents();
 
@@ -33,6 +33,11 @@ const EventPoster = ({ id, title, posterSrc, description, author }) => {
         <p className={style.eventPosterDescription}>{description}</p>
         {canSeeDeleteButton(username) && <button onClick={handleDelete} className="delete-button btn-danger btn">Delete</button>}
         <p>Posted by {author}</p>
+        <ul>
+          {tags.map((tag, index) =>(
+          <li key={index}>{tag}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
