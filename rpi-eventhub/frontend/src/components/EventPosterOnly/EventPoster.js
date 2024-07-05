@@ -4,6 +4,7 @@ import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
 
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
+  console.log("tags: ", tags);
   const { username } = useAuth();  // Destructure username from useAuth
   const { deleteEvent } = useEvents();
 

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "EventHub",
+  "name": "Create EventHub Sample",
   "icons": [
     {
       "src": "EventHubLogo2.ico",
