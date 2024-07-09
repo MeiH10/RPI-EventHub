@@ -1,0 +1,114 @@
+@font-face {
+    font-family: "Italiana";
+    src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+}
+
+.cardtext {
+    font-family: 'Italiana', serif;
+}
+
+.content h1 {
+    font-size: 69px; 
+}
+
+.content h5 {
+    font-size: 42px; 
+}
+
+.content p {
+    font-size: 21px; 
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 950px;
+    margin: 0;
+    font-family: Italiana, serif;
+    background: linear-gradient(
+        217deg,
+        rgba(255, 101, 101, 0.8),
+        rgb(255 0 0 / 0%) 70.71%
+      ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+      linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
+}
+
+/* line under calendar */
+hr {
+    width: 0%;
+}
+
+/* Calendar */
+.weeklyEvents {
+    margin-top: 20px; /* margin distance between navbar and calendar" */
+    border: 3px solid #000000; /* outer border */
+    padding: 20px;
+    border-radius: 10px; 
+    background: white;
+    width: 100%;
+    text-align: center;
+}
+
+.weeklyEvents h2 {
+    margin-bottom: 20px; /* margin distance from bottom of "WEEKLY EVENTS" */
+    font-size: 36px;
+}
+
+.week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px; /* changes gap between each days of the */
+    text-align: center;
+}
+
+.day {
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.day h3 {
+    margin: 50;
+    font-size: 18px;
+    border-bottom: 1px solid #000000;
+    width: 100%; /* try 100% or 113% */
+    padding-bottom: 5px; /* changes the distance of the line under days of the week */
+}
+
+.day p {
+    margin: 250px 0 0; /* changes the height of the calendar */
+    font-size: 16px;
+}
+
+/* effects for calendar */
+.anim1 {
+    animation: fade-in 1s;
+}
+
+.anim2 {
+    animation: fade-in-and-scale 1s;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}
+
+@keyframes fade-in-and-scale {
+    from {
+        opacity: 0;
+        scale: 95%;
+    }
+    to {
+        scale: 100%;
+        opacity: 100;
+    }
+}

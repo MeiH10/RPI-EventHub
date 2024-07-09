@@ -63,6 +63,15 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className={styles.navItem}>
+              <NavLink
+                to="/calendar"
+                className={getNavLinkClass('/calendar')}
+                onClick={handleClick}
+              >
+                Calendar
+              </NavLink>
+            </li>
+            <li className={styles.navItem}>
               <CreateEventModal />
             </li>
               {isLoggedIn ? (
