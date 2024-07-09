@@ -1,0 +1,30 @@
+/* src/pages/EventDetails/EventDetails.module.css */
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.eventPoster {
+    flex: 1;
+    max-width: 300px;
+    margin-right: 20px;
+}
+
+.eventPoster img {
+    width: 100%;
+    height: auto;
+}
+
+.eventInfo {
+    flex: 2;
+}
+
+.eventInfo h1 {
+    margin-bottom: 20px;
+}
+
+.eventInfo p {
+    margin-bottom: 10px;
+}
