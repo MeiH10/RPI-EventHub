@@ -35,6 +35,15 @@ const Navbar = () => {
           </NavLink>
 
           <ul className={click ? `${styles.navMenu} ${styles.active}` : styles.navMenu}>
+          <li className={styles.navItem}>
+              <NavLink
+                to="/all-events"
+                className={getNavLinkClass('/all-events')}
+                onClick={handleClick}
+              >
+                Events
+              </NavLink>
+            </li>
             <li className={styles.navItem}>
               <NavLink
                 to="/"
@@ -53,15 +62,7 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            <li className={styles.navItem}>
-              <NavLink
-                to="/all-events"
-                className={getNavLinkClass('/all-events')}
-                onClick={handleClick}
-              >
-                Events
-              </NavLink>
-            </li>
+            
             <li className={styles.navItem}>
               <CreateEventModal />
             </li>
@@ -85,11 +86,11 @@ const Navbar = () => {
           <div className={styles.navIcon} onClick={handleClick}>
             {click ? (
               <span className={styles.icon}>
-                <HamburgerMenuOpen />
+                <HamburgerMenuClose  />
               </span>
             ) : (
               <span className={styles.icon}>
-                <HamburgerMenuClose />
+                <HamburgerMenuOpen />
               </span>
             )}
           </div>

@@ -115,7 +115,7 @@
   }
 
   .navMenu.active {
-    background: #1f5156;
+    background: #399199;
     left: 0px;
     opacity: 1;
     transition: all 0.5s ease;
@@ -132,19 +132,22 @@
   }
 
   .navLogo .icon {
+    top: 10%;
     width: 2rem;
-    height: 2rem;
+    height: 4rem;
   }
 
   .navIcon {
     display: block;
     position: fixed;
-    top: 50%;
-    right: 0;
+    vertical-align: top;
+
+    top: 2%;
+    right: 20%;
     transform: translate(-100%, -50%);
     width: 2rem;
     height: 2rem;
     cursor: pointer;
-    color: #ffdd40;
+    color: #e85635;
   }
 }
