@@ -77,25 +77,27 @@ const ImageCarousel = () => {
       <div className={styles.carousel}>
         <div className={styles.mainImage}>
           {isLoading ? (
-            <>
+            <div>
               <Skeleton variant="rectangular" width={420} height={580} />
               <Skeleton variant="text" width={300} />
               <Skeleton variant="text" width={200} />
-            </>
+            </div>
           ) : events.length > 0 && (
-            <>
+            <div className={styles.carouselCard}>
               <div className={styles.captionAbove}>{`${events[activeIndex].caption.toUpperCase()}`}</div>
-              <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
-              <div className={styles.captionBelow}>
-                {`${events[activeIndex].location.toUpperCase()}  - ${events[activeIndex].date}`}
-              </div>
               <button onClick={() => { goToPrev(); resetTimer(); }} className={styles.prevButton}>
                 <i className="bi bi-chevron-left"></i>
               </button>
+              <div className={styles.imgContainer}>
+                <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
+              </div>
               <button onClick={() => { goToNext(); resetTimer(); }} className={styles.nextButton}>
                 <i className="bi bi-chevron-right"></i>
               </button>
-            </>
+              <div className={styles.captionBelow}>
+                {`${events[activeIndex].location.toUpperCase()}  - ${events[activeIndex].date}`}
+              </div>
+            </div>
           )}
         </div>
       </div>
