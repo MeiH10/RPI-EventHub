@@ -10,6 +10,8 @@ function SignupModal() {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const { login } = useAuth();  // Use the login method from AuthContext
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleClose = () => {
     setShow(false);
@@ -17,7 +19,14 @@ function SignupModal() {
   };
   const handleShow = () => setShow(true);
 
-  const handleSignup = async () => {
+  const handleSignup = async (e) => {
+
+    e.preventDefault();
+    if(isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);    
+
     if (!email || !password || !username) {
       setError('Please fill in all fields.');
       return;
@@ -37,7 +46,10 @@ function SignupModal() {
     try {
       const response = await axios.post('http://localhost:5000/signup', user);
       console.log('Signup successful');
-      login();  // Log the user in
+      login(response.data.token);  
+      localStorage.setItem('token', response.data.token); 
+
+
       localStorage.setItem('token', response.data.token);  // Save the token
       handleClose();
     } catch (error) {
@@ -100,7 +112,7 @@ function SignupModal() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSignup}>
+          <Button variant="primary" onClick={handleSignup} disabled={isSubmitting}>
             Sign Up
           </Button>
         </Modal.Footer>

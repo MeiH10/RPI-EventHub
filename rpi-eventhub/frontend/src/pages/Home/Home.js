@@ -11,7 +11,7 @@ const Home = () => {
     <div>
       <NavBar />
 
-      <div className={`${HomeCSS.content} container-fluid`}>
+      <div className={`${HomeCSS.content} container-fluid containerFluid`}>
         {/* Hero section */}
         <div className="row">
           <div className="col-7 p-5">

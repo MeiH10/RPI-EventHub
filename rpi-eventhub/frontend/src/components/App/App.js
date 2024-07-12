@@ -15,6 +15,8 @@ import Playground from '../../pages/Playground/Playground'; // Adjust path if ne
 import AboutUs from '../../pages/AboutUs/AboutUs'; // Adjust path if needed
 import Experimental from '../../pages/Experimental/Experimental'; // Adjust path if needed
 import AllEvents from "../../pages/Events/AllEventPage/AllEvents";
+import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust path if needed
+import Calendar from '../../pages/Calendar/Calendar';
 
 const router = createBrowserRouter([
   {
@@ -38,8 +40,16 @@ const router = createBrowserRouter([
     element: <Experimental />,
   },
   {
+    path: "/search",
+    element: <SearchResults />,
+  },
+  {
     path: "/all-events",
     element: <AllEvents />,
+  },
+  {
+    path: "/calendar",
+    element: <Calendar />
   }
 ]);
 

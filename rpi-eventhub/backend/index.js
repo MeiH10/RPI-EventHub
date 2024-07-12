@@ -11,6 +11,8 @@ const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
 
+const sharp = require('sharp');
+
 
 require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
@@ -22,6 +24,20 @@ const upload = multer();
 const app = express();
 
 app.use(cors());
+
+
+const compressImage = async (fileBuffer) => {
+  try {
+    const compressedBuffer = await sharp(fileBuffer)
+      .resize({ width: 1000 }) 
+      .jpeg({ quality: 95 })
+      .toBuffer();
+    return compressedBuffer;
+  } catch (error) {
+    console.error('Error compressing image:', error);
+    throw error;
+  }
+};
 
 
 const authenticate = async (req, res, next) => {
@@ -116,11 +132,13 @@ app.post('/signup', async (req, res) => {
     });
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username}, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     res.status(201).json({
       message: "User created successfully. Please check your email to verify your account.",
-      token: token  // Send the token to the client
+      token: token,
+      email: user.email, 
+      emailVerified: user.emailVerified
     });
   } catch (error) {
     res.status(500).json({ message: "Error creating user", error: error.message });
@@ -129,18 +147,23 @@ app.post('/signup', async (req, res) => {
 
 app.post('/verify-email', async (req, res) => {
   const { email, verificationCode } = req.body;
+
+  console.log(email, verificationCode);
   const user = await User.findOne({ email, verificationCode });
 
   if (!user) {
     return res.status(400).json({ message: "Invalid email or verification code." });
   }
 
-  // Check if the code is correct and not expired
+
+
   if (user.verificationCode === verificationCode) {
     user.emailVerified = true;
-    user.verificationCode = ''; // Clear the verification code
+    user.verificationCode = '';
     await user.save();
-    res.status(200).json({ message: "Email verified successfully." });
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified}, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+    res.status(200).json({ message: "Email verified successfully.", token});
   } else {
     res.status(400).json({ message: "Invalid verification code." });
   }
@@ -164,8 +187,10 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Password is incorrect" });
     }
     // Generate a token
-    const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '24h' });
-    res.status(200).json({ token, userId: user._id, message: "Logged in successfully" });
+    
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username  }, jwtSecret, { expiresIn: '24h' });
+    res.status(200).json({ token, userId: user._id, emailVerified: user.emailVerified, message: "Logged in successfully" });
+    
   } catch (error) {
     res.status(500).json({ message: "Login error", error: error.message });
   }
@@ -180,8 +205,11 @@ app.post('/events', upload.single('file'), async (req, res) => {
     let imageUrl = '';
 
     if (file) {
+
+      const compressedBuffer = await compressImage(file.buffer);
+
       const formData = new FormData();
-      formData.append('image', file.buffer.toString('base64'));
+      formData.append('image', compressedBuffer.toString('base64'));
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
         headers: {
@@ -264,6 +292,11 @@ app.delete('/events/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error deleting event', error: error.message });
   }
+});
+
+
+app.get('/verify-token', authenticate, (req, res) => {
+  res.sendStatus(200);
 });
 
 

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "./Navbar.css";
+import styles from "./Navbar.module.css";
 import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
 import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
 import { useAuth } from "../../context/AuthContext";
-
 import { useLocation } from 'react-router-dom';
+import VerifyModal from "../VerifyModal/VerifyModal";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, logout } = useAuth(); // Destructure isLoggedIn and logout from useAuth
+  const { isLoggedIn, emailVerified, logout } = useAuth(); // Destructure emailVerified
   const location = useLocation();
 
   const handleClick = () => setClick(!click);
@@ -21,21 +21,21 @@ const Navbar = () => {
   };
 
   const getNavLinkClass = (path) => {
-    return location.pathname === path ? 'nav-links active' : 'nav-links';
+    return location.pathname === path ? `${styles.navLinks} ${styles.active}` : styles.navLinks;
   };
 
   return (
     <>
-      <nav className="navbar">
-        <div className="nav-container">
-          <NavLink to="/" className="nav-logo">
-            <span className="icon">
+      <nav className={styles.navbar}>
+        <div className={styles.navContainer}>
+          <NavLink to="/" className={styles.navLogo}>
+            <span className={styles.icon}>
               <EventHubLogo2 />
             </span>
           </NavLink>
 
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li className="nav-item">
+          <ul className={click ? `${styles.navMenu} ${styles.active}` : styles.navMenu}>
+            <li className={styles.navItem}>
               <NavLink
                 to="/"
                 className={getNavLinkClass('/')}
@@ -44,7 +44,7 @@ const Navbar = () => {
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
+            <li className={styles.navItem}>
               <NavLink
                 to="/about-us"
                 className={getNavLinkClass('/about-us')}
@@ -53,7 +53,7 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            <li className="nav-item">
+            <li className={styles.navItem}>
               <NavLink
                 to="/all-events"
                 className={getNavLinkClass('/all-events')}
@@ -62,29 +62,42 @@ const Navbar = () => {
                 Events
               </NavLink>
             </li>
-            <li className="nav-item">
+            <li className={styles.navItem}>
+              <NavLink
+                to="/calendar"
+                className={getNavLinkClass('/calendar')}
+                onClick={handleClick}
+              >
+                Calendar
+              </NavLink>
+            </li>
+            <li className={styles.navItem}>
               <CreateEventModal />
             </li>
               {isLoggedIn ? (
-                <button onClick={handleLogout} className="nav-item btn-danger btn">Sign Out</button>
+                <div>
+                    <button onClick={handleLogout} className={`${styles.navItem} btn-danger btn`}>Sign Out</button>
+                    {!emailVerified && <VerifyModal />}
+                </div>
+                
               ) : (
                 <>
-                  <li className="nav-item">
+                  <li className={styles.navItem}>
                     <LoginModal />
                   </li>
-                  <li className="nav-item">
+                  <li className={styles.navItem}>
                     <SignupModal />
                   </li>
                 </>
               )}
           </ul>
-          <div className="nav-icon" onClick={handleClick}>
+          <div className={styles.navIcon} onClick={handleClick}>
             {click ? (
-              <span className="icon">
+              <span className={styles.icon}>
                 <HamburgerMenuOpen />
               </span>
             ) : (
-              <span className="icon">
+              <span className={styles.icon}>
                 <HamburgerMenuClose />
               </span>
             )}

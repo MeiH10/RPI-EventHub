@@ -1,123 +1,85 @@
-import React from 'react'
-import AboutUsCSS from './AboutUs.modular.css'
-import Navbar from '../../components/Navbar/Navbar'
-import Footer from '../../components/Footer/Footer'
-import EventHubLogo from "../../assets/EventHubLogo1.svg";
-import RPIseal from '../../assets/RF0010-04 Small Seal-RGB-White.svg';
-import RPIBridgePhoto from '../../assets/RPIBridgePhoto.jpg'
-import ProfilePicImage from '../../assets/ProfilePicImage.svg'
+import React, { useEffect, useState } from 'react';
+import styles from './AboutUs.module.css'; // Import the CSS Module
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
+import RPIBridgePhoto from '../../assets/RPIBridgePhoto.jpg';
+import { Skeleton } from '@mui/material';
 
 function AboutUs() {
-  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    return (
-        <div className='footer-container'>
-          <Navbar />
+  const [contributors, setContributors] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     
-          <div className="container-fluid content">
-            
-            <div className="row">
-              <div className="col-7 p-5">
-                
-                <div className="title text-start first">
-                  <h1>About Us</h1>
-                  <h6>RPI EventHub</h6>
-                </div>
-                <div className="grid">
-    
-                    <div className="about-us-text second">
-                        <h4>Mission Statement</h4>
-                        EventHub is dedicated to connecting the students of RPI with events
-                        happening all over campus. Through this website, we hope to foster
-                        greater community, connection, and collaboration throughout the campus.
-                        Our hope is for RPI students and staff to be able to effortlessly create,
-                        advertise, and explore diverse campus events, fostering a vibrant and
-                        connected university community.
-                    </div>
-                    
-                </div>
-                 
+    async function fetchContributors() {
+      try {
+        const response = await fetch('https://api.github.com/repos/MeiH10/RPI-EventHub/contributors');
+        const data = await response.json();
+        setContributors(data);
+        setIsLoading(false);
+
+
+      } catch (error) {
+        console.error('Error fetching contributors:', error);
+      }
+    }
+
+    fetchContributors();
+  }, []);
+
+  return (
+    <div className={styles.footerContainer}>
+      <Navbar />
+      <div className="containerFluid container-fluid">
+        <div className="row">
+          <div className="col-7 p-5">
+            <div className={`${styles.title} text-start ${styles.first}`}>
+              <h1>About Us</h1>
+              <h6>RPI EventHub</h6>
             </div>
-    
-              <div className="anim col-5 p-5 second">
-                <img src={RPIBridgePhoto} id="bridge" alt="bridge" width="480"></img>
+            <div className={styles.grid}>
+              <div className={`${styles.aboutUsText} ${styles.second}`}>
+                <h4>Mission Statement</h4>
+                EventHub is dedicated to connecting the students of RPI with events
+                happening all over campus. Through this website, we hope to foster
+                greater community, connection, and collaboration throughout the campus.
+                Our hope is for RPI students and staff to be able to effortlessly create,
+                advertise, and explore diverse campus events, fostering a vibrant and
+                connected university community.
               </div>
-
             </div>
-
-            <hr></hr>
-
-            <div className="developers third">
-                <h4 className="title">Developers</h4>
-                <div className="row">
-
-                  <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
-                    <h6 className="devtext">Mei H - Project Lead</h6>
-                    <p className="devtext">
-                      <a href="mailto:huangm10@rpi.edu" target="_blank">huangm10@rpi.edu</a>
-                    </p>
-                  </div>
-
-                  <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
-                    <h6 className="devtext">William F</h6>
-                    <p className="devtext">
-                      <a href="mailto:fernaw@rpi.edu" target="_blank">fernaw@rpi.edu</a>
-                    </p>
-                  </div>
-
-                  <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
-                    <h6 className="devtext">Nithin V</h6>
-                    <p className="devtext">
-                      <a href="mailto:vadakn@rpi.edu" target="_blank">vadakn@rpi.edu</a>
-                    </p>
-                  </div>
-
-                  <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
-                    <h6 className="devtext">Jordyn Y</h6>
-                    <p className="devtext">
-                      <a href="mailto:youngj22@rpi.edu" target="_blank">youngj22@rpi.edu</a>
-                    </p>
-                  </div>
-
-                  <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
-                    <h6 className="devtext">Henry T</h6>
-                    <p className="devtext">
-                      <a href="mailto:thealh@rpi.edu" target="_blank">thealh@rpi.edu</a>
-                    </p>
-                  </div>
-
-                  <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
-                    <h6 className="devtext">Hari K</h6>
-                    <p className="devtext">
-                      <a href="mailto:kimh21@rpi.edu" target="_blank">kimh21@rpi.edu</a>
-                    </p>
-                  </div>
-
-                  <div className="column">
-                    <img src={ProfilePicImage} height="150"></img>
-                    <h6 className="devtext">Felix T</h6>
-                    <p className="devtext">
-                      <a href="mailto:tianf2@rpi.edu" target="_blank">tianf2@rpi.edu</a>
-                    </p>
-                  </div>
-
-                  
-
-                </div>
-
-            </div>
-
-            <hr></hr>
-
           </div>
-          <Footer />
+          <div className={`${styles.anim} col-5 p-5 ${styles.second}`}>
+            <img src={RPIBridgePhoto} id="bridge" alt="bridge" width="480"></img>
+          </div>
         </div>
-      );
+        <hr className={styles.hr} />
+        <div className={styles.developers}>
+          <h4 className={styles.title}>Developers</h4>
+          <div className="row">
+            {isLoading ? (
+              Array.from(new Array(5)).map((_, index) => (
+                <div className={`col-4 ${styles.column}`} key={index}>
+                  <Skeleton variant="circular" width={150} height={150} />
+                  <Skeleton variant="text" width={150} />
+                </div>
+              ))
+            ) : (
+              contributors.map(contributor => (
+                <div className={`col-4 ${styles.column}`} key={contributor.login}>
+                  <img src={contributor.avatar_url} className={styles.profilePic} alt="Profile" />
+                  <h6 className={styles.devText}>{contributor.login}</h6>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+        <hr className={styles.hr} />
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
-export default AboutUs
+export default AboutUs;
