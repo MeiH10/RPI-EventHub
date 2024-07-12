@@ -1,17 +1,16 @@
-
 .rsvpButton {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .rsvpButton:hover {
-    background-color: #0056b3;
-  }
-  
+  bottom: 20px;
+  font-family: Italiana, serif;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #ff0000;
+  color: #ffffff!important; /* Change text color to white */
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.rsvpButton:hover {
+  background-color: #ff0000;
+  color: #ffffff; /* Ensure the text color stays white on hover */
+}
