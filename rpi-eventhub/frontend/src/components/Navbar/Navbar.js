@@ -33,7 +33,7 @@ const Navbar = () => {
               <EventHubLogo2 />
             </span>
           </NavLink>
-
+          <ul className={click ? `${styles.navMenu3} ${styles.active}` : styles.navMenu3}>
           <ul className={click ? `${styles.navMenu} ${styles.active}` : styles.navMenu}>
           <li className={styles.navItem}>
               <NavLink
@@ -62,7 +62,8 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            
+            </ul>
+            <ul className={click ? `${styles.navMenu2} ${styles.active}` : styles.navMenu2}>
             <li className={styles.navItem}>
               <CreateEventModal />
             </li>
@@ -82,7 +83,9 @@ const Navbar = () => {
                   </li>
                 </>
               )}
-          </ul>
+              </ul>
+              </ul>
+          
           <div className={styles.navIcon} onClick={handleClick}>
             {click ? (
               <span className={styles.icon}>
