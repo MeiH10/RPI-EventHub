@@ -17,10 +17,7 @@
   
 }
 
-ul {
-  margin: 0;
-  padding: 0;
-}
+
 
 .navContainer {
   /* width: 100%; */
@@ -60,6 +57,7 @@ ul {
 .navMenu, .navMenu2, .navMenu3 {
   display: flex;
   align-items: center;
+  margin: 0;
 }
 
 .navLogo .icon {
@@ -77,9 +75,7 @@ ul {
   width:100%;
   justify-self: right;
   justify-content: space-between;
-  align-items: center;
-  margin: 0;
-  
+  align-items: center;  
 
 }
 
@@ -91,6 +87,8 @@ ul {
   justify-self: left;
   justify-content: left;
   align-items: center;
+  margin: 0;
+  padding: 0;
 
 }
 .navMenu2 {
@@ -140,7 +138,7 @@ ul {
 }
 
 .navIcon {
-  display: flex;
+  display: none;
   color: #ff0000;
   align-items: center;
   justify-content: center;
@@ -150,8 +148,8 @@ ul {
 .navIcon .icon {
   display: inline-block;
   vertical-align: middle;
-  width: 4rem;
-  height: 4rem;
+  width: 5rem;
+  height: 5rem;
 }
 
 @media screen and (max-width: 960px) {
