@@ -62,8 +62,6 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            </ul>
-            <ul className={click ? `${styles.navMenu2} ${styles.active}` : styles.navMenu2}>
             <li className={styles.navItem}>
               <NavLink
                 to="/calendar"
@@ -73,6 +71,9 @@ const Navbar = () => {
                 Calendar
               </NavLink>
             </li>
+
+            </ul>
+            <ul className={click ? `${styles.navMenu2} ${styles.active}` : styles.navMenu2}>
             <li className={styles.navItem}>
               <CreateEventModal />
             </li>
