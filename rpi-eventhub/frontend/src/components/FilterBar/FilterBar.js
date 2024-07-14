@@ -1,46 +1,54 @@
-import React, { useState } from 'react';
-import './FilterBar.css';
+import React, { useState, useEffect } from 'react';
+import styles from './FilterBar.module.css';
 
-const Filter = ({ onFilterChange }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [category, setCategory] = useState('');
+function FilterBar({ tags, onFilterChange, filteredCount }) {
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTime, setSelectedTime] = useState('');
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    onFilterChange(e.target.value, category);
-  };
+    const handleTagChange = (tag) => {
+        setSelectedTags((prev) =>
+            prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+        );
+    };
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    onFilterChange(searchTerm, e.target.value);
-  };
+    const handleTimeChange = (e) => {
+        setSelectedTime(e.target.value);
+    };
 
-  return (
-    <div className="filter-container">
-      <input
-        type="text"
-        placeholder="Search events..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="filter-search"
-      />
-      <select value={category} onChange={handleCategoryChange} className="filter-category">
-        <option value="">All Categories</option>
-        <option value="Sports">Sports</option>
-        <option value="Music">Music</option>
-        <option value="Tech">Tech</option>
-        <option value="Art">Art</option>
-        <option value="Academic">Academic</option>
-        <option value="Workshop">Workshop</option>
-        <option value="Greek Life">Greek Life</option>
-        <option value="Free">Free</option>
-        <option value="Food/Drink">Food/Drink</option>
-        <option value="Conference">Conference</option>
-        <option value="Career">Career</option>
-      </select>
-    </div>
-  );
-};
+    useEffect(() => {
+        onFilterChange({ tags: selectedTags, time: selectedTime });
+    }, [selectedTags, selectedTime, onFilterChange]);
 
-export default Filter;
+    return (
+        <div className={styles.sidebar}>
+            <h2>Filters</h2>
+            <div className={styles.filterSection}>
+                <h3>Filtered Results: {filteredCount}</h3>
+            </div>
+            <div className={styles.filterSection}>
+                <h3>Tags</h3>
+                {tags.map((tag) => (
+                    <div key={tag}>
+                        <input
+                            type="checkbox"
+                            id={tag}
+                            value={tag}
+                            onChange={() => handleTagChange(tag)}
+                        />
+                        <label htmlFor={tag}>{tag}</label>
+                    </div>
+                ))}
+            </div>
+            <div className={styles.filterSection}>
+                <h3>Time</h3>
+                <select onChange={handleTimeChange} value={selectedTime}>
+                    <option value="">All</option>
+                    <option value="past">Past Events</option>
+                    <option value="upcoming">Upcoming Events</option>
+                </select>
+            </div>
+        </div>
+    );
+}
 
+export default FilterBar;

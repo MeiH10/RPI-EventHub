@@ -15,3 +15,25 @@
     margin-bottom: 100px;
     padding-top: 100px;
 }
+
+.filter-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter-search, .filter-category {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.filter-search {
+    width: 70%;
+}
+
+.filter-category {
+    width: 28%;
+}
