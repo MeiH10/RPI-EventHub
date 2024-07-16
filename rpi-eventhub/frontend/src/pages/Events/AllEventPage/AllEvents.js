@@ -36,12 +36,19 @@ function AllEvents() {
                 filters.tags.every(tag => event.tags.includes(tag))
             );
         }
+        const now = new Date();
         if (filters.time) {
-            const now = new Date();
             if (filters.time === 'past') {
                 filtered = filtered.filter(event => new Date(event.date) < now);
             } else if (filters.time === 'upcoming') {
                 filtered = filtered.filter(event => new Date(event.date) >= now);
+            } else if (filters.time === 'today') {
+                const todayStart = new Date(now.setHours(0, 0, 0, 0));
+                const todayEnd = new Date(now.setHours(23, 59, 59, 999));
+                filtered = filtered.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate >= todayStart && eventDate <= todayEnd;
+                });
             }
         }
         setFilteredEvents(filtered);
@@ -54,10 +61,14 @@ function AllEvents() {
         <div className="allEvents">
             <Navbar />
             <div className="container-fluid" style={{ display: 'flex' }}>
-                <FilterBar tags={availableTags} onFilterChange={handleFilterChange} />
+                <FilterBar 
+                    tags={availableTags} 
+                    onFilterChange={handleFilterChange} 
+                    filteredCount={filteredEvents.length} 
+                />
 
                 <div className={`${styles.eventsDisplayContainer}`} style={{ marginLeft: '270px', flex: 1 }}>
-                    <p>Filtered results: {filteredEvents.length}</p>
+
                 {isLoading ? (
                     Array.from(new Array(10)).map((_, index) => (
                         <div key={index} className={styles.skeletonWrapper}>

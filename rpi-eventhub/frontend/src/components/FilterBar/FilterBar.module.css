@@ -1,9 +1,10 @@
 .sidebar {
-  width: 200px;
+  width: 300px;
   padding: 20px;
-  background-color: #f4f4f4;
-  border-right: 1px solid #ddd;
-  margin-top: 80px; /* Add margin-top for space between navbar and filter */
+  background-color: rgba(128, 128, 128, 0.35);
+  border: 2px solid #000; 
+  border-radius: 10px; 
+  margin-top: 80px; 
 }
 
 .filterSection {
@@ -12,4 +13,42 @@
 
 .filterSection h3 {
   margin-bottom: 10px;
+}
+
+.filterSection .checkboxWrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.filterSection label {
+    font-size: 23px; 
+    margin-left: 10px; 
+    color: #000; 
+}
+
+.filterSection input[type="checkbox"] {
+    transform: scale(1.5); 
+    margin-right: 10px; 
+    border-radius: 4px; 
+    appearance: none; 
+    background-color: #fff; 
+    border: 2px solid #000; 
+    width: 20px; 
+    height: 20px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.filterSection input[type="checkbox"]:checked {
+    background-color: #fff; 
+}
+
+.filterSection input[type="checkbox"]:checked::before {
+    content: '✔'; 
+    color: #000; 
+    font-weight: bold; 
+    font-size: 16px; 
 }

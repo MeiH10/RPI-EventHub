@@ -28,7 +28,7 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
             <div className={styles.filterSection}>
                 <h3>Tags</h3>
                 {tags.map((tag) => (
-                    <div key={tag}>
+                    <div key={tag} className={styles.checkboxWrapper}>
                         <input
                             type="checkbox"
                             id={tag}
@@ -45,6 +45,9 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                     <option value="">All</option>
                     <option value="past">Past Events</option>
                     <option value="upcoming">Upcoming Events</option>
+                    <option value="today">Happening Today</option>
+
+
                 </select>
             </div>
         </div>
