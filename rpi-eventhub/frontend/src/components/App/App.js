@@ -48,6 +48,10 @@ const router = createBrowserRouter([
     path: "/all-events",
     element: <AllEvents />,
   },
+  // {
+  //   path: "/rsvp",
+  //   element: <RsvpButton />,
+  // },
   {
     path: "/events/:eventId", // Dynamic route for event details
     element: <EventDetails />,

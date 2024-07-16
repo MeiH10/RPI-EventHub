@@ -101,9 +101,10 @@ function CreateEventModal() {
     formData.append('file', file); // Attach the file
     formData.append('date', date);
     formData.append('location', location);
-    formData.append('location', location);
+    formData.append('tags', tags);
     formData.append('time', time);
-    
+    formData.append('club', club);
+    formData.append('rsvp', rsvp);
     
     let errors = {};
     if (!title) errors.title= true; 

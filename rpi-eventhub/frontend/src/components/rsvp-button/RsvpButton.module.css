@@ -1,13 +1,18 @@
 .rsvpButton {
+  display: inline-block;
   bottom: 20px;
   font-family: Italiana, serif;
   right: 20px;
-  padding: 10px 20px;
-  background-color: #ff0000;
+  padding: 15px 30px;
+  background-color: #eb1220;
   color: #ffffff!important; /* Change text color to white */
+  border-radius: 8px;
   text-decoration: none;
-  border-radius: 5px;
-  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+  font-size: 18px;
+    font-weight: bold;
 }
 
 .rsvpButton:hover {

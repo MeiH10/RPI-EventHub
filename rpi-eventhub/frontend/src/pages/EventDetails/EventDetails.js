@@ -9,7 +9,13 @@ import { useEvents } from '../../context/EventsContext';
 import RsvpButton from '../../components/rsvp-button/RsvpButton';
 import { format } from 'date-fns';
 
-
+const formatTime = (timeString) => {
+    let [hours, minutes] = timeString.split(':');
+    hours = parseInt(hours, 10);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert to 12-hour format
+    return `${hours}:${minutes} ${ampm}`;
+};
 const EventDetails = () => {
     const { eventId } = useParams();
     const { events } = useEvents();
@@ -32,9 +38,13 @@ const EventDetails = () => {
                     <p><strong>About:</strong> {event.description}</p>
                     <p><strong>Club:</strong> {event.club}</p>
                     <p><strong>Date:</strong> {format(new Date(event.date), 'MMMM do, yyyy')}</p>
-                    <p><strong>Time:</strong> {event.time}</p>
-                    <p><strong>Tags:</strong> {event.tags.join(', ')} </p>
-                    <RsvpButton />
+                    <p><strong>Time:</strong> {event.time && formatTime(event.time)}</p>
+                    {event.tags && event.tags.length > 0 && (
+                    <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
+                    )}
+
+                    {event.rsvp && <RsvpButton rsvp={event.rsvp} />}
+                   
                     
                 </div>
             </div>
