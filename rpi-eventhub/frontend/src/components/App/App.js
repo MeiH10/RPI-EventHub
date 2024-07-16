@@ -17,6 +17,7 @@ import Experimental from '../../pages/Experimental/Experimental'; // Adjust path
 import AllEvents from "../../pages/Events/AllEventPage/AllEvents";
 import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust path if needed
 import EventDetails from '../../pages/EventDetails/EventDetails';
+import Calendar from '../../pages/Calendar/Calendar';
 
 const router = createBrowserRouter([
   {
@@ -48,13 +49,12 @@ const router = createBrowserRouter([
     path: "/all-events",
     element: <AllEvents />,
   },
-  // {
-  //   path: "/rsvp",
-  //   element: <RsvpButton />,
-  // },
   {
     path: "/events/:eventId", // Dynamic route for event details
     element: <EventDetails />,
+  {
+    path: "/calendar",
+    element: <Calendar />
   }
 ]);
 

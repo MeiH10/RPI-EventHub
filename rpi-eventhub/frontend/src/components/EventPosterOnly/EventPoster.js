@@ -3,11 +3,13 @@ import style from './EventPoster.module.css';
 import { Link } from 'react-router-dom';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
+import { useEffect, useState } from 'react';
 
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   console.log("tags: ", tags);
   const { username } = useAuth();  // Destructure username from useAuth
   const { deleteEvent } = useEvents();
+  const [imageSize, setImageSize] = useState(null);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -27,6 +29,24 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
     return false;
   }
 
+
+  useEffect(() => {
+    const fetchImageSize = async () => {
+      try {
+        const response = await fetch(posterSrc, { method: 'HEAD' });
+        const contentLength = response.headers.get('Content-Length');
+        if (contentLength) {
+          setImageSize((parseInt(contentLength) / 1024).toFixed(2)); 
+        }
+      } catch (error) {
+        console.error('Failed to fetch image size:', error);
+      }
+    };
+
+    fetchImageSize();
+  }, [posterSrc]);
+
+
   return (
     <Link to={`/events/${id}`} className={style.eventLink}> {/* Wrap with Link */}
     <div className={style.eventPosterContainer}>
@@ -36,6 +56,7 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
         <p className={style.eventPosterDescription}>{description}</p>
         {canSeeDeleteButton(username) && <button onClick={handleDelete} className="delete-button btn-danger btn">Delete</button>}
         <p>Posted by {author}</p>
+        {/* {imageSize && <p>Image Size: {imageSize} KB</p>} */}
         <ul>
           {tags.map((tag, index) =>(
           <li key={index}>{tag}</li>

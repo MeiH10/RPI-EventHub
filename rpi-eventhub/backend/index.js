@@ -11,6 +11,8 @@ const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
 
+const sharp = require('sharp');
+
 
 require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
@@ -22,6 +24,20 @@ const upload = multer();
 const app = express();
 
 app.use(cors());
+
+
+const compressImage = async (fileBuffer) => {
+  try {
+    const compressedBuffer = await sharp(fileBuffer)
+      .resize({ width: 1000 }) 
+      .jpeg({ quality: 95 })
+      .toBuffer();
+    return compressedBuffer;
+  } catch (error) {
+    console.error('Error compressing image:', error);
+    throw error;
+  }
+};
 
 
 const authenticate = async (req, res, next) => {
@@ -190,8 +206,11 @@ app.post('/events', upload.single('file'), async (req, res) => {
     let imageUrl = '';
 
     if (file) {
+
+      const compressedBuffer = await compressImage(file.buffer);
+
       const formData = new FormData();
-      formData.append('image', file.buffer.toString('base64'));
+      formData.append('image', compressedBuffer.toString('base64'));
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
         headers: {
