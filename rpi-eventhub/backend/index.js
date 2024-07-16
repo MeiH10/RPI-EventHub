@@ -228,7 +228,15 @@ app.get('/events', async (req, res) => {
   }
 });
 
-
+app.put('http://localhost:5000/events/${id}', async (req,res) => {
+  try {
+    await axios.put(`http://localhost:5000/events/${id}`);
+    setEvents((prevEvents) => 
+        prevEvents.map(event => event._id === id ? { ...event, likes: event.likes + 1 } : event));
+} catch (error) {
+    console.error('Failed to like event:', error);
+}
+});
 
 app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
   const { id } = req.params;
