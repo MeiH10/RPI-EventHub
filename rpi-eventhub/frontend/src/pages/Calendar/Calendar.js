@@ -1,10 +1,37 @@
+import React, { useEffect, useState } from 'react';
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import CalendarCSS from './Calendar.module.css';
 import ImageCarousel from "../../components/Carousel/Carousel";
 
 const CalendarPage = () => {
+  const [weekRange, setWeekRange] = useState({ start: '', end: '' });
+
+  useEffect(() => {
+    const getWeekRange = () => {
+      const today = new Date();
+      const currentDay = today.getDay(); // gets the current day of the week (0-6, where 0 is Sunday)
+      const firstDayOfWeek = new Date(today.setDate(today.getDate() - currentDay)); // first day of the current week (Sunday)
+      const lastDayOfWeek = new Date(today.setDate(today.getDate() + 6)); // last day of the current week (Saturday)
+
+      const formatDate = (date) => {
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const yy = String(date.getFullYear()).slice(-2);
+        return `${mm}/${dd}/${yy}`;
+      };
+
+      setWeekRange({
+        start: formatDate(firstDayOfWeek),
+        end: formatDate(lastDayOfWeek)
+      });
+    };
+
+    getWeekRange();
+  }, []);
+
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
   return (
     <div>
       <NavBar />
@@ -19,14 +46,14 @@ const CalendarPage = () => {
 
             <div className={CalendarCSS.grid}>
               <div className={`${CalendarCSS.weeklyEvents} ${CalendarCSS.anim2}`}>
-                <h2>WEEKLY EVENTS</h2>
+                <h2>Week of {weekRange.start} - {weekRange.end}</h2>
                 <div className={CalendarCSS.week}>
                   <div className={CalendarCSS.day}>
                     <h3>Sunday</h3>
                     <p>No events</p>
                   </div>
                   <div className={CalendarCSS.day}>
-                    <h3>Mon</h3>
+                    <h3>Monday</h3>
                     <p>No events</p>
                   </div>
                   <div className={CalendarCSS.day}>
@@ -53,6 +80,10 @@ const CalendarPage = () => {
               </div>
             </div>
             <hr className="text-start" />
+            <div className={`${CalendarCSS.carouselContainer} ${CalendarCSS.anim2} col-5`}>
+              {/* <SearchBar /> */}
+              <ImageCarousel />
+            </div>
           </div>
         </div>
       </div>

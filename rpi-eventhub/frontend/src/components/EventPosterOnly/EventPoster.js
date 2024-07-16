@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import style from './EventPoster.module.css';
+import { Link } from 'react-router-dom';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
 import { useEffect, useState } from 'react';
@@ -47,6 +48,7 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
 
 
   return (
+    <Link to={`/events/${id}`} className={style.eventLink}> {/* Wrap with Link */}
     <div className={style.eventPosterContainer}>
       <img src={posterSrc} alt={title} className={style.eventPosterImg} />
       <div className={style.eventPosterDetails}>
@@ -62,6 +64,7 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
         </ul>
       </div>
     </div>
+    </Link>
   );
 };
 
