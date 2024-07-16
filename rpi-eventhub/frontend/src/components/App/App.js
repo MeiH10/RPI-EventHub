@@ -52,6 +52,7 @@ const router = createBrowserRouter([
   {
     path: "/events/:eventId", // Dynamic route for event details
     element: <EventDetails />,
+  },
   {
     path: "/calendar",
     element: <Calendar />
