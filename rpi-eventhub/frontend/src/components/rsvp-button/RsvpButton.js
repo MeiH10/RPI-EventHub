@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import RsvpButtonCSS from './RsvpButton.module.css'
 
-const RsvpButton = () => {
+const RsvpButton = ({ rsvp }) => {
     return ( 
         //replace /rsvp with link to google form given by club officer
-        <Link to="/rsvp" className={RsvpButtonCSS.rsvpButton}>
+        <a href={rsvp} className={RsvpButtonCSS.rsvpButton} target="_blank" rel="noopener noreferrer">
             RSVP
-        </Link>
+    </a>
 
     );
 };

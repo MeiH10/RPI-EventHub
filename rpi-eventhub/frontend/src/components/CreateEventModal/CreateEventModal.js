@@ -29,7 +29,10 @@ function CreateEventModal() {
   const [isSuccess, setIsSuccess] = useState(null); // null means no message, true means success, false means error
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
+  const [club, setClub] = useState('');
+  const [rsvp, setRSVP] = useState('');
   const [description, setDescription] = useState('');
+  const [time, setTime] = useState('');
   const [file, setFile] = useState(null);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
@@ -99,16 +102,21 @@ function CreateEventModal() {
     formData.append('date', date);
     formData.append('location', location);
     formData.append('tags', tags);
-    
+    formData.append('time', time);
+    formData.append('club', club);
+    formData.append('rsvp', rsvp);
     
     let errors = {};
     if (!title) errors.title= true; 
     if (!description) errors.description = true; 
     if (!date) errors.date = true;
     if (!location) errors.location = true;
+    if (!time) errors.time = true;
+    if (!club) errors.club = true;
 
-    if (!description || !title || !location || !date) {
-      setError('Please fill in all fields. Tags and File are optional!');
+
+    if (!description || !title || !location || !date || !time || !club) {
+      setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       return;
     }
 
@@ -156,19 +164,19 @@ function CreateEventModal() {
         {error && <Alert variant="danger">{error}</Alert>}
           <Form>
             <Form.Group controlId="eventTitle">
-              <Form.Label>Title</Form.Label>
+              <Form.Label>Title <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
                 placeholder="Enter event title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                isInvalid={!title}
+                //isInvalid={!title}
               />
             </Form.Group>
 
             <Form.Group controlId="eventDescription">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Description <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 as="textarea"
                 required
@@ -176,10 +184,20 @@ function CreateEventModal() {
                 placeholder="Event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                isInvalid={!description}
+                //isInvalid={!description}
               />
             </Form.Group>
-
+            <Form.Group controlId="eventClub">
+              <Form.Label>Club <span className='text-danger'>*</span></Form.Label>
+              <Form.Control
+                type="text"
+                required
+                placeholder="Enter club name"
+                value={club}
+                onChange={(e) => setClub(e.target.value)}
+                //isInvalid={!club}
+              />
+            </Form.Group>
             <Form.Group controlId="eventFile">
               <Form.Label>File (Poster or PDF)</Form.Label>
               <Form.Control
@@ -189,28 +207,49 @@ function CreateEventModal() {
             </Form.Group>
 
             <Form.Group controlId="eventDate">
-              <Form.Label>Date</Form.Label>
+              <Form.Label>Date <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="date"
                 placeholder="Event date"
+                required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                isInvalid={!date}
+                //isInvalid={!date}
+              />
+            </Form.Group>
+            <Form.Group controlId="eventTime">
+              <Form.Label>Time <span className='text-danger'>*</span></Form.Label>
+              <Form.Control
+                type="time"
+                required
+                placeholder="Event time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                //isInvalid={!time}
               />
             </Form.Group>
 
             <Form.Group controlId="eventLocation">
-              <Form.Label>Location</Form.Label>
+              <Form.Label>Location <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
                 placeholder="Event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                isInvalid={!location}
+                //isInvalid={!location}
               />
             </Form.Group>
+            <Form.Group controlId="eventRSVP">
+              <Form.Label>RSVP Link</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter RSVP Link"
+                value={rsvp}
+                onChange={(e) => setRSVP(e.target.value)}
 
+              />
+            </Form.Group>
             <Form.Group controlId="eventTags">
               <Form.Label>Tags (comma separated)</Form.Label>
               <Form.Control
