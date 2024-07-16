@@ -7,7 +7,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import { TextField } from '@mui/material';
 import { useAuth } from "../../context/AuthContext";
 
-
 const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID;
 const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY;
 
@@ -66,53 +65,50 @@ function CreateEventModal() {
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
-    if(isSubmitting) {
+    if (isSubmitting) {
       return;
     }
-    setIsSubmitting(true);    
+    setIsSubmitting(true);
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
-    console.log('username: ', username);
-    formData.append('poster', username); 
+    formData.append('poster', username);
     formData.append('file', file); // Attach the file
     formData.append('date', date);
     formData.append('location', location);
     formData.append('tags', tags);
-    
+
     let errors = {};
-    if (!title) errors.title= true; 
-    if (!description) errors.description = true; 
+    if (!title) errors.title = true;
+    if (!description) errors.description = true;
     if (!date) errors.date = true;
     if (!location) errors.location = true;
 
     if (!description || !title || !location || !date) {
       setError('Please fill in all fields. Tags and File are optional!');
+      setIsSubmitting(false);
       return;
     }
 
     if (!isLoggedIn || !emailVerified) {
       setError('Only verified users can create event. Please login or get verified');
+      setIsSubmitting(false);
       return;
     }
 
-    if (Object.keys(errors).length === 0) {
-      setSuccessOpen(true);
-
-      try {
-        const { data } = await axios.post('http://localhost:5000/events', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        addEvent(data); // Add the new event to the global context
-        setSuccessOpen(true); // Show success message
-      } catch (error) {
-        console.error('Failed to create event:', error);
-        setError(error.response ? error.response.data.message : error.message); // Ensure the error is a string
-      } finally {
-        setIsSubmitting(false);
-      }
+    try {
+      const { data } = await axios.post('http://localhost:5000/events', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      addEvent(data); // Add the new event to the global context
+      setSuccessOpen(true); // Show success message
+    } catch (error) {
+      console.error('Failed to create event:', error);
+      setError(error.response ? error.response.data.message : error.message); // Ensure the error is a string
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
