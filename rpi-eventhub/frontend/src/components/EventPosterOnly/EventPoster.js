@@ -48,11 +48,13 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
 
 
   return (
-    <Link to={`/events/${id}`} className={style.eventLink}> {/* Wrap with Link */}
     <div className={style.eventPosterContainer}>
       <img src={posterSrc} alt={title} className={style.eventPosterImg} />
       <div className={style.eventPosterDetails}>
-        <h2 className={style.eventPosterTitle}>{title}</h2>
+        <Link to={`/events/${id}`} className={style.eventLink}>
+          <h1 className={style.eventPosterTitle}>{title}</h1>
+        </Link>
+
         <p className={style.eventPosterDescription}>{description}</p>
         {canSeeDeleteButton(username) && <button onClick={handleDelete} className="delete-button btn-danger btn">Delete</button>}
         <p>Posted by {author}</p>
@@ -64,7 +66,6 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
         </ul>
       </div>
     </div>
-    </Link>
   );
 };
 
