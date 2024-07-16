@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
-import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from Material-UI
+import Snackbar from '@mui/material/Snackbar';
 import CheckIcon from '@mui/icons-material/Check';
 import { TextField } from '@mui/material';
 import { useAuth } from "../../context/AuthContext";
@@ -10,19 +10,6 @@ import { useAuth } from "../../context/AuthContext";
 
 const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID;
 const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY;
-
-
-
-function SuccessAlert({ open, handleClose }) {
-  return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert onClose={handleClose} icon={<CheckIcon fontSize="inherit" />} severity="success">
-        Event successfully created!
-      </Alert>
-    </Snackbar>
-  );
-}
-
 
 function CreateEventModal() {
   const [message, setMessage] = useState('');
@@ -35,16 +22,12 @@ function CreateEventModal() {
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState('');
   const [successOpen, setSuccessOpen] = useState(false); // State for success alert
-  const [failureClose, setClose] = useState(false); // State for success alert
   const [errorOpen, setErrorOpen] = useState({});
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { addEvent } = useEvents();
-
-
   const { isLoggedIn, emailVerified, username } = useAuth();
-
 
   const handleClose = () => {
     setShow(false);
@@ -55,22 +38,19 @@ function CreateEventModal() {
 
   const handleSuccessClose = () => {
     setSuccessOpen(false);
+    setShow(false); // Close the modal after success
   };
 
   const handleErrorClose = (field) => {
     setErrorOpen((prev) => ({ ...prev, [field]: false }));
   };
 
-
-
   useEffect(() => {
-    if (isSuccess !== null) {
-      const timer = setTimeout(() => {
-        setIsSuccess(null);
-      }, 3000);
+    if (successOpen) {
+      const timer = setTimeout(handleSuccessClose, 3000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess]);
+  }, [successOpen]);
 
   useEffect(() => {
     const timers = Object.keys(errorOpen).map((field) => {
@@ -100,7 +80,6 @@ function CreateEventModal() {
     formData.append('location', location);
     formData.append('tags', tags);
     
-    
     let errors = {};
     if (!title) errors.title= true; 
     if (!description) errors.description = true; 
@@ -112,7 +91,6 @@ function CreateEventModal() {
       return;
     }
 
-
     if (!isLoggedIn || !emailVerified) {
       setError('Only verified users can create event. Please login or get verified');
       return;
@@ -121,21 +99,22 @@ function CreateEventModal() {
     if (Object.keys(errors).length === 0) {
       setSuccessOpen(true);
 
-    try {
-      const { data } = await axios.post('http://localhost:5000/events', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      addEvent(data); // Add the new event to the global context
-      handleClose(); // Close the modal
-    } catch (error) {
-      console.error('Failed to create event:', error);
-    } finally {
-      setIsSubmitting(false);
+      try {
+        const { data } = await axios.post('http://localhost:5000/events', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        addEvent(data); // Add the new event to the global context
+        setSuccessOpen(true); // Show success message
+      } catch (error) {
+        console.error('Failed to create event:', error);
+        setError(error.response ? error.response.data.message : error.message); // Ensure the error is a string
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
-}
 
   return (
     <>
@@ -153,7 +132,8 @@ function CreateEventModal() {
           <Modal.Title>Create an Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        {error && <Alert variant="danger">{error}</Alert>}
+          {error && <Alert variant="danger">{error}</Alert>}
+          {successOpen && <Alert variant="success">Event created successfully!</Alert>}
           <Form>
             <Form.Group controlId="eventTitle">
               <Form.Label>Title</Form.Label>
@@ -163,7 +143,6 @@ function CreateEventModal() {
                 placeholder="Enter event title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                isInvalid={!title}
               />
             </Form.Group>
 
@@ -176,7 +155,6 @@ function CreateEventModal() {
                 placeholder="Event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                isInvalid={!description}
               />
             </Form.Group>
 
@@ -195,7 +173,6 @@ function CreateEventModal() {
                 placeholder="Event date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                isInvalid={!date}
               />
             </Form.Group>
 
@@ -207,7 +184,6 @@ function CreateEventModal() {
                 placeholder="Event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                isInvalid={!location}
               />
             </Form.Group>
 
@@ -231,8 +207,6 @@ function CreateEventModal() {
           </Button>
         </Modal.Footer>
       </Modal>
-      <SuccessAlert open={successOpen} handleClose={handleSuccessClose} />
-
     </>
   );
 }
