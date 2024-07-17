@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import config from '../../config';
 
 function SignupModal() {
   const [show, setShow] = useState(false);
@@ -44,7 +45,7 @@ function SignupModal() {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/signup', user);
+      const response = await axios.post(`${config.apiUrl}/signup`, user);
       console.log('Signup successful');
       login(response.data.token);  
       localStorage.setItem('token', response.data.token); 

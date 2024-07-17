@@ -35,6 +35,17 @@ const Navbar = () => {
           </NavLink>
           <ul className={click ? `${styles.navMenu3} ${styles.active}` : styles.navMenu3}>
           <ul className={click ? `${styles.navMenu} ${styles.active}` : styles.navMenu}>
+
+          <li className={styles.navItem}>
+              <NavLink
+                to="/"
+                className={getNavLinkClass('/')}
+                onClick={handleClick}
+              >
+                Home
+              </NavLink>
+            </li>
+            
           <li className={styles.navItem}>
               <NavLink
                 to="/all-events"
@@ -44,15 +55,7 @@ const Navbar = () => {
                 Events
               </NavLink>
             </li>
-            <li className={styles.navItem}>
-              <NavLink
-                to="/"
-                className={getNavLinkClass('/')}
-                onClick={handleClick}
-              >
-                Home
-              </NavLink>
-            </li>
+
             <li className={styles.navItem}>
               <NavLink
                 to="/about-us"

@@ -13,7 +13,7 @@ const eventSchema = new mongoose.Schema({
   time: {type: String, required: true},
   club: {type: String, required: true},
   rsvp: {type: String, required: false}
-});
+}, {creationTimestamp: true});
 
 const Event = mongoose.model('Event', eventSchema);
 

@@ -3,6 +3,7 @@ import styles from './Carousel.module.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import axios from 'axios';
 import { Skeleton } from '@mui/material';
+import config from '../../config';
 
 const placeholderImage = 'https://via.placeholder.com/518x671?text=No+Image+Available'; 
 
@@ -29,7 +30,7 @@ const ImageCarousel = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/events');
+        const response = await axios.get(`${config.apiUrl}/events`);
         setEvents(response.data.map(event => ({
           src: event.image || placeholderImage,
           caption: event.title,

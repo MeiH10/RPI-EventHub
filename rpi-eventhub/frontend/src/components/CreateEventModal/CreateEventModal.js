@@ -2,17 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
-import Snackbar from '@mui/material/Snackbar';
-import CheckIcon from '@mui/icons-material/Check';
-import { TextField } from '@mui/material';
 import { useAuth } from "../../context/AuthContext";
+import config from '../../config';
 
-const clientId = process.env.REACT_APP_IMGUR_CLIENT_ID;
-const imgBB_API_KEY = process.env.REACT_APP_imgBB_API_KEY;
 
 function CreateEventModal() {
-  const [message, setMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(null); // null means no message, true means success, false means error
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
   const [club, setClub] = useState('');
@@ -108,7 +102,7 @@ function CreateEventModal() {
     }
 
     try {
-      const { data } = await axios.post('http://localhost:5000/events', formData, {
+      const { data } = await axios.post(`${config.apiUrl}/events`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
