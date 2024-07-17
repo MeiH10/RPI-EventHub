@@ -65,6 +65,7 @@ function CreateEventModal() {
     if (isSubmitting) {
       return;
     }
+    setError('');
     setIsSubmitting(true);
     const formData = new FormData();
     formData.append('title', title);
