@@ -15,7 +15,7 @@ const SearchResults = () => {
     return (
         <div >
             <Navbar />
-        <div className={styles.container }>
+        <div className={`${styles.container} container-fluid containerFluid`}>
             
             <div className={styles.titleContainer}>
                 <h1 className={styles.title}>Events that match your search</h1>
