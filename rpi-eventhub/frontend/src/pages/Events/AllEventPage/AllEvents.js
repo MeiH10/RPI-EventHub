@@ -21,7 +21,6 @@ function AllEvents() {
 
         fetchData();
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
-    
     const sortEvents = (events, sortMethod, sortOrder) => {
         switch (sortMethod) {
             case 'date':
@@ -48,7 +47,7 @@ function AllEvents() {
                         </div>
                     ))
                 ) : (
-                    events.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
+                    sortEvents(events, sortMethod, sortOrder).map(event => (
                         <EventPoster
                             key={event._id}
                             id={event._id} // Pass event ID
