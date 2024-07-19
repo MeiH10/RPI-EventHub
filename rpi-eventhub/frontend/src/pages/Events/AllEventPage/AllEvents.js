@@ -47,7 +47,7 @@ function AllEvents() {
                         </div>
                     ))
                 ) : (
-                    sortEvents(events, sortMethod, sortOrder).map(event => (
+                    sortEvents(events, 'date', 'desc').map(event => (
                         <EventPoster
                             key={event._id}
                             id={event._id} // Pass event ID
