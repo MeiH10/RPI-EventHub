@@ -29,7 +29,7 @@ function AboutUs() {
   }, []);
 
   return (
-    <div className={styles.footerContainer}>
+    <div className='outterContainer'>
       <Navbar />
       <div className="containerFluid container-fluid">
         <div className="row">
