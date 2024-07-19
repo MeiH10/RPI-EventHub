@@ -10,6 +10,8 @@ import { Skeleton } from '@mui/material';
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents(); // Use deleteEvent from context
     const [isLoading, setIsLoading] = useState(true); // Add a loading state
+    const [sortMethod, setSortMethod] = useState('date'); // Default sorting method
+    const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +21,20 @@ function AllEvents() {
 
         fetchData();
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
-
+    
+    const sortEvents = (events, sortMethod, sortOrder) => {
+        switch (sortMethod) {
+            case 'date':
+                return events.sort((a, b) => sortOrder === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date));
+            case 'likes':
+                return events.sort((a, b) => sortOrder === 'asc' ? a.likes - b.likes : b.likes - a.likes);
+            case 'title':
+                return events.sort((a, b) => sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
+            default:
+                return events;
+        }
+    };
+    
     return (
         <div className="outterContainer">
             <Navbar />
@@ -53,5 +68,7 @@ function AllEvents() {
         </div>
     );
 }
+
+
 
 export default AllEvents;
