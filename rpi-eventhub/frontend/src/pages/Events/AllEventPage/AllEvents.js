@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AllEvents.module.css';
-
 import Navbar from "../../../components/Navbar/Navbar";
+import FilterBar from '../../../components/FilterBar/FilterBar';
 import Footer from "../../../components/Footer/Footer";
 import EventPoster from "../../../components/EventPosterOnly/EventPoster";
+
 import { useEvents } from '../../../context/EventsContext';
 import { Skeleton } from '@mui/material';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents(); // Use deleteEvent from context
     const [isLoading, setIsLoading] = useState(true); // Add a loading state
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [availableTags, setAvailableTags] = useState([]); 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,10 +23,54 @@ function AllEvents() {
         fetchData();
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
 
+    useEffect(() => {
+        setFilteredEvents(events);
+        const tags = [...new Set(events.flatMap(event => event.tags))];
+        setAvailableTags(tags);
+    }, [events]);
+
+    const handleFilterChange = (filters) => {
+        let filtered = events;
+        if (filters.tags.length > 0) {
+            filtered = filtered.filter(event => 
+                filters.tags.every(tag => event.tags.includes(tag))
+            );
+        }
+        const now = new Date();
+        if (filters.time.length > 0) {
+            if (filters.time.includes('past')) {
+                filtered = filtered.filter(event => new Date(event.date) < now);
+            }
+            if (filters.time.includes('upcoming')) {
+                filtered = filtered.filter(event => new Date(event.date) >= now);
+            }
+            if (filters.time.includes('today')) {
+                const todayStart = new Date(now.setHours(0, 0, 0, 0));
+                const todayEnd = new Date(now.setHours(23, 59, 59, 999));
+                filtered = filtered.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate >= todayStart && eventDate <= todayEnd;
+                });
+            }
+        }
+        setFilteredEvents(filtered);
+    };
+
+
+
+
     return (
         <div className="outterContainer">
             <Navbar />
-            <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
+            <div className="container-fluid" style={{ display: 'flex' }}>
+                <FilterBar 
+                    tags={availableTags} 
+                    onFilterChange={handleFilterChange} 
+                    filteredCount={filteredEvents.length} 
+                />
+
+                <div className={`${styles.eventsDisplayContainer}`} style={{ marginLeft: '270px', flex: 1 }}>
+
                 {isLoading ? (
                     Array.from(new Array(10)).map((_, index) => (
                         <div key={index} className={styles.skeletonWrapper}>
@@ -33,7 +80,7 @@ function AllEvents() {
                         </div>
                     ))
                 ) : (
-                    events.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
+                    filteredEvents.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
                         <EventPoster
                             key={event._id}
                             id={event._id} // Pass event ID
@@ -48,6 +95,7 @@ function AllEvents() {
                         />
                     ))
                 )}
+                </div>
             </div>
             <Footer></Footer>
         </div>
