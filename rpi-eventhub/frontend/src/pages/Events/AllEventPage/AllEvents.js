@@ -21,7 +21,7 @@ function AllEvents() {
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
 
     return (
-        <div className="allEvents">
+        <div className="outterContainer">
             <Navbar />
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
                 {isLoading ? (

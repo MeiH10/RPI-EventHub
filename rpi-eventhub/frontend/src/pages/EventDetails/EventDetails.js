@@ -26,7 +26,7 @@ const EventDetails = () => {
     }
 
     return (
-        <div>
+        <div className='outterContainer'>
             <Navbar />
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
             <div className={styles.container}>

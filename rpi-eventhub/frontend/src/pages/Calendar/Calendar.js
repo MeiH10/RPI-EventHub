@@ -33,7 +33,7 @@ const CalendarPage = () => {
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
   return (
-    <div>
+    <div className='outterContainer'>
       <NavBar />
 
       <div className={`${CalendarCSS.content} container-fluid containerFluid`}>

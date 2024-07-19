@@ -13,7 +13,7 @@ const SearchResults = () => {
     const { results } = location.state || { results: [] };
 
     return (
-        <div >
+        <div className='outterContainer' >
             <Navbar />
         <div className={`${styles.container} container-fluid containerFluid`}>
             
