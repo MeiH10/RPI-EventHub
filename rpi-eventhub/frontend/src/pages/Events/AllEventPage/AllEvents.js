@@ -37,12 +37,14 @@ function AllEvents() {
             );
         }
         const now = new Date();
-        if (filters.time) {
-            if (filters.time === 'past') {
+        if (filters.time.length > 0) {
+            if (filters.time.includes('past')) {
                 filtered = filtered.filter(event => new Date(event.date) < now);
-            } else if (filters.time === 'upcoming') {
+            }
+            if (filters.time.includes('upcoming')) {
                 filtered = filtered.filter(event => new Date(event.date) >= now);
-            } else if (filters.time === 'today') {
+            }
+            if (filters.time.includes('today')) {
                 const todayStart = new Date(now.setHours(0, 0, 0, 0));
                 const todayEnd = new Date(now.setHours(23, 59, 59, 999));
                 filtered = filtered.filter(event => {

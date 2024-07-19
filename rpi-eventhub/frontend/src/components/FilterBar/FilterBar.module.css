@@ -5,6 +5,8 @@
   border: 2px solid #000; 
   border-radius: 10px; 
   margin-top: 80px; 
+  box-sizing: border-box;
+  margin-bottom: auto;
 }
 
 .filterSection {
@@ -15,19 +17,25 @@
   margin-bottom: 10px;
 }
 
-.filterSection .checkboxWrapper {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+.separator {
+  height: 1px;
+  background: #000; 
+  margin: 20px 0; 
 }
 
-.filterSection label {
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; 
+}
+
+label {
     font-size: 23px; 
     margin-left: 10px; 
     color: #000; 
 }
 
-.filterSection input[type="checkbox"] {
+input[type="checkbox"] {
     transform: scale(1.5); 
     margin-right: 10px; 
     border-radius: 4px; 
@@ -42,13 +50,28 @@
     justify-content: center; 
 }
 
-.filterSection input[type="checkbox"]:checked {
+input[type="checkbox"]:checked {
     background-color: #fff; 
 }
 
-.filterSection input[type="checkbox"]:checked::before {
+input[type="checkbox"]:checked::before {
     content: '✔'; 
     color: #000; 
     font-weight: bold; 
     font-size: 16px; 
+}
+
+.clearButton {
+  margin-top: 20px;
+  padding: 10px 20px; 
+  background-color: #000; 
+  color: #fff; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+.clearButton:hover {
+  background-color: #555; 
 }
