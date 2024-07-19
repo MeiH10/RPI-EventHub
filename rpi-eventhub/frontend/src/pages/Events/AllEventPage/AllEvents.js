@@ -58,7 +58,7 @@ function AllEvents() {
 
 
     return (
-        <div className="allEvents">
+        <div className="outterContainer">
             <Navbar />
             <div className="container-fluid" style={{ display: 'flex' }}>
                 <FilterBar 

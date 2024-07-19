@@ -8,7 +8,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 const Home = () => {
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   return (
-    <div>
+    <div className="outterContainer">
       <NavBar />
 
       <div className={`${HomeCSS.content} container-fluid containerFluid`}>

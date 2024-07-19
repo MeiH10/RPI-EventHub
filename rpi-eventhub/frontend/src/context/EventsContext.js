@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import axios from 'axios';
+import config from '../config';
 
 const EventsContext = createContext(null);
 
@@ -12,7 +13,7 @@ export const EventsProvider = ({ children }) => {
 
     const fetchEvents = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:5000/events');
+            const response = await axios.get(`${config.apiUrl}/events`);
             setEvents(response.data);
         } catch (error) {
             console.error('Error fetching events:', error);
@@ -25,7 +26,7 @@ export const EventsProvider = ({ children }) => {
 
     const deleteEvent = useCallback(async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/events/${id}`);
+            await axios.delete(`${config.apiUrl}/events/${id}`);
             setEvents((prevEvents) => prevEvents.filter(event => event._id !== id));
         } catch (error) {
             console.error('Failed to delete event:', error);

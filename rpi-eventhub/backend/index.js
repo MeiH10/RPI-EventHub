@@ -23,8 +23,12 @@ const upload = multer();
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://rpi-eventhub-production.up.railway.app/'],
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 
 const compressImage = async (fileBuffer) => {
   try {
@@ -198,7 +202,8 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/events', upload.single('file'), async (req, res) => {
-  const { title, description, poster, date, location, tags } = req.body;
+  const { title, description, poster, date, location, tags, time, club, rsvp } = req.body;
+  console.log(club);
   const file = req.file;
 
   try {
@@ -227,7 +232,10 @@ app.post('/events', upload.single('file'), async (req, res) => {
       date,
       location,
       image: imageUrl,
-      tags: tags ? tags.split(',').map(tag => tag.trim()) : []
+      tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+      time,
+      club,
+      rsvp
     });
 
     await event.save();

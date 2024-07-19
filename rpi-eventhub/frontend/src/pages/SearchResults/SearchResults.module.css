@@ -1,16 +1,7 @@
 /* src/pages/SearchResults/SearchResults.module.css */
 
-.container {
-    padding: 20px;
-    padding-top: 70px; 
-    background: linear-gradient(
-    217deg,
-    rgba(255, 101, 101, 0.8),
-    rgb(255 0 0 / 0%) 70.71%
-  ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
-  linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
-    min-height: 100vh;
-}
+
+
 
 .titleContainer {
     text-align: center;

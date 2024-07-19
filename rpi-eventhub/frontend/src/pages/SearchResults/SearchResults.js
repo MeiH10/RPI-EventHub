@@ -13,9 +13,9 @@ const SearchResults = () => {
     const { results } = location.state || { results: [] };
 
     return (
-        <div >
+        <div className='outterContainer' >
             <Navbar />
-        <div className={styles.container }>
+        <div className={`${styles.container} container-fluid containerFluid`}>
             
             <div className={styles.titleContainer}>
                 <h1 className={styles.title}>Events that match your search</h1>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import config from '../../config';
 
 function LoginModal() {
   const [show, setShow] = useState(false);
@@ -26,7 +27,7 @@ function LoginModal() {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/login', credentials);
+      const response = await axios.post(`${config.apiUrl}/login`, credentials);
       console.log('Login successful');
       login(response.data.token);
       handleClose(); // Close the modal on successful login
