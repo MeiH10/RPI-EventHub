@@ -11,9 +11,10 @@ const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
 
+const { PDFDocument } = require('pdf-lib');
 const sharp = require('sharp');
-const poppler = require('pdf-poppler');
 const fs = require('fs');
+const { PDFImage } = require("pdf-image");
 
 
 require('dotenv').config({ path: '.env' });
@@ -42,20 +43,24 @@ const compressImage = async (fileBuffer) => {
 };
 
 const convertPdfToImage = async (pdfBuffer) => {
-  const filePath = 'temp.pdf';
-  fs.writeFileSync(filePath, pdfBuffer);
-
-  const options = {
-    format: 'jpeg',
-    out_dir: './images',
-    out_prefix: 'page',
-    page: 1,
-  };
-
   try {
-    await poppler.convert(filePath, options);
-    const imageBuffer = fs.readFileSync('./images/page-1.jpg');
-    fs.unlinkSync(filePath);
+    const tempFilePath = './temp.pdf';
+    fs.writeFileSync(tempFilePath, pdfBuffer);
+
+    const pdfImage = new PDFImage(tempFilePath, {
+      combinedImage: true,
+      convertOptions: {
+        "-resize": "1000x",
+        "-quality": "95"
+      }
+    });
+
+    const imagePath = await pdfImage.convertPage(0);
+    const imageBuffer = fs.readFileSync(imagePath);
+
+    fs.unlinkSync(tempFilePath);
+    fs.unlinkSync(imagePath);
+
     return imageBuffer;
   } catch (error) {
     console.error('Error converting PDF to image:', error);
