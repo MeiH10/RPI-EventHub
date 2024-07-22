@@ -32,16 +32,6 @@ export const EventsProvider = ({ children }) => {
         }
     }, []);
 
-    const likeEvent = useCallback(async (id) => {
-        try {
-            await axios.put(`http://localhost:5000/events/${id}`);
-            setEvents((prevEvents) => 
-                prevEvents.map(event => event._id === id ? { ...event, likes: event.likes + 1 } : event));
-        } catch (error) {
-            console.error('Failed to like event:', error);
-        }
-    }, []);
-
     return (
         <EventsContext.Provider value={{ events, fetchEvents, addEvent, deleteEvent }}>
             {children}
