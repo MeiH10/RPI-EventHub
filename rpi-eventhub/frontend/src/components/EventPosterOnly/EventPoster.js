@@ -1,12 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import style from './EventPoster.module.css';
+import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
 
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
-  console.log("tags: ", tags);
-  const { username } = useAuth();  // Destructure username from useAuth
-  const { deleteEvent } = useEvents();
+  const { username } = useAuth();
+  const { deleteEvent, likeEvent } = useEvents();
+  const [likeCount, setLikeCount] = useState(0); 
 
   const handleDelete = useCallback(async () => {
     try {
@@ -16,15 +17,34 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
     }
   }, [id, deleteEvent]);
 
-  const canSeeDeleteButton = (user_name) => {
-    console.log('user_name: ', user_name);
-    console.log('author: ', author);
+  useEffect (() => {
+    fetchLike(); 
+  }); 
 
-    if (user_name === 'admin' || user_name === author) {
-      return true;
+  const canSeeDeleteButton = (user_name) => {
+    return user_name === 'admin' || user_name === author;
+  };
+
+  const handleLike = useCallback(async () => {
+    try {
+      const response = await axios.put(`http://localhost:5000/events/${id}/like`); 
+      setLikeCount(response.data.likes);
+    } catch (error) {
+      console.error('Failed to like event:', error);
     }
-    return false;
-  }
+  }, [id]);
+
+  const fetchLike = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/events/${id}/like`); 
+      console.log("response: ", response);
+      console.log("response pt.2! ", response.data); 
+      setLikeCount(response.data.likes); 
+
+    } catch (error) {
+      console.error('Failed to fetch likes',error); 
+    }
+  })
 
   return (
     <div className={style.eventPosterContainer}>
@@ -32,13 +52,19 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
       <div className={style.eventPosterDetails}>
         <h2 className={style.eventPosterTitle}>{title}</h2>
         <p className={style.eventPosterDescription}>{description}</p>
-        {canSeeDeleteButton(username) && <button onClick={handleDelete} className="delete-button btn-danger btn">Delete</button>}
+        {canSeeDeleteButton(username) && (
+          <button onClick={handleDelete} className={`${style.deleteButton} btn-danger btn`}>
+            Delete
+          </button>
+        )}
         <p>Posted by {author}</p>
         <ul>
-          {tags.map((tag, index) =>(
-          <li key={index}>{tag}</li>
+          {tags.map((tag, index) => (
+            <li key={index}>{tag}</li>
           ))}
         </ul>
+        <button onClick={handleLike} className={style['like-button']}>Like {likeCount}</button> 
+
       </div>
     </div>
   );

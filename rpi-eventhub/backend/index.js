@@ -228,14 +228,48 @@ app.get('/events', async (req, res) => {
   }
 });
 
-app.put('http://localhost:5000/events/${id}', async (req,res) => {
+
+app.get('/events/:id/like', async (req, res) => {
+  const { id } = req.params;
+
   try {
-    await axios.put(`http://localhost:5000/events/${id}`);
-    setEvents((prevEvents) => 
-        prevEvents.map(event => event._id === id ? { ...event, likes: event.likes + 1 } : event));
-} catch (error) {
-    console.error('Failed to like event:', error);
-}
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json({ likes: event.likes });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed   to get like count', error: error.message });
+  }
+});
+
+
+app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {
+
+  const { id } = req.params;
+  const user = req.user;
+    console.log("HelloooOOoOo " ,user); 
+
+  try {
+    const event = await Event.findById(id);
+    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username  }, jwtSecret, { expiresIn: '24h' });
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    event.likes += 1;
+    await event.save();
+
+    res.json({ message: 'Event liked', event });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to like event', error: error.message });
+  }
 });
 
 app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
