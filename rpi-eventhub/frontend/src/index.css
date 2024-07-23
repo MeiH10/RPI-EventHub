@@ -34,7 +34,17 @@ code {
   flex-direction: column;
 }
 
+.custom-checkbox .form-check-input {
+  transform: scale(0.9); /* Adjust the scale for checkbox size */
+  margin-top: 8px;
+  margin-right: 0px;
+  margin-left: 15px; /* Space between checkbox and text */
+  vertical-align: middle; /* Align checkbox with text */
+}
 
+.custom-checkbox .form-check-label {
+  vertical-align: middle; /* Align label text with checkbox */
+}
 footer {
   margin-top: auto;
 }
