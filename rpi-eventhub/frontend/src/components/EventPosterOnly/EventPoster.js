@@ -3,13 +3,12 @@ import style from './EventPoster.module.css';
 import { Link } from 'react-router-dom';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
-  console.log("tags: ", tags);
   const { username } = useAuth();  // Destructure username from useAuth
   const { deleteEvent } = useEvents();
-  const [imageSize, setImageSize] = useState(null);
+  // const [imageSize, setImageSize] = useState(null);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -20,8 +19,6 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   }, [id, deleteEvent]);
 
   const canSeeDeleteButton = (user_name) => {
-    console.log('user_name: ', user_name);
-    console.log('author: ', author);
 
     if (user_name === 'admin' || user_name === author) {
       return true;
@@ -36,7 +33,7 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
         const response = await fetch(posterSrc, { method: 'HEAD' });
         const contentLength = response.headers.get('Content-Length');
         if (contentLength) {
-          setImageSize((parseInt(contentLength) / 1024).toFixed(2)); 
+          // setImageSize((parseInt(contentLength) / 1024).toFixed(2)); 
         }
       } catch (error) {
         console.error('Failed to fetch image size:', error);

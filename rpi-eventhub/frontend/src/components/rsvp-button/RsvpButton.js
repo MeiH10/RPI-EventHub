@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import RsvpButtonCSS from './RsvpButton.module.css'
 
 const RsvpButton = ({ rsvp }) => {

@@ -12,17 +12,11 @@ export const AuthProvider = ({ children }) => {
 
 
     const login = (token) => {
-        // console.log("Logging in");
         localStorage.setItem('token', token);
         const decodedToken = jwtDecode(token);
-        // console.log("Decoded Token on login: ", decodedToken);
         setIsLoggedIn(true);
         setUsername(decodedToken.username);
         setEmailVerified(decodedToken.emailVerified);
-        // console.log("username after login: ", decodedToken.username);
-
-
-        // console.log("emailVerified state after login: ", decodedToken.emailVerified);
     };
 
     const logout = () => {
@@ -45,11 +39,9 @@ export const AuthProvider = ({ children }) => {
                     });
                     if (response.status === 200) {
                         const decodedToken = jwtDecode(token);
-                        // console.log("Decoded Token on verify: ", decodedToken);
                         setIsLoggedIn(true);
                         setUsername(decodedToken.username);
                         setEmailVerified(decodedToken.emailVerified);
-                        // console.log("emailVerified state after verify: ", decodedToken.emailVerified);
                     }
                 } catch (error) {
                     console.error('Token verification failed:', error);
@@ -59,10 +51,6 @@ export const AuthProvider = ({ children }) => {
         };
         verifyToken();
     }, []);
-
-    useEffect(() => {
-      console.log("Username state updated: ", username);
-  }, [username]);
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, emailVerified, login, logout, username }}>
