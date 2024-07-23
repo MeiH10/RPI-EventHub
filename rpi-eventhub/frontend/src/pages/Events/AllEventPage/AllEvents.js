@@ -59,8 +59,6 @@ function AllEvents() {
     };
 
 
-
-    
     const sortEvents = (events, sortMethod, sortOrder) => {
         switch (sortMethod) {
             case 'date':
@@ -77,67 +75,65 @@ function AllEvents() {
     return (
         <div className="outterContainer">
             <Navbar />
-            <div className={styles.sortContainer}>
-                <label htmlFor="sortMethod">Sort by: </label>
-                <select
-                    id="sortMethod"
-                    value={sortMethod}
-                    onChange={(e) => setSortMethod(e.target.value)}
-                >
-                    <option value="date">Date</option>
-                    <option value="likes">Likes</option>
-                    <option value="title">Title</option>
-                </select>
-                <label htmlFor="sortOrder">Order: </label>
-                <select
-                    id="sortOrder"
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)}
-                >
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
-                </select>
-            </div>
             <div className="container-fluid" style={{ display: 'flex' }}>
-                <FilterBar 
-                    tags={availableTags} 
-                    onFilterChange={handleFilterChange} 
-                    filteredCount={filteredEvents.length} 
-                />
-
-                <div className={`${styles.eventsDisplayContainer}`} style={{ marginLeft: '270px', flex: 1 }}>
-
-                {isLoading ? (
-                    Array.from(new Array(10)).map((_, index) => (
-                        <div key={index} className={styles.skeletonWrapper}>
-                            <Skeleton variant="rectangular" width={400} height={533} />
-                            <Skeleton variant="text" width={200} />
-                            <Skeleton variant="text" width={150} />
-                        </div>
-                    ))
-                ) : (
-                    sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                        <EventPoster
-                            key={event._id}
-                            id={event._id} // Pass event ID
-                            title={event.title}
-                            posterSrc={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'} // Placeholder if no image URL
-                            description={event.description}
-                            width={300}  // Fake width for now
-                            height={450}  // Fake height for now
-                            onDelete={deleteEvent} // Pass deleteEvent function
-                            author={event.poster}
-                            tags={event.tags}
-                        />
-                    ))
-                )}
+                <div className={styles.filterContainer}>
+                    <div className={styles.sortContainer}>
+                        <label htmlFor="sortMethod">Sort by: </label>
+                        <select
+                            id="sortMethod"
+                            value={sortMethod}
+                            onChange={(e) => setSortMethod(e.target.value)}
+                        >
+                            <option value="date">Date</option>
+                            <option value="likes">Likes</option>
+                            <option value="title">Title</option>
+                        </select>
+                        <label htmlFor="sortOrder">Order: </label>
+                        <select
+                            id="sortOrder"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        >
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                    <FilterBar 
+                        tags={availableTags} 
+                        onFilterChange={handleFilterChange} 
+                        filteredCount={filteredEvents.length} 
+                    />
+                </div>
+                <div className={`${styles.eventsDisplayContainer}`} style={{ flex: 1 }}>
+                    {isLoading ? (
+                        Array.from(new Array(10)).map((_, index) => (
+                            <div key={index} className={styles.skeletonWrapper}>
+                                <Skeleton variant="rectangular" width={400} height={533} />
+                                <Skeleton variant="text" width={200} />
+                                <Skeleton variant="text" width={150} />
+                            </div>
+                        ))
+                    ) : (
+                        sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                            <EventPoster
+                                key={event._id}
+                                id={event._id} // Pass event ID
+                                title={event.title}
+                                posterSrc={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'} // Placeholder if no image URL
+                                description={event.description}
+                                width={300}  // Fake width for now
+                                height={450}  // Fake height for now
+                                onDelete={deleteEvent} // Pass deleteEvent function
+                                author={event.poster}
+                                tags={event.tags}
+                            />
+                        ))
+                    )}
                 </div>
             </div>
             <Footer></Footer>
         </div>
     );
 }
-
-
 
 export default AllEvents;
