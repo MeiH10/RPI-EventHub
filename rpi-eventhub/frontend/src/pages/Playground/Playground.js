@@ -8,7 +8,6 @@ import HoverImagePopup from '../../components/ImagePopUp/ImagePopUp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './Playground.module.css'
 // import { BrowserRouter as Router,  Route, Routes } from "react-router-dom";
-import Home from '../../pages/Home/Home';
 import Navbar from '../../components/Navbar/Navbar';
 
 
