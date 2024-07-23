@@ -43,10 +43,16 @@ function CreateEventModal() {
 
   useEffect(() => {
     if (successOpen) {
-      const timer = setTimeout(handleSuccessClose, 3000);
+      const timer = setTimeout(handleSuccessClose, 2000);
       return () => clearTimeout(timer);
     }
   }, [successOpen]);
+
+  useEffect(() => {
+    if (show) {
+      setIsSubmitting(false);
+    }
+  }, [show]);
 
   useEffect(() => {
     const timers = Object.keys(errorOpen).map((field) => {
@@ -62,6 +68,7 @@ function CreateEventModal() {
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
+    console.log("isSubmitting: ", isSubmitting);
     if (isSubmitting) {
       return;
     }
@@ -114,7 +121,7 @@ function CreateEventModal() {
       console.error('Failed to create event:', error);
       setError(error.response ? error.response.data.message : error.message); // Ensure the error is a string
     } finally {
-      setIsSubmitting(false);
+      // setIsSubmitting(false);
     }
   };
 
