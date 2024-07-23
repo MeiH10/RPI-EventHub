@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './Carousel.module.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import axios from 'axios';
@@ -38,7 +38,6 @@ const ImageCarousel = () => {
           date: formatDate(event.date),
         })));
         setIsLoading(false);
-
       } catch (error) {
         console.error('Failed to fetch events:', error);
       }
@@ -47,18 +46,18 @@ const ImageCarousel = () => {
     fetchEvents();
   }, []);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setActiveIndex(current => current === events.length - 1 ? 0 : current + 1);
-  };
+  }, [events.length]);
 
-  const goToPrev = () => {
+  const goToPrev = useCallback(() => {
     setActiveIndex(current => current === 0 ? events.length - 1 : current - 1);
-  };
+  }, [events.length]);
 
-  const resetTimer = () => {
+  const resetTimer = useCallback(() => {
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(goToNext, 3000);
-  };
+  }, [goToNext]);
 
   const pauseAutoplay = () => {
     clearInterval(intervalRef.current);
@@ -69,7 +68,7 @@ const ImageCarousel = () => {
       resetTimer();
     }
     return () => clearInterval(intervalRef.current);
-  }, [events, isLoading]);
+  }, [events, isLoading, resetTimer]);
 
   return (
     <div className="carousel"

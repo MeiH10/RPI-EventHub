@@ -11,7 +11,10 @@ const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
 
+const { PDFDocument } = require('pdf-lib');
 const sharp = require('sharp');
+const fs = require('fs');
+const { PDFImage } = require("pdf-image");
 
 
 require('dotenv').config({ path: '.env' });
@@ -43,6 +46,31 @@ const compressImage = async (fileBuffer) => {
   }
 };
 
+const convertPdfToImage = async (pdfBuffer) => {
+  try {
+    const tempFilePath = './temp.pdf';
+    fs.writeFileSync(tempFilePath, pdfBuffer);
+
+    const pdfImage = new PDFImage(tempFilePath, {
+      combinedImage: true,
+      convertOptions: {
+        "-resize": "1000x",
+        "-quality": "95"
+      }
+    });
+
+    const imagePath = await pdfImage.convertPage(0);
+    const imageBuffer = fs.readFileSync(imagePath);
+
+    fs.unlinkSync(tempFilePath);
+    fs.unlinkSync(imagePath);
+
+    return imageBuffer;
+  } catch (error) {
+    console.error('Error converting PDF to image:', error);
+    throw error;
+  }
+};
 
 const authenticate = async (req, res, next) => {
   try {
@@ -210,11 +238,16 @@ app.post('/events', upload.single('file'), async (req, res) => {
     let imageUrl = '';
 
     if (file) {
+      let imageBuffer;
 
-      const compressedBuffer = await compressImage(file.buffer);
+      if (file.mimetype === 'application/pdf') {
+        imageBuffer = await convertPdfToImage(file.buffer);
+      } else {
+        imageBuffer = await compressImage(file.buffer);
+      }
 
       const formData = new FormData();
-      formData.append('image', compressedBuffer.toString('base64'));
+      formData.append('image', imageBuffer.toString('base64'));
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
         headers: {
@@ -222,7 +255,11 @@ app.post('/events', upload.single('file'), async (req, res) => {
         }
       });
 
-      imageUrl = response.data.data.url;
+      if (response.data && response.data.data && response.data.data.url) {
+        imageUrl = response.data.data.url;
+      } else {
+        throw new Error('Image upload failed or no URL returned');
+      }
     }
 
     const event = new Event({
@@ -241,7 +278,8 @@ app.post('/events', upload.single('file'), async (req, res) => {
     await event.save();
     res.status(201).json(event);
   } catch (error) {
-    res.status(400).json({ message: "Error creating event", error: error.message });
+    console.error('Error creating event:', error);
+    res.status(400).json({ message: 'Error creating event', error: error.message });
   }
 });
 
