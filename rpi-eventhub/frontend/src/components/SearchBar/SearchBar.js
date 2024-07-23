@@ -9,7 +9,6 @@ const SearchBar = () => {
     const navigate = useNavigate();
     const { events, fetchEvents } = useEvents();
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredEvents, setFilteredEvents] = useState([]);
 
     useEffect(() => {
         fetchEvents();
@@ -25,7 +24,6 @@ const SearchBar = () => {
         });
 
         const sorted = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setFilteredEvents(sorted);
 
         navigate('/search', { state: { results: sorted } });
     };
