@@ -26,8 +26,13 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   };
 
   const handleLike = useCallback(async () => {
+    const token = localStorage.getItem('token');
     try {
-      const response = await axios.put(`http://localhost:5000/events/${id}/like`); 
+      const response = await axios.put(`http://localhost:5000/events/${id}/like`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setLikeCount(response.data.likes);
     } catch (error) {
       console.error('Failed to like event:', error);
@@ -37,8 +42,6 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   const fetchLike = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:5000/events/${id}/like`); 
-      console.log("response: ", response);
-      console.log("response pt.2! ", response.data); 
       setLikeCount(response.data.likes); 
 
     } catch (error) {

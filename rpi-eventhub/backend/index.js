@@ -230,6 +230,7 @@ app.get('/events', async (req, res) => {
 
 
 app.get('/events/:id/like', async (req, res) => {
+  console.log("Hits the get call\n"); 
   const { id } = req.params;
 
   try {
@@ -249,30 +250,43 @@ app.get('/events/:id/like', async (req, res) => {
 
 
 app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {
-
   const { id } = req.params;
   const user = req.user;
-    console.log("HelloooOOoOo " ,user); 
 
   try {
+    console.log('Received like request for event ID:', id);
+    console.log('Authenticated user:', user.username);
+
     const event = await Event.findById(id);
-    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username  }, jwtSecret, { expiresIn: '24h' });
 
     if (!event) {
+      console.log('Event not found');
       return res.status(404).json({ message: 'Event not found' });
+    }
+
+    if (user.likedEvents.includes(id)) {
+      console.log('User has already liked this event');
+      return res.status(400).json({ message: 'You have already liked this event.' });
     }
 
     event.likes += 1;
     await event.save();
 
-    res.json({ message: 'Event liked', event });
+    user.likedEvents.push(id);
+    await user.save();
+
+    console.log('Event liked successfully', event.likes);
+    res.json({ message: 'Event liked successfully', likes: event.likes });
   } catch (error) {
-    console.error(error);
+    console.error('Failed to like event:', error);
     res.status(500).json({ message: 'Failed to like event', error: error.message });
   }
 });
 
+
+
 app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
+  console.log("Hits the post call\n"); 
   const { id } = req.params;
   const user = req.user;
 
