@@ -21,6 +21,7 @@ function AllEvents() {
 
         fetchData();
     }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
+    
     const sortEvents = (events, sortMethod, sortOrder) => {
         switch (sortMethod) {
             case 'date':
@@ -37,6 +38,27 @@ function AllEvents() {
     return (
         <div className="outterContainer">
             <Navbar />
+            <div className={styles.sortContainer}>
+                <label htmlFor="sortMethod">Sort by: </label>
+                <select
+                    id="sortMethod"
+                    value={sortMethod}
+                    onChange={(e) => setSortMethod(e.target.value)}
+                >
+                    <option value="date">Date</option>
+                    <option value="likes">Likes</option>
+                    <option value="title">Title</option>
+                </select>
+                <label htmlFor="sortOrder">Order: </label>
+                <select
+                    id="sortOrder"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                >
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
                 {isLoading ? (
                     Array.from(new Array(10)).map((_, index) => (
@@ -47,7 +69,7 @@ function AllEvents() {
                         </div>
                     ))
                 ) : (
-                    sortEvents(events, 'date', 'desc').map(event => (
+                    sortEvents(events, sortMethod, sortOrder).map((event) => (
                         <EventPoster
                             key={event._id}
                             id={event._id} // Pass event ID
