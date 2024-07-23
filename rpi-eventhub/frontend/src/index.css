@@ -6,7 +6,7 @@
 
 html, body {
   margin: 0 !important;
-  font-family: "Italiana", serif !important;
+  font-family: "Georgia", "Arial", sans-serif !important; /* Changed to Calibri with fallbacks */
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   background: linear-gradient(
@@ -22,7 +22,6 @@ html, body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-
 
 .containerFluid {
   padding-top: 70px; 
@@ -45,6 +44,7 @@ code {
 .custom-checkbox .form-check-label {
   vertical-align: middle; /* Align label text with checkbox */
 }
+
 footer {
   margin-top: auto;
 }

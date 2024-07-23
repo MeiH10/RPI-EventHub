@@ -120,7 +120,7 @@ function SignupModal() {
                 label={
                   <>
                     I accept the{' '}
-                    <a href="https://docs.google.com/document/d/1_XRewuzTBn3_ej69XHUplG5ZpnDqtAJUBsEXwX7DQVU/edit" target="_blank" rel="noopener noreferrer">
+                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
                       Terms of Service
                     </a>
                     .
