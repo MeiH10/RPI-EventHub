@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Event = require('../models/Event'); // Adjust the path as necessary
+const Event = require('../models/Event');
 
 // Get all events
 router.get('/', async (req, res) => {
@@ -17,12 +17,10 @@ router.post('/', async (req, res) => {
   const event = new Event({
     title: req.body.title,
     description: req.body.description,
-    // `likes` defaults to 0, so no need to set it here
-    // `creationTimestamp` defaults to now, so no need to set it here
     poster: req.body.poster,
     date: req.body.date,
     location: req.body.location,
-    image: req.body.image, // Make sure you validate this is a proper Imgur URL if needed
+    image: req.body.image,
     tags: req.body.tags,
   });
 
@@ -33,7 +31,5 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
-// Other CRUD operations (update, delete, etc.)
 
 module.exports = router;

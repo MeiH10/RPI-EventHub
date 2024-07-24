@@ -1,31 +1,22 @@
-// backend/services/emailService.js
 const nodemailer = require('nodemailer');
-const sgTransport = require('nodemailer-sendgrid');
 
-const path = require('path');
+const sendEmail = async (options) => {
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
 
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
-
-
-const mailer = nodemailer.createTransport(sgTransport({
-  apiKey: process.env.SENDGRID_API_KEY
-}));
-
-
-const sendEmail = async ({ to, subject, text }) => {
   const mailOptions = {
-    from: process.env.EMAIL_FROM, // Your email address or one authorized by SendGrid
-    to,
-    subject,
-    text,
+    from: process.env.EMAIL_FROM,
+    to: options.email,
+    subject: options.subject,
+    text: options.message,
   };
 
-  try {
-    await mailer.sendMail(mailOptions);
-    console.log('Email sent successfully');
-  } catch (error) {
-    console.error('Failed to send email', error);
-  }
+  await transporter.sendMail(mailOptions);
 };
 
-module.exports = { sendEmail };
+module.exports = sendEmail;

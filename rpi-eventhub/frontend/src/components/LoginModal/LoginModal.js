@@ -1,53 +1,66 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import config from '../../config';
+import axios from 'axios';
+import config from '../../config'; // Adjust path if necessary
 
 function LoginModal() {
-  const [show, setShow] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login } = useAuth();  // Destructure the login function from useAuth
+  const { login, forgotPassword } = useAuth();
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleCloseLogin = () => setShowLogin(false);
+  const handleShowLogin = () => setShowLogin(true);
+
+  const handleCloseForgotPassword = () => setShowForgotPassword(false);
+  const handleShowForgotPassword = () => {
+    setShowLogin(false);
+    setShowForgotPassword(true);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if(isSubmitting) {
+    if (isSubmitting) {
       return;
     }
-    setIsSubmitting(true);    
-
-    const credentials = {
-      email: email,
-      password: password
-    };
+    setIsSubmitting(true);
 
     try {
-      const response = await axios.post(`${config.apiUrl}/login`, credentials);
-      console.log('Login successful');
+      const response = await axios.post(`${config.apiUrl}/auth/login`, { email, password });
       login(response.data.token);
-      handleClose(); // Close the modal on successful login
+      handleCloseLogin();
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data : error.message);
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
+
+    try {
+      await forgotPassword(email);
+      handleCloseForgotPassword();
+    } catch (error) {
+      console.error('Failed to send password reset email:', error.response ? error.response.data : error.message);
+      setIsSubmitting(false);
     }
   };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShowLogin}>
         Log In
       </Button>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
+      <Modal show={showLogin} onHide={handleCloseLogin} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>Log In</Modal.Title>
         </Modal.Header>
@@ -72,14 +85,47 @@ function LoginModal() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
+
+            <Form.Text className="text-muted">
+              <Button variant="link" onClick={handleShowForgotPassword} style={{ padding: 0 }}>
+                Forgot Password?
+              </Button>
+            </Form.Text>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleCloseLogin}>
             Close
           </Button>
           <Button variant="primary" onClick={handleLogin} disabled={isSubmitting}>
             Log In
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showForgotPassword} onHide={handleCloseForgotPassword} backdrop="static" keyboard={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Forgot Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleForgotPassword}>
+            <Form.Group controlId="forgotPasswordEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseForgotPassword}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleForgotPassword} disabled={isSubmitting}>
+            Send Reset Link
           </Button>
         </Modal.Footer>
       </Modal>
