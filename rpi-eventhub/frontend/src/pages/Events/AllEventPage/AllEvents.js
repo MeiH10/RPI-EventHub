@@ -3,24 +3,27 @@ import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
 import Footer from "../../../components/Footer/Footer";
+import EventPoster from "../../../components/EventPosterOnly/EventPoster";
 import { useEvents } from '../../../context/EventsContext';
 import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 
 function AllEvents() {
-    const { events, fetchEvents, deleteEvent } = useEvents();
-    const [isLoading, setIsLoading] = useState(true);
+    const { events, fetchEvents, deleteEvent } = useEvents(); // Use deleteEvent from context
+    const [isLoading, setIsLoading] = useState(true); // Add a loading state
+    const [sortMethod, setSortMethod] = useState('date'); // Default sorting method
+    const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order
     const [filteredEvents, setFilteredEvents] = useState([]);
-    const [availableTags, setAvailableTags] = useState([]);
+    const [availableTags, setAvailableTags] = useState([]); 
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchEvents();
+            await fetchEvents(); // Call fetchEvents from context
             setIsLoading(false);
         };
 
         fetchData();
-    }, [fetchEvents]);
+    }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
 
     useEffect(() => {
         setFilteredEvents(events);
@@ -31,7 +34,7 @@ function AllEvents() {
     const handleFilterChange = (filters) => {
         let filtered = events;
         if (filters.tags.length > 0) {
-            filtered = filtered.filter(event =>
+            filtered = filtered.filter(event => 
                 filters.tags.every(tag => event.tags.includes(tag))
             );
         }
@@ -55,22 +58,57 @@ function AllEvents() {
         setFilteredEvents(filtered);
     };
 
+    const sortEvents = (events, sortMethod, sortOrder) => {
+        switch (sortMethod) {
+            case 'date':
+                return events.sort((a, b) => sortOrder === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date));
+            case 'likes':
+                return events.sort((a, b) => sortOrder === 'asc' ? a.likes - b.likes : b.likes - a.likes);
+            case 'title':
+                return events.sort((a, b) => sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
+            default:
+                return events;
+        }
+    };
+
     const breakpointColumnsObj = {
         default: 3,
         1100: 2,
         700: 1
     };
-
+    
     return (
         <div className={styles.allEvents}>
             <Navbar />
             <div className="container-fluid" style={{ display: 'flex' }}>
-                <FilterBar 
-                    tags={availableTags} 
-                    onFilterChange={handleFilterChange} 
-                    filteredCount={filteredEvents.length} 
-                />
-
+                <div className={styles.filterContainer}>
+                    <div className={styles.sortContainer}>
+                        <label htmlFor="sortMethod">Sort by: </label>
+                        <select
+                            id="sortMethod"
+                            value={sortMethod}
+                            onChange={(e) => setSortMethod(e.target.value)}
+                        >
+                            <option value="date">Date</option>
+                            <option value="likes">Likes</option>
+                            <option value="title">Title</option>
+                        </select>
+                        <label htmlFor="sortOrder">Order: </label>
+                        <select
+                            id="sortOrder"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        >
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                    <FilterBar 
+                        tags={availableTags} 
+                        onFilterChange={handleFilterChange} 
+                        filteredCount={filteredEvents.length} 
+                    />
+                </div>
                 <div className={styles.eventsDisplayContainer}>
                     {isLoading ? (
                         Array.from(new Array(10)).map((_, index) => (
@@ -86,7 +124,7 @@ function AllEvents() {
                             className={styles.myMasonryGrid}
                             columnClassName={styles.myMasonryGridColumn}
                         >
-                            {filteredEvents.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
+                            {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
                                 <div key={event._id} className={styles.eventWrapper}>
                                     <img
                                         src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}

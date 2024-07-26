@@ -9,40 +9,46 @@
     width: 100%;
     margin: auto;
     margin-bottom: 100px;
-    padding-top: 100px;
-    padding-left: 270px; 
+    padding-top: 148px;
+    padding-left: 270px; /* Ensure space for the filter bar */
 }
 
 .filterContainer {
     width: 100%;
-    max-width: 800px;
+    max-width: 300px;
     margin: 20px auto;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.filterSearch, .filterCategory {
-    padding: 10px;
+.sortContainer {
+    width: 390px;
+    display: flex;
+    justify-content: center;
+    margin: 90px 20px 20px 0;
+}
+
+.sortContainer label {
+    margin-right: 10px;
+}
+
+.sortContainer select {
+    margin-right: 20px;
+    padding: 5px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.filterSearch {
-    width: 70%;
-}
-
-.filterCategory {
-    width: 28%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.35); 
 }
 
 .myMasonryGrid {
     display: flex;
-    margin-left: -30px;
+    margin-left: -30px; /* gutter size offset */
     width: auto;
 }
 
 .myMasonryGridColumn {
-    padding-left: 30px;
+    padding-left: 30px; /* gutter size */
     background-clip: padding-box;
 }
 
@@ -51,9 +57,7 @@
 }
 
 .skeletonWrapper {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 20px;
+    margin: 20px;
 }
 
 .eventWrapper {
