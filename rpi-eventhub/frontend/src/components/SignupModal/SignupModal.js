@@ -12,6 +12,7 @@ function SignupModal() {
   const [error, setError] = useState('');
   const { login } = useAuth();  // Use the login method from AuthContext
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
 
   const handleClose = () => {
@@ -27,13 +28,18 @@ function SignupModal() {
       return;
     }
     setIsSubmitting(true);    
-
+   
     if (!email || !password || !username) {
       setError('Please fill in all fields.');
       return;
     }
     if (!(email.endsWith('@rpi.edu'))){
       setError('Please enter an RPI email'); 
+      return;
+    }
+    if (!acceptedTerms) {
+      setError('You must accept the terms of service.');
+      setIsSubmitting(false);
       return;
     }
     // Optionally, add more specific validations here
@@ -107,9 +113,27 @@ function SignupModal() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
+            <Form.Group controlId="termsOfService">
+              <Form.Check
+                type="checkbox"
+                className="custom-checkbox"
+                label={
+                  <>
+                    I accept the{' '}
+                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
+                      Terms of Service
+                    </a>
+                    .
+                  </>
+                }
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+              />
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
+          
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>

@@ -114,19 +114,6 @@ const authenticateAndVerify = async (req, res, next) => {
 
 
 
-async function testBcrypt() {
-  const password = '123'; // Example password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  console.log('Password:', password);
-  console.log('Hashed Password:', hashedPassword);
-
-  const isMatch = await bcrypt.compare(password, hashedPassword);
-  console.log('Do they match?', isMatch);
-}
-
-// testBcrypt().catch(console.error);
-
 // Middleware
 app.use(express.json()); // for parsing application/json
 
@@ -180,7 +167,6 @@ app.post('/signup', async (req, res) => {
 app.post('/verify-email', async (req, res) => {
   const { email, verificationCode } = req.body;
 
-  console.log(email, verificationCode);
   const user = await User.findOne({ email, verificationCode });
 
   if (!user) {
@@ -213,8 +199,6 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Email does not exist" });
     }
     const isMatch = await bcrypt.compare(password.trim(), user.password);
-    // console.log(password);
-    // console.log(user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Password is incorrect" });
     }
@@ -231,7 +215,6 @@ app.post('/login', async (req, res) => {
 
 app.post('/events', upload.single('file'), async (req, res) => {
   const { title, description, poster, date, location, tags, time, club, rsvp } = req.body;
-  console.log(club);
   const file = req.file;
 
   try {
@@ -325,7 +308,6 @@ app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
 
 app.delete('/events/:id', async (req, res) => {
   const { id } = req.params;
-  console.log("Trying to delete event:", id);
 
   try {
     const event = await Event.findByIdAndDelete(id);

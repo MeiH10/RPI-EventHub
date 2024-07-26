@@ -39,6 +39,7 @@
   background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
   padding: 10px 20px; /* Add padding for better spacing */
   margin-bottom: 10px; /* Add some space between the caption and the image */
+  border-radius: 10px;
 }
 
 .captionBelow {
@@ -51,6 +52,7 @@
   padding: 10px 20px; /* Add padding for better spacing */
   margin-top: 10px; /* Add some space between the image and the caption */
   font-family: 'Arial', sans-serif;
+  border-radius: 10px;
 }
 
 .nextButton, .prevButton {

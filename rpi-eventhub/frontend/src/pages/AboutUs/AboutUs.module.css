@@ -1,7 +1,3 @@
-@font-face {
-    font-family: "Italiana";
-    src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
-}
 
 .aboutUs {
     text-align: center;
@@ -59,9 +55,6 @@
     }
 }
 
-.title {
-    font-family: Italiana, serif;
-}
 
 .about {
     flex: 1;
