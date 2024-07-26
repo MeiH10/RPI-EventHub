@@ -22,6 +22,8 @@ function CreateEventModal() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const suggestedTags = ['workshop', 'seminar', 'game', 'music', 'food','career','fun'];
+
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
 
@@ -73,6 +75,13 @@ function CreateEventModal() {
     }
     setError('');
     setIsSubmitting(true);
+
+    // Normalize and deduplicate tags before submission
+    const uniqueTags = Array.from(new Set(tags.split(',')
+      .map(tag => tag.trim().toLowerCase())
+      .filter(tag => tag.length > 0))).join(', ');
+
+    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -80,7 +89,7 @@ function CreateEventModal() {
     formData.append('file', file); // Attach the file
     formData.append('date', date);
     formData.append('location', location);
-    formData.append('tags', tags);
+    formData.append('tags', uniqueTags);
 
     formData.append('time', time);
     formData.append('club', club);
@@ -123,6 +132,15 @@ function CreateEventModal() {
       // setIsSubmitting(false);
     }
   };
+
+  const handleAddTag = (tag) => {
+    setTags((prevTags) => prevTags ? `${prevTags}, ${tag}` : tag);
+  };
+
+  const handleTagsChange = (e) => {
+    setTags(e.target.value);
+  };
+
 
   return (
     <>
@@ -228,13 +246,29 @@ function CreateEventModal() {
               />
             </Form.Group>
             <Form.Group controlId="eventTags">
-              <Form.Label>Tags (comma separated)</Form.Label>
+              <Form.Label>Tags (comma separated, lowercase only)</Form.Label>
               <Form.Control
+                as="textarea"
                 type="text"
                 placeholder="e.g., workshop, seminar"
                 value={tags}
-                onChange={(e) => setTags(e.target.value)}
+                onChange={handleTagsChange}
+                
               />
+              <div className="mt-2">
+                {suggestedTags.map((tag, index) => (
+                  <Button
+                    key={index}
+                    variant="outline-primary"
+                    className="mr-2 mb-2"
+                    onClick={() => handleAddTag(tag)}
+                    
+                  >
+                    {tag}
+                  </Button>
+                ))}
+              </div>
+
             </Form.Group>
           </Form>
         </Modal.Body>

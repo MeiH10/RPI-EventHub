@@ -34,7 +34,7 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
             <div className={styles.separator}></div>
             <div className={styles.filterSection}>
                 <h3>By Tags</h3>
-                {tags.map((tag) => (
+                {tags.sort().map((tag) => (
                     <div key={tag} className={styles.checkboxWrapper}>
                         <input
                             type="checkbox"
