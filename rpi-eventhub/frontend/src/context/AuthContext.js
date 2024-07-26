@@ -19,8 +19,6 @@ export const AuthProvider = ({ children }) => {
         setUsername(decodedToken.username);
         setEmailVerified(decodedToken.emailVerified);
         // console.log("username after login: ", decodedToken.username);
-
-
         // console.log("emailVerified state after login: ", decodedToken.emailVerified);
     };
 

@@ -265,18 +265,26 @@ app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {
     }
 
     if (user.likedEvents.includes(id)) {
-      console.log('User has already liked this event');
-      return res.status(400).json({ message: 'You have already liked this event.' });
+      // User has already liked the event, so unlike it
+      event.likes -= 1;
+      user.likedEvents = user.likedEvents.filter(eventId => eventId.toString() !== id);
+
+      await event.save();
+      await user.save();
+
+      console.log('Event unliked successfully', event.likes);
+      return res.json({ message: 'Event unliked successfully', likes: event.likes });
+    } else {
+      // User has not liked the event yet, so like it
+      event.likes += 1;
+      user.likedEvents.push(id);
+
+      await event.save();
+      await user.save();
+
+      console.log('Event liked successfully', event.likes);
+      return res.json({ message: 'Event liked successfully', likes: event.likes });
     }
-
-    event.likes += 1;
-    await event.save();
-
-    user.likedEvents.push(id);
-    await user.save();
-
-    console.log('Event liked successfully', event.likes);
-    res.json({ message: 'Event liked successfully', likes: event.likes });
   } catch (error) {
     console.error('Failed to like event:', error);
     res.status(500).json({ message: 'Failed to like event', error: error.message });
