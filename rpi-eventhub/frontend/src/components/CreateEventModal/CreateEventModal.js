@@ -22,6 +22,8 @@ function CreateEventModal() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const suggestedTags = ['workshop', 'seminar', 'game', 'music', 'food','career','fun'];
+
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
 
@@ -122,6 +124,14 @@ function CreateEventModal() {
     } finally {
       // setIsSubmitting(false);
     }
+  };
+
+  const handleAddTag = (tag) => {
+    setTags((prevTags) => prevTags ? `${prevTags}, ${tag}` : tag);
+  };
+
+  const handleTagsChange = (e) => {
+    setTags(e.target.value.toLowerCase());
   };
 
   return (
@@ -228,13 +238,29 @@ function CreateEventModal() {
               />
             </Form.Group>
             <Form.Group controlId="eventTags">
-              <Form.Label>Tags (comma separated)</Form.Label>
+              <Form.Label>Tags (comma separated, lowercase only)</Form.Label>
               <Form.Control
+                as="textarea"
                 type="text"
                 placeholder="e.g., workshop, seminar"
                 value={tags}
-                onChange={(e) => setTags(e.target.value)}
+                onChange={handleTagsChange}
+                
               />
+              <div className="mt-2">
+                {suggestedTags.map((tag, index) => (
+                  <Button
+                    key={index}
+                    variant="outline-primary"
+                    className="mr-2 mb-2"
+                    onClick={() => handleAddTag(tag)}
+                    
+                  >
+                    {tag}
+                  </Button>
+                ))}
+              </div>
+
             </Form.Group>
           </Form>
         </Modal.Body>
