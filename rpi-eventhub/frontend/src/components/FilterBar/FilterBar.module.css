@@ -31,35 +31,35 @@
 }
 
 label {
-    font-size: 23px; 
-    margin-left: 10px; 
-    color: #000; 
+  font-size: 23px; 
+  margin-left: 10px; 
+  color: #000; 
 }
 
 input[type="checkbox"] {
-    transform: scale(1.5); 
-    margin-right: 10px; 
-    border-radius: 4px; 
-    appearance: none; 
-    background-color: #fff; 
-    border: 2px solid #000; 
-    width: 20px; 
-    height: 20px; 
-    cursor: pointer; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+  transform: scale(1.5); 
+  margin-right: 10px; 
+  border-radius: 4px; 
+  appearance: none; 
+  background-color: #fff; 
+  border: 2px solid #000; 
+  width: 20px; 
+  height: 20px; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
 }
 
 input[type="checkbox"]:checked {
-    background-color: #fff; 
+  background-color: #fff; 
 }
 
 input[type="checkbox"]:checked::before {
-    content: '✔'; 
-    color: #000; 
-    font-weight: bold; 
-    font-size: 16px; 
+  content: '✔'; 
+  color: #000; 
+  font-weight: bold; 
+  font-size: 16px; 
 }
 
 .clearButton {
