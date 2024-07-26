@@ -75,6 +75,13 @@ function CreateEventModal() {
     }
     setError('');
     setIsSubmitting(true);
+
+    // Normalize and deduplicate tags before submission
+    const uniqueTags = Array.from(new Set(tags.split(',')
+      .map(tag => tag.trim().toLowerCase())
+      .filter(tag => tag.length > 0))).join(', ');
+
+    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -82,7 +89,7 @@ function CreateEventModal() {
     formData.append('file', file); // Attach the file
     formData.append('date', date);
     formData.append('location', location);
-    formData.append('tags', tags);
+    formData.append('tags', uniqueTags);
 
     formData.append('time', time);
     formData.append('club', club);
@@ -131,8 +138,9 @@ function CreateEventModal() {
   };
 
   const handleTagsChange = (e) => {
-    setTags(e.target.value.toLowerCase());
+    setTags(e.target.value);
   };
+
 
   return (
     <>
