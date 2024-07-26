@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  emailVerified: { type: Boolean, default: false }, // Added for email verification
-  verificationCode: { type: String, required: false }, // Optional: For storing the email verification code
+  emailVerified: { type: Boolean, default: false },
+  verificationCode: { type: String, required: false },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
   likedEvents: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event'
   }]
-  // Consider adding an expiry date for the verification code if implementing a timeout feature
 });
 
 // Password hashing middleware
