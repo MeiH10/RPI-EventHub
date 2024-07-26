@@ -68,6 +68,7 @@ function CreateEventModal() {
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
+    console.log("isSubmitting: ", isSubmitting);
     if (isSubmitting) {
       return;
     }
