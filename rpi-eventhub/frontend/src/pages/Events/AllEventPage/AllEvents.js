@@ -3,25 +3,24 @@ import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
 import Footer from "../../../components/Footer/Footer";
-import EventPoster from "../../../components/EventPosterOnly/EventPoster";
-
 import { useEvents } from '../../../context/EventsContext';
 import { Skeleton } from '@mui/material';
+import Masonry from 'react-masonry-css';
 
 function AllEvents() {
-    const { events, fetchEvents, deleteEvent } = useEvents(); // Use deleteEvent from context
-    const [isLoading, setIsLoading] = useState(true); // Add a loading state
+    const { events, fetchEvents, deleteEvent } = useEvents();
+    const [isLoading, setIsLoading] = useState(true);
     const [filteredEvents, setFilteredEvents] = useState([]);
-    const [availableTags, setAvailableTags] = useState([]); 
+    const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchEvents(); // Call fetchEvents from context
+            await fetchEvents();
             setIsLoading(false);
         };
 
         fetchData();
-    }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
+    }, [fetchEvents]);
 
     useEffect(() => {
         setFilteredEvents(events);
@@ -32,7 +31,7 @@ function AllEvents() {
     const handleFilterChange = (filters) => {
         let filtered = events;
         if (filters.tags.length > 0) {
-            filtered = filtered.filter(event => 
+            filtered = filtered.filter(event =>
                 filters.tags.every(tag => event.tags.includes(tag))
             );
         }
@@ -56,11 +55,14 @@ function AllEvents() {
         setFilteredEvents(filtered);
     };
 
-
-
+    const breakpointColumnsObj = {
+        default: 3,
+        1100: 2,
+        700: 1
+    };
 
     return (
-        <div className="outterContainer">
+        <div className={styles.allEvents}>
             <Navbar />
             <div className="container-fluid" style={{ display: 'flex' }}>
                 <FilterBar 
@@ -69,35 +71,43 @@ function AllEvents() {
                     filteredCount={filteredEvents.length} 
                 />
 
-                <div className={`${styles.eventsDisplayContainer}`} style={{ marginLeft: '270px', flex: 1 }}>
-
-                {isLoading ? (
-                    Array.from(new Array(10)).map((_, index) => (
-                        <div key={index} className={styles.skeletonWrapper}>
-                            <Skeleton variant="rectangular" width={400} height={533} />
-                            <Skeleton variant="text" width={200} />
-                            <Skeleton variant="text" width={150} />
-                        </div>
-                    ))
-                ) : (
-                    filteredEvents.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
-                        <EventPoster
-                            key={event._id}
-                            id={event._id} // Pass event ID
-                            title={event.title}
-                            posterSrc={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'} // Placeholder if no image URL
-                            description={event.description}
-                            width={300}  // Fake width for now
-                            height={450}  // Fake height for now
-                            onDelete={deleteEvent} // Pass deleteEvent function
-                            author={event.poster}
-                            tags={event.tags}
-                        />
-                    ))
-                )}
+                <div className={styles.eventsDisplayContainer}>
+                    {isLoading ? (
+                        Array.from(new Array(10)).map((_, index) => (
+                            <div key={index} className={styles.skeletonWrapper}>
+                                <Skeleton variant="rectangular" width={400} height={533} />
+                                <Skeleton variant="text" width={200} />
+                                <Skeleton variant="text" width={150} />
+                            </div>
+                        ))
+                    ) : (
+                        <Masonry
+                            breakpointCols={breakpointColumnsObj}
+                            className={styles.myMasonryGrid}
+                            columnClassName={styles.myMasonryGridColumn}
+                        >
+                            {filteredEvents.sort((a, b) => new Date(b.date) - new Date(a.date)).map(event => (
+                                <div key={event._id} className={styles.eventWrapper}>
+                                    <img
+                                        src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
+                                        loading="lazy"
+                                    />
+                                    <div className={styles.eventDetails}>
+                                        <h2>{event.title}</h2>
+                                        <p>{event.description}</p>
+                                        <div className={styles.tags}>
+                                            {event.tags.map(tag => (
+                                                <span key={tag} className={styles.tag}>{tag}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </Masonry>
+                    )}
                 </div>
             </div>
-            <Footer></Footer>
+            <Footer />
         </div>
     );
 }

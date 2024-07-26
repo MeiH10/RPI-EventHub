@@ -8,15 +8,12 @@
 .eventsDisplayContainer {
     width: 100%;
     margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
     margin-bottom: 100px;
     padding-top: 100px;
+    padding-left: 270px; 
 }
 
-.filter-container {
+.filterContainer {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
@@ -24,16 +21,84 @@
     justify-content: space-between;
 }
 
-.filter-search, .filter-category {
+.filterSearch, .filterCategory {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-.filter-search {
+.filterSearch {
     width: 70%;
 }
 
-.filter-category {
+.filterCategory {
     width: 28%;
+}
+
+.myMasonryGrid {
+    display: flex;
+    margin-left: -30px;
+    width: auto;
+}
+
+.myMasonryGridColumn {
+    padding-left: 30px;
+    background-clip: padding-box;
+}
+
+.myMasonryGridColumn > div {
+    margin-bottom: 30px;
+}
+
+.skeletonWrapper {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.eventWrapper {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+}
+
+.eventWrapper img {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    display: block;
+    width: 100%;
+}
+
+.eventDetails {
+    padding: 16px;
+    text-align: center;
+}
+
+.eventDetails h2 {
+    margin: 0 0 8px;
+    font-size: 1.5em;
+}
+
+.eventDetails p {
+    margin: 0 0 16px;
+    color: #666;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.tag {
+    background: #e0e0e0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.875em;
 }
