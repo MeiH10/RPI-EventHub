@@ -3,7 +3,7 @@ import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
 import Footer from "../../../components/Footer/Footer";
-import EventPoster from "../../../components/EventPosterOnly/EventPoster";
+import EventCard from '../../../components/EventCard/EventCard';
 import { useEvents } from '../../../context/EventsContext';
 import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
@@ -125,21 +125,7 @@ function AllEvents() {
                             columnClassName={styles.myMasonryGridColumn}
                         >
                             {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                <div key={event._id} className={styles.eventWrapper}>
-                                    <img
-                                        src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
-                                        loading="lazy"
-                                    />
-                                    <div className={styles.eventDetails}>
-                                        <h2>{event.title}</h2>
-                                        <p>{event.description}</p>
-                                        <div className={styles.tags}>
-                                            {event.tags.map(tag => (
-                                                <span key={tag} className={styles.tag}>{tag}</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
+                                <EventCard key={event._id} event={event} />
                             ))}
                         </Masonry>
                     )}
