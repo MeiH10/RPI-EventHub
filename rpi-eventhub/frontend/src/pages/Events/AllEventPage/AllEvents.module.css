@@ -1,3 +1,6 @@
+/* AllEvents.module.css */
+
+/* Main container styles */
 .allEvents {
     display: flex;
     flex-direction: column;
@@ -5,26 +8,32 @@
     min-height: 100vh;
 }
 
+/* Container for events display */
 .eventsDisplayContainer {
     width: 100%;
     margin: auto;
     margin-bottom: 100px;
     padding-top: 100px;
-    padding-left: 270px; 
+    padding-left: 15px;
+    box-sizing: border-box;
 }
 
+/* Filter bar styles */
 .filterContainer {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap; /* Stack filters on smaller screens */
 }
 
 .filterSearch, .filterCategory {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
 }
 
 .filterSearch {
@@ -35,45 +44,58 @@
     width: 28%;
 }
 
+/* Masonry grid styles */
 .myMasonryGrid {
     display: flex;
-    margin-left: -30px;
+    margin-left: -15px;
     width: auto;
 }
 
 .myMasonryGridColumn {
-    padding-left: 30px;
+    padding-left: 15px;
     background-clip: padding-box;
 }
 
 .myMasonryGridColumn > div {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
+/* Skeleton loader styles */
 .skeletonWrapper {
     width: 100%;
     max-width: 400px;
     margin-bottom: 20px;
 }
 
+/* Event wrapper styles */
 .eventWrapper {
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 16px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    position: relative; /* Ensure positioning context */
+    cursor: pointer; /* Pointer cursor for clickable areas */
 }
 
+.eventWrapper:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+/* Event image styles */
 .eventWrapper img {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-radius: 6px 6px 0 0;
     display: block;
     width: 100%;
+    height: auto; /* Maintain aspect ratio */
 }
 
+/* Event details styles */
 .eventDetails {
     padding: 16px;
     text-align: center;
@@ -81,14 +103,16 @@
 
 .eventDetails h2 {
     margin: 0 0 8px;
-    font-size: 1.5em;
+    font-size: 1.6em;
+    color: #333;
 }
 
 .eventDetails p {
     margin: 0 0 16px;
-    color: #666;
+    color: #555;
 }
 
+/* Tags styles */
 .tags {
     display: flex;
     flex-wrap: wrap;
@@ -97,8 +121,33 @@
 }
 
 .tag {
-    background: #e0e0e0;
+    background: #f1f1f1;
     border-radius: 4px;
     padding: 4px 8px;
     font-size: 0.875em;
+    color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1100px) {
+    .myMasonryGrid {
+        margin-left: 0;
+    }
+    .myMasonryGridColumn {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 700px) {
+    .filterContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+    .filterSearch, .filterCategory {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .eventsDisplayContainer {
+        padding-left: 0;
+    }
 }
