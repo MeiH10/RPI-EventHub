@@ -24,7 +24,7 @@
 }
 
 .sortContainer {
-    width: 390px;
+    width: max-content;
     display: flex;
     justify-content: center;
     margin: 90px 20px 20px 0;

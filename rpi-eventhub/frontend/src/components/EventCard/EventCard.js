@@ -24,17 +24,27 @@ const EventCard = ({ event }) => {
 
   return (
     <div key={event._id} className={styles.eventWrapper}>
-      <img
-        src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
-        loading="lazy"
-        alt={event.title}
-      />
+      <div className={styles.imageContainer}>
+        <img
+          src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
+          loading="lazy"
+          alt={event.title}
+        />
+        <div className={styles.overlay}>
+          <Link to={`/events/${event._id}`} className={styles.overlayLink}>
+            <span>Open</span>
+            
+          </Link>
+        </div>
+      </div>
       <div className={styles.eventPosterDetails}>
-        {/* <Link to={`/events/${event._id}`} className={styles.eventLink}>
-          <h1>Open</h1>
-        </Link> */}
         <p>Posted by {event.poster}</p>
       </div>
+      {canSeeDeleteButton(username) && (
+          <button onClick={handleDelete} className={styles.deleteButton}>
+            Delete
+          </button>
+        )}
       <div className={styles.eventDetails}>
         <h2>{event.title}</h2>
         <p>{event.description}</p>
@@ -43,12 +53,6 @@ const EventCard = ({ event }) => {
             <span key={tag} className={styles.tag}>{tag}</span>
           ))}
         </div>
-        {canSeeDeleteButton(username) && (
-          <button onClick={handleDelete} className={styles.deleteButton}>
-            Delete
-          </button>
-        )}
-
       </div>
     </div>
   );

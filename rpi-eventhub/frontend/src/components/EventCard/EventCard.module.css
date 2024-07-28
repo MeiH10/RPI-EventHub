@@ -8,24 +8,60 @@
     align-items: center;
     padding: 16px;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    position: relative; /* Ensure positioning context */
-    cursor: pointer; /* Pointer cursor for clickable areas */
+    position: relative; 
+    cursor: pointer; 
 }
 
 .eventWrapper:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    transform: scale(1.02);
+    /* transform: scale(1.02); */
 }
 
-/* Event image styles */
-.eventWrapper img {
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.imageContainer img {
     border-radius: 6px 6px 0 0;
     display: block;
     width: 100%;
-    height: auto; /* Maintain aspect ratio */
+    height: auto; 
 }
 
-/* Event details styles */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.imageContainer:hover .overlay {
+    opacity: 1;
+}
+
+.overlayLink {
+    font-size: 2em;
+    text-decoration: none;
+    
+}
+
+
+.overlayLink span{
+    color: white;
+    
+}
+
+
 .eventDetails {
     padding: 16px;
     text-align: center;
@@ -42,7 +78,6 @@
     color: #555;
 }
 
-/* Tags styles */
 .tags {
     display: flex;
     flex-wrap: wrap;
@@ -57,28 +92,6 @@
     font-size: 0.875em;
     color: #333;
 }
-
-/* .eventPosterContainer:hover .eventPosterDetails {
-    opacity: 1;
-}
-
-.eventPosterDetails {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-} */
 
 .deleteButton {
     background: red;
