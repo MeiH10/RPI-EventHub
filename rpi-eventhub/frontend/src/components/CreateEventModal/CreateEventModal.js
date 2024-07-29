@@ -200,6 +200,7 @@ function CreateEventModal() {
               <Form.Control
                 type="file"
                 onChange={(e) => setFile(e.target.files[0])}
+                accept='.pdf, .jpg, .jpeg, .png, .webp'
               />
             </Form.Group>
 

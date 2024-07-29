@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Skeleton } from '@mui/material';
 import config from '../../config';
 
-const placeholderImage = 'https://via.placeholder.com/518x671?text=No+Image+Available'; 
+const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'; 
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);

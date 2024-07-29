@@ -7,11 +7,12 @@
 
 .eventsDisplayContainer {
     width: 100%;
-    margin: auto;
+    margin: 0;
     margin-bottom: 100px;
-    padding-top: 148px;
-    padding-left: 200px;
+    /* padding-top: 148px; */
+    padding-left: 10%;
     box-sizing: border-box;
+    margin-top: 10%;
 }
 
 .filterContainer {

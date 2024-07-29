@@ -160,7 +160,7 @@ app.post('/signup', async (req, res) => {
       emailVerified: user.emailVerified
     });
   } catch (error) {
-    res.status(500).json({ message: "Error creating user", error: error.message });
+    res.status(500).json({ message: "Error creating user. It's possible that username or email address already exist.", error: error.message });
   }
 });
 

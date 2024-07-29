@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import config from '../../config';
@@ -10,6 +10,8 @@ function LoginModal() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();  // Destructure the login function from useAuth
+  const [error, setError] = useState('');
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -33,8 +35,18 @@ function LoginModal() {
       handleClose(); // Close the modal on successful login
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data : error.message);
+      const errorMessage = error.response ? error.response.data.message || error.response.data : error.message;
+      setError(errorMessage);
+      setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (show) {
+      setIsSubmitting(false);
+    }
+  }, [show]);
+
 
   return (
     <>
@@ -52,6 +64,7 @@ function LoginModal() {
           <Modal.Title>Log In</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        {error && <Alert variant="danger">{error}</Alert>}
           <Form>
             <Form.Group controlId="loginEmail">
               <Form.Label>Email address</Form.Label>
