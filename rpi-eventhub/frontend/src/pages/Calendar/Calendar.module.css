@@ -81,6 +81,19 @@ hr {
     font-size: 17.5px;
 }
 
+.event {
+    margin-bottom: 10px;
+}
+
+.eventImage {
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 /* effects for calendar */
 .anim1 {
     animation: fade-in 1s;
