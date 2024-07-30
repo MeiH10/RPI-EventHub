@@ -5,6 +5,9 @@ import {
 } from 'react-router-dom';
 import { AuthProvider } from '../../context/AuthContext';
 import { EventsProvider } from '../../context/EventsContext';
+import { ThemeProvider, ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../components/DarkMode/useColorScheme';
+import { DarkModeToggle } from '../components/DarkMode/DarkModeToggle';
 
 
 // Import your page components
@@ -19,51 +22,22 @@ import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust p
 import EventDetails from '../../pages/EventDetails/EventDetails';
 import Calendar from '../../pages/Calendar/Calendar';
 import TermsOfService from '../../pages/TermsOfService/TermsOfService';
+
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/events",
-    element: <Events />,
-  },
-  {
-    path: "/about-us",
-    element: <AboutUs />,
-  },
-  {
-    path: "/playground",
-    element: <Playground />,
-  },
-  {
-    path: "/experimental",
-    element: <Experimental />,
-  },
-  {
-    path: "/search",
-    element: <SearchResults />,
-  },
-  
-  {
-    path: "/all-events",
-    element: <AllEvents />,
-  },
-  {
-    path: "/events/:eventId", // Dynamic route for event details
-    element: <EventDetails />,
-  },
-  {
-    path: "/calendar",
-    element: <Calendar />,
-  },
-  {
-    path: "/terms-of-service",
-    element: <TermsOfService />
-  }
+  { path: "/", element: <Home /> },
+  { path: "/events", element: <Events /> },
+  { path: "/about-us", element: <AboutUs /> },
+  { path: "/playground", element: <Playground /> },
+  { path: "/experimental", element: <Experimental /> },
+  { path: "/search", element: <SearchResults /> },
+  { path: "/all-events", element: <AllEvents /> },
+  { path: "/events/:eventId", element: <EventDetails /> },
+  { path: "/calendar", element: <Calendar /> },
+  { path: "/terms-of-service", element: <TermsOfService /> }
 ]);
 
-function App() {
+const App = () => {
+  const { isDark } = useColorScheme();
   return (
     <AuthProvider> {/* Wrap RouterProvider with AuthProvider */}
       <EventsProvider>
