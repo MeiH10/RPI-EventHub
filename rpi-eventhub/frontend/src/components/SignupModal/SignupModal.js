@@ -126,13 +126,13 @@ function SignupModal() {
                 type="checkbox"
                 className="custom-checkbox"
                 label={
-                  <>
-                    I accept the{' '}
-                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
-                      Terms of Service
-                    </a>
-                    .
-                  </>
+                  <span className="small-text">
+                  I accept the{' '}
+                  <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
+                    Terms of Service
+                  </a>
+                  .
+                </span>
                 }
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}

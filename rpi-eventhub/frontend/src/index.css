@@ -6,7 +6,7 @@
 
 html, body {
   margin: 0 !important;
-  font-family: "Georgia", "Arial", sans-serif !important; /* Changed to Calibri with fallbacks */
+  font-family: "Georgia", "Arial", sans-serif !important; 
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   background: linear-gradient(
@@ -44,7 +44,9 @@ code {
 .custom-checkbox .form-check-label {
   vertical-align: middle; /* Align label text with checkbox */
 }
-
+.small-text {
+  font-size: 18px !important; /* Set the desired font size */
+}
 footer {
   margin-top: auto;
 }
