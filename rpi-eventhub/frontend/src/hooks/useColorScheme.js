@@ -1,8 +1,7 @@
+// src/hooks/useColorScheme.js
 import { useEffect, useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
-import createPersistedState from "use-persisted-state";
-
-const useColorSchemeState = createPersistedState("colorScheme");
+import useLocalStorageState from "use-local-storage-state";
 
 export function useColorScheme() {
   const systemPrefersDark = useMediaQuery(
@@ -12,7 +11,7 @@ export function useColorScheme() {
     undefined
   );
 
-  const [isDark, setIsDark] = useColorSchemeState();
+  const [isDark, setIsDark] = useLocalStorageState("colorScheme");
   const value = useMemo(
     () => (isDark === undefined ? !!systemPrefersDark : isDark),
     [isDark, systemPrefersDark]
@@ -20,9 +19,9 @@ export function useColorScheme() {
 
   useEffect(() => {
     if (value) {
-      document.body.classList.add("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
     } else {
-      document.body.classList.remove("dark");
+      document.documentElement.removeAttribute("data-theme");
     }
   }, [value]);
 
