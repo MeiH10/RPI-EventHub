@@ -1,10 +1,8 @@
-// src/components/DarkMode/DarkMode.js
 import React from "react";
 import Toggle from "react-toggle";
 import { useColorScheme } from '../../hooks/useColorScheme';
-import styles from "./DarkMode.module.css"; // Import the CSS Module
-// src/components/DarkMode/DarkMode.js
-import "react-toggle/style.css"; // Import the default styles for the toggle button
+import styles from "./DarkMode.module.css"; 
+import "react-toggle/style.css"; 
 
 
 export const DarkModeToggle = () => {
