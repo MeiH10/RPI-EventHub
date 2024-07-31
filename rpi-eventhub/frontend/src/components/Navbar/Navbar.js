@@ -5,6 +5,7 @@ import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
 import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
+import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from 'react-router-dom';
 import VerifyModal from "../VerifyModal/VerifyModal";
@@ -94,6 +95,9 @@ const Navbar = () => {
                   <li className={styles.navItem}>
                     <SignupModal />
                   </li>
+                  <li className={styles.navItem}>
+                <DarkModeToggle /> {/* Add DarkModeToggle here */}
+              </li>
                 </>
               )}
               </ul>
