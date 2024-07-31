@@ -1,7 +1,35 @@
-.eventWrapper {
-    background: #ffffff;
+:root {
+    --background-color: #ffffff;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+    --hover-box-shadow-color: rgba(0, 0, 0, 0.2);
+    --overlay-bg-color: rgba(0, 0, 0, 0.5);
+    --text-color: #333;
+    --muted-text-color: #555;
+    --tag-bg-color: #f1f1f1;
+    --tag-text-color: #333;
+    --delete-button-bg-color: red;
+    --delete-button-hover-bg-color: darkred;
+    --delete-button-text-color: white;
+  }
+  
+  [data-theme='dark'] {
+    --background-color: #333333;
+    --box-shadow-color: rgba(0, 0, 0, 0.3);
+    --hover-box-shadow-color: rgba(0, 0, 0, 0.5);
+    --overlay-bg-color: rgba(255, 255, 255, 0.5);
+    --text-color: #ffffff;
+    --muted-text-color: #aaaaaa;
+    --tag-bg-color: #444444;
+    --tag-text-color: #ffffff;
+    --delete-button-bg-color: darkred;
+    --delete-button-hover-bg-color: red;
+    --delete-button-text-color: white;
+  }
+  
+  .eventWrapper {
+    background: var(--background-color);
     border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--box-shadow-color);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -10,100 +38,97 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     position: relative; 
     cursor: pointer; 
-}
-
-.eventWrapper:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .eventWrapper:hover {
+    box-shadow: 0 6px 20px var(--hover-box-shadow-color);
     /* transform: scale(1.02); */
-}
-
-.imageContainer {
+  }
+  
+  .imageContainer {
     position: relative;
     width: 100%;
     height: auto;
-}
-
-.imageContainer img {
+  }
+  
+  .imageContainer img {
     border-radius: 6px 6px 0 0;
     display: block;
     width: 100%;
     height: auto; 
-}
-
-.overlay {
+  }
+  
+  .overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
+    background: var(--overlay-bg-color);
+    color: var(--delete-button-text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
     transition: opacity 0.5s ease;
-}
-
-.imageContainer:hover .overlay {
+  }
+  
+  .imageContainer:hover .overlay {
     opacity: 1;
-}
-
-.overlayLink {
+  }
+  
+  .overlayLink {
     font-size: 2em;
     text-decoration: none;
-    
-}
-
-
-.overlayLink span{
-    color: white;
-    
-}
-
-
-.eventDetails {
+  }
+  
+  .overlayLink span {
+    color: var(--delete-button-text-color);
+  }
+  
+  .eventDetails {
     padding: 16px;
     text-align: center;
-}
-
-.eventDetails h2 {
+  }
+  
+  .eventDetails h2 {
     margin: 0 0 8px;
     font-size: 1.6em;
-    color: #333;
-}
-
-.eventDetails p {
+    color: var(--text-color);
+  }
+  
+  .eventDetails p {
     margin: 0 0 16px;
-    color: #555;
-}
-
-.tags {
+    color: var(--muted-text-color);
+  }
+  
+  .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
-}
-
-.tag {
-    background: #f1f1f1;
+  }
+  
+  .tag {
+    background: var(--tag-bg-color);
     border-radius: 4px;
     padding: 4px 8px;
     font-size: 0.875em;
-    color: #333;
-}
-
-.deleteButton {
-    background: red;
-    color: white;
+    color: var(--tag-text-color);
+  }
+  
+  .deleteButton {
+    background: var(--delete-button-bg-color);
+    color: var(--delete-button-text-color);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.3s ease;
-}
-
-.deleteButton:hover {
-    background: darkred;
-}
+  }
+  
+  .deleteButton:hover {
+    background: var(--delete-button-hover-bg-color);
+  }
+  
