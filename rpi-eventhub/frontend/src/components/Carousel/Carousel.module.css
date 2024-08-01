@@ -61,8 +61,8 @@
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 2;
-  padding: 10px;
-  font-size: 50px;
+  padding: 5px;
+  font-size: 35px;
   background-color: transparent;
   border: none;
   transition: transform 0.2s ease;
@@ -81,9 +81,9 @@
 }
 
 .nextButton {
-  right: -120px;
+  right: -95px;
 }
 
 .prevButton {
-  left: -120px;
+  left: -95px;
 }

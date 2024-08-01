@@ -1,64 +1,74 @@
 @font-face {
     font-family: "Italiana";
     src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
-}
-
-.cardtext {
+ }
+ 
+ 
+ .cardtext {
     font-family: 'Italiana', serif;
-}
-
-.content h1 {
-    font-size: 69px; 
-}
-
-.content h5 {
-    font-size: 42px; 
-}
-
-.content p {
-    font-size: 21px; 
-}
-
-.content {
+ }
+ 
+ 
+ .content h1 {
+    font-size: 69px;
+ }
+ 
+ 
+ .content h5 {
+    font-size: 42px;
+ }
+ 
+ 
+ .content p {
+    font-size: 21px;
+ }
+ 
+ 
+ .content {
     display: flex;
     flex-direction: column;
     height: 950px;
     margin: 0;
     position: relative; /* Added to allow absolute positioning of child elements */
-}
-
-/* line under calendar */
-hr {
+ }
+ 
+ 
+ /* line under calendar */
+ hr {
     width: 0%;
-}
-
-/* Calendar */
-.weeklyEvents {
+ }
+ 
+ 
+ /* Calendar */
+ .weeklyEvents {
     margin-top: 40px; /* margin distance between navbar and calendar" */
     border: 3px solid #000000; /* outer border */
     padding: 10px;
-    border-radius: 0px; 
+    border-radius: 0px;
     background: white;
     width: 62.5%; /* reduced width to half */
     text-align: center;
     position: absolute; /* Absolute positioning */
     right: 60px; /* Add some space from the right */
-}
-
-.weeklyEvents h2 {
+ }
+ 
+ 
+ .weeklyEvents h2 {
     margin-bottom: 10px; /* adjust margin distance from bottom of "WEEKLY EVENTS" */
     font-size: 36px;
     color: rgb(0, 0, 0); /* Change color to red */
-}
-
-.week {
+ }
+ 
+ 
+ .week {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0px; /* changes gap between each days of the week */
     text-align: center;
-}
-
-.day {
+ }
+ 
+ 
+ .day {
     padding: 5px;
     border: 0.1px solid #000000;
     border-radius: 0px;
@@ -66,40 +76,63 @@ hr {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.day h3 {
-    margin: 25;
+    justify-content: flex-start; /* Align content to the top */
+ }
+ 
+ 
+ .day h3 {
+    margin: 5px;
     font-size: 18px;
     border-bottom: 1px solid #000000;
-    width: 107.5%; /* try 100% or 107.5% */
-    padding-bottom: 2.5px; /* changes the distance of the line under days of the week */
-}
-
-.day p {
-    margin: 450px 0 0; /* changes the height of the calendar */
+    width: 107.5%;
+    padding-bottom: 2.5px;
+ }
+ 
+ 
+ .day p {
     font-size: 17.5px;
-}
-
-/* effects for calendar */
-.anim1 {
+    margin-top: 10px; /* Add some spacing between the image and the title */
+ }
+ 
+ 
+ .eventImage {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    cursor: pointer; /* Change the cursor to pointer */
+    transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+ }
+ 
+ 
+ .eventImage:hover {
+    transform: scale(1.05); /* Slight zoom on hover to indicate interactivity */
+ }
+ 
+ 
+ 
+ 
+ /* effects for calendar */
+ .anim1 {
     animation: fade-in 1s;
-}
-
-.anim2 {
+ }
+ 
+ 
+ .anim2 {
     animation: fade-in-and-scale 1s;
-}
-
-@keyframes fade-in {
+ }
+ 
+ 
+ @keyframes fade-in {
     from {
         opacity: 0;
     }
     to {
         opacity: 100;
     }
-}
-
-@keyframes fade-in-and-scale {
+ }
+ 
+ 
+ @keyframes fade-in-and-scale {
     from {
         opacity: 0;
         scale: 95%;
@@ -108,11 +141,19 @@ hr {
         scale: 100%;
         opacity: 100%;
     }
-}
-
-.carouselContainer {
-    margin-top: 0px; /* margin distance between navbar and calendar" */
+ }
+ 
+ 
+ /* Updated styles for carousel container and buttons */
+ .carouselContainer {
+    margin-top: 75px; /* margin distance between navbar and calendar */
     text-align: center;
     position: absolute; /* Absolute positioning */
-    left: -65px; /* Add some space from the right */
-}
+    left: -127.5px; /* Add some space from the right */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%; /* Reduce the width of the carousel */
+    height: 400px; /* Set a fixed height for the carousel */
+ }
+ 
