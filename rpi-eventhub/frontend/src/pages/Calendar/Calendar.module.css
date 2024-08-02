@@ -34,15 +34,18 @@ hr {
 
 /* Calendar */
 .weeklyEvents {
-    margin-top: 40px; /* margin distance between navbar and calendar" */
-    border: 3px solid #000000; /* outer border */
+    margin-top: 100px; /* Adjust this value as needed to avoid touching the header */
+    border: 3px solid #000000;
     padding: 10px;
-    border-radius: 0px; 
+    border-radius: 0px;
     background: white;
-    width: 62.5%; /* reduced width to half */
+    width: 62.5%;
     text-align: center;
-    position: absolute; /* Absolute positioning */
-    right: 60px; /* Add some space from the right */
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust the positioning correctly */
+    z-index: 2; /* Ensure it's above other content */
 }
 
 .weeklyEvents h2 {
@@ -93,6 +96,13 @@ hr {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+.content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px); /* Adjust 100px to the combined height of your header and footer */
+    margin: 0;
+    position: relative;
+}
 
 /* effects for calendar */
 .anim1 {
@@ -123,9 +133,24 @@ hr {
     }
 }
 
-.carouselContainer {
-    margin-top: 0px; /* margin distance between navbar and calendar" */
-    text-align: center;
-    position: absolute; /* Absolute positioning */
-    left: -65px; /* Add some space from the right */
-}
+.navigationButtons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .navigationButtons button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #c2405e;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .navigationButtons button:hover {
+    background-color: #c2405e;
+  }
+  
