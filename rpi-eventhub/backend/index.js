@@ -230,7 +230,6 @@ app.get('/events', async (req, res) => {
 
 
 app.get('/events/:id/like', async (req, res) => {
-  console.log("Hits the get call\n"); 
   const { id } = req.params;
 
   try {
@@ -244,9 +243,27 @@ app.get('/events/:id/like', async (req, res) => {
     
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Failed   to get like count', error: error.message });
+    res.status(500).json({ message: 'Failed to get like count', error: error.message });
   }
 });
+
+app.get('/events/:id/like/status', authenticate, async (req, res) => {
+  const { id } = req.params; 
+  const user = req.user;
+  
+  try {
+    const event = await Event.findById(id); 
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    const liked = user.likedEvents.includes(id); 
+    res.status(200).json({ liked }); 
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error }); 
+  }
+});
+
 
 
 app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {

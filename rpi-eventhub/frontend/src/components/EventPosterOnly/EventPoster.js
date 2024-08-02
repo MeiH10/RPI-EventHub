@@ -6,8 +6,9 @@ import { useAuth } from '../../context/AuthContext';
 
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   const { username } = useAuth();
-  const { deleteEvent, likeEvent } = useEvents();
+  const { deleteEvent } = useEvents();
   const [likeCount, setLikeCount] = useState(0); 
+  const [liked, setLiked] = useState(false); 
 
   const handleDelete = useCallback(async () => {
     try {
@@ -17,9 +18,10 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
     }
   }, [id, deleteEvent]);
 
-  useEffect (() => {
-    fetchLike(); 
-  }); 
+  useEffect(() => {
+    fetchLike();
+    fetchUserLikeStatus();
+  }, [id]); // Ensure `id` is included as a dependency
 
   const canSeeDeleteButton = (user_name) => {
     return user_name === 'admin' || user_name === author;
@@ -34,20 +36,34 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
         }
       });
       setLikeCount(response.data.likes);
+      setLiked(!liked); // Toggle the liked state
     } catch (error) {
       console.error('Failed to like event:', error);
     }
-  }, [id]);
+  }, [id, liked]);
 
   const fetchLike = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:5000/events/${id}/like`); 
       setLikeCount(response.data.likes); 
-
     } catch (error) {
-      console.error('Failed to fetch likes',error); 
+      console.error('Failed to fetch likes', error); 
     }
-  })
+  }, [id]);
+
+  const fetchUserLikeStatus = useCallback(async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.get(`http://localhost:5000/events/${id}/like/status`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setLiked(response.data.liked);
+    } catch (error) {
+      console.error('Failed to fetch user like status:', error);
+    }
+  }, [id]);
 
   return (
     <div className={style.eventPosterContainer}>
@@ -66,8 +82,8 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
             <li key={index}>{tag}</li>
           ))}
         </ul>
-        <button onClick={handleLike} className={style['like-button']}>Like {likeCount}</button> 
-
+        <button onClick={handleLike} 
+         className={`${style['like-button']} ${liked ? style.liked : style.unliked}`}>Like {likeCount}</button> 
       </div>
     </div>
   );

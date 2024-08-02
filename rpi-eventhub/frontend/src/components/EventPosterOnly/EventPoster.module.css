@@ -62,12 +62,10 @@
     opacity: 1;
 }
 
-
 .like-button {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    background-color: #ff4757;
     border: none;
     color: white;
     padding: 10px;
@@ -79,13 +77,21 @@
     border-radius: 50%;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+  }
 
-.like-button:hover {
-    background-color: #ff0000ee;
+  .liked {
+    background-color: red; 
+  }
+  
+  .unliked {
+    background-color: gray; 
+  }
+  
+  .like-button:hover {
     transform: scale(1.1);
-}
-
-.like-button:active {
+  }
+  
+  .like-button:active {
     transform: scale(0.5);
-}
+  }
+  
