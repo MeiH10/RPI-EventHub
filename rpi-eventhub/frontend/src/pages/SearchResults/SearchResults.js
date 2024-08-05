@@ -1,4 +1,4 @@
-// src/pages/SearchResults/SearchResults.jsx
+// src/pages/SearchResults/SearchResults.js
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
