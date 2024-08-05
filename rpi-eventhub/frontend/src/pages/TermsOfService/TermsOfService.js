@@ -1,10 +1,6 @@
 // src/pages/SearchResults/TermsOfService.jsx
 import React from 'react';
 import styles from './TermsOfService.module.css';
-import { useLocation } from 'react-router-dom';
-import EventPoster from '../../components/EventPosterOnly/EventPoster'; // Adjust the import path if necessary
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from '../../components/Footer/Footer';
 
 const TermsOfService = () => {
   return (
