@@ -3,10 +3,10 @@ import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
 import Footer from "../../../components/Footer/Footer";
-import EventPoster from "../../../components/EventPosterOnly/EventPoster";
-
+import EventCard from '../../../components/EventCard/EventCard';
 import { useEvents } from '../../../context/EventsContext';
 import { Skeleton } from '@mui/material';
+import Masonry from 'react-masonry-css';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents(); // Use deleteEvent from context
@@ -58,7 +58,6 @@ function AllEvents() {
         setFilteredEvents(filtered);
     };
 
-
     const sortEvents = (events, sortMethod, sortOrder) => {
         switch (sortMethod) {
             case 'date':
@@ -71,9 +70,15 @@ function AllEvents() {
                 return events;
         }
     };
+
+    const breakpointColumnsObj = {
+        default: 3,
+        1100: 2,
+        700: 1
+    };
     
     return (
-        <div className="outterContainer">
+        <div className={styles.allEvents}>
             <Navbar />
             <div className="container-fluid" style={{ display: 'flex' }}>
                 <div className={styles.filterContainer}>
@@ -104,7 +109,7 @@ function AllEvents() {
                         filteredCount={filteredEvents.length} 
                     />
                 </div>
-                <div className={`${styles.eventsDisplayContainer}`} style={{ flex: 1 }}>
+                <div className={styles.eventsDisplayContainer}>
                     {isLoading ? (
                         Array.from(new Array(10)).map((_, index) => (
                             <div key={index} className={styles.skeletonWrapper}>
@@ -114,24 +119,19 @@ function AllEvents() {
                             </div>
                         ))
                     ) : (
-                        sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                            <EventPoster
-                                key={event._id}
-                                id={event._id} // Pass event ID
-                                title={event.title}
-                                posterSrc={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'} // Placeholder if no image URL
-                                description={event.description}
-                                width={300}  // Fake width for now
-                                height={450}  // Fake height for now
-                                onDelete={deleteEvent} // Pass deleteEvent function
-                                author={event.poster}
-                                tags={event.tags}
-                            />
-                        ))
+                        <Masonry
+                            breakpointCols={breakpointColumnsObj}
+                            className={styles.myMasonryGrid}
+                            columnClassName={styles.myMasonryGridColumn}
+                        >
+                            {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                <EventCard key={event._id} event={event} />
+                            ))}
+                        </Masonry>
                     )}
                 </div>
             </div>
-            <Footer></Footer>
+            <Footer />
         </div>
     );
 }

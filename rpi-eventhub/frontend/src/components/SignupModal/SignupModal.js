@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
@@ -64,8 +64,16 @@ function SignupModal() {
       // Ensure error is always a string
       const errorMessage = error.response ? error.response.data.message || error.response.data : error.message;
       setError(errorMessage);
+      setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (show) {
+      setIsSubmitting(false);
+    }
+  }, [show]);
+
 
   return (
     <>
@@ -118,13 +126,13 @@ function SignupModal() {
                 type="checkbox"
                 className="custom-checkbox"
                 label={
-                  <>
-                    I accept the{' '}
-                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
-                      Terms of Service
-                    </a>
-                    .
-                  </>
+                  <span className="small-text">
+                  I accept the{' '}
+                  <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
+                    Terms of Service
+                  </a>
+                  .
+                </span>
                 }
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
