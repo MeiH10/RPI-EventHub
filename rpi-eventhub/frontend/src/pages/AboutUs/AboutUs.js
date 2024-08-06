@@ -18,8 +18,6 @@ function AboutUs() {
         const data = await response.json();
         setContributors(data);
         setIsLoading(false);
-
-
       } catch (error) {
         console.error('Error fetching contributors:', error);
       }
@@ -29,29 +27,41 @@ function AboutUs() {
   }, []);
 
   return (
-    <div className='outterContainer'>
+    <div className={styles.outerContainer}>
       <Navbar />
-      <div className="containerFluid container-fluid">
+      <div className={`${styles.container} container-fluid`}>
         <div className="row">
-          <div className="col-7 p-5">
-            <div className={`${styles.title} text-start ${styles.first}`}>
-              <h1>About Us</h1>
-              <h6>RPI EventHub</h6>
-            </div>
+          <div className="col-md-7 p-5">
             <div className={styles.grid}>
-              <div className={`${styles.aboutUsText} ${styles.second}`}>
-                <h4>Mission Statement</h4>
-                EventHub is dedicated to connecting the students of RPI with events
-                happening all over campus. Through this website, we hope to foster
-                greater community, connection, and collaboration throughout the campus.
-                Our hope is for RPI students and staff to be able to effortlessly create,
-                advertise, and explore diverse campus events, fostering a vibrant and
-                connected university community.
+              <div className={`${styles.aboutUsText}`}>
+                <h4 className={styles.boldTitle}>Mission Statement</h4>
+                <p className={styles.missionText}>
+                  EventHub is dedicated to connecting the students of RPI with events
+                  happening all over campus. Through this website, we hope to foster
+                  greater community, connection, and collaboration throughout the campus.
+                  Our hope is for RPI students and staff to be able to effortlessly create,
+                  advertise, and explore diverse campus events, fostering a vibrant and
+                  connected university community.
+                </p>
               </div>
             </div>
+            <div className={`${styles.aboutUsText} ${styles.feedbackSection}`}>
+              <h4 className={styles.boldTitle}>We Value Your Feedback!</h4>
+              <p>
+                We appreciate any feedback on your experience with our site. Please take a minute to fill out our 
+                <a href="https://forms.gle/your-google-form-link" target="_blank" rel="noopener noreferrer" className={styles.link}>
+                   feedback form
+                </a>.
+                <br />
+                If you find any bugs or have suggestions, please submit an issue on our GitHub repository: 
+                <a href="https://github.com/MeiH10/RPI-EventHub/issues" target="_blank" rel="noopener noreferrer" className={styles.link}>
+                   Report a GitHub Issue
+                </a>
+              </p>
+            </div>
           </div>
-          <div className={`${styles.anim} col-5 p-5 ${styles.second}`}>
-            <img src={RPIBridgePhoto} id="bridge" alt="bridge" width="480"></img>
+          <div className={`${styles.anim} col-md-5 p-5`}>
+            <img src={RPIBridgePhoto} id="bridge" alt="bridge" width="480" />
           </div>
         </div>
         <hr className={styles.hr} />
@@ -60,14 +70,14 @@ function AboutUs() {
           <div className="row">
             {isLoading ? (
               Array.from(new Array(5)).map((_, index) => (
-                <div className={`col-4 ${styles.column}`} key={index}>
+                <div className={`col-md-4 ${styles.column}`} key={index}>
                   <Skeleton variant="circular" width={150} height={150} />
                   <Skeleton variant="text" width={150} />
                 </div>
               ))
             ) : (
               contributors.map(contributor => (
-                <div className={`col-4 ${styles.column}`} key={contributor.login}>
+                <div className={`col-md-4 ${styles.column}`} key={contributor.login}>
                   <img src={contributor.avatar_url} className={styles.profilePic} alt="Profile" />
                   <h6 className={styles.devText}>{contributor.login}</h6>
                 </div>

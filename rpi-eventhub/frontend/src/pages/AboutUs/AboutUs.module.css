@@ -1,37 +1,51 @@
-.aboutUs {
-    text-align: center;
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
-/* Set up grid for text elements */
+/* Center-align text and ensure grid layout for About Us section */
+.aboutUs {
+    text-align: center;
+    padding: 2rem;
+}
+
 .grid { 
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
+    padding: 1rem;
 }
 
 .developers {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 2rem;
 }
 
-/* First, second, third, and anim are all for animations */
+/* Animation Classes */
+.first, .second, .third, .anim {
+    animation: fadeIn 1s ease-out;
+}
+
 .first {
-    animation: fadeIn 0.5s;
+    animation-duration: 0.5s;
 }
 
 .second {
-    animation: fadeIn 1s;
+    animation-duration: 1s;
 }
 
 .third {
-    animation: fadeIn 2s;
+    animation-duration: 2s;
 }
 
 .anim {
-    animation: fadeInAndScale 0.5s;
+    animation: fadeInAndScale 0.5s ease-out;
 }
 
-/* Fade in animation from 0 to 100 opacity */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -41,7 +55,6 @@
     }
 }
 
-/* Fade in and scale up animation */
 @keyframes fadeInAndScale {
     from {
         opacity: 0;
@@ -53,39 +66,48 @@
     }
 }
 
-.about {
-    text-align: center;
-    margin-top: 20px;
-}
-
-/* Mission statement text, left aligned */
+/* About Us Text */
 .aboutUsText {
     text-align: left;
-    margin-top: 40px;
+    margin-top: 2rem; /* Adjusted margin to shift mission statement down */
+    padding: 0 1rem;
+    max-width: 800px;
+    margin-left: 10%; /* Adjusted margin to align with feedback section */
 }
 
-.logo {
-    transform: scale(0.3);
-    margin-top: -270px;
+/* Mission Statement */
+.missionText {
+    margin-top: 1rem;
 }
 
-/* Page break css */
+/* Feedback Section */
+.feedbackSection {
+    margin-top: 2rem; /* Space between mission statement and feedback form */
+    padding: 0 1rem;
+    margin-left: 10%; /* Adjusted margin to align with mission statement */
+}
+
+.boldTitle {
+    font-weight: bold;
+    color: #2d0505;
+}
+
+/* Page Break */
 .hr {
-    margin: 20px 0;
-    width: 100%;
+    margin: 2rem auto;
+    width: 90%;
     border: 0;
-    border-top: 1px solid #ffffff;
-    border-bottom: 1px solid #2d0505;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #ddd;
 }
 
-/* Set up column and row::after for developers section */
+/* Developers Section */
 .column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20%;
-    padding: 20px;
-    margin: auto;
+    padding: 1rem;
+    margin: 0 auto;
 }
 
 .row::after {
@@ -94,27 +116,13 @@
     display: table;
 }
 
-/* CSS for email links in the developers section */
-a {
-    text-decoration: none; 
-    color: blue;
-} 
-a:visited { 
-    color: darkblue;
-} 
-a:hover { 
-    color: darkblue;
-} 
-a:active { 
-    color: black;
-}
-  
-/* Text in the developer section, moves text down 10px */
+/* Developer Text */
 .devText {
-    margin-top: 10px;
+    margin-top: 0.5rem;
+    font-weight: 600;
 }
 
-/* Circle for profile picture */
+/* Profile Picture */
 .profilePic {
     border-radius: 50%;
     width: 150px;
@@ -122,11 +130,25 @@ a:active {
     object-fit: cover;
 }
 
+/* Footer */
 .footer {
     margin-top: auto; /* Push the footer to the bottom */
 }
 
-/* Bolded titles */
-.title h1, .aboutUsText h4 {
-    font-weight: bold;
+/* Links Styling */
+.link {
+    text-decoration: none; 
+    color: #007bff;
+}
+
+.link:visited { 
+    color: #0056b3;
+}
+
+.link:hover { 
+    color: #004080;
+}
+
+.link:active { 
+    color: #002060;
 }
