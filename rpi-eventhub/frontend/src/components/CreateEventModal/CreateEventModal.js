@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import config from '../../config';
-import styles from './CreateEventModal.module.css';
+
 
 function CreateEventModal() {
   const [show, setShow] = useState(false);
@@ -17,26 +17,26 @@ function CreateEventModal() {
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState('');
-  const [successOpen, setSuccessOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false); // State for success alert
   const [errorOpen, setErrorOpen] = useState({});
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const suggestedTags = ['workshop', 'seminar', 'game', 'music', 'food', 'career', 'fun'];
+  const suggestedTags = ['workshop', 'seminar', 'game', 'music', 'food','career','fun'];
 
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
 
   const handleClose = () => {
     setShow(false);
-    setError('');
+    setError('');  // Clear errors when closing modal
   };
 
   const handleShow = () => setShow(true);
 
   const handleSuccessClose = () => {
     setSuccessOpen(false);
-    setShow(false);
+    setShow(false); // Close the modal after success
   };
 
   const handleErrorClose = (field) => {
@@ -76,22 +76,25 @@ function CreateEventModal() {
     setError('');
     setIsSubmitting(true);
 
+    // Normalize and deduplicate tags before submission
     const uniqueTags = Array.from(new Set(tags.split(',')
       .map(tag => tag.trim().toLowerCase())
       .filter(tag => tag.length > 0))).join(', ');
 
+    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('poster', username);
-    formData.append('file', file);
+    formData.append('file', file); // Attach the file
     formData.append('date', date);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
+
     formData.append('time', time);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
-
+    
     let errors = {};
     if (!title) errors.title = true;
     if (!description) errors.description = true;
@@ -100,9 +103,11 @@ function CreateEventModal() {
     if (!time) errors.time = true;
     if (!club) errors.club = true;
 
+
     if (!description || !title || !location || !date || !time || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
+
       return;
     }
 
@@ -118,13 +123,13 @@ function CreateEventModal() {
           'Content-Type': 'multipart/form-data'
         }
       });
-      addEvent(data);
-      setSuccessOpen(true);
+      addEvent(data); // Add the new event to the global context
+      setSuccessOpen(true); // Show success message
     } catch (error) {
       console.error('Failed to create event:', error);
-      setError(error.response ? error.response.data.message : error.message);
+      setError(error.response ? error.response.data.message : error.message); // Ensure the error is a string
     } finally {
-      setIsSubmitting(false);
+      // setIsSubmitting(false);
     }
   };
 
@@ -136,38 +141,40 @@ function CreateEventModal() {
     setTags(e.target.value);
   };
 
+
   return (
     <>
       <Button variant="success" onClick={handleShow}>
         Create Event
       </Button>
 
-      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
-        <Modal.Header closeButton className={styles.modalHeader}>
-          <Modal.Title className={styles.modalTitle}>Create an Event</Modal.Title>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Create an Event</Modal.Title>
         </Modal.Header>
-        <Modal.Body className={styles.modalBody}>
-          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
-          {successOpen && <Alert variant="success" className={styles.alertSuccess}>Event created successfully!</Alert>}
+        <Modal.Body>
+          {error && <Alert variant="danger">{error}</Alert>}
+          {successOpen && <Alert variant="success">Event created successfully!</Alert>}
           <Form>
-            <Form.Group controlId="eventTitle" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>
-                Title <span className={styles.textDanger}>*</span>
-              </Form.Label>
+            <Form.Group controlId="eventTitle">
+              <Form.Label>Title <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
                 placeholder="Enter event title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className={styles.formControl}
+                //isInvalid={!title}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventDescription" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>
-                Description <span className={styles.textDanger}>*</span>
-              </Form.Label>
+            <Form.Group controlId="eventDescription">
+              <Form.Label>Description <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 as="textarea"
                 required
@@ -175,110 +182,102 @@ function CreateEventModal() {
                 placeholder="Event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className={`${styles.formControl} ${styles.formControlTextarea}`}
+                //isInvalid={!description}
               />
             </Form.Group>
-            <Form.Group controlId="eventClub" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>
-                Club <span className={styles.textDanger}>*</span>
-              </Form.Label>
+            <Form.Group controlId="eventClub">
+              <Form.Label>Club <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter club name"
                 value={club}
                 onChange={(e) => setClub(e.target.value)}
-                className={styles.formControl}
+                //isInvalid={!club}
               />
             </Form.Group>
-            <Form.Group controlId="eventFile" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>File (Poster or PDF)</Form.Label>
+            <Form.Group controlId="eventFile">
+              <Form.Label>File (Poster or PDF)</Form.Label>
               <Form.Control
                 type="file"
                 onChange={(e) => setFile(e.target.files[0])}
                 accept='.pdf, .jpg, .jpeg, .png, .webp'
-                className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventDate" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>
-                Date <span className={styles.textDanger}>*</span>
-              </Form.Label>
+            <Form.Group controlId="eventDate">
+              <Form.Label>Date <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="date"
                 placeholder="Event date"
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className={styles.formControl}
+                //isInvalid={!date}
               />
             </Form.Group>
-            <Form.Group controlId="eventTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>
-                Time <span className={styles.textDanger}>*</span>
-              </Form.Label>
+            <Form.Group controlId="eventTime">
+              <Form.Label>Time <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="time"
                 placeholder="Event time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                className={styles.formControl}
+                //isInvalid={!time}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventLocation" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>
-                Location <span className={styles.textDanger}>*</span>
-              </Form.Label>
+            <Form.Group controlId="eventLocation">
+              <Form.Label>Location <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
                 placeholder="Event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className={styles.formControl}
               />
             </Form.Group>
-            <Form.Group controlId="eventRSVP" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>RSVP Link</Form.Label>
+            <Form.Group controlId="eventRSVP">
+              <Form.Label>RSVP Link</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter RSVP Link"
                 value={rsvp}
                 onChange={(e) => setRSVP(e.target.value)}
-                className={styles.formControl}
+
               />
             </Form.Group>
-            <Form.Group controlId="eventTags" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Tags (comma separated, lowercase only)</Form.Label>
+            <Form.Group controlId="eventTags">
+              <Form.Label>Tags (comma separated, lowercase only)</Form.Label>
               <Form.Control
                 as="textarea"
                 type="text"
                 placeholder="e.g., workshop, seminar"
                 value={tags}
                 onChange={handleTagsChange}
-                className={styles.formControl}
+                
               />
-              <div className={styles.suggestedTags}>
+              <div className="mt-2">
                 {suggestedTags.map((tag, index) => (
                   <Button
                     key={index}
                     variant="outline-primary"
-                    className={styles.suggestedTagButton}
+                    className="mr-2 mb-2"
                     onClick={() => handleAddTag(tag)}
+                    
                   >
                     {tag}
                   </Button>
                 ))}
               </div>
+
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer className={styles.modalBody}>
-          <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting} className={`${styles.button} ${styles.buttonPrimary}`}>
+          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting}>
             Create Event
           </Button>
         </Modal.Footer>
