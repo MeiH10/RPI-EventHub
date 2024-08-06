@@ -1,0 +1,106 @@
+:root {
+    --modal-bg-color: #fff;
+    --modal-border-color: #000;
+    --modal-title-color: #000;
+    --modal-text-color: #000;
+    --form-control-bg-color: #fff;
+    --form-control-border-color: #ced4da;
+    --form-control-placeholder-color: #888; 
+    --button-primary-bg-color: #007bff;
+    --button-secondary-bg-color: #6c757d;
+    --alert-success-bg-color: #d4edda;
+    --alert-danger-bg-color: #f8d7da;
+  }
+  
+  [data-theme='dark'] {
+    --modal-bg-color: #333;
+    --modal-border-color: #fff;
+    --modal-title-color: #fff;
+    --modal-text-color: #fff;
+    --form-control-bg-color: #555;
+    --form-control-border-color: #666;
+    --form-control-placeholder-color: #ccc; 
+    --button-primary-bg-color: #0056b3;
+    --button-secondary-bg-color: #494949;
+    --alert-success-bg-color: #155724;
+    --alert-danger-bg-color: #721c24;
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--modal-bg-color);
+    border-bottom: 1px solid var(--modal-border-color);
+  }
+  
+  .modalTitle {
+    font-size: 1.5rem;
+    color: var(--modal-title-color);
+  }
+  
+  .modalBody {
+    background-color: var(--modal-bg-color);
+    color: var(--modal-text-color);
+  }
+  
+  .formGroup {
+    margin-bottom: 1rem;
+  }
+  
+  .formLabel {
+    font-weight: bold;
+    color: var(--modal-text-color);
+  }
+  
+  .textDanger {
+    color: red;
+  }
+  
+  .formControl {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    background-color: var(--form-control-bg-color);
+    border: 1px solid var(--form-control-border-color);
+    border-radius: 0.25rem;
+    color: var(--modal-text-color);
+  }
+  
+  .formControl::placeholder {
+    color: var(--form-control-placeholder-color);
+  }
+  
+  .button {
+    margin-right: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .buttonPrimary {
+    background-color: var(--button-primary-bg-color);
+    color: #fff;
+  }
+  
+  .buttonSecondary {
+    background-color: var(--button-secondary-bg-color);
+    color: #fff;
+  }
+  
+  .alert {
+    margin-bottom: 1rem;
+  }
+  
+  .alertSuccess {
+    background-color: var(--alert-success-bg-color);
+    color: #155724;
+  }
+  
+  .alertDanger {
+    background-color: var(--alert-danger-bg-color);
+    color: #721c24;
+  }
+  
