@@ -13,6 +13,7 @@ body {
     padding: 2rem;
 }
 
+
 .grid { 
     display: grid;
     grid-template-columns: 1fr;
@@ -69,22 +70,22 @@ body {
 /* About Us Text */
 .aboutUsText {
     text-align: left;
-    margin-top: 2rem; /* Adjusted margin to shift mission statement down */
+    margin-top: 2rem;
     padding: 0 1rem;
     max-width: 800px;
-    margin-left: 10%; /* Adjusted margin to align with feedback section */
 }
 
-/* Mission Statement */
 .missionText {
     margin-top: 1rem;
 }
 
 /* Feedback Section */
 .feedbackSection {
-    margin-top: 2rem; /* Space between mission statement and feedback form */
+    text-align: left;
+    margin-top: 2rem;
     padding: 0 1rem;
-    margin-left: 10%; /* Adjusted margin to align with mission statement */
+    max-width: 800px;
+    margin-left: 2%;
 }
 
 .boldTitle {
@@ -151,4 +152,9 @@ body {
 
 .link:active { 
     color: #002060;
+}
+
+/* Image Container */
+.imageContainer {
+    padding-top: 20px; /* Add padding to shift image down */
 }
