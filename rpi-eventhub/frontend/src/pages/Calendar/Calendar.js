@@ -59,10 +59,11 @@ const CalendarPage = () => {
 
   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
-  const filterEventsByDay = (day) => {
+  const filterEventsByDay = (day, firstDayOfWeek, lastDayOfWeek) => {
     return events.filter(event => {
       const eventDate = new Date(event.date);
-      return eventDate.getDay() === day;
+      eventDate.setHours(0, 0, 0, 0); // Normalize event date to start of the day for comparison
+      return eventDate.getDay() === day && eventDate >= firstDayOfWeek && eventDate <= lastDayOfWeek;
     });
   };
 
@@ -84,22 +85,22 @@ const CalendarPage = () => {
               </div>
               <h2>Week of {weekRange.start} - {weekRange.end}</h2>
               <div className={CalendarCSS.week}>
-                {[0, 1, 2, 3, 4, 5, 6].map(day => (
-                  <div className={CalendarCSS.day} key={day}>
-                    <h3>{["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]}</h3>
-                    {filterEventsByDay(day).length > 0 ? (
-                      filterEventsByDay(day).map(event => (
-                        <div key={event._id} className={CalendarCSS.event}>
-                          <h4>{event.title}</h4>
-                          {event.image && <img src={event.image} alt={event.title} className={CalendarCSS.eventImage} />}
-                        </div>
-                      ))
-                    ) : (
-                      <p>No events</p>
-                    )}
-                  </div>
-                ))}
-              </div>
+              {[0, 1, 2, 3, 4, 5, 6].map(day => (
+                <div className={CalendarCSS.day} key={day}>
+                  <h3>{["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]}</h3>
+                  {filterEventsByDay(day, new Date(weekRange.start), new Date(weekRange.end)).length > 0 ? (
+                    filterEventsByDay(day, new Date(weekRange.start), new Date(weekRange.end)).map(event => (
+                      <div key={event._id} className={CalendarCSS.eventContainer}>
+                        <h4 className={CalendarCSS.eventTitle}>{event.title}</h4>
+                        {event.image && <img src={event.image} alt={event.title} className={CalendarCSS.eventImage} />}
+                      </div>
+                    ))
+                  ) : (
+                    <p>No events</p>
+                  )}
+                </div>
+              ))}
+            </div>
             </div>
           </div>
           <hr className={CalendarCSS.hr} />

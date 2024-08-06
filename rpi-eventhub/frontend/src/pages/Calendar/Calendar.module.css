@@ -88,21 +88,30 @@ hr {
     margin-bottom: 10px;
 }
 
+.eventContainer {
+    border: 3px #fff; /* Dashed white border */
+    padding: 10px; /* Space inside the border */
+    background-color: #c2405e9b; /* Black background, or any color you prefer */
+    text-align: center; /* Center the content */
+    margin-bottom: 20px; /* Space below the container */
+}
+
 .eventImage {
     max-width: 90%;
     height: auto;
-    display: block;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    margin: 10px 0; /* Space above and below the image */
 }
-.content {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 100px); /* Adjust 100px to the combined height of your header and footer */
-    margin: 0;
-    position: relative;
+
+.eventTitle {
+    display: block; /* Ensure the title is on a new line */
+    font-family: 'Italiana', serif;
+    font-size: larger; /* Larger font size for better readability */
+    color: #040404; /* Dark text color */
+    font-weight: bold; /* Bold font weight for emphasis */
+    margin-top: 5px; /* Space between image and title */
 }
+
+
 
 /* effects for calendar */
 .anim1 {
