@@ -1,24 +1,8 @@
-@font-face {
-    font-family: "Italiana";
-    src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
-}
 
 .aboutUs {
     text-align: center;
 }
 
-.footerContainer {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(
-        217deg,
-        rgba(255, 101, 101, 0.8),
-        rgb(255 0 0 / 0%) 70.71%
-      ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
-      linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
-}
 
 /* set up grid for text elements*/
 .grid { 
@@ -71,9 +55,6 @@
     }
 }
 
-.title {
-    font-family: Italiana, serif;
-}
 
 .about {
     flex: 1;

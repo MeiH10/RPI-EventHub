@@ -16,7 +16,9 @@ import AboutUs from '../../pages/AboutUs/AboutUs'; // Adjust path if needed
 import Experimental from '../../pages/Experimental/Experimental'; // Adjust path if needed
 import AllEvents from "../../pages/Events/AllEventPage/AllEvents";
 import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust path if needed
-
+import EventDetails from '../../pages/EventDetails/EventDetails';
+import Calendar from '../../pages/Calendar/Calendar';
+import TermsOfService from '../../pages/TermsOfService/TermsOfService';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,9 +44,22 @@ const router = createBrowserRouter([
     path: "/search",
     element: <SearchResults />,
   },
+  
   {
     path: "/all-events",
     element: <AllEvents />,
+  },
+  {
+    path: "/events/:eventId", // Dynamic route for event details
+    element: <EventDetails />,
+  },
+  {
+    path: "/calendar",
+    element: <Calendar />,
+  },
+  {
+    path: "/terms-of-service",
+    element: <TermsOfService />
   }
 ]);
 

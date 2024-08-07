@@ -16,28 +16,35 @@
   width: 80%;
   max-width: 500px;
   margin: 0 auto;
+  
 }
 
-.mainImage img {
+
+.imgContainer {
+  width: 420px;
+}
+
+.imgContainer img {
   max-width: 100%;
-  max-height: 70vh; /* Adjust based on your needs */
+  width: 100%;
   object-fit: cover; /* This can help keep aspect ratio without stretching images. */
 }
 
 .captionAbove {
   width: 100%; /* Same width as the image container */
-  max-width: 500px;
+  max-width: 420px;
   color: white; /* Change the color to white for better readability */
   font-size: 1.5em; /* Increase the font size for better visibility */
   text-align: center;
   background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
   padding: 10px 20px; /* Add padding for better spacing */
   margin-bottom: 10px; /* Add some space between the caption and the image */
+  border-radius: 10px;
 }
 
 .captionBelow {
   width: 100%; /* Same width as the image container */
-  max-width: 500px;
+  max-width: 420px;
   color: white; /* Change the color to white for better readability */
   font-size: 1em; /* Font size for location and date */
   text-align: center;
@@ -45,6 +52,7 @@
   padding: 10px 20px; /* Add padding for better spacing */
   margin-top: 10px; /* Add some space between the image and the caption */
   font-family: 'Arial', sans-serif;
+  border-radius: 10px;
 }
 
 .nextButton, .prevButton {
@@ -52,10 +60,9 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 24px;
   z-index: 2;
   padding: 10px;
-  font-size: 45px;
+  font-size: 50px;
   background-color: transparent;
   border: none;
   transition: transform 0.2s ease;
@@ -74,9 +81,9 @@
 }
 
 .nextButton {
-  right: -87px;
+  right: -120px;
 }
 
 .prevButton {
-  left: -87px;
+  left: -120px;
 }

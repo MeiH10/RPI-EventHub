@@ -1,0 +1,109 @@
+.eventWrapper {
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    position: relative; 
+    cursor: pointer; 
+}
+
+.eventWrapper:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    /* transform: scale(1.02); */
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.imageContainer img {
+    border-radius: 6px 6px 0 0;
+    display: block;
+    width: 100%;
+    height: auto; 
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.imageContainer:hover .overlay {
+    opacity: 1;
+}
+
+.overlayLink {
+    font-size: 2em;
+    text-decoration: none;
+    
+}
+
+
+.overlayLink span{
+    color: white;
+    
+}
+
+
+.eventDetails {
+    padding: 16px;
+    text-align: center;
+}
+
+.eventDetails h2 {
+    margin: 0 0 8px;
+    font-size: 1.6em;
+    color: #333;
+}
+
+.eventDetails p {
+    margin: 0 0 16px;
+    color: #555;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.tag {
+    background: #f1f1f1;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.875em;
+    color: #333;
+}
+
+.deleteButton {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+.deleteButton:hover {
+    background: darkred;
+}

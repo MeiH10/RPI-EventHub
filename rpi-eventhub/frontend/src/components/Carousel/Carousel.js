@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './Carousel.module.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import axios from 'axios';
 import { Skeleton } from '@mui/material';
+import config from '../../config';
 
-const placeholderImage = 'https://via.placeholder.com/518x671?text=No+Image+Available'; 
+const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'; 
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -29,7 +30,7 @@ const ImageCarousel = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/events');
+        const response = await axios.get(`${config.apiUrl}/events`);
         setEvents(response.data.map(event => ({
           src: event.image || placeholderImage,
           caption: event.title,
@@ -37,7 +38,6 @@ const ImageCarousel = () => {
           date: formatDate(event.date),
         })));
         setIsLoading(false);
-
       } catch (error) {
         console.error('Failed to fetch events:', error);
       }
@@ -46,18 +46,18 @@ const ImageCarousel = () => {
     fetchEvents();
   }, []);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setActiveIndex(current => current === events.length - 1 ? 0 : current + 1);
-  };
+  }, [events.length]);
 
-  const goToPrev = () => {
+  const goToPrev = useCallback(() => {
     setActiveIndex(current => current === 0 ? events.length - 1 : current - 1);
-  };
+  }, [events.length]);
 
-  const resetTimer = () => {
+  const resetTimer = useCallback(() => {
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(goToNext, 3000);
-  };
+  }, [goToNext]);
 
   const pauseAutoplay = () => {
     clearInterval(intervalRef.current);
@@ -68,7 +68,7 @@ const ImageCarousel = () => {
       resetTimer();
     }
     return () => clearInterval(intervalRef.current);
-  }, [events, isLoading]);
+  }, [events, isLoading, resetTimer]);
 
   return (
     <div className="carousel"
@@ -77,25 +77,27 @@ const ImageCarousel = () => {
       <div className={styles.carousel}>
         <div className={styles.mainImage}>
           {isLoading ? (
-            <>
+            <div>
               <Skeleton variant="rectangular" width={420} height={580} />
               <Skeleton variant="text" width={300} />
               <Skeleton variant="text" width={200} />
-            </>
+            </div>
           ) : events.length > 0 && (
-            <>
+            <div className={styles.carouselCard}>
               <div className={styles.captionAbove}>{`${events[activeIndex].caption.toUpperCase()}`}</div>
-              <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
-              <div className={styles.captionBelow}>
-                {`${events[activeIndex].location.toUpperCase()}  - ${events[activeIndex].date}`}
-              </div>
               <button onClick={() => { goToPrev(); resetTimer(); }} className={styles.prevButton}>
                 <i className="bi bi-chevron-left"></i>
               </button>
+              <div className={styles.imgContainer}>
+                <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
+              </div>
               <button onClick={() => { goToNext(); resetTimer(); }} className={styles.nextButton}>
                 <i className="bi bi-chevron-right"></i>
               </button>
-            </>
+              <div className={styles.captionBelow}>
+                {`${events[activeIndex].location.toUpperCase()}  - ${events[activeIndex].date}`}
+              </div>
+            </div>
           )}
         </div>
       </div>

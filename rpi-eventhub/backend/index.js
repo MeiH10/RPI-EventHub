@@ -11,6 +11,11 @@ const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
 
+const { PDFDocument } = require('pdf-lib');
+const sharp = require('sharp');
+const fs = require('fs');
+const { PDFImage } = require("pdf-image");
+
 
 require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
@@ -21,8 +26,51 @@ const upload = multer();
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://rpi-eventhub-production.up.railway.app/'],
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
+
+const compressImage = async (fileBuffer) => {
+  try {
+    const compressedBuffer = await sharp(fileBuffer)
+      .resize({ width: 1000 }) 
+      .jpeg({ quality: 95 })
+      .toBuffer();
+    return compressedBuffer;
+  } catch (error) {
+    console.error('Error compressing image:', error);
+    throw error;
+  }
+};
+
+const convertPdfToImage = async (pdfBuffer) => {
+  try {
+    const tempFilePath = './temp.pdf';
+    fs.writeFileSync(tempFilePath, pdfBuffer);
+
+    const pdfImage = new PDFImage(tempFilePath, {
+      combinedImage: true,
+      convertOptions: {
+        "-resize": "1000x",
+        "-quality": "95"
+      }
+    });
+
+    const imagePath = await pdfImage.convertPage(0);
+    const imageBuffer = fs.readFileSync(imagePath);
+
+    fs.unlinkSync(tempFilePath);
+    fs.unlinkSync(imagePath);
+
+    return imageBuffer;
+  } catch (error) {
+    console.error('Error converting PDF to image:', error);
+    throw error;
+  }
+};
 
 const authenticate = async (req, res, next) => {
   try {
@@ -65,19 +113,6 @@ const authenticateAndVerify = async (req, res, next) => {
 
 
 
-
-async function testBcrypt() {
-  const password = '123'; // Example password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  console.log('Password:', password);
-  console.log('Hashed Password:', hashedPassword);
-
-  const isMatch = await bcrypt.compare(password, hashedPassword);
-  console.log('Do they match?', isMatch);
-}
-
-// testBcrypt().catch(console.error);
 
 // Middleware
 app.use(express.json()); // for parsing application/json
@@ -125,14 +160,13 @@ app.post('/signup', async (req, res) => {
       emailVerified: user.emailVerified
     });
   } catch (error) {
-    res.status(500).json({ message: "Error creating user", error: error.message });
+    res.status(500).json({ message: "Error creating user. It's possible that username or email address already exist.", error: error.message });
   }
 });
 
 app.post('/verify-email', async (req, res) => {
   const { email, verificationCode } = req.body;
 
-  console.log(email, verificationCode);
   const user = await User.findOne({ email, verificationCode });
 
   if (!user) {
@@ -165,8 +199,6 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Email does not exist" });
     }
     const isMatch = await bcrypt.compare(password.trim(), user.password);
-    // console.log(password);
-    // console.log(user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Password is incorrect" });
     }
@@ -182,15 +214,23 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/events', upload.single('file'), async (req, res) => {
-  const { title, description, poster, date, location, tags } = req.body;
+  const { title, description, poster, date, location, tags, time, club, rsvp } = req.body;
   const file = req.file;
 
   try {
     let imageUrl = '';
 
     if (file) {
+      let imageBuffer;
+
+      if (file.mimetype === 'application/pdf') {
+        imageBuffer = await convertPdfToImage(file.buffer);
+      } else {
+        imageBuffer = await compressImage(file.buffer);
+      }
+
       const formData = new FormData();
-      formData.append('image', file.buffer.toString('base64'));
+      formData.append('image', imageBuffer.toString('base64'));
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
         headers: {
@@ -198,7 +238,11 @@ app.post('/events', upload.single('file'), async (req, res) => {
         }
       });
 
-      imageUrl = response.data.data.url;
+      if (response.data && response.data.data && response.data.data.url) {
+        imageUrl = response.data.data.url;
+      } else {
+        throw new Error('Image upload failed or no URL returned');
+      }
     }
 
     const event = new Event({
@@ -208,13 +252,17 @@ app.post('/events', upload.single('file'), async (req, res) => {
       date,
       location,
       image: imageUrl,
-      tags: tags ? tags.split(',').map(tag => tag.trim()) : []
+      tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+      time,
+      club,
+      rsvp
     });
 
     await event.save();
     res.status(201).json(event);
   } catch (error) {
-    res.status(400).json({ message: "Error creating event", error: error.message });
+    console.error('Error creating event:', error);
+    res.status(400).json({ message: 'Error creating event', error: error.message });
   }
 });
 
@@ -341,7 +389,6 @@ app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
 
 app.delete('/events/:id', async (req, res) => {
   const { id } = req.params;
-  console.log("Trying to delete event:", id);
 
   try {
     const event = await Event.findByIdAndDelete(id);

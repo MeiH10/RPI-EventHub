@@ -1,65 +1,81 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:600&display=swap');
+/* Pinterest-style grid with 3 rows */
+
+:root {
+  --card-width: 250px; /* Default width for a card */
+  --row-gap: 20px; /* Space between rows */
+}
 
 .eventsDisplayContainer {
-    padding: 20px 0 60px 0;
-    width: 100%;
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+  padding: 20px;
+  width: calc(100% - 40px);
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr)); /* Flexible columns */
+  grid-auto-rows: auto; /* Adjust row height to content */
+  gap: var(--row-gap); /* Space between items */
+  justify-content: center;
 }
 
 .eventPosterContainer {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    aspect-ratio: auto 3 / 4;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: white; /* Optional, for better visibility */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional, for better visibility */
 }
 
 .eventPosterImg {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  width: 100%;
+  height: auto;
+  max-width: 100%; /* Ensure images don’t exceed the card width */
+  max-height: 400px; /* Limit the height if needed */
+  object-fit: cover; /* Ensure image covers the container */
 }
-
 
 .eventPosterDetails {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.eventPosterTitle {
-    margin-bottom: 10px;
-    font-size: 20px;
-}
-
-.eventPosterDescription {
-    text-align: center;
-    font-size: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
 .eventPosterContainer:hover .eventPosterImg {
-    transform: scale(1.1); /* Slight zoom effect */
+  transform: scale(1.05);
 }
 
 .eventPosterContainer:hover .eventPosterDetails {
-    opacity: 1;
+  opacity: 1;
+}
+
+/* Media queries for responsiveness (adjust as needed) */
+@media (max-width: 1200px) {
+  .eventsDisplayContainer {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust for medium screens */
+  }
+}
+
+@media (max-width: 800px) {
+  .eventsDisplayContainer {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust for smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .eventsDisplayContainer {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust for very small screens */
+  }
 }
 
 .like-button {

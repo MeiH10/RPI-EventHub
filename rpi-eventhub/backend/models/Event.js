@@ -10,7 +10,10 @@ const eventSchema = new mongoose.Schema({
   location: { type: String, required: true },
   image: { type: String }, // Storing the URL to an image hosted on Imgur or similar service
   tags: [String], // An array of strings to store tags
-});
+  time: {type: String, required: true},
+  club: {type: String, required: true},
+  rsvp: {type: String, required: false}
+}, {creationTimestamp: true});
 
 const Event = mongoose.model('Event', eventSchema);
 

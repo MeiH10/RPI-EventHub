@@ -3,6 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import {jwtDecode} from 'jwt-decode';
+import config from '../../config';
 
 function VerifyModal() {
   const [show, setShow] = useState(false);
@@ -36,7 +37,7 @@ function VerifyModal() {
       // console.log(email, verificationCode);
 
 
-      const response = await axios.post('http://localhost:5000/verify-email', {
+      const response = await axios.post(`${config.apiUrl}/verify-email`, {
         email,
         verificationCode,
       }, {

@@ -1,7 +1,4 @@
-@font-face {
-  font-family: "Italiana";
-  src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
-}
+
 
 .navbar {
   width: 100%;
@@ -9,36 +6,54 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Italiana, serif;
   font-size: 1.4rem;
   position: fixed;
   z-index: 20;
+  padding: 0 20px;
   
 }
+
+
 
 .navContainer {
   /* width: 100%; */
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 100%;
   height: 70px;
-  padding: 20px 0 0 0;
+  /* padding: 20px 0 0 0; */
   position: fixed;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
 .navLogo {
   color: #ff0000;
-  align-items: center;
+  /* align-items: left; */
+  /* margin-top: -10px; */
+  /* margin-left: -10px;
+  margin-right: 10px; */
+
+  /* padding-top: 10px; */
+
   margin-left: 20px;
+  margin-right: 20px;
+
   cursor: pointer;
   text-decoration: none;
   font-size: 2rem;
-  flex-grow: 1;
+  flex-grow: .1;
   display: flex;
-  justify-items: center;
-  padding: 0 0 10px 0;
+  /* justify-content: left; */
+  /* padding: 0 0 0 0; */
+  align-items: center;
+}
+
+.navMenu, .navMenu2, .navMenu3 {
+  display: flex;
+  align-items: center;
+  margin: 0;
 }
 
 .navLogo .icon {
@@ -46,7 +61,18 @@
   vertical-align: middle;
   width: 4rem;
   height: 4rem;
-  margin-left: 5px;
+  margin-left: 20px;
+}
+.navMenu3 {
+  display: flex;
+  list-style: none;
+  text-align: center;
+  margin-right: 2rem;
+  width:100%;
+  justify-self: right;
+  justify-content: space-between;
+  align-items: center;  
+
 }
 
 .navMenu {
@@ -54,7 +80,26 @@
   list-style: none;
   text-align: center;
   margin-right: 2rem;
+  justify-self: left;
+  justify-content: left;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+
 }
+.navMenu2 {
+  display: flex;
+  list-style: none;
+  text-align: center;
+  margin-right: 2rem;
+  justify-content: space-evenly;
+  align-items: center;
+  
+
+
+}
+
+
 
 .navLinks {
   color: #ff0000;
@@ -91,7 +136,9 @@
 .navIcon {
   display: none;
   color: #ff0000;
-  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .navIcon .icon {
@@ -102,7 +149,7 @@
 }
 
 @media screen and (max-width: 960px) {
-  .navMenu {
+  .navMenu3 {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -112,19 +159,30 @@
     left: -110%;
     opacity: 1;
     transition: all 0.5s ease;
+    align-items: center;
   }
 
-  .navMenu.active {
-    background: #1f5156;
+  .navMenu {
+    flex-direction: column;
+  }
+
+  .navMenu2 {
+    flex-direction: column;
+  }
+
+  .navMenu3.active {
+    background: #5dbec7;
     left: 0px;
     opacity: 1;
     transition: all 0.5s ease;
     z-index: 1;
   }
+
   .navItem .active {
     color: #ffdd40;
     border: none;
   }
+
   .navLinks {
     padding: 1.5rem;
     width: 100%;
@@ -132,19 +190,18 @@
   }
 
   .navLogo .icon {
+    top: 10%;
     width: 2rem;
-    height: 2rem;
+    height: 4rem;
   }
 
   .navIcon {
-    display: block;
-    position: fixed;
+    display: flex;
+    position: absolute;
     top: 50%;
-    right: 0;
-    transform: translate(-100%, -50%);
-    width: 2rem;
-    height: 2rem;
+    right: 20px;
+    transform: translateY(-50%);
     cursor: pointer;
-    color: #ffdd40;
+    color: #e85635;
   }
 }
