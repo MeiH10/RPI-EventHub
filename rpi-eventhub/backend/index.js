@@ -277,8 +277,89 @@ app.get('/events', async (req, res) => {
 });
 
 
+app.get('/events/:id/like', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json({ likes: event.likes });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to get like count', error: error.message });
+  }
+});
+
+app.get('/events/:id/like/status', authenticate, async (req, res) => {
+  const { id } = req.params; 
+  const user = req.user;
+  
+  try {
+    const event = await Event.findById(id); 
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    const liked = user.likedEvents.includes(id); 
+    res.status(200).json({ liked }); 
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error }); 
+  }
+});
+
+
+
+app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+
+  try {
+    console.log('Received like request for event ID:', id);
+    console.log('Authenticated user:', user.username);
+
+    const event = await Event.findById(id);
+
+    if (!event) {
+      console.log('Event not found');
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    if (user.likedEvents.includes(id)) {
+      // User has already liked the event, so unlike it
+      event.likes -= 1;
+      user.likedEvents = user.likedEvents.filter(eventId => eventId.toString() !== id);
+
+      await event.save();
+      await user.save();
+
+      console.log('Event unliked successfully', event.likes);
+      return res.json({ message: 'Event unliked successfully', likes: event.likes });
+    } else {
+      // User has not liked the event yet, so like it
+      event.likes += 1;
+      user.likedEvents.push(id);
+
+      await event.save();
+      await user.save();
+
+      console.log('Event liked successfully', event.likes);
+      return res.json({ message: 'Event liked successfully', likes: event.likes });
+    }
+  } catch (error) {
+    console.error('Failed to like event:', error);
+    res.status(500).json({ message: 'Failed to like event', error: error.message });
+  }
+});
+
+
 
 app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
+  console.log("Hits the post call\n"); 
   const { id } = req.params;
   const user = req.user;
 
