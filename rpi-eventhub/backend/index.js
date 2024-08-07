@@ -146,8 +146,8 @@ app.post('/signup', async (req, res) => {
     // Send verification email with the code
     sendEmail({
       to: email,
-      subject: 'Verify Your Email',
-      text: `Your email verification code is: ${verificationCode}. Please enter this code in the app to verify your email.`,
+      subject: 'RPI EventHub Email Verification Code',
+      text: `Dear User,\n\nThank you for registering with RPI EventHub. To complete your email verification, please use the following code:\n\nVerification Code: ${verificationCode}\n\nPlease enter this code in the app to verify your email address.\n\nBest regards,\nRPI EventHub Team`,
     });
 
     // Generate a JWT token

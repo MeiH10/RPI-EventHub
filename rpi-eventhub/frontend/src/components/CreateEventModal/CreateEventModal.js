@@ -186,10 +186,10 @@ function CreateEventModal() {
               />
             </Form.Group>
             <Form.Group controlId="eventClub">
-              <Form.Label>Club <span className='text-danger'>*</span></Form.Label>
+              <Form.Label>Club/Organization <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter club name"
+                placeholder="Enter club or organization name"
                 value={club}
                 onChange={(e) => setClub(e.target.value)}
                 //isInvalid={!club}
