@@ -17,7 +17,11 @@ html, body {
   linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%) !important;
   display: flex !important;
   flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-x: hidden;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -25,12 +29,14 @@ code {
 
 .containerFluid {
   padding-top: 70px; 
+  width: 100% !important;
 }
 
 .outterContainer {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100% !important;
 }
 
 .custom-checkbox .form-check-input {

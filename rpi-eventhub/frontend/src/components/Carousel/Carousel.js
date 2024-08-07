@@ -84,7 +84,7 @@ const ImageCarousel = () => {
             </div>
           ) : events.length > 0 && (
             <div className={styles.carouselCard}>
-              <div className={styles.captionAbove}>{`${events[activeIndex].caption.toUpperCase()}`}</div>
+              <div className={styles.captionAbove}>{`${events[activeIndex].caption}`}</div>
               <button onClick={() => { goToPrev(); resetTimer(); }} className={styles.prevButton}>
                 <i className="bi bi-chevron-left"></i>
               </button>
@@ -95,7 +95,7 @@ const ImageCarousel = () => {
                 <i className="bi bi-chevron-right"></i>
               </button>
               <div className={styles.captionBelow}>
-                {`${events[activeIndex].location.toUpperCase()}  - ${events[activeIndex].date}`}
+                {`${events[activeIndex].location}  - ${events[activeIndex].date}`}
               </div>
             </div>
           )}

@@ -1,69 +1,126 @@
 @font-face {
-    font-family: "Italiana";
-    src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+  font-family: "Italiana";
+  src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+}
+
+.cardtext {
+  font-family: 'Italiana', serif;
+}
+
+.content h1 {
+  font-size: 48px;
+}
+
+.content h5 {
+  font-size: 32px;
+}
+
+.content p {
+  font-size: 18px;
+}
+
+hr {
+  width: 50%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 50px;
+}
+
+.carouselContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 100px;
+}
+
+.searchBarWrapper {
+  margin-top: 50px;
+}
+
+.anim1 {
+  animation: fade-in 1s;
+}
+
+.anim2 {
+  animation: fade-in-and-scale 1s;
+}
+
+@keyframes fade-in {
+  from {
+      opacity: 0;
   }
-  
-  .cardtext {
-    font-family: 'Italiana', serif;
+  to {
+      opacity: 100;
   }
-  
+}
+
+@keyframes fade-in-and-scale {
+  from {
+      opacity: 0;
+      scale: 95%;
+  }
+  to {
+      scale: 100%;
+      opacity: 100;
+  }
+}
+
+@media (min-width: 768px) {
   .content h1 {
-    font-size: 69px; 
+      font-size: 69px;
   }
   
   .content h5 {
-    font-size: 42px; 
+      font-size: 42px;
   }
   
   .content p {
-    font-size: 21px; 
-  }
-  
-  hr {
-    width: 50%;
+      font-size: 21px;
   }
   
   .grid {
-    display: grid;
-    grid-template-columns: auto;
-    gap: 150px;
-  }
-  
-  .carouselContainer {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
+      gap: 150px;
   }
   
   .searchBarWrapper {
-    margin-top: 100px;
+      margin-top: 100px;
+  }
+}
+
+
+
+@media (max-width: 767px) {
+  .textContainer {
+      text-align: center;
+  }
+
+  .content h1 {
+      font-size: 42px;
   }
   
-  .anim1 {
-    animation: fade-in 1s;
+  .content h5 {
+      font-size: 24px;
   }
   
-  .anim2 {
-    animation: fade-in-and-scale 1s;
+  .content p {
+      font-size: 16px;
   }
-  
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 100;
-    }
+
+  .grid {
+      gap: 20px;
   }
-  
-  @keyframes fade-in-and-scale {
-    from {
-      opacity: 0;
-      scale: 95%;
-    }
-    to {
-      scale: 100%;
-      opacity: 100;
-    }
+
+  .searchBarWrapper {
+      margin-top: 20px;
   }
-  
+
+  .carouselContainer {
+      margin-top: 20px;
+      position: relative;
+      top: 0px;
+  }
+}
