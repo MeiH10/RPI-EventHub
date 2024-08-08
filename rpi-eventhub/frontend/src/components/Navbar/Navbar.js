@@ -95,11 +95,12 @@ const Navbar = () => {
                   <li className={styles.navItem}>
                     <SignupModal />
                   </li>
-                  <li className={styles.navItem}>
-                <DarkModeToggle /> {/* Add DarkModeToggle here */}
-              </li>
+
                 </>
               )}
+                <li className={styles.navItem}>
+                  <DarkModeToggle />
+                </li>
               </ul>
               </ul>
           
