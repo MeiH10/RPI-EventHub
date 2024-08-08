@@ -120,7 +120,7 @@ function SignupModal() {
                 label={
                   <>
                     I accept the{' '}
-                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
+                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className={styles.link}>
                       Terms of Service
                     </a>
                     .
@@ -132,7 +132,7 @@ function SignupModal() {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer className={styles.modalBody}>
+        <Modal.Footer className={styles.modalFooter}>
           <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
             Close
           </Button>

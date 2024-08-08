@@ -28,71 +28,76 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--modal-bg-color);
-  border-bottom: 1px solid var(--modal-border-color);
+  background-color: var(--modal-bg-color) !important;
+  border-bottom: 1px solid var(--modal-border-color) !important;
 }
 
 .modalTitle {
-  font-size: 1.5rem;
-  color: var(--modal-title-color);
+  font-size: 1.5rem !important;
+  color: var(--modal-title-color) !important;
 }
 
 .modalBody {
-  background-color: var(--modal-bg-color);
-  color: var(--modal-text-color);
+  background-color: var(--modal-bg-color) !important;
+  color: var(--modal-text-color) !important;
+}
+
+.modalFooter {
+  background-color: var(--modal-bg-color) !important;
+  border-top: 1px solid var(--modal-border-color) !important;
 }
 
 .formGroup {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem !important;
 }
 
 .formLabel {
-  font-weight: bold;
-  color: var(--modal-text-color);
+  font-weight: bold !important;
+  color: var(--modal-text-color) !important;
 }
 
 .textDanger {
-  color: red;
+  color: red !important;
 }
 
 .formControl {
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  background-color: var(--form-control-bg-color);
-  border: 1px solid var(--form-control-border-color);
-  border-radius: 0.25rem;
-  color: var(--modal-text-color);
+  width: 100% !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 1rem !important;
+  background-color: var(--form-control-bg-color) !important;
+  border: 1px solid var(--form-control-border-color) !important;
+  border-radius: 0.25rem !important;
+  color: var(--modal-text-color) !important;
 }
 
 .formControl::placeholder {
-  color: var(--form-control-placeholder-color);
+  color: var(--form-control-placeholder-color) !important;
 }
 
 .button {
-  margin-right: 0.5rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
+  margin-right: 0.5rem !important;
+  border: none !important;
+  border-radius: 0.25rem !important;
+  cursor: pointer !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 1rem !important;
 }
 
 .buttonPrimary {
-  background-color: var(--button-primary-bg-color);
-  color: #fff;
+  background-color: var(--button-primary-bg-color) !important;
+  color: #fff !important;
 }
 
 .buttonSecondary {
-  background-color: var(--button-secondary-bg-color);
-  color: #fff;
+  background-color: var(--button-secondary-bg-color) !important;
+  color: #fff !important;
 }
 
 .alert {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem !important;
 }
 
 .alertDanger {
-  background-color: var(--alert-danger-bg-color);
-  color: #721c24;
+  background-color: var(--alert-danger-bg-color) !important;
+  color: #721c24 !important;
 }

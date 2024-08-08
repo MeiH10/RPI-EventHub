@@ -88,7 +88,7 @@ function LoginModal() {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer className={styles.modalBody}>
+        <Modal.Footer className={styles.modalFooter}>
           <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
             Close
           </Button>
