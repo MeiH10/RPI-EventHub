@@ -77,3 +77,37 @@
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust for very small screens */
   }
 }
+
+.like-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    border: none;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .liked {
+    background-color: red; 
+  }
+  
+  .unliked {
+    background-color: gray; 
+  }
+  
+  .like-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .like-button:active {
+    transform: scale(0.5);
+  }
+  

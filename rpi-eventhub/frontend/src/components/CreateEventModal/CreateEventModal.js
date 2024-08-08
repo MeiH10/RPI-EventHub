@@ -185,11 +185,11 @@ function CreateEventModal() {
                 className={styles.formControl}
               />
             </Form.Group>
-            <Form.Group controlId="eventClub" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Club <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventClub">
+              <Form.Label>Club/Organization <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter club name"
+                placeholder="Enter club or organization name"
                 value={club}
                 onChange={(e) => setClub(e.target.value)}
                 className={styles.formControl}

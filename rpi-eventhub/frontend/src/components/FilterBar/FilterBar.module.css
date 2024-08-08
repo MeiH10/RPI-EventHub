@@ -59,7 +59,7 @@
 label {
   font-size: 23px; 
   margin-left: 10px; 
-  color: var(--label-color); 
+  color: #000; 
 }
 
 input[type="checkbox"] {
@@ -67,8 +67,8 @@ input[type="checkbox"] {
   margin-right: 10px; 
   border-radius: 4px; 
   appearance: none; 
-  background-color: var(--checkbox-bg-color); 
-  border: 2px solid var(--border-color); 
+  background-color: #fff; 
+  border: 2px solid #000; 
   width: 20px; 
   height: 20px; 
   cursor: pointer; 
@@ -78,12 +78,12 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: var(--checkbox-checked-bg-color); 
+  background-color: #fff; 
 }
 
 input[type="checkbox"]:checked::before {
   content: '✔'; 
-  color: var(--checkbox-checked-color); 
+  color: #000; 
   font-weight: bold; 
   font-size: 16px; 
 }

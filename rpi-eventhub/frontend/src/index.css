@@ -4,12 +4,12 @@
   src: url('./assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
 
-:root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-  --button-bg-color: #dddddd;
-  --button-text-color: #000000;
-  --gradient-bg: linear-gradient(
+html, body {
+  margin: 0 !important;
+  font-family: "Georgia", "Arial", sans-serif !important; /* Changed to Calibri with fallbacks */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  background: linear-gradient(
     217deg,
     rgba(255, 101, 101, 0.8),
     rgb(255 0 0 / 0%) 70.71%
@@ -69,7 +69,7 @@ code {
 }
 
 .custom-checkbox .form-check-label {
-  vertical-align: middle;
+  vertical-align: middle; /* Align label text with checkbox */
 }
 
 footer {
