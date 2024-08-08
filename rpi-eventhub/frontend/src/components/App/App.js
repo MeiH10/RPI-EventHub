@@ -66,8 +66,8 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider> {/* Wrap everything with ThemeProvider */}
-      <AuthProvider> {/* Wrap RouterProvider with AuthProvider */}
+    <ThemeProvider> 
+      <AuthProvider> 
         <EventsProvider>
           <RouterProvider router={router} />
         </EventsProvider>
