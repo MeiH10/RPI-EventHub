@@ -11,6 +11,7 @@
   --alert-success-bg-color: #d4edda;
   --alert-danger-bg-color: #f8d7da;
   --link-color: #007bff;
+  --accept-text-color: #000;
 }
 
 [data-theme='dark'] {
@@ -25,7 +26,8 @@
   --button-secondary-bg-color: #494949;
   --alert-success-bg-color: #155724;
   --alert-danger-bg-color: #721c24;
-  --link-color: #80bdff; /* Softer color for dark mode */
+  --link-color: #80bdff; 
+  --accept-text-color: #ccc; 
 }
 
 .modalHeader {
@@ -121,4 +123,8 @@
 .link:hover {
   color: var(--link-color) !important;
   text-decoration: underline !important;
+}
+
+.acceptText {
+  color: var(--accept-text-color) !important; 
 }

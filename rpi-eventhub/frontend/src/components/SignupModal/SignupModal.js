@@ -118,7 +118,7 @@ function SignupModal() {
                 type="checkbox"
                 className="custom-checkbox"
                 label={
-                  <span className="small-text">
+                  <span className={styles.acceptText}>
                   I accept the{' '}
                   <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className={styles.link}>
                     Terms of Service

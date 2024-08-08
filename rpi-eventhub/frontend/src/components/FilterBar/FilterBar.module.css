@@ -12,7 +12,7 @@
 }
 
 [data-theme='dark'] {
-  --sidebar-bg-color: rgba(60, 60, 60, 0.5);
+  --sidebar-bg-color: rgba(33, 32, 32, 0.5);
   --border-color: #fff;
   --label-color: #fff;
   --checkbox-bg-color: #333;
@@ -59,7 +59,7 @@
 label {
   font-size: 23px; 
   margin-left: 10px; 
-  color: #000; 
+  color: var(--label-color);
 }
 
 input[type="checkbox"] {
@@ -67,8 +67,8 @@ input[type="checkbox"] {
   margin-right: 10px; 
   border-radius: 4px; 
   appearance: none; 
-  background-color: #fff; 
-  border: 2px solid #000; 
+  background-color: var(--checkbox-bg-color); 
+  border: 2px solid var(--border-color); 
   width: 20px; 
   height: 20px; 
   cursor: pointer; 
@@ -78,12 +78,12 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: #fff; 
+  background-color: var(--checkbox-checked-bg-color);
 }
 
 input[type="checkbox"]:checked::before {
   content: '✔'; 
-  color: #000; 
+  color: var(--checkbox-checked-color);
   font-weight: bold; 
   font-size: 16px; 
 }
