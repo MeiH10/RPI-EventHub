@@ -1,69 +1,73 @@
-@font-face {
-    font-family: "Italiana";
-    src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+:root {
+  --default-font: "Georgia", "Arial", sans-serif; /* Use the same font as "All RPI events" */
+  --card-text-color: #000; /* Default text color for cards in light mode */
+}
+
+[data-theme='dark'] {
+  --card-text-color: #fff; /* Text color for dark mode */
+}
+
+.cardtext, .title h1, .content h5, .content p {
+  font-family: var(--default-font);
+  color: var(--card-text-color);
+}
+
+.content h1 {
+  font-size: 69px; 
+}
+
+.content h5, .cardtext h5 {
+  font-size: 42px; 
+}
+
+.content p, .cardtext p {
+  font-size: 21px; 
+}
+
+hr {
+  width: 50%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 150px;
+}
+
+.carouselContainer {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.searchBarWrapper {
+  margin-top: 100px;
+}
+
+.anim1 {
+  animation: fade-in 1s;
+}
+
+.anim2 {
+  animation: fade-in-and-scale 1s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
-  
-  .cardtext {
-    font-family: 'Italiana', serif;
+  to {
+    opacity: 1;
   }
-  
-  .content h1 {
-    font-size: 69px; 
+}
+
+@keyframes fade-in-and-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
-  .content h5 {
-    font-size: 42px; 
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  .content p {
-    font-size: 21px; 
-  }
-  
-  hr {
-    width: 50%;
-  }
-  
-  .grid {
-    display: grid;
-    grid-template-columns: auto;
-    gap: 150px;
-  }
-  
-  .carouselContainer {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-  }
-  
-  .searchBarWrapper {
-    margin-top: 100px;
-  }
-  
-  .anim1 {
-    animation: fade-in 1s;
-  }
-  
-  .anim2 {
-    animation: fade-in-and-scale 1s;
-  }
-  
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 100;
-    }
-  }
-  
-  @keyframes fade-in-and-scale {
-    from {
-      opacity: 0;
-      scale: 95%;
-    }
-    to {
-      scale: 100%;
-      opacity: 100;
-    }
-  }
-  
+}
