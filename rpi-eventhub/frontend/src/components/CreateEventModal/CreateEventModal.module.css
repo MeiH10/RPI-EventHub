@@ -11,6 +11,7 @@
   --button-secondary-bg-color: #6c757d;
   --alert-success-bg-color: #d4edda;
   --alert-danger-bg-color: #f8d7da;
+  --tag-button-border-color: #5786d2;
 }
 
 [data-theme='dark'] {
@@ -128,4 +129,9 @@
   background-color: var(--tag-button-bg-color) !important;
   color: var(--tag-button-text-color) !important;
   border: 1px solid var(--tag-button-border-color) !important;
+}
+
+.suggestedTagButton.selected {
+  background-color: #0056b3 !important;
+  color: #fff !important;
 }
