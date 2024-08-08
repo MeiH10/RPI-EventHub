@@ -1,27 +1,17 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext } from 'react';
+import { useColorScheme } from '../hooks/useColorScheme';
 
 const ThemeContext = createContext();
 
 const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, []);
+  const { isDark, setIsDark } = useColorScheme();
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => {
-      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
-      document.documentElement.setAttribute('data-theme', newTheme);
-      return newTheme;
-    });
+    setIsDark(!isDark);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: isDark ? 'dark' : 'light', toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
