@@ -12,16 +12,21 @@
   color: var(--card-text-color);
 }
 
+
+.cardtext {
+  font-family: 'Italiana', serif;
+}
+
 .content h1 {
-  font-size: 69px; 
+  font-size: 48px;
 }
 
-.content h5, .cardtext h5 {
-  font-size: 42px; 
+.content h5 {
+  font-size: 32px;
 }
 
-.content p, .cardtext p {
-  font-size: 21px; 
+.content p {
+  font-size: 18px;
 }
 
 hr {
@@ -31,17 +36,19 @@ hr {
 .grid {
   display: grid;
   grid-template-columns: auto;
-  gap: 150px;
+  gap: 50px;
 }
 
 .carouselContainer {
   display: flex;
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 100px;
 }
 
 .searchBarWrapper {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .anim1 {
@@ -57,17 +64,83 @@ hr {
     opacity: 0;
   }
   to {
-    opacity: 1;
+    opacity: 100;
   }
 }
 
 @keyframes fade-in-and-scale {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    scale: 95%;
   }
   to {
-    transform: scale(1);
-    opacity: 1;
+    scale: 100%;
+    opacity: 100;
   }
+}
+
+@media (min-width: 768px) {
+  .content h1 {
+    font-size: 69px;
+  }
+
+  .content h5 {
+    font-size: 42px;
+  }
+
+  .content p {
+    font-size: 21px;
+  }
+
+  .grid {
+    gap: 150px;
+  }
+
+  .searchBarWrapper {
+    margin-top: 100px;
+  }
+}
+
+@media (max-width: 767px) {
+  .textContainer {
+    text-align: center;
+  }
+
+  .content h1 {
+    font-size: 42px;
+    margin: 0;
+  }
+
+  .content h5 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .content p {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .grid {
+    gap: 20px;
+  }
+
+  .searchBarWrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carouselContainer {
+    position: relative;
+    top: 0px;
+  }
+
+  .about *{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+
 }

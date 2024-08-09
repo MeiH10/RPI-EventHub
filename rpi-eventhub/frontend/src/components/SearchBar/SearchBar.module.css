@@ -1,9 +1,9 @@
 @font-face {
     font-family: "Good Times Rg";
     src: url('../../assets/fonts/GoodTimes/GoodTimesRg-Regular.ttf') format('truetype');
-}
-
-.searchBarContainer {
+  }
+  
+  .searchBarContainer {
     background: rgba(255, 255, 255, 0.75);
     box-shadow: -12px 12px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
@@ -14,19 +14,18 @@
     align-items: center;
     padding: 0 20px;
     position: relative;
-    /* margin-top: -50px; */
-}
-
-.searchInput {
+  }
+  
+  .searchInput {
     border: none;
     outline: none;
     width: calc(100% - 100px);
     height: 50px;
-    border-radius: 15px; /* rounded edges */
+    border-radius: 15px;
     padding: 0 15px;
-}
-
-.searchButton {
+  }
+  
+  .searchButton {
     background: #E20612;
     border-radius: 15px;
     color: white;
@@ -36,4 +35,29 @@
     position: absolute;
     right: 20px;
     height: 50px;
-}
+  }
+  
+  /* Media queries for responsive design */
+  @media screen and (max-width: 960px) {
+    .searchBarContainer {
+      width: 90%;
+      height: 60px;
+      padding: 0 10px;
+      box-shadow: none; /* Remove shadow on mobile */
+    }
+  
+    .searchInput {
+      width: calc(100% - 80px);
+      height: 40px;
+      font-size: 0.9rem; /* Smaller font size on mobile */
+      padding: 0 10px;
+    }
+  
+    .searchButton {
+      height: 40px;
+      padding: 5px 15px; /* Smaller padding on mobile */
+      font-size: 0.9rem; /* Smaller font size on mobile */
+      right: 10px; /* Adjust position */
+    }
+  }
+  
