@@ -89,9 +89,9 @@ hr {
 }
 
 .eventContainer {
-    border: 3px #fff; /* Dashed white border */
+    border: 9px #342121; /* Dashed white border */
     padding: 10px; /* Space inside the border */
-    background-color: #c2405e9b; /* Black background, or any color you prefer */
+    background-color: #d3cccd; /* Black background, or any color you prefer */
     text-align: center; /* Center the content */
     margin-bottom: 20px; /* Space below the container */
 }
