@@ -1,3 +1,19 @@
+:root {
+    --background-color: white;
+    --text-color: black;
+    --border-color: black;
+    --day-background: #f9f9f9;
+    --day-text-color: black;
+}
+
+[data-theme='dark'] {
+    --background-color: rgb(89, 86, 86);
+    --text-color: white;
+    --border-color: white;
+    --day-background: #333;
+    --day-text-color: white;
+}
+
 @font-face {
     font-family: "Italiana";
     src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
@@ -34,21 +50,22 @@ hr {
 
 /* Calendar */
 .weeklyEvents {
-    margin-top: 40px; /* margin distance between navbar and calendar" */
-    border: 3px solid #000000; /* outer border */
+    margin-top: 40px;
+    border: 3px solid var(--border-color);
     padding: 10px;
-    border-radius: 0px; 
-    background: white;
-    width: 62.5%; /* reduced width to half */
+    border-radius: 0px;
+    background: var(--background-color);
+    color: var(--text-color);
+    width: 62.5%;
     text-align: center;
-    position: absolute; /* Absolute positioning */
-    right: 60px; /* Add some space from the right */
-}
+    position: absolute;
+    right: 60px;
+  }
 
 .weeklyEvents h2 {
     margin-bottom: 10px; /* adjust margin distance from bottom of "WEEKLY EVENTS" */
     font-size: 36px;
-    color: rgb(0, 0, 0); /* Change color to red */
+    color: var(--text-color);
 }
 
 .week {
@@ -60,18 +77,19 @@ hr {
 
 .day {
     padding: 5px;
-    border: 0.1px solid #000000;
+    border: 0.1px solid var(--border-color);
     border-radius: 0px;
-    background: #f9f9f9;
+    background: var(--day-background);
+    color: var(--day-text-color);
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+  }
 
 .day h3 {
     margin: 25;
     font-size: 18px;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid var(--border-color);
     width: 107.5%; /* try 100% or 107.5% */
     padding-bottom: 2.5px; /* changes the distance of the line under days of the week */
 }

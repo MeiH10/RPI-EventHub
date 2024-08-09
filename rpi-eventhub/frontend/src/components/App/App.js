@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import { AuthProvider } from '../../context/AuthContext';
 import { EventsProvider } from '../../context/EventsContext';
-
+import { ThemeProvider } from '../../context/ThemeContext'; // Import ThemeProvider
 
 // Import your page components
 
@@ -19,6 +19,7 @@ import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust p
 import EventDetails from '../../pages/EventDetails/EventDetails';
 import Calendar from '../../pages/Calendar/Calendar';
 import TermsOfService from '../../pages/TermsOfService/TermsOfService';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -65,11 +66,13 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AuthProvider> {/* Wrap RouterProvider with AuthProvider */}
-      <EventsProvider>
-        <RouterProvider router={router} />
-      </EventsProvider>
-    </AuthProvider>
+    <ThemeProvider> 
+      <AuthProvider> 
+        <EventsProvider>
+          <RouterProvider router={router} />
+        </EventsProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

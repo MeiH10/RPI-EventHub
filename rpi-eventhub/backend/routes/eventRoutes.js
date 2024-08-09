@@ -36,4 +36,19 @@ router.post('/', async (req, res) => {
 
 // Other CRUD operations (update, delete, etc.)
 
+// Like a new event
+router.put('/events/:id/like', async (req, res) => {
+  try {
+      const event = await Event.findById(req.params.id);
+      if (!event) {
+          return res.status(404).send('Event not found');
+      }
+      event.likes += 1;
+      await event.save();
+      res.send(event);
+  } catch (error) {
+      res.status(500).send('Failed to like event');
+  }
+});
+
 module.exports = router;

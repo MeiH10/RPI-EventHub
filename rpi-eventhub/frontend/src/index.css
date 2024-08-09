@@ -1,20 +1,42 @@
-/* global css */
+/* styles.css */
 @font-face {
   font-family: "Italiana";
   src: url('./assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
 
-html, body {
-  margin: 0 !important;
-  font-family: "Georgia", "Arial", sans-serif !important; 
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  background: linear-gradient(
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --button-bg-color: #dddddd;
+  --button-text-color: #000000;
+  --gradient-bg: linear-gradient(
     217deg,
     rgba(255, 101, 101, 0.8),
     rgb(255 0 0 / 0%) 70.71%
   ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
-  linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%) !important;
+  linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
+}
+
+[data-theme='dark'] {
+  --bg-color: #333333;
+  --text-color: #ffffff;
+  --button-bg-color: #555555;
+  --button-text-color: #ffffff;
+  --gradient-bg: linear-gradient(
+    217deg,
+    rgba(55, 55, 55, 0.8),
+    rgb(0 0 0 / 0%) 70.71%
+  ), linear-gradient(127deg, rgba(55, 55, 55, 0.8), rgb(0 0 0 / 0%) 70.71%),
+  linear-gradient(336deg, rgba(55, 55, 55, 0.8), rgb(0 0 0 / 0%) 70.71%);
+}
+
+html, body {
+  margin: 0 !important;
+  font-family: "Georgia", "Arial", sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  background: var(--gradient-bg) !important;
+  color: var(--text-color); /* Default text color is black */
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
@@ -23,12 +45,17 @@ html, body {
 }
 
 
+[data-theme='dark'] html, [data-theme='dark'] body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .containerFluid {
-  padding-top: 70px; 
+  padding-top: 70px;
   width: 100% !important;
 }
 
@@ -40,19 +67,21 @@ code {
 }
 
 .custom-checkbox .form-check-input {
-  transform: scale(0.9); /* Adjust the scale for checkbox size */
+  transform: scale(0.9);
   margin-top: 8px;
   margin-right: 0px;
-  margin-left: 15px; /* Space between checkbox and text */
-  vertical-align: middle; /* Align checkbox with text */
+  margin-left: 15px;
+  vertical-align: middle;
 }
 
 .custom-checkbox .form-check-label {
-  vertical-align: middle; /* Align label text with checkbox */
+  vertical-align: middle;
 }
+
 .small-text {
   font-size: 18px !important; /* Set the desired font size */
 }
+
 footer {
   margin-top: auto;
 }
