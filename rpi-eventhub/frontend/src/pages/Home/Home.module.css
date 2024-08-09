@@ -1,7 +1,17 @@
-@font-face {
-  font-family: "Italiana";
-  src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+:root {
+  --default-font: "Georgia", "Arial", sans-serif; /* Use the same font as "All RPI events" */
+  --card-text-color: #000; /* Default text color for cards in light mode */
 }
+
+[data-theme='dark'] {
+  --card-text-color: #fff; /* Text color for dark mode */
+}
+
+.cardtext, .title h1, .content h5, .content p {
+  font-family: var(--default-font);
+  color: var(--card-text-color);
+}
+
 
 .cardtext {
   font-family: 'Italiana', serif;

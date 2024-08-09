@@ -174,6 +174,10 @@ const Navbar = () => {
                 </li>
               </>
             )}
+
+                <li className={styles.navItem}>
+                  <DarkModeToggle />
+                </li>
           </ul>
         </div>
       </nav>
