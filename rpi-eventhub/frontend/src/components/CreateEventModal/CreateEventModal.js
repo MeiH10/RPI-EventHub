@@ -16,7 +16,7 @@ function CreateEventModal() {
   const [file, setFile] = useState(null);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
-  const [tags, setTags] = useState('');
+  const [tags, setTags] = useState([]);
   const [successOpen, setSuccessOpen] = useState(false); // State for success alert
   const [errorOpen, setErrorOpen] = useState({});
   const [error, setError] = useState('');
