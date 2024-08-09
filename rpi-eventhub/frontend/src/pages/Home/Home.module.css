@@ -13,6 +13,7 @@
 }
 
 
+
 .cardtext {
   font-family: 'Italiana', serif;
 }
@@ -93,11 +94,11 @@ hr {
   }
 
   .grid {
-    gap: 150px;
+    gap: 100px;
   }
 
   .searchBarWrapper {
-    margin-top: 100px;
+    margin-top: 80px;
   }
 }
 
