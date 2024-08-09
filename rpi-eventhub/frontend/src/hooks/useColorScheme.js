@@ -12,10 +12,20 @@ export function useColorScheme() {
   );
 
   const [isDark, setIsDark] = useLocalStorageState("colorScheme");
+
+/* Set theme based on system preference or local storage
   const value = useMemo(
     () => (isDark === undefined ? !!systemPrefersDark : isDark),
     [isDark, systemPrefersDark]
   );
+*/
+
+//Default to light mode
+  const value = useMemo(
+    () => (isDark === undefined ? false : isDark),
+    [isDark] 
+  );
+
 
   useEffect(() => {
     if (value) {
