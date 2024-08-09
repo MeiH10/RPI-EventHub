@@ -41,7 +41,7 @@ function AboutUs() {
               </div>
             </div>
             <div className={`${styles.feedbackSection} ${styles.second}`}>
-              <h4 className={styles.boldTitle}>Feedback!</h4>
+              <h4 className={styles.feedbackTitle}>Feedback!</h4>
               <div>
                 We appreciate any feedback on your experience with our site. Please take a minute to fill out our 
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSclGZl30lj1o3Etb6q9oU8Q9G8zHrTUk4HC7LLNJhZfYxFiFQ/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer" className={styles.link}> feedback form</a>.

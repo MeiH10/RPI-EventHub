@@ -1,52 +1,37 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    color: #333;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-/* Center-align text and ensure grid layout for About Us section */
 .aboutUs {
     text-align: center;
-    padding: 2rem;
 }
 
-
+/* Set up grid for text elements */
 .grid { 
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
-    padding: 1rem;
 }
 
 .developers {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 40px;
 }
 
-/* Animation Classes */
-.first, .second, .third, .anim {
-    animation: fadeIn 1s ease-out;
-}
-
+/* First, second, third, and anim are all for animations */
 .first {
-    animation-duration: 0.5s;
+    animation: fadeIn 0.5s;
 }
 
 .second {
-    animation-duration: 1s;
+    animation: fadeIn 1s;
 }
 
 .third {
-    animation-duration: 2s;
+    animation: fadeIn 2s;
 }
 
 .anim {
-    animation: fadeInAndScale 0.5s ease-out;
+    animation: fadeInAndScale 0.5s;
 }
 
+/* Fade in animation from 0 to 100 opacity */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -56,6 +41,7 @@ body {
     }
 }
 
+/* Fade in and scale up animation */
 @keyframes fadeInAndScale {
     from {
         opacity: 0;
@@ -67,63 +53,71 @@ body {
     }
 }
 
-/* About Us Text */
+.about {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Mission statement text, left aligned */
 .aboutUsText {
     text-align: left;
-    margin-top: 2rem;
-    padding: 0 1rem;
-    max-width: 800px;
+    margin-top: 40px;
 }
 
-.missionText {
-    margin-top: 1rem;
+.logo {
+    transform: scale(0.3);
+    margin-top: -270px;
 }
 
-/* Feedback Section */
-.feedbackSection {
-    text-align: left;
-    margin-top: 2rem;
-    padding: 0 1rem;
-    max-width: 800px;
-    margin-left: 2%;
-}
-
-.boldTitle {
-    font-weight: bold;
-    color: #2d0505;
-}
-
-/* Page Break */
+/* Page break css */
 .hr {
-    margin: 2rem auto;
-    width: 90%;
+    margin: 20px 0;
+    width: 100%;
     border: 0;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #2d0505;
 }
 
-/* Developers Section */
+/* Set up column and row::after for developers section */
 .column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
-    margin: 0 auto;
+    width: 20%;
+    padding: 20px;
+    margin: auto;
 }
 
+.feedbackSection {
+    margin-top: 40px; 
+}
 .row::after {
     content: "";
     clear: both;
     display: table;
 }
 
-/* Developer Text */
+/* CSS for email links in the developers section */
+a {
+    text-decoration: none; 
+    color: blue;
+} 
+a:visited { 
+    color: darkblue;
+} 
+a:hover { 
+    color: darkblue;
+} 
+a:active { 
+    color: black;
+}
+  
+/* Text in the developer section, moves text down 10px */
 .devText {
-    margin-top: 0.5rem;
-    font-weight: 600;
+    margin-top: 10px;
 }
 
-/* Profile Picture */
+/* Circle for profile picture */
 .profilePic {
     border-radius: 50%;
     width: 150px;
@@ -131,30 +125,15 @@ body {
     object-fit: cover;
 }
 
-/* Footer */
 .footer {
     margin-top: auto; /* Push the footer to the bottom */
 }
 
-/* Links Styling */
-.link {
-    text-decoration: none; 
-    color: #007bff;
+.title {
+    font-weight: bold;
 }
 
-.link:visited { 
-    color: #0056b3;
-}
-
-.link:hover { 
-    color: #004080;
-}
-
-.link:active { 
-    color: #002060;
-}
-
-/* Image Container */
-.imageContainer {
-    padding-top: 20px; /* Add padding to shift image down */
+/* Bolded titles */
+.title h1, .aboutUsText h4, .feedbackTitle {
+    font-weight: bold;
 }
