@@ -126,6 +126,7 @@
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.3s ease;
+    margin: 0;
   }
   
   .deleteButton:hover {
