@@ -18,11 +18,10 @@ function CreateEventModal() {
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState([]);
   const [successOpen, setSuccessOpen] = useState(false); // State for success alert
-  const [errorOpen, setErrorOpen] = useState({});
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const suggestedTags = ['workshop', 'seminar', 'game', 'music', 'food','career','fun'];
+  const suggestedTags = ['workshop', 'seminar', 'game', 'music', 'food', 'career', 'fun', 'networking', 'conference', 'webinar', 'hackathon', 'fundraiser', 'sports', 'arts', 'dance', 'tech', 'volunteer', 'health', 'training', 'exhibition', 'panel', 'social', 'movie', 'coding', 'education', 'destress', 'other'];
 
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
@@ -39,10 +38,6 @@ function CreateEventModal() {
     setShow(false); // Close the modal after success
   };
 
-  const handleErrorClose = (field) => {
-    setErrorOpen((prev) => ({ ...prev, [field]: false }));
-  };
-
   useEffect(() => {
     if (successOpen) {
       const timer = setTimeout(handleSuccessClose, 2000);
@@ -56,18 +51,6 @@ function CreateEventModal() {
     }
   }, [show]);
 
-  useEffect(() => {
-    const timers = Object.keys(errorOpen).map((field) => {
-      if (errorOpen[field]) {
-        return setTimeout(() => {
-          handleErrorClose(field);
-        }, 3000);
-      }
-      return null;
-    });
-    return () => timers.forEach((timer) => timer && clearTimeout(timer));
-  }, [errorOpen]);
-
   const handleCreateEvent = async (e) => {
     e.preventDefault();
     if (isSubmitting) {
@@ -76,12 +59,9 @@ function CreateEventModal() {
     setError('');
     setIsSubmitting(true);
 
-    // Normalize and deduplicate tags before submission
-    const uniqueTags = Array.from(new Set(tags.split(',')
-      .map(tag => tag.trim().toLowerCase())
-      .filter(tag => tag.length > 0))).join(', ');
+    // Convert tags array to comma-separated string
+    const uniqueTags = tags.join(', ');
 
-    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -90,29 +70,18 @@ function CreateEventModal() {
     formData.append('date', date);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
-
     formData.append('time', time);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
-    
-    let errors = {};
-    if (!title) errors.title = true;
-    if (!description) errors.description = true;
-    if (!date) errors.date = true;
-    if (!location) errors.location = true;
-    if (!time) errors.time = true;
-    if (!club) errors.club = true;
 
-
-    if (!description || !title || !location || !date || !time || !club) {
+    if (!title || !description || !date || !location || !time || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
-
       return;
     }
 
     if (!isLoggedIn || !emailVerified) {
-      setError('Only verified users can create event. Please login or get verified');
+      setError('Only verified users can create an event. Please login or get verified.');
       setIsSubmitting(false);
       return;
     }
@@ -127,15 +96,14 @@ function CreateEventModal() {
       setSuccessOpen(true); // Show success message
     } catch (error) {
       console.error('Failed to create event:', error);
-      setError(error.response ? error.response.data.message : error.message); // Ensure the error is a string
+      setError(error.response ? error.response.data.message : error.message);
     } finally {
-      // setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
-
   const handleAddTag = (tag) => {
-    setTags((prevTags) => {
+    setTags(prevTags => {
       if (prevTags.includes(tag)) {
         return prevTags.filter(t => t !== tag);
       } else if (prevTags.length < 10) {
@@ -144,14 +112,6 @@ function CreateEventModal() {
       return prevTags;
     });
   };
-
-  const handleTagsChange = (e) => {
-    const inputTags = e.target.value.split(',')
-      .map(tag => tag.trim().toLowerCase())
-      .filter(tag => tag.length > 0);
-    setTags(inputTags.slice(0, 10));
-  };
-
 
   return (
     <>
@@ -196,6 +156,7 @@ function CreateEventModal() {
                 className={styles.formControl}
               />
             </Form.Group>
+
             <Form.Group controlId="eventClub">
               <Form.Label>Club/Organization <span className='text-danger'>*</span></Form.Label>
               <Form.Control
@@ -206,6 +167,7 @@ function CreateEventModal() {
                 className={styles.formControl}
               />
             </Form.Group>
+
             <Form.Group controlId="eventFile" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>File (Poster or PDF)</Form.Label>
               <Form.Control
@@ -227,6 +189,7 @@ function CreateEventModal() {
                 className={styles.formControl}
               />
             </Form.Group>
+
             <Form.Group controlId="eventTime" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Time <span className='text-danger'>*</span></Form.Label>
               <Form.Control
@@ -249,6 +212,7 @@ function CreateEventModal() {
                 className={styles.formControl}
               />
             </Form.Group>
+
             <Form.Group controlId="eventRSVP" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>RSVP Link</Form.Label>
               <Form.Control
@@ -258,18 +222,10 @@ function CreateEventModal() {
                 onChange={(e) => setRSVP(e.target.value)}
                 className={styles.formControl}
               />
-              
             </Form.Group>
+
             <Form.Group controlId="eventTags" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Tags (comma separated, max 10)</Form.Label>
-              <Form.Control
-                as="textarea"
-                type="text"
-                placeholder="e.g., workshop, seminar"
-                value={tags.join(', ')}
-                onChange={handleTagsChange}
-                className={styles.formControl}
-              />
+              <Form.Label className={styles.formLabel}>Tags</Form.Label>
               <div className="mt-2">
                 {suggestedTags.map((tag, index) => (
                   <Button
@@ -282,8 +238,8 @@ function CreateEventModal() {
                   </Button>
                 ))}
               </div>
-
             </Form.Group>
+
           </Form>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>

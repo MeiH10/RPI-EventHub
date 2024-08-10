@@ -16,11 +16,14 @@ const Navbar = () => {
   const location = useLocation();
 
   const handleClick = () => setClick(!click);
+
   const handleLogout = () => {
     logout();
-    handleClick();
+    if (window.innerWidth <= 960) {
+      handleClick();
+    }
   };
-
+  
   const getNavLinkClass = (path) => {
     return location.pathname === path
       ? `${styles.navLinks} ${styles.active}`

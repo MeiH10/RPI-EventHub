@@ -27,24 +27,33 @@ const ImageCarousel = () => {
   const [isLoading, setIsLoading] = useState(true);
   const intervalRef = useRef(null);
 
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${config.apiUrl}/events`);
-        setEvents(response.data.map(event => ({
-          src: event.image || placeholderImage,
-          caption: event.title,
-          location: event.location,
-          date: formatDate(event.date),
-        })));
+        const sortedEvents = response.data
+          .map(event => ({
+            src: event.image || placeholderImage,
+            caption: event.title,
+            location: event.location,
+            date: formatDate(event.date),
+            originalDate: event.date,
+          }))
+          .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
+          .slice(0, 5);
+
+        setEvents(sortedEvents);
         setIsLoading(false);
       } catch (error) {
         console.error('Failed to fetch events:', error);
       }
     };
-
+  
     fetchEvents();
   }, []);
+  
+  
 
   const goToNext = useCallback(() => {
     setActiveIndex(current => current === events.length - 1 ? 0 : current + 1);

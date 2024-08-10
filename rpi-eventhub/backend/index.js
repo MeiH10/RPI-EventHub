@@ -33,18 +33,29 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+
 const compressImage = async (fileBuffer) => {
   try {
-    const compressedBuffer = await sharp(fileBuffer)
-      .resize({ width: 1000 }) 
-      .jpeg({ quality: 95 })
-      .toBuffer();
+    let compressedBuffer = fileBuffer;
+    let quality = 95;
+    let compressedSize = fileBuffer.length;
+
+    while (compressedSize > 100 * 1024 && quality > 20) {
+      compressedBuffer = await sharp(fileBuffer)
+        .resize({ width: 1000 })
+        .jpeg({ quality })
+        .toBuffer();
+      compressedSize = compressedBuffer.length;
+      quality -= 5;
+    }
+
     return compressedBuffer;
   } catch (error) {
     console.error('Error compressing image:', error);
     throw error;
   }
 };
+
 
 const convertPdfToImage = async (pdfBuffer) => {
   try {

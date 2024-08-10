@@ -33,7 +33,6 @@ const EventCard = ({ event }) => {
         <div className={styles.overlay}>
           <Link to={`/events/${event._id}`} className={styles.overlayLink}>
             <span>Open</span>
-            
           </Link>
         </div>
       </div>
@@ -41,13 +40,15 @@ const EventCard = ({ event }) => {
         <p>Posted by {event.poster}</p>
       </div>
       {canSeeDeleteButton(username) && (
-          <button onClick={handleDelete} className={styles.deleteButton}>
-            Delete
-          </button>
-        )}
+        <button onClick={handleDelete} className={styles.deleteButton}>
+          Delete
+        </button>
+      )}
       <div className={styles.eventDetails}>
         <h2>{event.title}</h2>
         <p>{event.description}</p>
+        <p><strong>Date & Time:</strong> {`${event.time} on ${new Date(event.date).toLocaleDateString()}`}</p>
+        <p><strong>Location:</strong> {event.location}</p>
         <div className={styles.tags}>
           {event.tags.map(tag => (
             <span key={tag} className={styles.tag}>{tag}</span>
