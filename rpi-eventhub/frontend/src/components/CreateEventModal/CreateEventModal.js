@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import config from '../../config';
-import styles from './CreateEventModal.module.css'; // Import the CSS module
+import styles from './CreateEventModal.module.css'; 
 
 function CreateEventModal() {
   const [show, setShow] = useState(false);
@@ -16,7 +16,7 @@ function CreateEventModal() {
   const [file, setFile] = useState(null);
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
-  const [tags, setTags] = useState('');
+  const [tags, setTags] = useState([]);
   const [successOpen, setSuccessOpen] = useState(false); // State for success alert
   const [errorOpen, setErrorOpen] = useState({});
   const [error, setError] = useState('');
@@ -133,12 +133,23 @@ function CreateEventModal() {
     }
   };
 
+
   const handleAddTag = (tag) => {
-    setTags((prevTags) => prevTags ? `${prevTags}, ${tag}` : tag);
+    setTags((prevTags) => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter(t => t !== tag);
+      } else if (prevTags.length < 10) {
+        return [...prevTags, tag];
+      }
+      return prevTags;
+    });
   };
 
   const handleTagsChange = (e) => {
-    setTags(e.target.value);
+    const inputTags = e.target.value.split(',')
+      .map(tag => tag.trim().toLowerCase())
+      .filter(tag => tag.length > 0);
+    setTags(inputTags.slice(0, 10));
   };
 
 
@@ -250,12 +261,12 @@ function CreateEventModal() {
               
             </Form.Group>
             <Form.Group controlId="eventTags" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Tags (comma separated, lowercase only)</Form.Label>
+              <Form.Label className={styles.formLabel}>Tags (comma separated, max 10)</Form.Label>
               <Form.Control
                 as="textarea"
                 type="text"
                 placeholder="e.g., workshop, seminar"
-                value={tags}
+                value={tags.join(', ')}
                 onChange={handleTagsChange}
                 className={styles.formControl}
               />
@@ -263,8 +274,8 @@ function CreateEventModal() {
                 {suggestedTags.map((tag, index) => (
                   <Button
                     key={index}
-                    variant="outline-primary"
-                    className={`${styles.suggestedTagButton}`}
+                    variant={tags.includes(tag) ? 'primary' : 'outline-primary'}
+                    className={`${styles.suggestedTagButton} ${tags.includes(tag) ? styles.selected : ''}`}
                     onClick={() => handleAddTag(tag)}
                   >
                     {tag}
