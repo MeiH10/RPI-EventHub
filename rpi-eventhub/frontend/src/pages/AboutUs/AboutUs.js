@@ -18,8 +18,6 @@ function AboutUs() {
         const data = await response.json();
         setContributors(data);
         setIsLoading(false);
-
-
       } catch (error) {
         console.error('Error fetching contributors:', error);
       }
@@ -34,19 +32,22 @@ function AboutUs() {
       <div className="containerFluid container-fluid">
         <div className="row">
           <div className="col-7 p-5">
-            <div className={`${styles.title} text-start ${styles.first}`}>
-              <h1>About Us</h1>
-              <h6>RPI EventHub</h6>
-            </div>
             <div className={styles.grid}>
               <div className={`${styles.aboutUsText} ${styles.second}`}>
-                <h4>Mission Statement</h4>
-                EventHub is dedicated to connecting the students of RPI with events
-                happening all over campus. Through this website, we hope to foster
-                greater community, connection, and collaboration throughout the campus.
-                Our hope is for RPI students and staff to be able to effortlessly create,
-                advertise, and explore diverse campus events, fostering a vibrant and
-                connected university community.
+                <h4 className={styles.boldTitle}>Mission Statement</h4>
+                <div className={styles.missionText}>
+                  EventHub is dedicated to connecting the students of RPI with events happening all over campus. Through this website, we hope to foster greater community, connection, and collaboration throughout the campus. Our hope is for RPI students and staff to be able to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
+                </div>
+              </div>
+            </div>
+            <div className={`${styles.feedbackSection} ${styles.second}`}>
+              <h4 className={styles.feedbackTitle}>Feedback!</h4>
+              <div>
+                We appreciate any feedback on your experience with our site. Please take a minute to fill out our 
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSclGZl30lj1o3Etb6q9oU8Q9G8zHrTUk4HC7LLNJhZfYxFiFQ/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer" className={styles.link}> feedback form</a>.
+                <br />
+                If you find any bugs or have suggestions, please submit an issue on our GitHub repository:
+                <a href="https://github.com/MeiH10/RPI-EventHub/issues" target="_blank" rel="noopener noreferrer" className={styles.link}> Report a GitHub Issue</a>.
               </div>
             </div>
           </div>
