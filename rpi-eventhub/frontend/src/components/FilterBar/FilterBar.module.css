@@ -1,7 +1,8 @@
 :root {
-  --sidebar-bg-color: rgba(128, 128, 128, 0.35);
+  --sidebar-bg-color: rgba(0, 0, 0, 0.65);
   --border-color: #000;
-  --label-color: #000;
+  --label-color: #000000;
+  --tags-label-color: #ffffff;
   --checkbox-bg-color: #fff;
   --checkbox-checked-bg-color: #fff;
   --checkbox-checked-color: #000;
@@ -15,6 +16,7 @@
   --sidebar-bg-color: rgba(33, 32, 32, 0.5);
   --border-color: #fff;
   --label-color: #fff;
+  --tags-label-color: #ffffff;
   --checkbox-bg-color: #333;
   --checkbox-checked-bg-color: #444;
   --checkbox-checked-color: #fff;
@@ -23,6 +25,8 @@
   --clear-button-hover-bg-color: #aaa;
   --separator-bg-color: #fff;
 }
+
+
 
 .sidebar {
   width: 300px;
@@ -33,15 +37,25 @@
   margin-top: 25px; 
   box-sizing: border-box;
   margin-bottom: auto;
-  margin-right: 50px;
+  position: relative;
+  top: 0;
+  height: auto;
+  z-index: 1000;
 }
 
 .filterSection {
   margin-bottom: 20px;
+  position: relative;
 }
 
 .filterSection h3 {
   margin-bottom: 10px;
+
+}
+
+.filterBarTags {
+  color: var(--tags-label-color);
+
 }
 
 .separator {
@@ -101,4 +115,41 @@ input[type="checkbox"]:checked::before {
 
 .clearButton:hover {
   background-color: var(--clear-button-hover-bg-color); 
+}
+
+.drawerToggleBtn {
+  display: none;
+  padding: 10px 20px;
+  background-color: var(--clear-button-bg-color); 
+  color: var(--clear-button-text-color); 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  position: relative;
+  top: 20px;
+  right: 0px;
+  z-index: 2000;
+}
+
+.drawerToggleBtn:hover {
+  background-color: var(--clear-button-hover-bg-color); 
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    top: 50px;
+    left: -100%;
+    height: calc(100% - 50px);
+    transition: left 0.3s ease-in-out;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .drawerToggleBtn {
+    display: block;
+  }
 }
