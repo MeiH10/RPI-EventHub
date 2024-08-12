@@ -9,7 +9,7 @@
   --clear-button-bg-color: #000;
   --clear-button-text-color: #fff;
   --clear-button-hover-bg-color: #555;
-  --separator-bg-color: #000;
+  --separator-bg-color: #ffffff;
 }
 
 [data-theme='dark'] {

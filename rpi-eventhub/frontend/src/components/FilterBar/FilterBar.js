@@ -42,7 +42,7 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
-                    <h3>By Tags</h3>
+                    <h3 className={styles.filterBarTags}>By Tags</h3>
                     {tags.sort().map((tag) => (
                         <div key={tag} className={styles.checkboxWrapper}>
                             <input
@@ -58,7 +58,7 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
-                    <h3>By Time</h3>
+                    <h3 className={styles.filterBarTags}>By Time</h3>
                     {['past', 'upcoming', 'today'].map((time) => (
                         <div key={time} className={styles.checkboxWrapper}>
                             <input
