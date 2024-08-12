@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './AboutUs.module.css'; // Import the CSS Module
+import styles from './AboutUs.module.css';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import RPIBridgePhoto from '../../assets/RPIBridgePhoto.jpg';
@@ -29,18 +29,23 @@ function AboutUs() {
   return (
     <div className='outterContainer'>
       <Navbar />
-      <div className="containerFluid container-fluid">
+      <div className="container-fluid containerFluid">
         <div className="row">
-          <div className="col-7 p-5">
-            <div className={styles.grid}>
-              <div className={`${styles.aboutUsText} ${styles.second}`}>
-                <h4 className={styles.boldTitle}>Mission Statement</h4>
-                <div className={styles.missionText}>
-                  EventHub is dedicated to connecting the students of RPI with events happening all over campus. Through this website, we hope to foster greater community, connection, and collaboration throughout the campus. Our hope is for RPI students and staff to be able to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
-                </div>
+          <div className={`col-12 col-lg-7 px-5 ${styles.missionContainer}`}>
+            <div className={styles.aboutUsText}>
+              <h4 className={styles.boldTitle}>Mission Statement</h4>
+              <div className={styles.missionText}>
+                EventHub is dedicated to connecting the students of RPI with events happening all over campus. Through this website, we hope to foster greater community, connection, and collaboration throughout the campus. Our hope is for RPI students and staff to be able to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
               </div>
             </div>
-            <div className={`${styles.feedbackSection} ${styles.second}`}>
+          </div>
+          <div className="col-12 col-lg-5 p-5 d-flex justify-content-center align-items-center">
+            <img src={RPIBridgePhoto} className={styles.bridgeImage} alt="RPI Bridge" />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12 p-5 my-0 py-0">
+            <div className={styles.feedbackSection}>
               <h4 className={styles.feedbackTitle}>Feedback!</h4>
               <div>
                 We appreciate any feedback on your experience with our site. Please take a minute to fill out our 
@@ -50,9 +55,6 @@ function AboutUs() {
                 <a href="https://github.com/MeiH10/RPI-EventHub/issues" target="_blank" rel="noopener noreferrer" className={styles.link}> Report a GitHub Issue</a>.
               </div>
             </div>
-          </div>
-          <div className={`${styles.anim} col-5 p-5 ${styles.second}`}>
-            <img src={RPIBridgePhoto} id="bridge" alt="bridge" width="480"></img>
           </div>
         </div>
         <hr className={styles.hr} />

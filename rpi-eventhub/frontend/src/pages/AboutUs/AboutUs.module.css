@@ -2,7 +2,6 @@
     text-align: center;
 }
 
-/* Set up grid for text elements */
 .grid { 
     display: grid;
     grid-template-columns: 1fr;
@@ -14,7 +13,6 @@
     margin-top: 40px;
 }
 
-/* First, second, third, and anim are all for animations */
 .first {
     animation: fadeIn 0.5s;
 }
@@ -31,7 +29,6 @@
     animation: fadeInAndScale 0.5s;
 }
 
-/* Fade in animation from 0 to 100 opacity */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -41,7 +38,6 @@
     }
 }
 
-/* Fade in and scale up animation */
 @keyframes fadeInAndScale {
     from {
         opacity: 0;
@@ -53,23 +49,21 @@
     }
 }
 
-.about {
-    text-align: center;
-    margin-top: 20px;
-}
-
-/* Mission statement text, left aligned */
-.aboutUsText {
+.aboutUsText, .feedbackSection {
     text-align: left;
-    margin-top: 40px;
+    margin-top: 20px;
+    width: 100%;
 }
 
-.logo {
-    transform: scale(0.3);
-    margin-top: -270px;
+.bridgeImage {
+    margin: 0;
+    padding: 0;
+    margin-top: 30px;
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
 }
 
-/* Page break css */
 .hr {
     margin: 20px 0;
     width: 100%;
@@ -78,26 +72,14 @@
     border-bottom: 1px solid #2d0505;
 }
 
-/* Set up column and row::after for developers section */
 .column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20%;
     padding: 20px;
     margin: auto;
 }
 
-.feedbackSection {
-    margin-top: 40px; 
-}
-.row::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-/* CSS for email links in the developers section */
 a {
     text-decoration: none; 
     color: blue;
@@ -111,13 +93,11 @@ a:hover {
 a:active { 
     color: black;
 }
-  
-/* Text in the developer section, moves text down 10px */
+
 .devText {
     margin-top: 10px;
 }
 
-/* Circle for profile picture */
 .profilePic {
     border-radius: 50%;
     width: 150px;
@@ -126,14 +106,75 @@ a:active {
 }
 
 .footer {
-    margin-top: auto; /* Push the footer to the bottom */
+    margin-top: auto;
 }
 
 .title {
     font-weight: bold;
 }
 
-/* Bolded titles */
 .title h1, .aboutUsText h4, .feedbackTitle {
     font-weight: bold;
+}
+
+.missionContainer {
+    padding: 0;
+
+    margin-top: 50px;
+}
+
+@media (max-width: 767px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col-12 {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .aboutUsText, .feedbackSection {
+        text-align: left;
+        width: 100%;
+    }
+
+    .bridgeImage {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    .developers .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .developers .column {
+        width: 30%;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .profilePic {
+        width: 80px;
+        height: 80px;
+    }
+
+    .devText {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .developers .column {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .developers .column {
+        width: 33.33%;
+    }
 }
