@@ -1,0 +1,77 @@
+/* src/components/DarkMode/DarkModeToggle.module.css */
+.toggle {
+    touch-action: pan-x;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    user-select: none;
+    tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+  
+  .track {
+    width: 50px;
+    height: 24px;
+    padding: 0;
+    border-radius: 30px;
+    background-color: #4d4d4d;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .checkedTrack {
+    background-color: #19ab27;
+  }
+  
+  .trackIcon {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 0;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .trackIconChecked {
+    left: 1px; /* Move the moon icon slightly to the left */
+  }
+  
+  .trackIconUnchecked {
+    right: 1px; /* Move the sun icon slightly to the right */
+  }
+  
+  .thumb {
+    transition: all 0.25s ease;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #4d4d4d;
+    border-radius: 50%;
+    background-color: #fafafa;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+  }
+  
+  .checkedThumb {
+    left: 27px;
+    border-color: #19ab27;
+  }
+  
+  .focusThumb {
+    box-shadow: 0px 0px 3px 2px #0099e0;
+  }
+  
+  .activeThumb {
+    box-shadow: 0px 0px 5px 5px #0099e0;
+  }
+  

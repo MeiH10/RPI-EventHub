@@ -1,22 +1,18 @@
-
 .aboutUs {
     text-align: center;
 }
 
-
-/* set up grid for text elements*/
 .grid { 
     display: grid;
-    grid-template-columns: auto;
-    gap: 150px;
+    grid-template-columns: 1fr;
+    gap: 30px;
 }
 
 .developers {
-    flex: 1;
     text-align: center;
+    margin-top: 40px;
 }
 
-/* first, second, third, and anim are all for animations */
 .first {
     animation: fadeIn 0.5s;
 }
@@ -33,54 +29,42 @@
     animation: fadeInAndScale 0.5s;
 }
 
-/* fade in animation from 0 to 100 opacity */
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
     to {
-        opacity: 100;
+        opacity: 1;
     }
 }
 
-/* fade in and scale up animation */
 @keyframes fadeInAndScale {
     from {
         opacity: 0;
-        scale: 95%;
+        transform: scale(0.95);
     }
     to {
-        opacity: 100;
-        scale: 100%;
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
-
-.about {
-    flex: 1;
-    text-align: center;
-    position: relative;
-    top: 20px;
-}
-
-/* mission statement text, left aligned */
-.aboutUsText {
-    flex: 1;
+.aboutUsText, .feedbackSection {
     text-align: left;
-    position: relative;
-    top: 40px;
+    margin-top: 20px;
+    width: 100%;
 }
 
-.logo {
-    flex: 1;
-    position: relative;
-    scale: 30%;
-    top: -270px;
+.bridgeImage {
+    margin: 0;
+    padding: 0;
+    margin-top: 30px;
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
 }
 
-/* page break css */
-hr {
-    position: relative;
+.hr {
     margin: 20px 0;
     width: 100%;
     border: 0;
@@ -88,46 +72,32 @@ hr {
     border-bottom: 1px solid #2d0505;
 }
 
-/* set up column and row::after for developers section */
 .column {
-    float: center;
-    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
+    margin: auto;
 }
 
-.row::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-/* css for email links in the developers section */
-a:link { 
+a {
     text-decoration: none; 
-    text-shadow: 0px 0px 20px white;
     color: blue;
 } 
 a:visited { 
-    text-decoration: none; 
     color: darkblue;
 } 
 a:hover { 
-    text-decoration: none; 
     color: darkblue;
 } 
 a:active { 
-    text-decoration: none; 
     color: black;
 }
-  
-/* text in the developer section, moves text down 10px */
+
 .devText {
-    flex: 1;
-    position: relative;
-    top: 10px;
+    margin-top: 10px;
 }
 
-/* circle for profile picture */
 .profilePic {
     border-radius: 50%;
     width: 150px;
@@ -136,5 +106,75 @@ a:active {
 }
 
 .footer {
-    margin-top: auto; /* Push the footer to the bottom */
+    margin-top: auto;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.title h1, .aboutUsText h4, .feedbackTitle {
+    font-weight: bold;
+}
+
+.missionContainer {
+    padding: 0;
+
+    margin-top: 50px;
+}
+
+@media (max-width: 767px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col-12 {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .aboutUsText, .feedbackSection {
+        text-align: left;
+        width: 100%;
+    }
+
+    .bridgeImage {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    .developers .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .developers .column {
+        width: 30%;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .profilePic {
+        width: 80px;
+        height: 80px;
+    }
+
+    .devText {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .developers .column {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .developers .column {
+        width: 33.33%;
+    }
 }

@@ -1,50 +1,65 @@
-/* src/pages/SearchResults/TermsOfService.module.css */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --link-color: #007bff;
+  --link-hover-color: #0056b3;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --bg-color: #333333;
+  --text-color: #ffffff;
+  --link-color: #66b2ff;
+  --link-hover-color: #3399ff;
+  --box-shadow-color: rgba(255, 255, 255, 0.1);
+}
 
 .termsContainer {
-    background-color: #ffffff;
-    color: #333333;
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .termsContainer h1,
-  .termsContainer h2,
-  .termsContainer h3 {
-    color: #333333;
-  }
-  
-  .termsContainer ul {
-    list-style-type: disc;
-    margin-left: 20px;
-  }
-  
-  .termsContainer li {
-    margin-bottom: 10px;
-  }
-  
-  .termsContainer a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .termsContainer a:hover {
-    text-decoration: underline;
-  }
-  
-  .checkboxContainer {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .checkboxContainer input {
-    margin-right: 10px;
-  }
-  
-  .checkboxContainer label {
-    font-size: 14px;
-  }
-  
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 100px;
+  box-shadow: 0 0 10px var(--box-shadow-color);
+}
+
+.termsContainer h1,
+.termsContainer h2,
+.termsContainer h3 {
+  color: var(--text-color);
+}
+
+.termsContainer ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.termsContainer li {
+  margin-bottom: 10px;
+}
+
+.termsContainer a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.termsContainer a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+.checkboxContainer {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.checkboxContainer input {
+  margin-right: 10px;
+}
+
+.checkboxContainer label {
+  font-size: 14px;
+}

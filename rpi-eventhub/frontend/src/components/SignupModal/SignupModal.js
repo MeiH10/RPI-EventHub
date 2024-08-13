@@ -3,6 +3,7 @@ import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import config from '../../config';
+import styles from './SignupModal.module.css';
 
 function SignupModal() {
   const [show, setShow] = useState(false);
@@ -10,31 +11,31 @@ function SignupModal() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
-  const { login } = useAuth();  // Use the login method from AuthContext
+  const { login } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-
   const handleClose = () => {
     setShow(false);
-    setError('');  // Clear errors when closing modal
+    setError('');
   };
   const handleShow = () => setShow(true);
 
   const handleSignup = async (e) => {
-
     e.preventDefault();
-    if(isSubmitting) {
+    if (isSubmitting) {
       return;
     }
-    setIsSubmitting(true);    
-   
+    setIsSubmitting(true);
+
     if (!email || !password || !username) {
       setError('Please fill in all fields.');
+      setIsSubmitting(false);
       return;
     }
-    if (!(email.endsWith('@rpi.edu'))){
-      setError('Please enter an RPI email'); 
+    if (!email.endsWith('@rpi.edu')) {
+      setError('Please enter an RPI email');
+      setIsSubmitting(false);
       return;
     }
     if (!acceptedTerms) {
@@ -42,7 +43,6 @@ function SignupModal() {
       setIsSubmitting(false);
       return;
     }
-    // Optionally, add more specific validations here
 
     const user = {
       email,
@@ -53,15 +53,11 @@ function SignupModal() {
     try {
       const response = await axios.post(`${config.apiUrl}/signup`, user);
       console.log('Signup successful');
-      login(response.data.token);  
-      localStorage.setItem('token', response.data.token); 
-
-
-      localStorage.setItem('token', response.data.token);  // Save the token
+      login(response.data.token);
+      localStorage.setItem('token', response.data.token);
       handleClose();
     } catch (error) {
       console.error('Signup failed:', error.response ? error.response.data : error.message);
-      // Ensure error is always a string
       const errorMessage = error.response ? error.response.data.message || error.response.data : error.message;
       setError(errorMessage);
       setIsSubmitting(false);
@@ -74,65 +70,61 @@ function SignupModal() {
     }
   }, [show]);
 
-
   return (
     <>
       <Button variant="secondary" onClick={handleShow}>
         Sign Up
       </Button>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Sign Up</Modal.Title>
+      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+        <Modal.Header closeButton className={styles.modalHeader}>
+          <Modal.Title className={styles.modalTitle}>Sign Up</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          {error && <Alert variant="danger">{error}</Alert>}
+        <Modal.Body className={styles.modalBody}>
+          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
           <Form>
-            <Form.Group controlId="signupUsername">
-              <Form.Label>Username</Form.Label>
+            <Form.Group controlId="signupUsername" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>Username</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
-            <Form.Group controlId="signupEmail">
-              <Form.Label>Email address</Form.Label>
+            <Form.Group controlId="signupEmail" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>Email address</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className={styles.formControl}
               />
-              
             </Form.Group>
-            <Form.Group controlId="signupPassword">
-              <Form.Label>Password</Form.Label>
+            <Form.Group controlId="signupPassword" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
-            <Form.Group controlId="termsOfService">
+            <Form.Group controlId="termsOfService" className={styles.formGroup}>
               <Form.Check
                 type="checkbox"
                 className="custom-checkbox"
                 label={
-                  <>
-                    I accept the{' '}
-                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
-                      Terms of Service
-                    </a>
-                    .
-                  </>
+                  <span className={styles.acceptText}>
+                  I accept the{' '}
+                  <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className={styles.link}>
+                    Terms of Service
+                  </a>
+                  .
+                </span>
                 }
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
@@ -140,12 +132,11 @@ function SignupModal() {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          
-          <Button variant="secondary" onClick={handleClose}>
+        <Modal.Footer className={styles.modalFooter}>
+          <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSignup} disabled={isSubmitting}>
+          <Button variant="primary" onClick={handleSignup} disabled={isSubmitting} className={`${styles.button} ${styles.buttonPrimary}`}>
             Sign Up
           </Button>
         </Modal.Footer>

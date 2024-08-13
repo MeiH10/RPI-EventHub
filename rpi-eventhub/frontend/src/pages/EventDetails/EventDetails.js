@@ -36,9 +36,10 @@ const EventDetails = () => {
                 <div className={styles.eventInfo}>
                     <h1>{event.title}</h1>
                     <p><strong>About:</strong> {event.description}</p>
-                    <p><strong>Club:</strong> {event.club}</p>
+                    <p><strong>Club/Organization:</strong> {event.club}</p>
                     <p><strong>Date:</strong> {format(new Date(event.date), 'MMMM do, yyyy')}</p>
                     <p><strong>Time:</strong> {event.time && formatTime(event.time)}</p>
+                    <p><strong>Location:</strong> {event.location}</p>
                     {event.tags && event.tags.length > 0 && (
                     <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                     )}

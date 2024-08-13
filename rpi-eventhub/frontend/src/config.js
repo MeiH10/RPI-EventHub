@@ -3,7 +3,7 @@ const config = {
       apiUrl: 'http://localhost:5000'
     },
     production: {
-      apiUrl: 'https://rpi-eventhub-production.up.railway.app'
+      apiUrl: 'https://rpieventhub.com'
     }
   };
   

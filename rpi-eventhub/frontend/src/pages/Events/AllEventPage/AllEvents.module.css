@@ -1,3 +1,5 @@
+
+
 .allEvents {
     display: flex;
     flex-direction: column;
@@ -9,7 +11,6 @@
     width: 100%;
     margin: 0;
     margin-bottom: 100px;
-    /* padding-top: 148px; */
     padding-left: 10%;
     box-sizing: border-box;
     margin-top: 10%;
@@ -34,35 +35,27 @@
 
 .sortContainer label {
     margin-right: 10px;
+    
 }
-
 
 .sortContainer select {
     margin-right: 20px;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.35); 
+    background-color: rgba(255, 255, 255, 0.35);
     z-index: 1;
-}
-
-.filterSearch {
-    width: 70%;
-}
-
-.filterCategory {
-    width: 28%;
 }
 
 /* Masonry grid styles */
 .myMasonryGrid {
     display: flex;
-    margin-left: -15px; 
+    margin-left: -15px;
     width: auto;
 }
 
 .myMasonryGridColumn {
-    padding-left: 15px; 
+    padding-left: 15px;
     background-clip: padding-box;
 }
 
@@ -84,16 +77,46 @@
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 767px) {
     .filterContainer {
+        display: flex;
         flex-direction: column;
-        align-items: center;
-    }
-    .filterSearch, .filterCategory {
+        /* justify-content: space-between; */
+        align-items: stretch;
         width: 100%;
-        margin-bottom: 10px;
+        box-sizing: border-box;
+        margin: 0;
+        max-width: 767px;
     }
+
+    .sortContainer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        width: 100%;
+
+    }
+
+    .sortContainer label, 
+    .sortContainer select {
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .sortContainer label {
+        margin-bottom: 5px;
+        white-space: nowrap;
+    }
+
+    .sortContainer select {
+        flex: 1;
+    }
+
+
     .eventsDisplayContainer {
+        margin-top: 20px;
         padding-left: 0;
+        padding-right: 0;
     }
 }

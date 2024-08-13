@@ -1,69 +1,147 @@
-@font-face {
-    font-family: "Italiana";
-    src: url('../../assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
+:root {
+  --default-font: "Georgia", "Arial", sans-serif; /* Use the same font as "All RPI events" */
+  --card-text-color: #000; /* Default text color for cards in light mode */
+}
+
+[data-theme='dark'] {
+  --card-text-color: #fff; /* Text color for dark mode */
+}
+
+.cardtext, .title h1, .content h5, .content p {
+  font-family: var(--default-font);
+  color: var(--card-text-color);
+}
+
+
+
+.cardtext {
+  font-family: 'Italiana', serif;
+}
+
+.content h1 {
+  font-size: 48px;
+}
+
+.content h5 {
+  font-size: 32px;
+}
+
+.content p {
+  font-size: 18px;
+}
+
+hr {
+  width: 50%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 50px;
+}
+
+.carouselContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 100px;
+}
+
+.searchBarWrapper {
+  margin-top: 50px;
+}
+
+.anim1 {
+  animation: fade-in 1s;
+}
+
+.anim2 {
+  animation: fade-in-and-scale 1s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
-  
-  .cardtext {
-    font-family: 'Italiana', serif;
+  to {
+    opacity: 100;
   }
-  
+}
+
+@keyframes fade-in-and-scale {
+  from {
+    opacity: 0;
+    scale: 95%;
+  }
+  to {
+    scale: 100%;
+    opacity: 100;
+  }
+}
+
+@media (min-width: 768px) {
   .content h1 {
-    font-size: 69px; 
+    font-size: 69px;
   }
-  
+
   .content h5 {
-    font-size: 42px; 
+    font-size: 42px;
   }
-  
+
   .content p {
-    font-size: 21px; 
+    font-size: 21px;
   }
-  
-  hr {
-    width: 50%;
-  }
-  
+
   .grid {
-    display: grid;
-    grid-template-columns: auto;
-    gap: 150px;
+    gap: 100px;
   }
-  
-  .carouselContainer {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-  }
-  
+
   .searchBarWrapper {
-    margin-top: 100px;
+    margin-top: 80px;
   }
-  
-  .anim1 {
-    animation: fade-in 1s;
+}
+
+@media (max-width: 767px) {
+  .textContainer {
+    text-align: center;
   }
-  
-  .anim2 {
-    animation: fade-in-and-scale 1s;
+
+  .content h1 {
+    font-size: 42px;
+    margin: 0;
   }
-  
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 100;
-    }
+
+  .content h5 {
+    font-size: 24px;
+    text-align: center;
   }
-  
-  @keyframes fade-in-and-scale {
-    from {
-      opacity: 0;
-      scale: 95%;
-    }
-    to {
-      scale: 100%;
-      opacity: 100;
-    }
+
+  .content p {
+    font-size: 16px;
+    text-align: center;
   }
-  
+
+  .grid {
+    gap: 20px;
+  }
+
+  .searchBarWrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carouselContainer {
+    position: relative;
+    top: 0px;
+  }
+
+  .about *{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+
+}

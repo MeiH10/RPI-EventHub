@@ -80,7 +80,7 @@ function AllEvents() {
     return (
         <div className={styles.allEvents}>
             <Navbar />
-            <div className="container-fluid" style={{ display: 'flex' }}>
+            <div className="container-fluid" style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>
                     <div className={styles.sortContainer}>
                         <label htmlFor="sortMethod">Sort by: </label>

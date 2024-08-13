@@ -79,7 +79,7 @@ function VerifyModal() {
         <Modal.Body>
           <Form>
             <Form.Group controlId="verificationCode">
-              <Form.Label>Verification Code</Form.Label>
+              <Form.Label>Verification Code (check for email from rpieventhub@gmail.com, and check your spam folder!)</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter verification code"

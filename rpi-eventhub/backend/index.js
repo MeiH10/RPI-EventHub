@@ -27,24 +27,35 @@ const upload = multer();
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://rpi-eventhub-production.up.railway.app/'],
+  origin: ['http://localhost:3000', 'https://rpieventhub.com/'],
   optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
 
+
 const compressImage = async (fileBuffer) => {
   try {
-    const compressedBuffer = await sharp(fileBuffer)
-      .resize({ width: 1000 }) 
-      .jpeg({ quality: 95 })
-      .toBuffer();
+    let compressedBuffer = fileBuffer;
+    let quality = 95;
+    let compressedSize = fileBuffer.length;
+
+    while (compressedSize > 100 * 1024 && quality > 20) {
+      compressedBuffer = await sharp(fileBuffer)
+        .resize({ width: 1000 })
+        .jpeg({ quality })
+        .toBuffer();
+      compressedSize = compressedBuffer.length;
+      quality -= 5;
+    }
+
     return compressedBuffer;
   } catch (error) {
     console.error('Error compressing image:', error);
     throw error;
   }
 };
+
 
 const convertPdfToImage = async (pdfBuffer) => {
   try {
@@ -146,8 +157,8 @@ app.post('/signup', async (req, res) => {
     // Send verification email with the code
     sendEmail({
       to: email,
-      subject: 'Verify Your Email',
-      text: `Your email verification code is: ${verificationCode}. Please enter this code in the app to verify your email.`,
+      subject: 'RPI EventHub Email Verification Code',
+      text: `Dear User,\n\nThank you for registering with RPI EventHub. To complete your email verification, please use the following code:\n\nVerification Code: ${verificationCode}\n\nPlease enter this code in the app to verify your email address.\n\nBest regards,\nRPI EventHub Team`,
     });
 
     // Generate a JWT token
@@ -277,8 +288,89 @@ app.get('/events', async (req, res) => {
 });
 
 
+app.get('/events/:id/like', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json({ likes: event.likes });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to get like count', error: error.message });
+  }
+});
+
+app.get('/events/:id/like/status', authenticate, async (req, res) => {
+  const { id } = req.params; 
+  const user = req.user;
+  
+  try {
+    const event = await Event.findById(id); 
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    const liked = user.likedEvents.includes(id); 
+    res.status(200).json({ liked }); 
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error }); 
+  }
+});
+
+
+
+app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+
+  try {
+    console.log('Received like request for event ID:', id);
+    console.log('Authenticated user:', user.username);
+
+    const event = await Event.findById(id);
+
+    if (!event) {
+      console.log('Event not found');
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    if (user.likedEvents.includes(id)) {
+      // User has already liked the event, so unlike it
+      event.likes -= 1;
+      user.likedEvents = user.likedEvents.filter(eventId => eventId.toString() !== id);
+
+      await event.save();
+      await user.save();
+
+      console.log('Event unliked successfully', event.likes);
+      return res.json({ message: 'Event unliked successfully', likes: event.likes });
+    } else {
+      // User has not liked the event yet, so like it
+      event.likes += 1;
+      user.likedEvents.push(id);
+
+      await event.save();
+      await user.save();
+
+      console.log('Event liked successfully', event.likes);
+      return res.json({ message: 'Event liked successfully', likes: event.likes });
+    }
+  } catch (error) {
+    console.error('Failed to like event:', error);
+    res.status(500).json({ message: 'Failed to like event', error: error.message });
+  }
+});
+
+
 
 app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
+  console.log("Hits the post call\n"); 
   const { id } = req.params;
   const user = req.user;
 
