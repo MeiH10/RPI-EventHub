@@ -4,6 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import CalendarCSS from './Calendar.module.css';
 import axios from 'axios';
 import config from '../../config';
+import { Link } from 'react-router-dom';
 
 const CalendarPage = () => {
   const [weekRange, setWeekRange] = useState({ start: '', end: '' });
@@ -88,10 +89,12 @@ const CalendarPage = () => {
                   <h3>{["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]}</h3>
                   {filterEventsByDay(day, new Date(weekRange.start), new Date(weekRange.end)).length > 0 ? (
                     filterEventsByDay(day, new Date(weekRange.start), new Date(weekRange.end)).map(event => (
+                    <Link to={`/events/${event._id}`}>
                       <div key={event._id} className={CalendarCSS.eventContainer}>
                         <h4 className={CalendarCSS.eventTitle}>{event.title}</h4>
                         {event.image && <img src={event.image} alt={event.title} className={CalendarCSS.eventImage} />}
                       </div>
+                    </Link>
                     ))
                   ) : (
                     <p>No events</p>
