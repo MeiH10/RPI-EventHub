@@ -11,21 +11,20 @@ function VerifyModal() {
   const { isLoggedIn, login } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleVerify = async (e) => {
     e.preventDefault();
-    if(isSubmitting) {
+    if (isSubmitting) {
       return;
     }
-    setIsSubmitting(true);    
-
+    setIsSubmitting(true);
 
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found');
+      setIsSubmitting(false);
       return;
     }
 
@@ -33,29 +32,28 @@ function VerifyModal() {
     const email = decodedToken.email;
 
     try {
-
-      // console.log(email, verificationCode);
-
-
-      const response = await axios.post(`${config.apiUrl}/verify-email`, {
-        email,
-        verificationCode,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const response = await axios.post(
+        `${config.apiUrl}/verify-email`,
+        { email, verificationCode },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       if (response.status === 200) {
-        // console.log('Email verified successfully');
-        // console.log("response.data: ", response.data);
-        const newToken = response.data.token; 
-        
+        const newToken = response.data.token;
+
         login(newToken);
+        localStorage.setItem('token', newToken);
+
         handleClose();
       }
     } catch (error) {
       console.error('Verification failed:', error.response ? error.response.data : error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -67,19 +65,14 @@ function VerifyModal() {
         </Button>
       )}
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
+      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>Verify Email</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleVerify}>
             <Form.Group controlId="verificationCode">
-              <Form.Label>Verification Code (check for email from rpieventhub@gmail.com, and check your spam folder!)</Form.Label>
+              <Form.Label>Verification Code</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter verification code"
@@ -93,7 +86,7 @@ function VerifyModal() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleVerify} disabled={isSubmitting}>
+          <Button variant="primary" type="submit" onClick={handleVerify} disabled={isSubmitting}>
             Verify
           </Button>
         </Modal.Footer>

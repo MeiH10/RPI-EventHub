@@ -178,23 +178,32 @@ app.post('/signup', async (req, res) => {
 app.post('/verify-email', async (req, res) => {
   const { email, verificationCode } = req.body;
 
-  const user = await User.findOne({ email, verificationCode });
+  try {
+    const user = await User.findOne({ email, verificationCode });
 
-  if (!user) {
-    return res.status(400).json({ message: "Invalid email or verification code." });
-  }
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or verification code." });
+    }
 
+    if (user.verificationCode === verificationCode) {
+      user.emailVerified = true;
+      user.verificationCode = '';
+      await user.save();
 
+      const token = jwt.sign({ 
+        userId: user._id, 
+        email: user.email, 
+        emailVerified: user.emailVerified, 
+        username: user.username 
+      }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-  if (user.verificationCode === verificationCode) {
-    user.emailVerified = true;
-    user.verificationCode = '';
-    await user.save();
-    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified}, process.env.JWT_SECRET, { expiresIn: '24h' });
-
-    res.status(200).json({ message: "Email verified successfully.", token});
-  } else {
-    res.status(400).json({ message: "Invalid verification code." });
+      res.status(200).json({ message: "Email verified successfully.", token });
+    } else {
+      res.status(400).json({ message: "Invalid verification code." });
+    }
+  } catch (error) {
+    console.error("Error during email verification:", error.message);
+    res.status(500).json({ message: "An error occurred during email verification." });
   }
 });
 
