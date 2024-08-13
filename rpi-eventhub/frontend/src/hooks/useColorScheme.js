@@ -1,16 +1,16 @@
 // src/hooks/useColorScheme.js
 import { useEffect, useMemo } from "react";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 import useLocalStorageState from "use-local-storage-state";
 
 export function useColorScheme() {
   
-  const systemPrefersDark = useMediaQuery(
-    {
-      query: "(prefers-color-scheme: dark)",
-    },
-    undefined
-  );
+  // const systemPrefersDark = useMediaQuery(
+  //   {
+  //     query: "(prefers-color-scheme: dark)",
+  //   },
+  //   undefined
+  // );
   
 
   const [isDark, setIsDark] = useLocalStorageState("colorScheme");

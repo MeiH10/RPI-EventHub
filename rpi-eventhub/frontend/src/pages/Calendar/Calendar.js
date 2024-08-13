@@ -68,13 +68,11 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className={CalendarCSS.outerContainer}>
+    <div className="outterContainer">
       <NavBar />
-      <div className={CalendarCSS.content}>
-        {/* Hero section */}
+      <div className={`${CalendarCSS.content} container-fluid containerFluid`}>
         <div className={CalendarCSS.heroSection}>
           <div className={CalendarCSS.title}>
-            {/* Title or any other content */}
           </div>
 
           <div className={CalendarCSS.grid}>
