@@ -61,7 +61,7 @@
 }
 
 .navLinks {
-  color: #ff0000;
+  /* color: #ff0000; */
   text-decoration: none;
   padding: 0.5rem 1rem;
   border-bottom: 3px solid transparent;
