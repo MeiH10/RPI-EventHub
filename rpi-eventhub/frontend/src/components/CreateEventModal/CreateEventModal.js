@@ -21,8 +21,34 @@ function CreateEventModal() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const suggestedTags = ['workshop', 'seminar', 'game', 'music', 'food', 'career', 'fun', 'networking', 'conference', 'webinar', 'hackathon', 'fundraiser', 'sports', 'arts', 'dance', 'tech', 'volunteer', 'health', 'training', 'exhibition', 'panel', 'social', 'movie', 'coding', 'education', 'destress', 'other'];
-
+  const suggestedTags = [
+    'fun', 
+    'games', 
+    'board games', 
+    'food', 
+    'social', 
+    'competition', 
+    'movie', 
+    'anime', 
+    'academic', 
+    'professional', 
+    'career', 
+    'relax', 
+    'outdoor', 
+    'workshop', 
+    'fundraiser', 
+    'art', 
+    'music', 
+    'networking', 
+    'sports', 
+    'creative', 
+    'tech', 
+    'wellness', 
+    'coding', 
+    'other'
+  ];
+  
+  
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
 
