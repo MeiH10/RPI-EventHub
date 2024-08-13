@@ -169,11 +169,11 @@ function CreateEventModal() {
             </Form.Group>
 
             <Form.Group controlId="eventFile" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>File (Poster or PDF)</Form.Label>
+              <Form.Label className={styles.formLabel}>File</Form.Label>
               <Form.Control
                 type="file"
                 onChange={(e) => setFile(e.target.files[0])}
-                accept='.pdf, .jpg, .jpeg, .png, .webp'
+                accept='.jpg, .jpeg, .png, .webp'
                 className={styles.formControl}
               />
             </Form.Group>
