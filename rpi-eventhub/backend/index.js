@@ -2,8 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const multer = require('multer'); // Add this line to require multer
-const User = require('./models/User'); // Adjust the path as necessary based on your project structure
+const multer = require('multer');
+const User = require('./models/User');
 const Event = require('./models/Event'); 
 const { sendEmail } = require('./services/emailService');
 const axios = require('axios');
@@ -21,7 +21,17 @@ require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
 
 
-const upload = multer(); 
+const upload = multer({
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
+      return cb(new Error('Please upload an image file.'));
+    }
+    cb(null, true);
+  },
+}).single('file');
 
 
 const app = express();
@@ -233,7 +243,7 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.post('/events', upload.single('file'), async (req, res) => {
+app.post('/events', upload, async (req, res) => {
   const { title, description, poster, date, location, tags, time, club, rsvp } = req.body;
   const file = req.file;
 
