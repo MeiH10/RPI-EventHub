@@ -15,6 +15,15 @@ const formatTime = (timeString) => {
     return `${hours}:${minutes} ${ampm}`;
 };
 
+const formatDateAsEST = (utcDate) => {
+    const date = new Date(utcDate);
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const day = date.getUTCDate();
+    const estDate = new Date(year, month, day);
+    return estDate;
+};
+
 const EventDetails = () => {
     const { eventId } = useParams();
     const { events, fetchEvents } = useEvents();
@@ -31,6 +40,9 @@ const EventDetails = () => {
         return <p>Event not found.</p>;
     }
 
+    // Call the formatDateAsEST function
+    const eventDate = format(formatDateAsEST(event.date), 'MMMM do, yyyy');
+
     return (
         <div className='outterContainer'>
             <Navbar />
@@ -43,13 +55,12 @@ const EventDetails = () => {
                         <h1>{event.title}</h1>
                         <p><strong>About:</strong> {event.description}</p>
                         <p><strong>Club/Organization:</strong> {event.club}</p>
-                        <p><strong>Date:</strong> {format(new Date(event.date), 'MMMM do, yyyy')}</p>
+                        <p><strong>Date:</strong> {eventDate}</p>
                         <p><strong>Time:</strong> {event.time && formatTime(event.time)}</p>
                         <p><strong>Location:</strong> {event.location}</p>
                         {event.tags && event.tags.length > 0 && (
-                        <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
+                            <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                         )}
-
                         {event.rsvp && <RsvpButton rsvp={event.rsvp} />}
                     </div>
                 </div>

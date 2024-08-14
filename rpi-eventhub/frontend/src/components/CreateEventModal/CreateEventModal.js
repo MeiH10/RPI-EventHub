@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import config from '../../config';
 import styles from './CreateEventModal.module.css'; 
 
+
 function CreateEventModal() {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');

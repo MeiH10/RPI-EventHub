@@ -4,11 +4,21 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import axios from 'axios';
 import { Skeleton } from '@mui/material';
 import config from '../../config';
+import { format } from 'date-fns';
 
 const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'; 
 
+const formatDateAsEST = (utcDate) => {
+  const date = new Date(utcDate);
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth();
+  const day = date.getUTCDate();
+  const estDate = new Date(year, month, day);
+  return estDate;
+};
+
 const formatDate = (dateString) => {
-  const date = new Date(dateString);
+  const date = formatDateAsEST(dateString);
   const options = { 
     month: '2-digit', 
     day: '2-digit', 
@@ -26,7 +36,6 @@ const ImageCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const intervalRef = useRef(null);
-
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -49,11 +58,9 @@ const ImageCarousel = () => {
         console.error('Failed to fetch events:', error);
       }
     };
-  
+
     fetchEvents();
   }, []);
-  
-  
 
   const goToNext = useCallback(() => {
     setActiveIndex(current => current === events.length - 1 ? 0 : current + 1);

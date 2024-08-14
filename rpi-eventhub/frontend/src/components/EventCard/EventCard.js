@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import styles from './EventCard.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { useEvents } from '../../context/EventsContext';
+import { format } from 'date-fns';
+
 
 const EventCard = ({ event }) => {
   const { username } = useAuth();
@@ -17,10 +19,23 @@ const EventCard = ({ event }) => {
     }
   }, [event._id, deleteEvent]);
 
+  const formatDateAsEST = (utcDate) => {
+    const date = new Date(utcDate);
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const day = date.getUTCDate();
+    const estDate = new Date(year, month, day);
+    return estDate;
+};
+
+
   // Check if the delete button should be visible
   const canSeeDeleteButton = (user_name) => {
     return user_name === 'admin' || user_name === event.poster;
   };
+
+  const eventDate = format(formatDateAsEST(event.date), 'MMMM do, yyyy');
+
 
   return (
     <div key={event._id} className={styles.eventWrapper}>
@@ -47,7 +62,7 @@ const EventCard = ({ event }) => {
       <div className={styles.eventDetails}>
         <h2>{event.title}</h2>
         <p>{event.description}</p>
-        <p><strong>Date & Time:</strong> {`${event.time} on ${new Date(event.date).toLocaleDateString()}`}</p>
+        <p><strong>Date & Time:</strong> {`${event.time} on ${eventDate}`}</p>
         <p><strong>Location:</strong> {event.location}</p>
         <div className={styles.tags}>
           {event.tags.map(tag => (
