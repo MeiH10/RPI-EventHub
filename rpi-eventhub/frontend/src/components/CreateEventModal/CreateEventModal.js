@@ -128,6 +128,19 @@ function CreateEventModal() {
     }
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    const maxSizeInMB = 10;
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
+    if (selectedFile.size > maxSizeInBytes) {
+        setError(`File size should not exceed ${maxSizeInMB}MB.`);
+        setFile(null);
+    } else {
+        setFile(selectedFile);
+    }
+  };
+
   const handleAddTag = (tag) => {
     setTags(prevTags => {
       if (prevTags.includes(tag)) {
@@ -198,7 +211,7 @@ function CreateEventModal() {
               <Form.Label className={styles.formLabel}>File</Form.Label>
               <Form.Control
                 type="file"
-                onChange={(e) => setFile(e.target.files[0])}
+                onChange={handleFileChange}
                 accept='.jpg, .jpeg, .png, .webp'
                 className={styles.formControl}
               />
