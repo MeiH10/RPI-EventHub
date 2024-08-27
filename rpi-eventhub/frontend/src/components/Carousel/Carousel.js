@@ -8,6 +8,14 @@ import { format } from 'date-fns';
 
 const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'; 
 
+const formatTime = (timeString) => {
+  let [hours, minutes] = timeString.split(':');
+  hours = parseInt(hours, 10);
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
+  return `${hours}:${minutes} ${ampm}`;
+};
+
 const formatDateAsEST = (utcDate) => {
   const date = new Date(utcDate);
   const year = date.getUTCFullYear();
@@ -47,6 +55,7 @@ const ImageCarousel = () => {
             caption: event.title,
             location: event.location,
             date: formatDate(event.date),
+            time: event.time && formatTime(event.time),
             originalDate: event.date,
           }))
           .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
@@ -111,7 +120,7 @@ const ImageCarousel = () => {
                 <i className="bi bi-chevron-right"></i>
               </button>
               <div className={styles.captionBelow}>
-                {`${events[activeIndex].location}  - ${events[activeIndex].date}`}
+                {`${events[activeIndex].location} - ${events[activeIndex].date} ${events[activeIndex].time}`}
               </div>
             </div>
           )}
