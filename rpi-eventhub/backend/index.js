@@ -37,7 +37,7 @@ const upload = multer({
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://rpieventhub.com/'],
+  origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
   optionsSuccessStatus: 200,
 };
 
@@ -439,10 +439,11 @@ app.get('/verify-token', authenticate, (req, res) => {
 });
 
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 
