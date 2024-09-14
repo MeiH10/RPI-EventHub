@@ -37,7 +37,7 @@ const upload = multer({
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://rpieventhub.com/'],
+  origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
   optionsSuccessStatus: 200,
 };
 
