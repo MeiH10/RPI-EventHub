@@ -16,10 +16,11 @@ How to startup application in local host:
         a. In the /backend folder, create a file named .env and type in API keys
 
     2. Open a terminal, run the following command in 'backend' folder: 
-        a. node index
+        a. npm start
 
     3. Open up a serparate terminal, run the following command in the 'frontend' folder:
-        a. npm start
+        a. cd frontend
+        b. npm run dev
 
 
     *Mac Users*
