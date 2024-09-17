@@ -19,8 +19,7 @@ How to startup application in local host:
         a. npm start
 
     3. Open up a serparate terminal, run the following command in the 'frontend' folder:
-        a. cd frontend
-        b. npm run dev
+        a. npm run dev
 
 
     *Mac Users*
