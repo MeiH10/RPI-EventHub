@@ -82,7 +82,7 @@ label {
   color: var(--label-color);
 }
 
-input[type="checkbox"] {
+.filterSection input[type="checkbox"] {
   /* remove the default checkbox */
   -webkit-appearance: none;
   appearance: none;
@@ -97,7 +97,7 @@ input[type="checkbox"] {
 }
 
 /* create a custom checkbox by add a fake element*/
-input[type="checkbox"]::after {
+.filterSection input[type="checkbox"]::after {
   content: '';
   display: block;
   position: absolute;
@@ -111,7 +111,7 @@ input[type="checkbox"]::after {
   transition: all 0.3s ease-in-out;
 }
 
-input[type="checkbox"]:checked::after {
+.filterSection input[type="checkbox"]:checked::after {
   height: 12px;
   width: 20px;
   border-top: none;
