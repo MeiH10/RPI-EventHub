@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
@@ -9,21 +9,21 @@ import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 
 function AllEvents() {
-    const { events, fetchEvents, deleteEvent } = useEvents(); // Use deleteEvent from context
-    const [isLoading, setIsLoading] = useState(true); // Add a loading state
-    const [sortMethod, setSortMethod] = useState('date'); // Default sorting method
-    const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order
+    const { events, fetchEvents, deleteEvent } = useEvents();
+    const [isLoading, setIsLoading] = useState(true);
+    const [sortMethod, setSortMethod] = useState('date');
+    const [sortOrder, setSortOrder] = useState('desc');
     const [filteredEvents, setFilteredEvents] = useState([]);
-    const [availableTags, setAvailableTags] = useState([]); 
+    const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchEvents(); // Call fetchEvents from context
+            await fetchEvents();
             setIsLoading(false);
         };
 
         fetchData();
-    }, [fetchEvents]); // Dependency array to prevent unnecessary re-renders
+    }, [fetchEvents]);
 
     useEffect(() => {
         setFilteredEvents(events);
@@ -31,32 +31,36 @@ function AllEvents() {
         setAvailableTags(tags);
     }, [events]);
 
-    const handleFilterChange = (filters) => {
+    const handleFilterChange = useCallback((filters) => {
         let filtered = events;
         if (filters.tags.length > 0) {
-            filtered = filtered.filter(event => 
+            filtered = filtered.filter(event =>
                 filters.tags.every(tag => event.tags.includes(tag))
             );
         }
         const now = new Date();
         if (filters.time.length > 0) {
+            let timeFiltered = [];
             if (filters.time.includes('past')) {
-                filtered = filtered.filter(event => new Date(event.date) < now);
+                timeFiltered = filtered.filter(event => new Date(event.date) < now);
             }
             if (filters.time.includes('upcoming')) {
-                filtered = filtered.filter(event => new Date(event.date) >= now);
+                timeFiltered = timeFiltered.concat(filtered.filter(event => new Date(event.date) >= now));
             }
             if (filters.time.includes('today')) {
-                const todayStart = new Date(now.setHours(0, 0, 0, 0));
-                const todayEnd = new Date(now.setHours(23, 59, 59, 999));
-                filtered = filtered.filter(event => {
+                const todayStart = new Date();
+                todayStart.setHours(0, 0, 0, 0);
+                const todayEnd = new Date();
+                todayEnd.setHours(23, 59, 59, 999);
+                timeFiltered = timeFiltered.concat(filtered.filter(event => {
                     const eventDate = new Date(event.date);
                     return eventDate >= todayStart && eventDate <= todayEnd;
-                });
+                }));
             }
+            filtered = timeFiltered;
         }
         setFilteredEvents(filtered);
-    };
+    }, [events]);
 
     const sortEvents = (events, sortMethod, sortOrder) => {
         switch (sortMethod) {
@@ -76,7 +80,7 @@ function AllEvents() {
         1100: 2,
         700: 1
     };
-    
+
     return (
         <div className={styles.allEvents}>
             <Navbar />
@@ -103,10 +107,10 @@ function AllEvents() {
                             <option value="desc">Descending</option>
                         </select>
                     </div>
-                    <FilterBar 
-                        tags={availableTags} 
-                        onFilterChange={handleFilterChange} 
-                        filteredCount={filteredEvents.length} 
+                    <FilterBar
+                        tags={availableTags}
+                        onFilterChange={handleFilterChange}
+                        filteredCount={filteredEvents.length}
                     />
                 </div>
                 <div className={styles.eventsDisplayContainer}>

@@ -28,21 +28,40 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
     }, [selectedTags, selectedTime, onFilterChange]);
 
     const toggleDrawer = () => {
-        setIsDrawerOpen(prevState => !prevState);
+        if (isDrawerOpen) {
+            setIsDrawerOpen(false);
+        } else {
+            setIsDrawerOpen(true);
+        }
     };
 
     return (
         <>
             <button className={styles.drawerToggleBtn} onClick={toggleDrawer}>
-                {isDrawerOpen ? 'Close Filters' : 'Open Filters'}
+                <div className={`${styles.iconWrapper} ${isDrawerOpen ? styles.iconOpen : ''}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         className={styles.filterIcon} viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path
+                            d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         className={styles.closeIcon} viewBox="0 0 16 16">
+                        <path d="M2 2 L14 14 M14 2 L2 14" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                </div>
             </button>
-            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ''}`}>
+            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
                 <div className={styles.filterSection}>
-                    <h3 className={styles.filterBarTags}>Filtered Results: {filteredCount}</h3>
+                    <h3
+                        style={{color:'var(--tags-label-color)', fontSize:'1.5rem', fontWeight:'bold'}}
+                    >
+                        Filtered Results: {filteredCount}
+                    </h3>
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
-                    <h3 className={styles.filterBarTags}>By Tags</h3>
+                    <h3  style={{color:'var(--tags-label-color)', fontSize:'1.5rem', fontWeight:'bold'}}>By Tags</h3>
                     {tags.sort().map((tag) => (
                         <div key={tag} className={styles.checkboxWrapper}>
                             <input
@@ -58,7 +77,7 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
-                    <h3 className={styles.filterBarTags}>By Time</h3>
+                    <h3  style={{color:'var(--tags-label-color)', fontSize:'1.5rem', fontWeight:'bold'}}>By Time</h3>
                     {['past', 'upcoming', 'today'].map((time) => (
                         <div key={time} className={styles.checkboxWrapper}>
                             <input

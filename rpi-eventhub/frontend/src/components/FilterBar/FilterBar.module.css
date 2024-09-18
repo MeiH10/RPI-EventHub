@@ -1,12 +1,13 @@
 :root {
-  --sidebar-bg-color: rgba(0, 0, 0, 0.65);
+  --sidebar-bg-color: rgba(0, 0, 0, 0.8);
   --border-color: #000;
   --label-color: #000000;
-  --tags-label-color: #ffffff;
+  --tags-label-color: #F7F9F9;
+  --tags-label-bg-color: rgba(229, 231, 233 , 0.5);
   --checkbox-bg-color: #fff;
   --checkbox-checked-bg-color: #fff;
   --checkbox-checked-color: #000;
-  --clear-button-bg-color: #000;
+  --clear-button-bg-color: rgba(0, 0, 0, 0.8);
   --clear-button-text-color: #fff;
   --clear-button-hover-bg-color: #555;
   --separator-bg-color: #ffffff;
@@ -26,10 +27,8 @@
   --separator-bg-color: #fff;
 }
 
-
-
 .sidebar {
-  width: 300px;
+  width: auto;
   padding: 20px;
   background-color: var(--sidebar-bg-color);
   border: 2px solid var(--border-color); 
@@ -37,10 +36,14 @@
   margin-top: 25px; 
   box-sizing: border-box;
   margin-bottom: auto;
-  position: relative;
-  top: 0;
-  height: auto;
+  position: fixed;
+  top: 10rem;
+  max-height: 60vh;
   z-index: 1000;
+  font-family: "Hevletica Neue", sans-serif;
+  /* Hide Scroll bar*/
+  overflow-y: scroll; /* Allow scroll */
+  scrollbar-width: none; /* No scrollbar */
 }
 
 .filterSection {
@@ -54,8 +57,11 @@
 }
 
 .filterBarTags {
+  border-radius: 4px;
+  padding: 0;
+  font-size: 1.3em;
   color: var(--tags-label-color);
-
+  cursor: pointer;
 }
 
 .separator {
@@ -77,29 +83,42 @@ label {
 }
 
 input[type="checkbox"] {
-  transform: scale(1.5); 
-  margin-right: 10px; 
-  border-radius: 4px; 
-  appearance: none; 
-  background-color: var(--checkbox-bg-color); 
-  border: 2px solid var(--border-color); 
-  width: 20px; 
-  height: 20px; 
-  cursor: pointer; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
+  /* remove the default checkbox */
+  -webkit-appearance: none;
+  appearance: none;
+  /* create a custom checkbox */
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-input[type="checkbox"]:checked {
-  background-color: var(--checkbox-checked-bg-color);
+/* create a custom checkbox by add a fake element*/
+input[type="checkbox"]::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* change the border color */
+  border: 2px solid var(--checkbox-bg-color);
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
 }
 
-input[type="checkbox"]:checked::before {
-  content: '✔'; 
-  color: var(--checkbox-checked-color);
-  font-weight: bold; 
-  font-size: 16px; 
+input[type="checkbox"]:checked::after {
+  height: 12px;
+  width: 20px;
+  border-top: none;
+  border-right: none;
+  border-radius: 0;
+  transform: rotate(-45deg);
+  transition: all 0.3s ease-in-out;
 }
 
 .clearButton {
@@ -114,42 +133,84 @@ input[type="checkbox"]:checked::before {
 }
 
 .clearButton:hover {
-  background-color: var(--clear-button-hover-bg-color); 
+  background-color: var(--clear-button-hover-bg-color);
 }
 
 .drawerToggleBtn {
   display: none;
-  padding: 10px 20px;
+  padding: 15px;
   background-color: var(--clear-button-bg-color); 
   color: var(--clear-button-text-color); 
   border: none; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  font-size: 16px; 
-  position: relative;
-  top: 20px;
-  right: 0px;
-  z-index: 2000;
+  cursor: pointer;
+  font-size: 16px;
+  position: fixed;
+  top: 150px;
+  width: auto;
+  z-index: 999;
+  border-radius: 8px;
+  margin: 0;
 }
 
-.drawerToggleBtn:hover {
-  background-color: var(--clear-button-hover-bg-color); 
-}
 
+/* Style for mobile */
 @media (max-width: 767px) {
   .sidebar {
     position: fixed;
-    top: 50px;
-    left: -100%;
-    height: calc(100% - 50px);
-    transition: left 0.3s ease-in-out;
+    top: 200px;
+    height: calc(100% - 100px);
+    animation: slideDown 0.5s ease-out;
+    width: 60vw;
+    right: 10px;
+    opacity: 0;
+    max-height: 50vh;
+    transform: translateX(110%);
+    transition: transform 0.3s ease, opacity 0.3s ease, max-width 0.3s ease;
   }
 
   .sidebar.open {
-    left: 0;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .drawerToggleBtn {
     display: block;
+    right: 10px;
   }
+}
+
+/* Animation and style of toggle button */
+.iconWrapper {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.filterIcon, .closeIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.iconOpen .filterIcon {
+  transform: scale(0);
+  opacity: 0;
+}
+
+.iconOpen .closeIcon {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.filterIcon {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.closeIcon {
+  transform: scale(0);
+  opacity: 0;
 }
