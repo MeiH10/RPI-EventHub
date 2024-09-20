@@ -4,7 +4,9 @@ import styles from './FilterBar.module.css';
 function FilterBar({ tags, onFilterChange, filteredCount }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);  // State to control the drawer
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [sortMethod, setSortMethod] = useState('date');
+    const [sortOrder, setSortOrder] = useState('desc');
 
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -24,15 +26,11 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
     };
 
     useEffect(() => {
-        onFilterChange({ tags: selectedTags, time: selectedTime });
-    }, [selectedTags, selectedTime, onFilterChange]);
+        onFilterChange({ tags: selectedTags, time: selectedTime, sortMethod, sortOrder });
+    }, [selectedTags, selectedTime, sortMethod, sortOrder, onFilterChange]);
 
     const toggleDrawer = () => {
-        if (isDrawerOpen) {
-            setIsDrawerOpen(false);
-        } else {
-            setIsDrawerOpen(true);
-        }
+        setIsDrawerOpen((prev) => !prev);
     };
 
     return (
@@ -52,16 +50,34 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                 </div>
             </button>
             <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
-                <div className={styles.filterSection}>
-                    <h3
-                        style={{color:'var(--tags-label-color)', fontSize:'1.5rem', fontWeight:'bold'}}
+                <div className={styles.sortContainer}>
+                    <label htmlFor="sortMethod">Sort by</label>
+                    <select
+                        id="sortMethod"
+                        value={sortMethod}
+                        onChange={(e) => setSortMethod(e.target.value)}
                     >
-                        Filtered Results: {filteredCount}
-                    </h3>
+                        <option value="date">Date</option>
+                        <option value="likes">Likes</option>
+                        <option value="title">Title</option>
+                    </select>
+                    <label htmlFor="sortOrder">Order</label>
+                    <select
+                        id="sortOrder"
+                        value={sortOrder}
+                        onChange={(e) => setSortOrder(e.target.value)}
+                    >
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
-                    <h3  style={{color:'var(--tags-label-color)', fontSize:'1.5rem', fontWeight:'bold'}}>By Tags</h3>
+                    <h3 className={styles.filterBarTags}>Filtered Results: {filteredCount}</h3>
+                </div>
+                <div className={styles.separator}></div>
+                <div className={styles.filterSection}>
+                    <h3 className={styles.filterBarTags}>By Tags</h3>
                     {tags.sort().map((tag) => (
                         <div key={tag} className={styles.checkboxWrapper}>
                             <input
@@ -77,7 +93,7 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
-                    <h3  style={{color:'var(--tags-label-color)', fontSize:'1.5rem', fontWeight:'bold'}}>By Time</h3>
+                    <h3 className={styles.filterBarTags}>By Time</h3>
                     {['past', 'upcoming', 'today'].map((time) => (
                         <div key={time} className={styles.checkboxWrapper}>
                             <input
@@ -87,7 +103,8 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                                 checked={selectedTime.includes(time)}
                                 onChange={() => handleTimeChange(time)}
                             />
-                            <label className={styles.filterBarTags} htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
+                            <label className={styles.filterBarTags}
+                                   htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
                         </div>
                     ))}
                 </div>

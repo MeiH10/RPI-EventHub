@@ -11,10 +11,10 @@ import Masonry from 'react-masonry-css';
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
     const [isLoading, setIsLoading] = useState(true);
-    const [sortMethod, setSortMethod] = useState('date');
-    const [sortOrder, setSortOrder] = useState('desc');
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [availableTags, setAvailableTags] = useState([]);
+    const [sortMethod, setSortMethod] = useState('date');
+    const [sortOrder, setSortOrder] = useState('desc');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,6 +59,8 @@ function AllEvents() {
             }
             filtered = timeFiltered;
         }
+        setSortMethod(filters.sortMethod);
+        setSortOrder(filters.sortOrder);
         setFilteredEvents(filtered);
     }, [events]);
 
@@ -86,27 +88,6 @@ function AllEvents() {
             <Navbar />
             <div className="container-fluid" style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>
-                    <div className={styles.sortContainer}>
-                        <label htmlFor="sortMethod">Sort by: </label>
-                        <select
-                            id="sortMethod"
-                            value={sortMethod}
-                            onChange={(e) => setSortMethod(e.target.value)}
-                        >
-                            <option value="date">Date</option>
-                            <option value="likes">Likes</option>
-                            <option value="title">Title</option>
-                        </select>
-                        <label htmlFor="sortOrder">Order: </label>
-                        <select
-                            id="sortOrder"
-                            value={sortOrder}
-                            onChange={(e) => setSortOrder(e.target.value)}
-                        >
-                            <option value="asc">Ascending</option>
-                            <option value="desc">Descending</option>
-                        </select>
-                    </div>
                     <FilterBar
                         tags={availableTags}
                         onFilterChange={handleFilterChange}
