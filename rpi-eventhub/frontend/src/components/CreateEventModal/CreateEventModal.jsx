@@ -16,6 +16,7 @@ function CreateEventModal() {
   const [time, setTime] = useState('');
   const [file, setFile] = useState(null);
   const [date, setDate] = useState('');
+  const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState([]);
   const [successOpen, setSuccessOpen] = useState(false); // State for success alert
@@ -95,13 +96,14 @@ function CreateEventModal() {
     formData.append('poster', username);
     formData.append('file', file); // Attach the file
     formData.append('date', date);
+    formData.append("endDate", endDate);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
     formData.append('time', time);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
 
-    if (!title || !description || !date || !location || !time || !club) {
+    if (!title || !description || !date || !endDate || !location || !time || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
       return;
@@ -226,6 +228,20 @@ function CreateEventModal() {
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                className={styles.formControl}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="eventEndDate" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>
+                End Date <span className="text-danger">*</span>
+              </Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="Event End date"
+                required
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
                 className={styles.formControl}
               />
             </Form.Group>
