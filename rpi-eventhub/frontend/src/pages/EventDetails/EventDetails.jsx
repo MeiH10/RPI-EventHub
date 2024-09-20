@@ -42,6 +42,7 @@ const EventDetails = () => {
 
     // Call the formatDateAsEST function
     const eventDate = format(formatDateAsEST(event.date), 'MMMM do, yyyy');
+    const eventEndDate = event.endDate ? format(formatDateAsEST(event.endDate), 'MMMM do, yyyy') : null
 
     return (
         <div className='outterContainer'>
@@ -56,6 +57,7 @@ const EventDetails = () => {
                         <p><strong>About:</strong> {event.description}</p>
                         <p><strong>Club/Organization:</strong> {event.club}</p>
                         <p><strong>Date:</strong> {eventDate}</p>
+                        {eventEndDate && <p><strong>End Date:</strong> {eventEndDate}</p>}
                         <p><strong>Time:</strong> {event.time && formatTime(event.time)}</p>
                         <p><strong>Location:</strong> {event.location}</p>
                         {event.tags && event.tags.length > 0 && (

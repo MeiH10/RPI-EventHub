@@ -244,7 +244,7 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/events', upload, async (req, res) => {
-  const { title, description, poster, date, location, tags, time, club, rsvp } = req.body;
+  const { title, description, poster, date, endDate, location, tags, time, club, rsvp } = req.body;
   const file = req.file;
 
   try {
@@ -280,6 +280,7 @@ app.post('/events', upload, async (req, res) => {
       description,
       poster: poster || 'admin', // Use 'admin' as the default value
       date,
+      endDate,
       location,
       image: imageUrl,
       tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
