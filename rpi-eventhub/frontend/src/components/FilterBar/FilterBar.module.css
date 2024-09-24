@@ -246,3 +246,19 @@ label {
   z-index: 1;
   color: var(--tags-label-color);
 }
+
+/* Change button style */
+.changeButton {
+  padding: 10px 20px;
+  background-color: var(--clear-button-bg-color);
+  color: var(--clear-button-text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.changeButton:hover {
+  background-color: var(--clear-button-hover-bg-color);
+  color: white;
+}

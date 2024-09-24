@@ -1,0 +1,34 @@
+:root{
+    --event-list-card-bg-color: #f8f8f8;
+    --event-list-card-title-color: #1e1d1d;
+    --event-list-card-text-color: #919191;
+}
+
+
+.eventListView{
+    min-height: 100vh;
+}
+
+.eventCard{
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    background-color: var(--event-list-card-bg-color);
+    font-family: "Hevletica Neue", sans-serif;
+}
+
+.eventCard h3{
+    font-size: 1.25rem;
+    margin: 0;
+    padding: 10px;
+    color: var(--event-list-card-title-color);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.eventCard p{
+    font-size: 0.75rem;
+    padding: 0 0 10px 10px;
+    margin: 0;
+    color: var(--event-list-card-text-color);
+}
