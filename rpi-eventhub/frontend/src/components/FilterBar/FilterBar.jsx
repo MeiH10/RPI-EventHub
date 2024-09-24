@@ -4,7 +4,9 @@ import styles from './FilterBar.module.css';
 function FilterBar({ tags, onFilterChange, filteredCount }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);  // State to control the drawer
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [sortMethod, setSortMethod] = useState('date');
+    const [sortOrder, setSortOrder] = useState('desc');
 
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -24,19 +26,52 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
     };
 
     useEffect(() => {
-        onFilterChange({ tags: selectedTags, time: selectedTime });
-    }, [selectedTags, selectedTime, onFilterChange]);
+        onFilterChange({ tags: selectedTags, time: selectedTime, sortMethod, sortOrder });
+    }, [selectedTags, selectedTime, sortMethod, sortOrder, onFilterChange]);
 
     const toggleDrawer = () => {
-        setIsDrawerOpen(prevState => !prevState);
+        setIsDrawerOpen((prev) => !prev);
     };
 
     return (
         <>
             <button className={styles.drawerToggleBtn} onClick={toggleDrawer}>
-                {isDrawerOpen ? 'Close Filters' : 'Open Filters'}
+                <div className={`${styles.iconWrapper} ${isDrawerOpen ? styles.iconOpen : ''}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         className={styles.filterIcon} viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path
+                            d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         className={styles.closeIcon} viewBox="0 0 16 16">
+                        <path d="M2 2 L14 14 M14 2 L2 14" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                </div>
             </button>
-            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ''}`}>
+            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
+                <div className={styles.sortContainer}>
+                    <label htmlFor="sortMethod">Sort by</label>
+                    <select
+                        id="sortMethod"
+                        value={sortMethod}
+                        onChange={(e) => setSortMethod(e.target.value)}
+                    >
+                        <option value="date">Date</option>
+                        <option value="likes">Likes</option>
+                        <option value="title">Title</option>
+                    </select>
+                    <label htmlFor="sortOrder">Order</label>
+                    <select
+                        id="sortOrder"
+                        value={sortOrder}
+                        onChange={(e) => setSortOrder(e.target.value)}
+                    >
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+                <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
                     <h3 className={styles.filterBarTags}>Filtered Results: {filteredCount}</h3>
                 </div>
@@ -68,7 +103,8 @@ function FilterBar({ tags, onFilterChange, filteredCount }) {
                                 checked={selectedTime.includes(time)}
                                 onChange={() => handleTimeChange(time)}
                             />
-                            <label className={styles.filterBarTags} htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
+                            <label className={styles.filterBarTags}
+                                   htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
                         </div>
                     ))}
                 </div>
