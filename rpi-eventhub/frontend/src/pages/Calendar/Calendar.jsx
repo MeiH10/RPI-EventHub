@@ -11,6 +11,10 @@ const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [currentStartDate, setCurrentStartDate] = useState(new Date());
 
+  const generateICSFile = () => {
+    events.forEach((event) => {});
+  };
+
   const parseDateAsEST = (utcDate) => {
     const date = new Date(utcDate);
     const year = date.getUTCFullYear();
@@ -96,6 +100,12 @@ const CalendarPage = () => {
                   Previous Week
                 </button>
                 <button onClick={() => handleWeekChange(1)}>Next Week</button>
+                <button
+                  style={{ position: "absolute", right: 0 }}
+                  onClick={() => null}
+                >
+                  Download ICS For All Events
+              </button>
               </div>
               <h2>
                 Week of {weekRange.start} - {weekRange.end}
