@@ -55,6 +55,7 @@ const ImageCarousel = () => {
             caption: event.title,
             location: event.location,
             date: formatDate(event.date),
+            endDate: formatDate(event.endDate),
             time: event.time && formatTime(event.time),
             originalDate: event.date,
           }))
@@ -95,6 +96,8 @@ const ImageCarousel = () => {
     return () => clearInterval(intervalRef.current);
   }, [events, isLoading, resetTimer]);
 
+  console.log(JSON.stringify(events[activeIndex], null, 2));
+
   return (
     <div className="carousel"
          onMouseEnter={pauseAutoplay} // pause carousel when on hover
@@ -120,7 +123,7 @@ const ImageCarousel = () => {
                 <i className="bi bi-chevron-right"></i>
               </button>
               <div className={styles.captionBelow}>
-                {`${events[activeIndex].location} - ${events[activeIndex].date} ${events[activeIndex].endDate && ` - ${events[activeIndex].endDate}`}${events[activeIndex].time}`}
+                {`${events[activeIndex].location} - ${events[activeIndex].date} ${events[activeIndex].endDate ? ` - ${events[activeIndex].endDate} ` : ``}${events[activeIndex].time}`}
               </div>
             </div>
           )}
