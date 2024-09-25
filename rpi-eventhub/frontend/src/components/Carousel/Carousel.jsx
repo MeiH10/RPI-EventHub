@@ -8,14 +8,6 @@ import { format } from 'date-fns';
 
 const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'; 
 
-const formatTime = (timeString) => {
-  let [hours, minutes] = timeString.split(':');
-  hours = parseInt(hours, 10);
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes} ${ampm}`;
-};
-
 const formatDateAsEST = (utcDate) => {
   const date = new Date(utcDate);
   const year = date.getUTCFullYear();
@@ -25,18 +17,18 @@ const formatDateAsEST = (utcDate) => {
   return estDate;
 };
 
+const formatTime = (timeString) => {
+  if (!timeString) return 'Time not specified';
+  let [hours, minutes] = timeString.split(':');
+  hours = parseInt(hours, 10);
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
+  return `${hours}:${minutes} ${ampm}`;
+};
+
 const formatDate = (dateString) => {
   const date = formatDateAsEST(dateString);
-  const options = { 
-    month: '2-digit', 
-    day: '2-digit', 
-    year: 'numeric', 
-    weekday: 'short', 
-    hour: 'numeric', 
-    minute: '2-digit', 
-    hour12: true 
-  };
-  return date.toLocaleDateString('en-US', options).replace(',', '').replace(',', ' @');
+  return format(date, 'MMMM do, yyyy');
 };
 
 const ImageCarousel = () => {
@@ -54,8 +46,8 @@ const ImageCarousel = () => {
             src: event.image || placeholderImage,
             caption: event.title,
             location: event.location,
-            date: formatDate(event.date),
-            time: event.time && formatTime(event.time),
+            date: formatDate(event.date),   // Format date
+            time: formatTime(event.time),   // Format time
             originalDate: event.date,
           }))
           .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
@@ -109,7 +101,7 @@ const ImageCarousel = () => {
             </div>
           ) : events.length > 0 && (
             <div className={styles.carouselCard}>
-              <div className={styles.captionAbove}>{`${events[activeIndex].caption}`}</div>
+              <div className={styles.captionAbove}>{events[activeIndex].caption}</div>
               <button onClick={() => { goToPrev(); resetTimer(); }} className={styles.prevButton}>
                 <i className="bi bi-chevron-left"></i>
               </button>
@@ -120,7 +112,7 @@ const ImageCarousel = () => {
                 <i className="bi bi-chevron-right"></i>
               </button>
               <div className={styles.captionBelow}>
-                {`${events[activeIndex].location} - ${events[activeIndex].date} ${events[activeIndex].time}`}
+                {`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
               </div>
             </div>
           )}

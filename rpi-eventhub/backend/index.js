@@ -21,6 +21,29 @@ require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
 
 
+const addEventsToDatabase = async () => {
+  try {
+    const eventsPath = path.join(__dirname, 'event_9_24_24.json');
+    const eventsData = fs.readFileSync(eventsPath, 'utf-8');
+
+    const events = JSON.parse(eventsData);
+
+    for (const event of events) {
+      const newEvent = new Event(event);
+      await newEvent.save();
+      console.log(`Event ${newEvent.title} added successfully.`);
+    }
+
+    console.log('All events added successfully.');
+  } catch (error) {
+    console.error('Error adding events to the database:', error.message);
+  }
+};
+
+// addEventsToDatabase();
+
+
+
 const upload = multer({
   limits: {
     fileSize: 10 * 1024 * 1024,
