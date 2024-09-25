@@ -52,7 +52,8 @@
   height: 4rem;
 }
 
-.navMenu, .navMenu2 {
+.navMenu,
+.navMenu2 {
   display: flex;
   align-items: center;
   margin: 0;
@@ -66,10 +67,6 @@
   padding: 0.5rem 1rem;
   border-bottom: 3px solid transparent;
   transition: border-color 0.3s;
-}
-
-.navLinks:hover {
-  border-bottom: 3px solid #ff0000;
 }
 
 .navItem {
@@ -158,7 +155,8 @@
     height: 50px;
   }
 
-  .navMenu, .navMenu2 {
+  .navMenu,
+  .navMenu2 {
     display: none;
   }
 
