@@ -6,7 +6,7 @@
 
 
 .eventListView{
-    min-height: 100vh;
+    min-height: 80vh;
 }
 
 .eventCard{
@@ -15,20 +15,75 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     background-color: var(--event-list-card-bg-color);
     font-family: "Hevletica Neue", sans-serif;
+    transition: background-color 0.3s ease;
 }
 
+.eventCardContainer{
+    padding-left: 10px;
+    max-width: fit-content;
+    position: relative;
+}
+
+.eventCard:hover{
+    background-color: rgba(240, 240, 240);
+}
+
+.eventCard:hover .eventCardContainer::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+
+.eventCardContainer::after {
+    opacity: 0;
+    transform: translateX(-200%);
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -70px;
+    width: 60px; /* Width of the arrow */
+    height: 100%;
+    background: linear-gradient(to right, rgba(211, 211, 211, 0.3), rgba(169, 169, 169, 0.5)); /* Gradient color with transparency */
+    clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%);
+    transition: all 0.3s ease;
+}
 .eventCard h3{
     font-size: 1.25rem;
     margin: 0;
-    padding: 10px;
+    padding: 8px;
     color: var(--event-list-card-title-color);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
 
-.eventCard p{
+.eventCard small{
     font-size: 0.75rem;
+    margin-top: 5px;
+    color: var(--event-list-card-text-color);
+}
+
+.eventCard p{
+    font-size: 0.95rem;
     padding: 0 0 10px 10px;
     margin: 0;
     color: var(--event-list-card-text-color);
+    max-width: 900px;
+}
+
+
+
+.tags{
+    display: flex;
+    flex-wrap: wrap;
+    padding-right: 10px;
+}
+
+.tag {
+    background: var(--tag-bg-color);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.875em;
+    color: var(--tag-text-color);
+    margin-right: 10px;
 }
