@@ -55,8 +55,9 @@ const ImageCarousel = () => {
             caption: event.title,
             location: event.location,
             date: formatDate(event.date),
-            endDate: formatDate(event.endDate),
-            time: event.time && formatTime(event.time),
+            endDate: event.endDate ? formatDate(event.endDate) : null,
+            endTime: event.endTime ? formatTime(event.endTime) : null,
+            time: formatTime(event.time),
             originalDate: event.date,
           }))
           .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
@@ -123,7 +124,7 @@ const ImageCarousel = () => {
                 <i className="bi bi-chevron-right"></i>
               </button>
               <div className={styles.captionBelow}>
-                {`${events[activeIndex].location} - ${events[activeIndex].date} ${events[activeIndex].endDate ? ` - ${events[activeIndex].endDate} ` : ``}${events[activeIndex].time}`}
+                {`${events[activeIndex].location} - ${events[activeIndex].date} ${events[activeIndex].endDate && events[activeIndex].endTime ? `➡️ ${events[activeIndex].endDate ? `${events[activeIndex].endDate} ` : ``}` : ''}`}
               </div>
             </div>
           )}
