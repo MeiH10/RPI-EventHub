@@ -14,8 +14,10 @@ function CreateEventModal() {
   const [rsvp, setRSVP] = useState('');
   const [description, setDescription] = useState('');
   const [time, setTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [file, setFile] = useState(null);
   const [date, setDate] = useState('');
+  const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState([]);
   const [successOpen, setSuccessOpen] = useState(false); // State for success alert
@@ -95,13 +97,15 @@ function CreateEventModal() {
     formData.append('poster', username);
     formData.append('file', file); // Attach the file
     formData.append('date', date);
+    formData.append("endDate", endDate);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
     formData.append('time', time);
+    formData.append('endTime', endTime);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
 
-    if (!title || !description || !date || !location || !time || !club) {
+    if (!title || !description || !date || !endDate || !location || !time || !endTime || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
       return;
@@ -230,13 +234,38 @@ function CreateEventModal() {
               />
             </Form.Group>
 
+            <Form.Group controlId="eventEndDate" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>
+                End Date <span className="text-danger">*</span>
+              </Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="Event End date"
+                required
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className={styles.formControl}
+              />
+            </Form.Group>
+
             <Form.Group controlId="eventTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Time <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Start Time <span className='text-danger'>*</span></Form.Label>
               <Form.Control
                 type="time"
                 placeholder="Event time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
+                className={styles.formControl}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="eventEndTime" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>End Time <span className='text-danger'>*</span></Form.Label>
+              <Form.Control
+                type="time"
+                placeholder="Event End Time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
                 className={styles.formControl}
               />
             </Form.Group>
