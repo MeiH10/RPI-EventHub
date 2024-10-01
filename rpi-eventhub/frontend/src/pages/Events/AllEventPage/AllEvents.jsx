@@ -5,6 +5,7 @@ import FilterBar from '../../../components/FilterBar/FilterBar';
 import Footer from "../../../components/Footer/Footer";
 import EventCard from '../../../components/EventCard/EventCard';
 import { useEvents } from '../../../context/EventsContext';
+import EventList from '../../../pages/Events/AllEventList/EventsList';
 import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 
@@ -15,6 +16,7 @@ function AllEvents() {
     const [availableTags, setAvailableTags] = useState([]);
     const [sortMethod, setSortMethod] = useState('date');
     const [sortOrder, setSortOrder] = useState('desc');
+    const [isListView, setIsListView] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -83,40 +85,58 @@ function AllEvents() {
         700: 1
     };
 
+    // Function that change the view of the events
+    const changeView = () => {
+        setIsListView(!isListView);
+    }
+
     return (
         <div className={styles.allEvents}>
             <Navbar />
-            <div className="container-fluid" style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
+            <div className="container-fluid"
+                 style={{display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
+                        changeView={changeView}
                     />
                 </div>
-                <div className={styles.eventsDisplayContainer}>
-                    {isLoading ? (
-                        Array.from(new Array(10)).map((_, index) => (
-                            <div key={index} className={styles.skeletonWrapper}>
-                                <Skeleton variant="rectangular" width={400} height={533} />
-                                <Skeleton variant="text" width={200} />
-                                <Skeleton variant="text" width={150} />
-                            </div>
-                        ))
-                    ) : (
-                        <Masonry
-                            breakpointCols={breakpointColumnsObj}
-                            className={styles.myMasonryGrid}
-                            columnClassName={styles.myMasonryGridColumn}
-                        >
-                            {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                <EventCard key={event._id} event={event} />
-                            ))}
-                        </Masonry>
-                    )}
-                </div>
+                {
+                        isListView ?
+                    (
+                        <div className={styles.eventsDisplayContainer}>
+                            <EventList
+                                events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                            />
+                        </div>
+                    ):(
+                        <div className={styles.eventsDisplayContainer}>
+                            {isLoading ? (
+                                Array.from(new Array(10)).map((_, index) => (
+                                    <div key={index} className={styles.skeletonWrapper}>
+                                        <Skeleton variant="rectangular" width={400} height={533}/>
+                                        <Skeleton variant="text" width={200}/>
+                                        <Skeleton variant="text" width={150}/>
+                                    </div>
+                                ))
+                            ) : (
+                                <Masonry
+                                    breakpointCols={breakpointColumnsObj}
+                                    className={styles.myMasonryGrid}
+                                    columnClassName={styles.myMasonryGridColumn}
+                                >
+                                    {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                        <EventCard key={event._id} event={event}/>
+                                    ))}
+                                </Masonry>
+                            )}
+                        </div>
+                    )
+                }
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 }
