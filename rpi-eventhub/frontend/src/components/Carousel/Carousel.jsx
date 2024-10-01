@@ -124,7 +124,7 @@ const ImageCarousel = () => {
                 <i className="bi bi-chevron-right"></i>
               </button>
               <div className={styles.captionBelow}>
-                {`${events[activeIndex].location} - ${events[activeIndex].date} ${events[activeIndex].endDate && events[activeIndex].endTime ? `➡️ ${events[activeIndex].endDate ? `${events[activeIndex].endDate} ` : ``}` : ''}`}
+                {`${events[activeIndex].location} - ${events[activeIndex].endDate ? 'From: ' : ''}${events[activeIndex].date} ${events[activeIndex].endDate && events[activeIndex].endTime ? `${events[activeIndex].endDate ? `To: ${events[activeIndex].endDate} ` : ``}` : ''}`}
               </div>
             </div>
           )}
