@@ -40,8 +40,6 @@ const EventDetails = () => {
         return <p>Event not found.</p>;
     }
 
-    console.log('Event', event)
-
     // Call the formatDateAsEST function
 
     const eventEndTime = event.endTime

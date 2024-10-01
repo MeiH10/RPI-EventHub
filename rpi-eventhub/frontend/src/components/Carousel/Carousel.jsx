@@ -97,8 +97,6 @@ const ImageCarousel = () => {
     return () => clearInterval(intervalRef.current);
   }, [events, isLoading, resetTimer]);
 
-  console.log(JSON.stringify(events[activeIndex], null, 2));
-
   return (
     <div className="carousel"
          onMouseEnter={pauseAutoplay} // pause carousel when on hover

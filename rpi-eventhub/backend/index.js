@@ -244,7 +244,6 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/events', upload, async (req, res) => {
-  console.log('req.body', req.body)
   const { title, description, poster, date, endDate, endTime, location, tags, time, club, rsvp } = req.body;
   const file = req.file;
 
