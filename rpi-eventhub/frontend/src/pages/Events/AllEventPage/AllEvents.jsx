@@ -29,7 +29,7 @@ function AllEvents() {
 
     useEffect(() => {
         setFilteredEvents(events);
-        const tags = [...new Set(events.flatMap(event => event.tags))];
+        const tags = [...new Set(events.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
     }, [events]);
 
@@ -37,17 +37,17 @@ function AllEvents() {
         let filtered = events;
         if (filters.tags.length > 0) {
             filtered = filtered.filter(event =>
-                filters.tags.every(tag => event.tags.includes(tag))
+                filters.tags.every(tag => event.tags?.includes(tag))
             );
         }
         const now = new Date();
         if (filters.time.length > 0) {
             let timeFiltered = [];
             if (filters.time.includes('past')) {
-                timeFiltered = filtered.filter(event => new Date(event.date) < now);
+                timeFiltered = filtered.filter(event => new Date(event.startDateTime || event.date) < now);
             }
             if (filters.time.includes('upcoming')) {
-                timeFiltered = timeFiltered.concat(filtered.filter(event => new Date(event.date) >= now));
+                timeFiltered = timeFiltered.concat(filtered.filter(event => new Date(event.startDateTime || event.date) >= now));
             }
             if (filters.time.includes('today')) {
                 const todayStart = new Date();
@@ -55,7 +55,7 @@ function AllEvents() {
                 const todayEnd = new Date();
                 todayEnd.setHours(23, 59, 59, 999);
                 timeFiltered = timeFiltered.concat(filtered.filter(event => {
-                    const eventDate = new Date(event.date);
+                    const eventDate = new Date(event.startDateTime || event.date);
                     return eventDate >= todayStart && eventDate <= todayEnd;
                 }));
             }
@@ -69,7 +69,9 @@ function AllEvents() {
     const sortEvents = (events, sortMethod, sortOrder) => {
         switch (sortMethod) {
             case 'date':
-                return events.sort((a, b) => sortOrder === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date));
+                return events.sort((a, b) => sortOrder === 'asc' 
+                    ? new Date(a.startDateTime || a.date) - new Date(b.startDateTime || b.date) 
+                    : new Date(b.startDateTime || b.date) - new Date(a.startDateTime || a.date));
             case 'likes':
                 return events.sort((a, b) => sortOrder === 'asc' ? a.likes - b.likes : b.likes - a.likes);
             case 'title':
@@ -85,7 +87,6 @@ function AllEvents() {
         700: 1
     };
 
-    // Function that change the view of the events
     const changeView = () => {
         setIsListView(!isListView);
     }

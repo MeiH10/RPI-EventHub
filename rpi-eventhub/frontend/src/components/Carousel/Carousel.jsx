@@ -9,7 +9,9 @@ import { format } from "date-fns";
 const placeholderImage =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
 
+// Format date to EST timezone
 const formatDateAsEST = (utcDate) => {
+  if (!utcDate) return "Date not specified";
   const date = new Date(utcDate);
   const year = date.getUTCFullYear();
   const month = date.getUTCMonth();
@@ -18,6 +20,7 @@ const formatDateAsEST = (utcDate) => {
   return estDate;
 };
 
+// Format time with AM/PM notation
 const formatTime = (timeString) => {
   if (!timeString) return "Time not specified";
   let [hours, minutes] = timeString.split(":");
@@ -27,7 +30,9 @@ const formatTime = (timeString) => {
   return `${hours}:${minutes} ${ampm}`;
 };
 
+// Format date with a readable format
 const formatDate = (dateString) => {
+  if (!dateString) return "Date not specified";
   const date = formatDateAsEST(dateString);
   return format(date, "MMMM do, yyyy");
 };
@@ -42,16 +47,18 @@ const ImageCarousel = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${config.apiUrl}/events`);
+
         const sortedEvents = response.data
           .map((event) => ({
             src: event.image || placeholderImage,
             caption: event.title,
-            location: event.location,
-            date: formatDate(event.date),
-            endDate: event.endDate ? formatDate(event.endDate) : null,
-            endTime: event.endTime ? formatTime(event.endTime) : null,
-            time: formatTime(event.time),
-            originalDate: event.date,
+            location: event.location || "Location not specified",
+            // Fallback to "Unavailable" if new fields are missing
+            date: event.startDateTime ? formatDate(event.startDateTime) : "Unavailable",
+            endDate: event.endDateTime ? formatDate(event.endDateTime) : "Unavailable",
+            time: event.startDateTime ? formatTime(new Date(event.startDateTime).toLocaleTimeString()) : "Unavailable",
+            endTime: event.endDateTime ? formatTime(new Date(event.endDateTime).toLocaleTimeString()) : "Unavailable",
+            originalDate: event.startDateTime || event.date // Use new field or fallback to older one
           }))
           .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
           .slice(0, 5);

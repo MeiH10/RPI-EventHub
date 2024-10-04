@@ -18,6 +18,7 @@ const EventCard = ({ event }) => {
   }, [event._id, deleteEvent]);
 
   const formatDateAsEST = (utcDate) => {
+    if (!utcDate) return "Date not specified";
     const date = new Date(utcDate);
     const year = date.getUTCFullYear();
     const month = date.getUTCMonth();
@@ -39,8 +40,14 @@ const EventCard = ({ event }) => {
     return user_name === 'admin' || user_name === event.poster;
   };
 
-  const eventDate = format(formatDateAsEST(event.date), 'MMMM do, yyyy');
-  const eventTime = formatTime(event.time);
+  // Handle older events without startDateTime and endDateTime fields
+  const eventDate = event.startDateTime
+    ? format(formatDateAsEST(event.startDateTime), 'MMMM do, yyyy')
+    : 'Unavailable';
+  
+  const eventTime = event.startDateTime
+    ? formatTime(new Date(event.startDateTime).toLocaleTimeString())
+    : 'Unavailable';
 
   return (
     <div key={event._id} className={styles.eventWrapper}>
@@ -68,11 +75,15 @@ const EventCard = ({ event }) => {
         <h2>{event.title}</h2>
         <p>{event.description}</p>
         <p><strong>Date & Time:</strong> {`${eventTime} on ${eventDate}`}</p>
-        <p><strong>Location:</strong> {event.location}</p>
+        <p><strong>Location:</strong> {event.location || "Location not specified"}</p>
         <div className={styles.tags}>
-          {event.tags.map(tag => (
-            <span key={tag} className={styles.tag}>{tag}</span>
-          ))}
+          {event.tags && event.tags.length > 0 ? (
+            event.tags.map(tag => (
+              <span key={tag} className={styles.tag}>{tag}</span>
+            ))
+          ) : (
+            <span className={styles.tag}>No tags available</span>
+          )}
         </div>
       </div>
     </div>
