@@ -10,15 +10,32 @@ const axios = require('axios');
 const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
-
 const { PDFDocument } = require('pdf-lib');
 const sharp = require('sharp');
 const fs = require('fs');
 const { PDFImage } = require("pdf-image");
-
-
 require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
+
+
+// async function deleteEventsByUser(email) {
+//   try {
+//     const result = await Event.deleteMany({ poster: email });
+
+//     if (result.deletedCount > 0) {
+//       console.log(`Deleted ${result.deletedCount} events posted by ${email}`);
+//     } else {
+//       console.log(`No events found posted by ${email}`);
+//     }
+//   } catch (error) {
+//     console.error('Error deleting events:', error);
+//   } finally {
+//     mongoose.connection.close();
+//   }
+// }
+
+// deleteEventsByUser(username);
+
 
 
 const addEventsToDatabase = async () => {
@@ -289,7 +306,7 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/events', upload, async (req, res) => {
-  const { title, description, poster, date, endDate, endTime, location, tags, time, club, rsvp } = req.body;
+  const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
   const file = req.file;
 
   try {
@@ -308,9 +325,7 @@ app.post('/events', upload, async (req, res) => {
       formData.append('image', imageBuffer.toString('base64'));
 
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       if (response.data && response.data.data && response.data.data.url) {
@@ -323,14 +338,12 @@ app.post('/events', upload, async (req, res) => {
     const event = new Event({
       title,
       description,
-      poster: poster || 'admin', // Use 'admin' as the default value
-      date,
-      endDate,
-      endTime,
+      poster: poster || 'admin',
+      startDateTime,
+      endDateTime,
       location,
       image: imageUrl,
       tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-      time,
       club,
       rsvp
     });

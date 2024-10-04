@@ -72,7 +72,7 @@ const CalendarPage = () => {
 
   const filterEventsByDay = (day, firstDayOfWeek, lastDayOfWeek) => {
     return events.filter((event) => {
-      const eventDate = parseDateAsEST(event.date);
+      const eventDate = new Date(event.startDateTime || event.date);
       eventDate.setHours(0, 0, 0, 0);
       return (
         eventDate.getDay() === day &&
@@ -131,12 +131,14 @@ const CalendarPage = () => {
                             <h4 className={CalendarCSS.eventTitle}>
                               {event.title}
                             </h4>
-                            {event.image && (
+                            {event.image ? (
                               <img
                                 src={event.image}
                                 alt={event.title}
                                 className={CalendarCSS.eventImage}
                               />
+                            ) : (
+                              <p>No image available</p>
                             )}
                           </div>
                         </Link>
