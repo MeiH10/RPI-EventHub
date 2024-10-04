@@ -18,23 +18,23 @@ require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
 
 
-// async function deleteEventsByUser(email) {
-//   try {
-//     const result = await Event.deleteMany({ poster: email });
+async function deleteEventsByUser(email) {
+  try {
+    const result = await Event.deleteMany({ poster: email });
 
-//     if (result.deletedCount > 0) {
-//       console.log(`Deleted ${result.deletedCount} events posted by ${email}`);
-//     } else {
-//       console.log(`No events found posted by ${email}`);
-//     }
-//   } catch (error) {
-//     console.error('Error deleting events:', error);
-//   } finally {
-//     mongoose.connection.close();
-//   }
-// }
+    if (result.deletedCount > 0) {
+      console.log(`Deleted ${result.deletedCount} events posted by ${email}`);
+    } else {
+      console.log(`No events found posted by ${email}`);
+    }
+  } catch (error) {
+    console.error('Error deleting events:', error);
+  } finally {
+    mongoose.connection.close();
+  }
+}
 
-// deleteEventsByUser(username);
+// deleteEventsByUser('larsec2');
 
 
 
@@ -46,6 +46,11 @@ const addEventsToDatabase = async () => {
     const events = JSON.parse(eventsData);
 
     for (const event of events) {
+      // Set endDateTime to 3 hours after startDateTime if it's null
+      if (!event.endDateTime) {
+        event.endDateTime = new Date(new Date(event.startDateTime).getTime() + 3 * 60 * 60 * 1000); // 3 hours later
+      }
+
       const newEvent = new Event(event);
       await newEvent.save();
       console.log(`Event ${newEvent.title} added successfully.`);
@@ -79,7 +84,7 @@ const addEventsToDatabase = async () => {
 //   }
 // };
 
-// addEventsToDatabase();
+addEventsToDatabase();
 
 
 
