@@ -164,3 +164,9 @@
   .likeButton.liked:hover {
     background-color: #ff4141;
   }
+  @media (max-width: 768px) {
+    .likeButton {
+      font-size: 16px;
+      padding: 2px 6px;
+    }
+  }
