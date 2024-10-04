@@ -45,6 +45,52 @@ const EventCard = ({ event }) => {
     ? formatTimeAsEST(event.startDateTime)
     : 'Unavailable';
 
+  const [likes, setLikes] = useState(event.likes || 0);
+  const [liked, setLiked] = useState(false); // Initially set liked as false
+
+  useEffect(() => {
+    // Fetch user information or check user data to determine if the event is liked
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`http://localhost:5000/events/${event._id}/like/status`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setLiked(response.data.liked); // Update the liked state based on the server response
+      })
+      .catch((error) => {
+        console.error("Error fetching like status:", error);
+      });
+  }, [event._id]);
+
+  const handleLikeToggle = async () => {
+    const newLikedState = !liked; // Toggle the liked state
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `http://localhost:5000/events/${event._id}/like`,
+        { liked: newLikedState }, // Send the new like/unlike state
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+        setLikes(data.likes); // Update the likes count immediately
+        setLiked(newLikedState); // Toggle the liked state
+      }
+    } catch (error) {
+      console.error("Error while toggling like:", error);
+    }
+  };
   return (
     <div key={event._id} className={styles.eventWrapper}>
       <div className={styles.imageContainer}>
@@ -81,6 +127,15 @@ const EventCard = ({ event }) => {
             <span className={styles.tag}>No tags available</span>
           )}
         </div>
+      </div>
+      <div className={styles.likeContainer}>
+        <button
+          className={`${styles.likeButton} ${liked ? styles.liked : ""}`}
+          onClick={handleLikeToggle}
+        >
+          {likes}
+          <span>{liked ? "❤️" : "🤍"}</span>
+        </button>
       </div>
     </div>
   );
