@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './EventCard.module.css';
 import { useAuth } from '../../context/AuthContext';
