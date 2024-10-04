@@ -407,8 +407,7 @@ app.get('/events/:id/like/status', authenticate, async (req, res) => {
   }
 });
 
-app.post("/events/:id/like", authenticateAndVerify, async (req, res) => {
-  console.log("here\n");
+app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
 
   const { id } = req.params; // Use 'id' to match the route parameter
   const { liked } = req.body;
@@ -419,7 +418,7 @@ app.post("/events/:id/like", authenticateAndVerify, async (req, res) => {
     const user = await User.findById(userId); // Fetch the user based on the ID
 
     if (!event || !user) {
-      return res.status(404).json({ message: "Event or User not found" });
+      return res.status(404).json({ message: 'Event or User not found' });
     }
 
     // Check if the user has already liked the event
@@ -428,7 +427,7 @@ app.post("/events/:id/like", authenticateAndVerify, async (req, res) => {
     if (liked && !hasLiked) {
       // User is liking the event, increment likes and add to likedEvents
       event.likes += 1;
-      user.likedEvents.push(id); // Push event ID to likedEvents
+      user.likedEvents.push(id); 
     } else if (!liked && hasLiked) {
       // User is unliking the event, decrement likes and remove from likedEvents
       event.likes -= 1;
@@ -437,13 +436,13 @@ app.post("/events/:id/like", authenticateAndVerify, async (req, res) => {
       );
     }
 
-    await event.save(); // Save updated event
-    await user.save(); // Save updated user
+    await event.save(); 
+    await user.save();
 
     res.json({ likes: event.likes });
   } catch (error) {
-    console.error("Error during like/unlike:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error('Error during like/unlike:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
