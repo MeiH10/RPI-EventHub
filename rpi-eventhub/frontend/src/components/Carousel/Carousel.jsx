@@ -49,6 +49,8 @@ const ImageCarousel = () => {
             originalDate: event.startDateTime || event.date // Use new field or fallback to older one
           }))
           .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
+          .filter( a => new Date(a.startDate) - new Date > 0)
+          //.sort((a,b) => b.)
           .slice(0, 5);
 
         setEvents(sortedEvents);
