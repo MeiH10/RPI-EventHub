@@ -3,10 +3,9 @@ import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
+import { useColorScheme } from '../../hooks/useColorScheme'; // 引入 useColorScheme 钩子
 import config from '../../config';
-import styles from './CreateEventModal.module.css'; 
-
-
+import styles from './CreateEventModal.module.css'; // 引入 CSS 模块
 function CreateEventModal() {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
@@ -49,9 +48,9 @@ function CreateEventModal() {
     'other'
   ];
   
-  
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
+  const { isDark } = useColorScheme(); // 使用 useColorScheme 钩子
 
   const handleClose = () => {
     setShow(false);
@@ -153,6 +152,93 @@ function CreateEventModal() {
     });
   };
 
+  const modalStyles = {
+    modalHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: isDark ? '#000000' : '#fff',
+      borderBottom: `1px solid ${isDark ? '#fff' : '#000'}`,
+    },
+    modalTitle: {
+      fontSize: '1.5rem',
+      color: isDark ? '#fff' : '#000',
+    },
+    modalBody: {
+      backgroundColor: isDark ? '#000000' : '#fff',
+      color: isDark ? '#fff' : '#000',
+    },
+    modalFooter: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: isDark ? '#000000' : '#fff',
+      borderTop: `1px solid ${isDark ? '#fff' : '#000'}`,
+    },
+    formGroup: {
+      marginBottom: '1rem',
+    },
+    formLabel: {
+      fontWeight: 'bold',
+      color: isDark ? '#fff' : '#000',
+    },
+    textDanger: {
+      color: 'red',
+    },
+    formControl: {
+      width: '100%',
+      padding: '0.375rem 0.75rem',
+      fontSize: '1rem',
+      backgroundColor: isDark ? '#444' : '#fff',
+      border: `1px solid ${isDark ? '#666' : '#ced4da'}`,
+      borderRadius: '0.25rem',
+      color: isDark ? '#fff' : '#000',
+    },
+    formControlTextarea: {
+      height: '100px',
+    },
+    button: {
+      marginRight: '0.5rem',
+      border: 'none',
+      borderRadius: '0.25rem',
+      cursor: 'pointer',
+      padding: '0.375rem 0.75rem',
+      fontSize: '1rem',
+    },
+    buttonPrimary: {
+      backgroundColor: isDark ? '#0056b3' : '#007bff',
+      color: '#fff',
+    },
+    buttonSecondary: {
+      backgroundColor: isDark ? '#494949' : '#6c757d',
+      color: '#fff',
+    },
+    alert: {
+      marginBottom: '1rem',
+    },
+    alertSuccess: {
+      backgroundColor: isDark ? '#155724' : '#d4edda',
+      color: isDark ? '#fff' : '#155724',
+    },
+    alertDanger: {
+      backgroundColor: isDark ? '#721c24' : '#f8d7da',
+      color: isDark ? '#fff' : '#721c24',
+    },
+    suggestedTags: {
+      marginTop: '0.5rem',
+    },
+    suggestedTagButton: {
+      marginRight: '0.5rem',
+      marginBottom: '0.5rem',
+      backgroundColor: isDark ? '#555' : 'transparent',
+      color: isDark ? '#fff' : '#5786d2',
+      border: `1px solid ${isDark ? '#555' : '#5786d2'}`,
+    },
+    suggestedTagButtonSelected: {
+      backgroundColor: '#0056b3',
+      color: '#fff',
+    },
+  };
   return (
     <>
       <Button variant="success" onClick={handleShow}>
@@ -165,27 +251,28 @@ function CreateEventModal() {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton className={styles.modalHeader}>
-          <Modal.Title className={styles.modalTitle}>Create an Event</Modal.Title>
+        <Modal.Header closeButton style={modalStyles.modalHeader}>
+          <Modal.Title style={modalStyles.modalTitle}>Create an Event</Modal.Title>
         </Modal.Header>
-        <Modal.Body className={styles.modalBody}>
-          {error && <Alert variant="danger">{error}</Alert>}
-          {successOpen && <Alert variant="success">Event created successfully!</Alert>}
+        <Modal.Body style={modalStyles.modalBody}>
+          {error && <Alert variant="danger" style={modalStyles.alertDanger}>{error}</Alert>}
+          {successOpen && <Alert variant="success" style={modalStyles.alertSuccess}>Event created successfully!</Alert>}
           <Form>
-            <Form.Group controlId="eventTitle" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Title <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventTitle" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>Title <span style={modalStyles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
                 placeholder="Enter event title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                style={modalStyles.formControl}
                 className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventDescription" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Description <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventDescription" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>Description <span style={modalStyles.textDanger}>*</span></Form.Label>
               <Form.Control
                 as="textarea"
                 required
@@ -193,85 +280,89 @@ function CreateEventModal() {
                 placeholder="Event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                style={{ ...modalStyles.formControl, ...modalStyles.formControlTextarea }}
                 className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventClub">
-              <Form.Label>Club/Organization <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventClub" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>Club/Organization <span style={modalStyles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter club or organization name"
                 value={club}
                 onChange={(e) => setClub(e.target.value)}
+                style={modalStyles.formControl}
                 className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventFile" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>File</Form.Label>
+            <Form.Group controlId="eventFile" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>File</Form.Label>
               <Form.Control
                 type="file"
                 onChange={handleFileChange}
                 accept='.jpg, .jpeg, .png, .webp'
-                className={styles.formControl}
+                style={modalStyles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventDate" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Date <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventDate" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>Date <span style={modalStyles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="date"
                 placeholder="Event date"
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className={styles.formControl}
+                style={modalStyles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Time <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventTime" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>Time <span style={modalStyles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="time"
                 placeholder="Event time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                className={styles.formControl}
+                style={modalStyles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventLocation" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Location <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventLocation" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>Location <span style={modalStyles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
                 placeholder="Event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+                style={modalStyles.formControl}
                 className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventRSVP" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>RSVP Link</Form.Label>
+            <Form.Group controlId="eventRSVP" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>RSVP Link</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter RSVP Link"
                 value={rsvp}
                 onChange={(e) => setRSVP(e.target.value)}
+                style={modalStyles.formControl}
                 className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventTags" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Tags</Form.Label>
-              <div className="mt-2">
+            <Form.Group controlId="eventTags" style={modalStyles.formGroup}>
+              <Form.Label style={modalStyles.formLabel}>Tags</Form.Label>
+              <div style={modalStyles.suggestedTags}>
                 {suggestedTags.map((tag, index) => (
                   <Button
                     key={index}
                     variant={tags.includes(tag) ? 'primary' : 'outline-primary'}
-                    className={`${styles.suggestedTagButton} ${tags.includes(tag) ? styles.selected : ''}`}
+                    style={tags.includes(tag) ? { ...modalStyles.suggestedTagButton, ...modalStyles.suggestedTagButtonSelected } : modalStyles.suggestedTagButton}
                     onClick={() => handleAddTag(tag)}
                   >
                     {tag}
@@ -282,11 +373,11 @@ function CreateEventModal() {
 
           </Form>
         </Modal.Body>
-        <Modal.Footer className={styles.modalFooter}>
-          <Button variant="secondary" onClick={handleClose} className={styles.buttonSecondary}>
+        <Modal.Footer style={modalStyles.modalFooter}>
+          <Button variant="secondary" onClick={handleClose} style={{ ...modalStyles.button, ...modalStyles.buttonSecondary }}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting} className={styles.buttonPrimary}>
+          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting} style={{ ...modalStyles.button, ...modalStyles.buttonPrimary }}>
             Create Event
           </Button>
         </Modal.Footer>

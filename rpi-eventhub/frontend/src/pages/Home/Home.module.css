@@ -1,18 +1,35 @@
 :root {
   --default-font: "Georgia", "Arial", sans-serif; /* Use the same font as "All RPI events" */
   --card-text-color: #000; /* Default text color for cards in light mode */
+  --background-color: linear-gradient(
+    217deg,
+    rgba(255, 101, 101, 0.8),
+    rgb(255 0 0 / 0%) 70.71%
+  ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+  linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
 }
 
 [data-theme='dark'] {
   --card-text-color: #fff; /* Text color for dark mode */
+  --background-color: #000; /* Background color for dark mode */
+}
+
+.outterContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--card-text-color);
+}
+
+.content {
+  flex: 1;
 }
 
 .cardtext, .title h1, .content h5, .content p {
   font-family: var(--default-font);
   color: var(--card-text-color);
 }
-
-
 
 .cardtext {
   font-family: 'Italiana', serif;
@@ -138,10 +155,8 @@ hr {
     top: 0px;
   }
 
-  .about *{
+  .about * {
     padding-left: 20px;
     padding-right: 20px;
   }
-
-
 }

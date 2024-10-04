@@ -5,16 +5,18 @@ import HomeCSS from './Home.module.css';
 import ImageCarousel from "../../components/Carousel/Carousel";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme'; // 引入 useColorScheme 钩子
 
 const Home = () => {
   const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme(); // 使用 useColorScheme 钩子
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
   return (
-    <div className="outterContainer" data-theme={theme}>
+    <div className={`${HomeCSS.outterContainer}`} data-theme={theme}>
       <NavBar />
       <div className={`${HomeCSS.content} container-fluid containerFluid`}>
         <div className="row">
@@ -28,7 +30,7 @@ const Home = () => {
                   <SearchBar />
               </div>
               <div className={`d-block d-lg-none ${HomeCSS.carouselContainer} ${HomeCSS.anim2}`}>
-                <ImageCarousel></ImageCarousel>
+                <ImageCarousel />
               </div>
               <div className={`${HomeCSS.anim1} card text-start bg-transparent border-0 p-0`}>
                 <div className={`${HomeCSS.about} card-body p-0`}>
@@ -40,7 +42,7 @@ const Home = () => {
             <hr className="text-start" /> 
           </div>
           <div className={`d-none d-lg-block col-lg-5 ${HomeCSS.carouselContainer} ${HomeCSS.anim2}`}>
-            <ImageCarousel></ImageCarousel>
+            <ImageCarousel />
           </div>
         </div>
       </div>
