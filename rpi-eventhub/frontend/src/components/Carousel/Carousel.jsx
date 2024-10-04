@@ -4,37 +4,25 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import { Skeleton } from "@mui/material";
 import config from "../../config";
-import { format } from "date-fns";
+import { DateTime } from "luxon";
 
 const placeholderImage =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
 
-// Format date to EST timezone
-const formatDateAsEST = (utcDate) => {
-  if (!utcDate) return "Date not specified";
-  const date = new Date(utcDate);
-  const year = date.getUTCFullYear();
-  const month = date.getUTCMonth();
-  const day = date.getUTCDate();
-  const estDate = new Date(year, month, day);
-  return estDate;
+const timeZone = 'America/New_York';
+
+const formatDateAsEST = (utcDateString) => {
+  if (!utcDateString) return "Date not specified";
+
+  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+  return dateTime.toFormat('MMMM dd, yyyy');
 };
 
-// Format time with AM/PM notation
-const formatTime = (timeString) => {
-  if (!timeString) return "Time not specified";
-  let [hours, minutes] = timeString.split(":");
-  hours = parseInt(hours, 10);
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes} ${ampm}`;
-};
+const formatTimeAsEST = (utcDateString) => {
+  if (!utcDateString) return 'Time not specified';
 
-// Format date with a readable format
-const formatDate = (dateString) => {
-  if (!dateString) return "Date not specified";
-  const date = formatDateAsEST(dateString);
-  return format(date, "MMMM do, yyyy");
+  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+  return dateTime.toFormat('h:mm a');
 };
 
 const ImageCarousel = () => {
@@ -54,10 +42,10 @@ const ImageCarousel = () => {
             caption: event.title,
             location: event.location || "Location not specified",
             // Fallback to "Unavailable" if new fields are missing
-            date: event.startDateTime ? formatDate(event.startDateTime) : "Unavailable",
-            endDate: event.endDateTime ? formatDate(event.endDateTime) : "Unavailable",
-            time: event.startDateTime ? formatTime(new Date(event.startDateTime).toLocaleTimeString()) : "Unavailable",
-            endTime: event.endDateTime ? formatTime(new Date(event.endDateTime).toLocaleTimeString()) : "Unavailable",
+            date: event.startDateTime ? formatDateAsEST(event.startDateTime) : "Unavailable",
+            endDate: event.endDateTime ? formatDateAsEST(event.endDateTime) : "Unavailable",
+            time: event.startDateTime ? formatTimeAsEST(event.startDateTime) : "Unavailable",
+            endTime: event.endDateTime ? formatTimeAsEST(event.endDateTime) : "Unavailable",
             originalDate: event.startDateTime || event.date // Use new field or fallback to older one
           }))
           .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))

@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import styles from './EventCard.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { useEvents } from '../../context/EventsContext';
-import { format } from 'date-fns';
+import { DateTime } from 'luxon';
+
+const timeZone = 'America/New_York';
 
 const EventCard = ({ event }) => {
   const { username } = useAuth();
@@ -17,36 +19,30 @@ const EventCard = ({ event }) => {
     }
   }, [event._id, deleteEvent]);
 
-  const formatDateAsEST = (utcDate) => {
-    if (!utcDate) return "Date not specified";
-    const date = new Date(utcDate);
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const day = date.getUTCDate();
-    const estDate = new Date(year, month, day);
-    return estDate;
+  const formatDateAsEST = (utcDateString) => {
+    if (!utcDateString) return "Date not specified";
+
+    const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+    return dateTime.toFormat('MMMM dd, yyyy');
   };
 
-  const formatTime = (timeString) => {
-    if (!timeString) return 'Time not specified';
-    let [hours, minutes] = timeString.split(':');
-    hours = parseInt(hours, 10);
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    return `${hours}:${minutes} ${ampm}`;
+  const formatTimeAsEST = (utcDateString) => {
+    if (!utcDateString) return 'Time not specified';
+
+    const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+    return dateTime.toFormat('h:mm a');
   };
 
   const canSeeDeleteButton = (user_name) => {
     return user_name === 'admin' || user_name === event.poster;
   };
 
-  // Handle older events without startDateTime and endDateTime fields
   const eventDate = event.startDateTime
-    ? format(formatDateAsEST(event.startDateTime), 'MMMM do, yyyy')
+    ? formatDateAsEST(event.startDateTime)
     : 'Unavailable';
   
   const eventTime = event.startDateTime
-    ? formatTime(new Date(event.startDateTime).toLocaleTimeString())
+    ? formatTimeAsEST(event.startDateTime)
     : 'Unavailable';
 
   return (
