@@ -132,6 +132,13 @@
   .deleteButton:hover {
     background: var(--delete-button-hover-bg-color);
   }
+  .likeContainer {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
   .likeButton {
     background-color: #f0f0f0;
     border: none;
