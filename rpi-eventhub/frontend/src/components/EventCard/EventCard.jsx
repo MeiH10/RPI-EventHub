@@ -4,6 +4,7 @@ import styles from './EventCard.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { useEvents } from '../../context/EventsContext';
 import { DateTime } from 'luxon';
+import axios from "axios";
 
 const timeZone = 'America/New_York';
 

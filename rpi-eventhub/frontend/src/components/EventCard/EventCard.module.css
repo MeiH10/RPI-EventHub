@@ -132,4 +132,28 @@
   .deleteButton:hover {
     background: var(--delete-button-hover-bg-color);
   }
+  .likeButton {
+    background-color: #f0f0f0;
+    border: none;
+    color: black;
+    padding: 3px 8px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  .likeButton.liked {
+    background-color: #ff5757;
+    color: white;
+  }
   
+  .likeButton:hover {
+    background-color: #ddd;
+  }
+  .likeButton.liked:hover {
+    background-color: #ff4141;
+  }
