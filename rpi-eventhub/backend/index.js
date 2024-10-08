@@ -364,95 +364,54 @@ app.get('/events/:id/like', async (req, res) => {
   }
 });
 
-app.get('/events/:id/like/status', authenticate, async (req, res) => {
-  const { id } = req.params; 
+app.get('/events/like/status', authenticate, async (req, res) => {
   const user = req.user;
   
   try {
-    const event = await Event.findById(id); 
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-
-    const liked = user.likedEvents.includes(id); 
-    res.status(200).json({ liked }); 
+    // const likedEvent = user.likedEvents.filter(e => e.toString() == id.toString())[0];
+    // res.status(200).json({ liked: likedEvent }); 
+    res.status(200).json(user.likedEvents.map(e => e.toString()))
   } catch (error) {
     res.status(500).json({ message: 'Server error', error }); 
   }
 });
 
-
-
-app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {
-  const { id } = req.params;
-  const user = req.user;
-
-  try {
-    console.log('Received like request for event ID:', id);
-    console.log('Authenticated user:', user.username);
-
-    const event = await Event.findById(id);
-
-    if (!event) {
-      console.log('Event not found');
-      return res.status(404).json({ message: 'Event not found' });
-    }
-
-    if (user.likedEvents.includes(id)) {
-      // User has already liked the event, so unlike it
-      event.likes -= 1;
-      user.likedEvents = user.likedEvents.filter(eventId => eventId.toString() !== id);
-
-      await event.save();
-      await user.save();
-
-      console.log('Event unliked successfully', event.likes);
-      return res.json({ message: 'Event unliked successfully', likes: event.likes });
-    } else {
-      // User has not liked the event yet, so like it
-      event.likes += 1;
-      user.likedEvents.push(id);
-
-      await event.save();
-      await user.save();
-
-      console.log('Event liked successfully', event.likes);
-      return res.json({ message: 'Event liked successfully', likes: event.likes });
-    }
-  } catch (error) {
-    console.error('Failed to like event:', error);
-    res.status(500).json({ message: 'Failed to like event', error: error.message });
-  }
-});
-
-
-
 app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
-  console.log("Hits the post call\n"); 
-  const { id } = req.params;
-  const user = req.user;
+
+  const { id } = req.params; // Use 'id' to match the route parameter
+  const { liked } = req.body;
+  const userId = req.user._id; // Get user ID from the user object
 
   try {
     const event = await Event.findById(id);
+    const user = await User.findById(userId); // Fetch the user based on the ID
 
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
+    if (!event || !user) {
+      return res.status(404).json({ message: 'Event or User not found' });
     }
 
-    // Increment the likes count for the event
-    event.likes += 1;
-    await event.save();
+    // Check if the user has already liked the event
+    const hasLiked = user.likedEvents.includes(id);
 
-    // Add the event ID to the user's likedEvents array if not already liked
-    if (!user.likedEvents.includes(id)) {
-      user.likedEvents.push(id);
-      await user.save();
+    if (liked && !hasLiked) {
+      // User is liking the event, increment likes and add to likedEvents
+      event.likes += 1;
+      user.likedEvents.push(id); 
+    } else if (!liked && hasLiked) {
+      // User is unliking the event, decrement likes and remove from likedEvents
+      event.likes -= 1;
+      user.likedEvents = user.likedEvents.filter(
+        (eventId) => eventId.toString() !== id
+      );
     }
 
-    res.json({ message: 'Event liked successfully' });
+    await event.save(); 
+    await user.save();
+
+    res.json({ likes: event.likes });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to like event', error: error.message });
+    console.error('Error during like/unlike:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
