@@ -4,6 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import CalendarCSS from "./Calendar.module.css";
 import axios from "axios";
 import config from "../../config";
+import ics from "ics";
 import { Link } from "react-router-dom";
 
 const CalendarPage = () => {
@@ -88,6 +89,88 @@ const CalendarPage = () => {
     });
   };
 
+  const filterEventsByWeek = (firstDayOfWeek, lastDayOfWeek) => {
+    return events.filter((event) => {
+      const eventDate = new Date(event.startDateTime || event.date);
+      eventDate.setHours(0, 0, 0, 0); // Normalize the event date to compare only the date part
+      return eventDate >= firstDayOfWeek && eventDate <= lastDayOfWeek;
+    });
+  };
+
+  const generateICSFile = () => {
+    const weekEvents = filterEventsByWeek(
+      parseDateAsEST(weekRange.start),
+      parseDateAsEST(weekRange.end)
+    );
+
+    console.log(weekEvents);
+
+    let icsContent = "";
+
+    // Loop through the filtered weekEvents array and create an ICS content for each event
+    weekEvents.forEach((event, index) => {
+      try {
+        // Assuming you're using a library like `ics` or a custom ICS event creator
+        const eventDetails = {
+          start: [
+            new Date(event.startDateTime).getFullYear(),
+            new Date(event.startDateTime).getMonth() + 1,
+            new Date(event.startDateTime).getDate(),
+            new Date(event.startDateTime).getHours(),
+            new Date(event.startDateTime).getMinutes(),
+          ],
+          end: [
+            new Date(event.endDateTime).getFullYear(),
+            new Date(event.endDateTime).getMonth() + 1,
+            new Date(event.endDateTime).getDate(),
+            new Date(event.endDateTime).getHours(),
+            new Date(event.endDateTime).getMinutes(),
+          ],
+          title: event.title || "Untitled Event", // default to 'Untitled Event' if title is missing
+          description: event.description || "No description available", // default description if missing
+          location: event.location || "No location specified", // default location if missing
+        };
+
+        console.log(
+          "Attempting to create ICS event with details:",
+          eventDetails
+        );
+
+        // Your function to create ICS (e.g., from `ics` library)
+        const { error, value } = ics.createEvent(eventDetails);
+
+        if (error) {
+          throw new Error(`ICS creation failed: ${error.message}`);
+        }
+
+        // Handle successful ICS event creation (e.g., downloading the file)
+        console.log("ICS event created successfully:", value);
+
+        // Example for downloading (if you're using this on the web):
+        const blob = new Blob([value], {
+          type: "text/calendar;charset=utf-8;",
+        });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${eventDetails.title}.ics`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error(
+          "Error creating ICS event:",
+          error.message || error,
+          event
+        );
+        alert(
+          `Error creating ICS event: ${
+            error.message || "Unknown error"
+          }. Please check the console for more details.`
+        );
+      }
+    });
+  };
+
   return (
     <div className="outterContainer">
       <NavBar />
@@ -101,8 +184,15 @@ const CalendarPage = () => {
                 <button onClick={() => handleWeekChange(-1)}>
                   Previous Week
                 </button>
-                <button onClick={goToToday}>Today</button> {/* New Today button */}
+                <button onClick={goToToday}>Today</button>{" "}
+                {/* New Today button */}
                 <button onClick={() => handleWeekChange(1)}>Next Week</button>
+                <button
+                  style={{ position: "absolute", right: 0 }}
+                  onClick={generateICSFile}
+                >
+                  Download ICS For All Events
+                </button>
               </div>
               <h2>
                 Week of {weekRange.start} - {weekRange.end}
