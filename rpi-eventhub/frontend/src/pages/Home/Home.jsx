@@ -15,8 +15,20 @@ const Home = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
+  const pageStyles = {
+    background: isDark
+      ? '#120451'
+      : `linear-gradient(
+          217deg,
+          rgba(255, 101, 101, 0.8),
+          rgb(255 0 0 / 0%) 70.71%
+        ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+        linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
+    color: isDark ? '#fff' : '#000',
+  };
+
   return (
-    <div className={`${HomeCSS.outterContainer}`} data-theme={theme}>
+    <div className={`${HomeCSS.outterContainer}`} style={pageStyles} data-theme={theme}>
       <NavBar />
       <div className={`${HomeCSS.content} container-fluid containerFluid`}>
         <div className="row">
