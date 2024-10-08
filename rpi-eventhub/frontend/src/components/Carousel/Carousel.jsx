@@ -35,32 +35,32 @@ const ImageCarousel = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${config.apiUrl}/events`);
-
+  
         const sortedEvents = response.data
           .map((event) => ({
             src: event.image || placeholderImage,
             caption: event.title,
             location: event.location || "Location not specified",
-            // Fallback to "Unavailable" if new fields are missing
             date: event.startDateTime ? formatDateAsEST(event.startDateTime) : "Unavailable",
             endDate: event.endDateTime ? formatDateAsEST(event.endDateTime) : "Unavailable",
             time: event.startDateTime ? formatTimeAsEST(event.startDateTime) : "Unavailable",
             endTime: event.endDateTime ? formatTimeAsEST(event.endDateTime) : "Unavailable",
-            originalDate: event.startDateTime || event.date // Use new field or fallback to older one
+            originalDate: event.startDateTime || event.date,
+            likes: event.likes || 0,
           }))
-          .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
+          .sort((a, b) => b.likes - a.likes)
           .slice(0, 5);
-
+  
         setEvents(sortedEvents);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch events:", error);
       }
     };
-
+  
     fetchEvents();
   }, []);
-
+  
   const goToNext = useCallback(() => {
     setActiveIndex((current) =>
       current === events.length - 1 ? 0 : current + 1
