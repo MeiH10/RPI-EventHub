@@ -5,6 +5,7 @@ import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import config from '../../config';
 import styles from './CreateEventModal.module.css';
+import { DateTime } from 'luxon';
 
 function CreateEventModal() {
   const [show, setShow] = useState(false);
@@ -63,34 +64,37 @@ function CreateEventModal() {
     }
     setError('');
     setIsSubmitting(true);
-
-    // Convert tags array to comma-separated string
+  
+    // convert the start and end times to UTC before sending to the server
+    const startDateTimeUTC = DateTime.fromISO(startDateTime, { zone: 'local' }).toUTC().toISO();
+    const endDateTimeUTC = DateTime.fromISO(endDateTime, { zone: 'local' }).toUTC().toISO();
+  
     const uniqueTags = tags.join(', ');
-
+  
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('poster', username);
     formData.append('file', file); // Attach the file
-    formData.append('startDateTime', startDateTime);
-    formData.append('endDateTime', endDateTime);
+    formData.append('startDateTime', startDateTimeUTC);
+    formData.append('endDateTime', endDateTimeUTC);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
-
+  
     if (!title || !description || !startDateTime || !endDateTime || !location || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
       return;
     }
-
+  
     if (!isLoggedIn || !emailVerified) {
       setError('Only verified users can create an event. Please login or get verified.');
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const { data } = await axios.post(`${config.apiUrl}/events`, formData, {
         headers: {
@@ -105,7 +109,8 @@ function CreateEventModal() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  };  
+
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
