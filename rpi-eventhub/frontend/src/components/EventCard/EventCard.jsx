@@ -8,9 +8,11 @@ import axios from "axios";
 
 const timeZone = 'America/New_York';
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, isLiked }) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
+
+  const [liked, setLiked] = useState(isLiked)
 
   const handleDelete = useCallback(async () => {
     try {
@@ -47,25 +49,6 @@ const EventCard = ({ event }) => {
     : 'Unavailable';
 
   const [likes, setLikes] = useState(event.likes || 0);
-  const [liked, setLiked] = useState(false); // Initially set liked as false
-
-  useEffect(() => {
-    // Fetch user information or check user data to determine if the event is liked
-    const token = localStorage.getItem("token");
-
-    axios
-      .get(`http://localhost:5000/events/${event._id}/like/status`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setLiked(response.data.liked); // Update the liked state based on the server response
-      })
-      .catch((error) => {
-        console.error("Error fetching like status:", error);
-      });
-  }, [event._id]);
 
   const handleLikeToggle = async () => {
     const newLikedState = !liked; // Toggle the liked state

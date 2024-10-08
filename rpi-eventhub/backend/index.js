@@ -390,18 +390,13 @@ app.get('/events/:id/like', async (req, res) => {
   }
 });
 
-app.get('/events/:id/like/status', authenticate, async (req, res) => {
-  const { id } = req.params; 
+app.get('/events/like/status', authenticate, async (req, res) => {
   const user = req.user;
   
   try {
-    const event = await Event.findById(id); 
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-
-    const liked = user.likedEvents.includes(id); 
-    res.status(200).json({ liked }); 
+    // const likedEvent = user.likedEvents.filter(e => e.toString() == id.toString())[0];
+    // res.status(200).json({ liked: likedEvent }); 
+    res.status(200).json(user.likedEvents.map(e => e.toString()))
   } catch (error) {
     res.status(500).json({ message: 'Server error', error }); 
   }
