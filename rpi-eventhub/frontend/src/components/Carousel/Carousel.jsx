@@ -48,8 +48,9 @@ const ImageCarousel = () => {
             originalDate: event.startDateTime || event.date,
             likes: event.likes || 0,
           }))
-          .filter( a => new Date(a.startDate) - new Date > 0)
+          .filter( a => new Date(a.originalDate) - new Date > 0)
           .sort((a, b) => b.likes - a.likes)
+          
           .slice(0, 5);
   
         setEvents(sortedEvents);
