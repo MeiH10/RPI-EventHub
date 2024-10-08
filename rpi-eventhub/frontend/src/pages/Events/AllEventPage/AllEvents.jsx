@@ -5,6 +5,7 @@ import FilterBar from '../../../components/FilterBar/FilterBar';
 import Footer from "../../../components/Footer/Footer";
 import EventCard from '../../../components/EventCard/EventCard';
 import { useEvents } from '../../../context/EventsContext';
+import EventList from '../../../pages/Events/AllEventList/EventsList';
 import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 
@@ -15,6 +16,7 @@ function AllEvents() {
     const [availableTags, setAvailableTags] = useState([]);
     const [sortMethod, setSortMethod] = useState('date');
     const [sortOrder, setSortOrder] = useState('desc');
+    const [isListView, setIsListView] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +29,7 @@ function AllEvents() {
 
     useEffect(() => {
         setFilteredEvents(events);
-        const tags = [...new Set(events.flatMap(event => event.tags))];
+        const tags = [...new Set(events.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
     }, [events]);
 
@@ -35,17 +37,17 @@ function AllEvents() {
         let filtered = events;
         if (filters.tags.length > 0) {
             filtered = filtered.filter(event =>
-                filters.tags.every(tag => event.tags.includes(tag))
+                filters.tags.every(tag => event.tags?.includes(tag))
             );
         }
         const now = new Date();
         if (filters.time.length > 0) {
             let timeFiltered = [];
             if (filters.time.includes('past')) {
-                timeFiltered = filtered.filter(event => new Date(event.date) < now);
+                timeFiltered = filtered.filter(event => new Date(event.startDateTime || event.date) < now);
             }
             if (filters.time.includes('upcoming')) {
-                timeFiltered = timeFiltered.concat(filtered.filter(event => new Date(event.date) >= now));
+                timeFiltered = timeFiltered.concat(filtered.filter(event => new Date(event.startDateTime || event.date) >= now));
             }
             if (filters.time.includes('today')) {
                 const todayStart = new Date();
@@ -53,7 +55,7 @@ function AllEvents() {
                 const todayEnd = new Date();
                 todayEnd.setHours(23, 59, 59, 999);
                 timeFiltered = timeFiltered.concat(filtered.filter(event => {
-                    const eventDate = new Date(event.date);
+                    const eventDate = new Date(event.startDateTime || event.date);
                     return eventDate >= todayStart && eventDate <= todayEnd;
                 }));
             }
@@ -67,7 +69,9 @@ function AllEvents() {
     const sortEvents = (events, sortMethod, sortOrder) => {
         switch (sortMethod) {
             case 'date':
-                return events.sort((a, b) => sortOrder === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date));
+                return events.sort((a, b) => sortOrder === 'asc' 
+                    ? new Date(a.startDateTime || a.date) - new Date(b.startDateTime || b.date) 
+                    : new Date(b.startDateTime || b.date) - new Date(a.startDateTime || a.date));
             case 'likes':
                 return events.sort((a, b) => sortOrder === 'asc' ? a.likes - b.likes : b.likes - a.likes);
             case 'title':
@@ -83,40 +87,57 @@ function AllEvents() {
         700: 1
     };
 
+    const changeView = () => {
+        setIsListView(!isListView);
+    }
+
     return (
         <div className={styles.allEvents}>
             <Navbar />
-            <div className="container-fluid" style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
+            <div className="container-fluid"
+                 style={{display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
+                        changeView={changeView}
                     />
                 </div>
-                <div className={styles.eventsDisplayContainer}>
-                    {isLoading ? (
-                        Array.from(new Array(10)).map((_, index) => (
-                            <div key={index} className={styles.skeletonWrapper}>
-                                <Skeleton variant="rectangular" width={400} height={533} />
-                                <Skeleton variant="text" width={200} />
-                                <Skeleton variant="text" width={150} />
-                            </div>
-                        ))
-                    ) : (
-                        <Masonry
-                            breakpointCols={breakpointColumnsObj}
-                            className={styles.myMasonryGrid}
-                            columnClassName={styles.myMasonryGridColumn}
-                        >
-                            {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                <EventCard key={event._id} event={event} />
-                            ))}
-                        </Masonry>
-                    )}
-                </div>
+                {
+                        isListView ?
+                    (
+                        <div className={styles.eventsDisplayContainer}>
+                            <EventList
+                                events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                            />
+                        </div>
+                    ):(
+                        <div className={styles.eventsDisplayContainer}>
+                            {isLoading ? (
+                                Array.from(new Array(10)).map((_, index) => (
+                                    <div key={index} className={styles.skeletonWrapper}>
+                                        <Skeleton variant="rectangular" width={400} height={533}/>
+                                        <Skeleton variant="text" width={200}/>
+                                        <Skeleton variant="text" width={150}/>
+                                    </div>
+                                ))
+                            ) : (
+                                <Masonry
+                                    breakpointCols={breakpointColumnsObj}
+                                    className={styles.myMasonryGrid}
+                                    columnClassName={styles.myMasonryGridColumn}
+                                >
+                                    {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                        <EventCard key={event._id} event={event}/>
+                                    ))}
+                                </Masonry>
+                            )}
+                        </div>
+                    )
+                }
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 }

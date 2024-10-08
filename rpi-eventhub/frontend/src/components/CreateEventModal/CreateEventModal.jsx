@@ -5,63 +5,45 @@ import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import { useColorScheme } from '../../hooks/useColorScheme'; // 引入 useColorScheme 钩子
 import config from '../../config';
-import styles from './CreateEventModal.module.css'; // 引入 CSS 模块
+import styles from './CreateEventModal.module.css';
+import { DateTime } from 'luxon';
+
 function CreateEventModal() {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
   const [club, setClub] = useState('');
   const [rsvp, setRSVP] = useState('');
   const [description, setDescription] = useState('');
-  const [time, setTime] = useState('');
+  const [startDateTime, setStartDateTime] = useState('');
+  const [endDateTime, setEndDateTime] = useState('');
   const [file, setFile] = useState(null);
-  const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState([]);
-  const [successOpen, setSuccessOpen] = useState(false); // State for success alert
+  const [successOpen, setSuccessOpen] = useState(false); 
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const suggestedTags = [
-    'fun', 
-    'games', 
-    'board games', 
-    'food', 
-    'social', 
-    'competition', 
-    'movie', 
-    'anime', 
-    'academic', 
-    'professional', 
-    'career', 
-    'relax', 
-    'outdoor', 
-    'workshop', 
-    'fundraiser', 
-    'art', 
-    'music', 
-    'networking', 
-    'sports', 
-    'creative', 
-    'tech', 
-    'wellness', 
-    'coding', 
-    'other'
+    'fun', 'games', 'board games', 'food', 'social', 'competition', 
+    'movie', 'anime', 'academic', 'professional', 'career', 'relax',
+    'outdoor', 'workshop', 'fundraiser', 'art', 'music', 'networking', 
+    'sports', 'creative', 'tech', 'wellness', 'coding', 'other'
   ];
-  
+
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
   const { isDark } = useColorScheme(); // 使用 useColorScheme 钩子
 
   const handleClose = () => {
     setShow(false);
-    setError('');  // Clear errors when closing modal
+    setError(''); 
   };
 
   const handleShow = () => setShow(true);
 
   const handleSuccessClose = () => {
     setSuccessOpen(false);
-    setShow(false); // Close the modal after success
+    setShow(false);
   };
 
   useEffect(() => {
@@ -84,49 +66,53 @@ function CreateEventModal() {
     }
     setError('');
     setIsSubmitting(true);
-
-    // Convert tags array to comma-separated string
+  
+    // convert the start and end times to UTC before sending to the server
+    const startDateTimeUTC = DateTime.fromISO(startDateTime, { zone: 'local' }).toUTC().toISO();
+    const endDateTimeUTC = DateTime.fromISO(endDateTime, { zone: 'local' }).toUTC().toISO();
+  
     const uniqueTags = tags.join(', ');
-
+  
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('poster', username);
     formData.append('file', file); // Attach the file
-    formData.append('date', date);
+    formData.append('startDateTime', startDateTimeUTC);
+    formData.append('endDateTime', endDateTimeUTC);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
-    formData.append('time', time);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
-
-    if (!title || !description || !date || !location || !time || !club) {
+  
+    if (!title || !description || !startDateTime || !endDateTime || !location || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
       return;
     }
-
+  
     if (!isLoggedIn || !emailVerified) {
       setError('Only verified users can create an event. Please login or get verified.');
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const { data } = await axios.post(`${config.apiUrl}/events`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      addEvent(data); // Add the new event to the global context
-      setSuccessOpen(true); // Show success message
+      addEvent(data); 
+      setSuccessOpen(true); 
     } catch (error) {
       console.error('Failed to create event:', error);
       setError(error.response ? error.response.data.message : error.message);
     } finally {
       setIsSubmitting(false);
     }
-  };
+  };  
+
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -307,26 +293,25 @@ function CreateEventModal() {
               />
             </Form.Group>
 
-            <Form.Group controlId="eventDate" style={modalStyles.formGroup}>
-              <Form.Label style={modalStyles.formLabel}>Date <span style={modalStyles.textDanger}>*</span></Form.Label>
+            <Form.Group controlId="eventStartDateTime" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>Start Date & Time <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="date"
-                placeholder="Event date"
+                type="datetime-local"
                 required
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                style={modalStyles.formControl}
+                value={startDateTime}
+                onChange={(e) => setStartDateTime(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventTime" style={modalStyles.formGroup}>
-              <Form.Label style={modalStyles.formLabel}>Time <span style={modalStyles.textDanger}>*</span></Form.Label>
+            <Form.Group controlId="eventEndDateTime" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>End Date & Time <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="time"
-                placeholder="Event time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                style={modalStyles.formControl}
+                type="datetime-local"
+                required
+                value={endDateTime}
+                onChange={(e) => setEndDateTime(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
 

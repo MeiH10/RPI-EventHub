@@ -154,7 +154,7 @@ label {
 
 
 /* Style for mobile */
-@media (max-width: 800px) {
+@media (max-width: 960px) {
   .sidebar {
     position: fixed;
     top: 100px;
@@ -246,3 +246,21 @@ label {
   z-index: 1;
   color: var(--tags-label-color);
 }
+
+/* Change button style */
+.changeButton {
+  padding: 10px 10px;
+  width: max-content;
+  background-color: var(--clear-button-bg-color);
+  color: var(--clear-button-text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.changeButton:hover {
+  background-color: var(--clear-button-hover-bg-color);
+  color: white;
+}
+
