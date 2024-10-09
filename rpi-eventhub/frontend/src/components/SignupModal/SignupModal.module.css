@@ -10,8 +10,10 @@
   --button-secondary-bg-color: #6c757d;
   --alert-success-bg-color: #d4edda;
   --alert-danger-bg-color: #f8d7da;
+  --agree-button-bg-color: #000000;
   --link-color: #007bff;
   --accept-text-color: #000;
+  --modal-small-text-color: #5a5a5a;
 }
 
 [data-theme='dark'] {
@@ -26,31 +28,45 @@
   --button-secondary-bg-color: #494949;
   --alert-success-bg-color: #155724;
   --alert-danger-bg-color: #721c24;
-  --link-color: #80bdff; 
-  --accept-text-color: #ccc; 
+  --link-color: #80bdff;
+  --agree-button-bg-color: #ffffff;
+  --accept-text-color: #ccc;
+  --modal-small-text-color: #ccc;
 }
 
 .modalHeader {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
   align-items: center;
   background-color: var(--modal-bg-color) !important;
-  border-bottom: 1px solid var(--modal-border-color) !important;
+  border: none !important;
+}
+
+.modalHeader small{
+    color: var(--modal-small-text-color) !important;
+}
+
+.modalContainer{
+  font-family: "Hevletica", sans-serif;
 }
 
 .modalTitle {
-  font-size: 1.5rem !important;
-  color: var(--modal-title-color) !important;
+  font-size: 1.5rem;
+  font-weight: bold!important;
 }
 
 .modalBody {
   background-color: var(--modal-bg-color) !important;
   color: var(--modal-text-color) !important;
+  border: none !important;
 }
 
 .modalFooter {
   background-color: var(--modal-bg-color) !important;
-  border-top: 1px solid var(--modal-border-color) !important;
+  border: none !important;
+
 }
 
 .formGroup {
@@ -59,7 +75,18 @@
 
 .formLabel {
   font-weight: bold !important;
+  font-size: medium;
   color: var(--modal-text-color) !important;
+  cursor: pointer;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.inputField{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .textDanger {
@@ -74,6 +101,7 @@
   border: 1px solid var(--form-control-border-color) !important;
   border-radius: 0.25rem !important;
   color: var(--modal-text-color) !important;
+  margin-left: 10px;
 }
 
 .formControl::placeholder {
@@ -126,5 +154,54 @@
 }
 
 .acceptText {
-  color: var(--accept-text-color) !important; 
+  color: var(--accept-text-color) !important;
+  font-weight: bolder;
+}
+
+.error{
+    color: red;
+}
+
+.formGroup input[type="checkbox"] {
+  /* remove the default checkbox */
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  /* create a custom checkbox */
+  width: 20px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formGroup input[type="checkbox"]::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* change the border color */
+  border: 2px solid var(--agree-button-bg-color);
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+.formGroup input[type="checkbox"]:checked::after {
+  height: 12px;
+  width: 20px;
+  border-top: none;
+  border-right: none;
+  border-radius: 0;
+  transform: rotate(-45deg);
+  transition: all 0.3s ease-in-out;
+  border-color: forestgreen;
+}
+
+.formGroup a{
+    color: #4796dd;
+    text-decoration: none;
 }

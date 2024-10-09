@@ -14,6 +14,9 @@ function SignupModal() {
   const { login } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [usernameTouched, setUsernameTouched] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   const handleClose = () => {
     setShow(false);
@@ -70,78 +73,144 @@ function SignupModal() {
     }
   }, [show]);
 
-  return (
-    <>
-      <Button variant="secondary" onClick={handleShow}>
-        Sign Up
-      </Button>
+  function verifyUsername(username) {
+    const pattern = /^[a-zA-Z0-9]*$/;
+    return pattern.test(username);
+  }
 
-      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
-        <Modal.Header closeButton className={styles.modalHeader}>
-          <Modal.Title className={styles.modalTitle}>Sign Up</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.modalBody}>
-          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
-          <Form>
-            <Form.Group controlId="signupUsername" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Username</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className={styles.formControl}
-              />
-            </Form.Group>
-            <Form.Group controlId="signupEmail" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.formControl}
-              />
-            </Form.Group>
-            <Form.Group controlId="signupPassword" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={styles.formControl}
-              />
-            </Form.Group>
-            <Form.Group controlId="termsOfService" className={styles.formGroup}>
-              <Form.Check
-                type="checkbox"
-                className="custom-checkbox"
-                label={
-                  <span className={styles.acceptText}>
-                  I accept the{' '}
-                  <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className={styles.link}>
-                    Terms of Service
-                  </a>
-                  .
-                </span>
-                }
-                checked={acceptedTerms}
-                onChange={(e) => setAcceptedTerms(e.target.checked)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer className={styles.modalFooter}>
-          <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSignup} disabled={isSubmitting} className={`${styles.button} ${styles.buttonPrimary}`}>
-            Sign Up
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+  const verifyEmail = (email) => {
+    const pattern = /^[a-zA-Z0-9._%+-]+@rpi.edu$/;
+    return pattern.test(email);
+  }
+
+  const verifyPassword = (password) => {
+    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return pattern.test(password);
+  }
+
+  return (
+      <>
+        <Button variant="secondary" onClick={handleShow}>
+          Sign Up
+        </Button>
+
+        <Modal className={styles.modalContainer} show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+          <Modal.Header className={styles.modalHeader}>
+            <Modal.Title className={styles.modalTitle}>Join RPI Event Hub!</Modal.Title>
+            <small>All RPI events in one place.</small>
+          </Modal.Header>
+          <Modal.Body className={styles.modalBody}>
+            {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
+            <Form>
+              <Form.Group controlId="signupUsername" className={styles.formGroup}>
+                <Form.Label className={styles.formLabel}>Username</Form.Label>
+                <div className={styles.inputField}>
+                  <i className="bi bi-people-fill"></i>
+                  <Form.Control
+                      type="text"
+                      placeholder="Enter username"
+                      value={username}
+                      onChange={(e) => { setUsername(e.target.value); setUsernameTouched(true); }}
+                      className={styles.formControl}
+                  />
+                </div>
+                {usernameTouched && !verifyUsername(username) && (
+                    <small
+                        style={{
+                          color: 'red',
+                          fontSize: '0.8rem',
+                          marginTop: '0.2rem',
+                          marginBottom: '0',
+                        }}
+                    >
+                      Username should contain only letters and numbers
+                    </small>
+                )}
+              </Form.Group>
+              <Form.Group controlId="signupEmail" className={styles.formGroup}>
+                <Form.Label className={styles.formLabel}>Email address</Form.Label>
+                <div className={styles.inputField}>
+                  <i className="bi bi-envelope-fill"></i>
+                  <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); setEmailTouched(true); }}
+                      className={styles.formControl}
+                  />
+                </div>
+                {emailTouched && !verifyEmail(email) && (
+                    <small
+                        style={{
+                          color: 'red',
+                          fontSize: '0.8rem',
+                          marginTop: '0.2rem',
+                          marginBottom: '0',
+                        }}
+                    >
+                      Please enter an RPI email
+                    </small>
+                )}
+              </Form.Group>
+              <Form.Group controlId="signupPassword" className={styles.formGroup}>
+                <Form.Label className={styles.formLabel}>Password</Form.Label>
+                <div className={styles.inputField}>
+                  <i className="bi bi-key-fill"></i>
+                  <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => { setPassword(e.target.value); setPasswordTouched(true); }}
+                      className={styles.formControl}
+                  />
+                </div>
+                {passwordTouched && !verifyPassword(password) && (
+                    <small
+                        style={{
+                          color: 'red',
+                          fontSize: '0.8rem',
+                          marginTop: '0.2rem',
+                          marginBottom: '0',
+                        }}
+                    >
+                      Password should contain at least one uppercase letter, one lowercase letter,
+                      one number, and at least 8 characters
+                    </small>
+                )}
+              </Form.Group>
+              <Form.Group controlId="termsOfService" className={styles.formGroup}>
+
+                <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginBottom: '0.5rem',
+                    }}
+                >
+                  <input
+                      id={'termsOfService'}
+                      type="checkbox"
+                      checked={acceptedTerms}
+                      onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  />
+                  <label htmlFor={'termsOfService'} className={styles.formLabel} style={{marginLeft:"10px"}}>
+                    I agree to the <a href="/terms" target="_blank" rel="noreferrer">Terms of Service.</a>
+                  </label>
+                </div>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer className={styles.modalFooter}>
+            <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleSignup} disabled={isSubmitting}
+                    className={`${styles.button} ${styles.buttonPrimary}`}>
+              Sign Up
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
   );
 }
 
