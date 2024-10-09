@@ -78,7 +78,6 @@ function AllEvents() {
         const tags = [...new Set(events.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
 
-        // Define default filters
         const defaultFilters = {
             tags: [],
             time: ['upcoming', 'today'],
@@ -86,7 +85,6 @@ function AllEvents() {
             sortOrder: 'desc'
         };
 
-        // Apply default filters
         handleFilterChange(defaultFilters);
     }, [events, handleFilterChange]);
 
@@ -120,7 +118,7 @@ function AllEvents() {
         <div className={styles.allEvents}>
             <Navbar />
             <div className="container-fluid"
-                 style={{display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
+                 style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}
@@ -131,38 +129,38 @@ function AllEvents() {
                 </div>
                 {
                     isListView ?
-                    (
-                        <div className={styles.eventsDisplayContainer}>
-                            <EventList
-                                events={sortEvents(filteredEvents, sortMethod, sortOrder)}
-                            />
-                        </div>
-                    ) : (
-                        <div className={styles.eventsDisplayContainer}>
-                            {isLoading ? (
-                                Array.from(new Array(10)).map((_, index) => (
-                                    <div key={index} className={styles.skeletonWrapper}>
-                                        <Skeleton variant="rectangular" width={400} height={533}/>
-                                        <Skeleton variant="text" width={200}/>
-                                        <Skeleton variant="text" width={150}/>
-                                    </div>
-                                ))
-                            ) : (
-                                <Masonry
-                                    breakpointCols={breakpointColumnsObj}
-                                    className={styles.myMasonryGrid}
-                                    columnClassName={styles.myMasonryGridColumn}
-                                >
-                                    {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                        <EventCard key={event._id} event={event}/>
-                                    ))}
-                                </Masonry>
-                            )}
-                        </div>
-                    )
+                        (
+                            <div className={styles.eventsDisplayContainer}>
+                                <EventList
+                                    events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                                />
+                            </div>
+                        ) : (
+                            <div className={styles.eventsDisplayContainer}>
+                                {isLoading ? (
+                                    Array.from(new Array(10)).map((_, index) => (
+                                        <div key={index} className={styles.skeletonWrapper}>
+                                            <Skeleton variant="rectangular" width={400} height={533} />
+                                            <Skeleton variant="text" width={200} />
+                                            <Skeleton variant="text" width={150} />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <Masonry
+                                        breakpointCols={breakpointColumnsObj}
+                                        className={styles.myMasonryGrid}
+                                        columnClassName={styles.myMasonryGridColumn}
+                                    >
+                                        {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                            <EventCard key={event._id} event={event} />
+                                        ))}
+                                    </Masonry>
+                                )}
+                            </div>
+                        )
                 }
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 }
