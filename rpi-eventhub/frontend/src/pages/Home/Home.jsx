@@ -5,11 +5,11 @@ import HomeCSS from './Home.module.css';
 import ImageCarousel from "../../components/Carousel/Carousel";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { ThemeContext } from '../../context/ThemeContext';
-import { useColorScheme } from '../../hooks/useColorScheme'; // 引入 useColorScheme 钩子
+import { useColorScheme } from '../../hooks/useColorScheme'; 
 
 const Home = () => {
   const { theme } = useContext(ThemeContext);
-  const { isDark } = useColorScheme(); // 使用 useColorScheme 钩子
+  const { isDark } = useColorScheme(); 
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
