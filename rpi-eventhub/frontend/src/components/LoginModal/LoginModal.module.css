@@ -23,7 +23,9 @@
   --button-secondary-bg-color: #494949;
   --alert-danger-bg-color: #721c24;
 }
-
+.errorText {
+  color: rgb(255, 255, 255); /* 或者你想要的任何颜色 */
+}
 .modalHeader {
   display: flex;
   justify-content: space-between;

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import config from '../../config';
 import styles from './LoginModal.module.css';
-
+import { useColorScheme } from '../../hooks/useColorScheme';
 function LoginModal() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ function LoginModal() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();  // Destructure the login function from useAuth
   const [error, setError] = useState('');
-
+  const { isDark } = useColorScheme();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -63,7 +63,16 @@ function LoginModal() {
           <Modal.Title className={styles.modalTitle}>Log In</Modal.Title>
         </Modal.Header>
         <Modal.Body className={styles.modalBody}>
-          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
+        {error && (
+    <Alert variant="danger" className={styles.alertDanger}>
+        <span
+            className={styles.errorText}
+            style={{ color: isDark ? 'white' : '#721c24' }}
+        >
+            {error}
+        </span>
+    </Alert>
+)}
           <Form>
             <Form.Group controlId="loginEmail" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Email address</Form.Label>

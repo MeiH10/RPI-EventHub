@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
-function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
+function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState([]);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [sortMethod, setSortMethod] = useState('date');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
+    const { isDark } = useColorScheme();
 
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -37,9 +39,7 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
     const handleViewChange = () => {
         setIsListView((prev) => !prev);
         changeView(isListView);
-    }
-
-
+    };
 
     return (
         <>
@@ -57,32 +57,34 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
                     </svg>
                 </div>
             </button>
+           
             <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
                 <div className={styles.changeButton} onClick={handleViewChange}>
-                    {isListView ?
+                    {isListView ? (
                         <div>
                             <i className="bi bi-columns-gap"
                                style={{
                                    fontSize: "1rem",
-                                   color: "var(--tags-label-color)",
+                                   color: isDark ? "black" : "var(--tags-label-color)",
                                    marginRight: "10px" // Adding margin to the right of the icon
                                }}>
                             </i>
-                            <span style={{color: "var(--tags-label-color)", fontSize: "1rem"}}>Grid View </span>
+                            <span style={{ color: isDark ? "black" : "var(--tags-label-color)", fontSize: "1rem" }}>Grid View </span>
                         </div>
-                        :
+                    ) : (
                         <div>
                             <i className="bi bi-list-nested"
                                style={{
                                    fontSize: "1rem",
-                                   color: "var(--tags-label-color)",
+                                   color: isDark ? "black" : "var(--tags-label-color)",
                                    marginRight: "10px" // Adding margin to the right of the icon
                                }}>
                             </i>
-                            <span style={{color: "var(--tags-label-color)", fontSize: "1rem"}}>List View </span>
+                            <span style={{ color: isDark ? "black" : "var(--tags-label-color)", fontSize: "1rem" }}>List View </span>
                         </div>
-                    }
+                    )}
                 </div>
+                {"--------------------------"}
                 <div className={styles.sortContainer}>
                     <label htmlFor="sortMethod">Sort by</label>
                     <select
@@ -112,17 +114,28 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
                 <div className={styles.filterSection}>
                     <h3 className={styles.filterBarTags}>By Tags</h3>
                     {tags.sort().map((tag) => (
-                        <div key={tag} className={styles.checkboxWrapper}>
-                            <input
-                                type="checkbox"
-                                id={tag}
-                                value={tag}
-                                checked={selectedTags.includes(tag)}
-                                onChange={() => handleTagChange(tag)}
-                            />
-                            <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
-                        </div>
-                    ))}
+    <div key={tag} className={styles.checkboxWrapper}>
+ <input
+                type="checkbox"
+                id={tag}
+                value={tag}
+                checked={selectedTags.includes(tag)}
+                onChange={() => handleTagChange(tag)}
+                style={{
+                    appearance: 'none',
+                    width: '24px', // 增大宽度
+                    height: '24px', // 增大高度
+                    backgroundColor: isDark ? 'white' : 'transparent',
+                    borderColor: isDark ? 'white' : 'initial',
+                    borderRadius: '50%', // 使复选框变成圆形
+                    border: `2px solid ${isDark ? 'white' : 'initial'}`,
+                    position: 'relative',
+                    cursor: 'pointer'
+                }}
+            />
+        <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
+    </div>
+))}
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>

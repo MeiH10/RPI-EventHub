@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 import config from '../../config';
 import styles from './SignupModal.module.css';
 
@@ -12,6 +13,7 @@ function SignupModal() {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const { login } = useAuth();
+  const { isDark } = useColorScheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
@@ -81,7 +83,16 @@ function SignupModal() {
           <Modal.Title className={styles.modalTitle}>Sign Up</Modal.Title>
         </Modal.Header>
         <Modal.Body className={styles.modalBody}>
-          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
+        {error && (
+    <Alert variant="danger" className={styles.alertDanger}>
+        <span
+            className={styles.errorText}
+            style={{ color: isDark ? 'white' : '#721c24' }}
+        >
+            {error}
+        </span>
+    </Alert>
+)}
           <Form>
             <Form.Group controlId="signupUsername" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Username</Form.Label>
@@ -119,12 +130,12 @@ function SignupModal() {
                 className="custom-checkbox"
                 label={
                   <span className={styles.acceptText}>
-                  I accept the{' '}
-                  <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className={styles.link}>
-                    Terms of Service
-                  </a>
-                  .
-                </span>
+                    I accept the{' '}
+                    <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className={styles.link}>
+                      Terms of Service
+                    </a>
+                    .
+                  </span>
                 }
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}

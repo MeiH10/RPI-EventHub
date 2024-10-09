@@ -37,7 +37,9 @@
   background-color: var(--modal-bg-color) !important;
   border-bottom: 1px solid var(--modal-border-color) !important;
 }
-
+.errorText {
+  color: rgb(255, 255, 255); /* 或者你想要的任何颜色 */
+}
 .modalTitle {
   font-size: 1.5rem !important;
   color: var(--modal-title-color) !important;
