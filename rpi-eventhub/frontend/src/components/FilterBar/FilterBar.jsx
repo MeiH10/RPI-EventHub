@@ -84,7 +84,6 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                         </div>
                     )}
                 </div>
-                {"--------------------------"}
                 <div className={styles.sortContainer}>
                     <label htmlFor="sortMethod">Sort by</label>
                     <select
@@ -123,11 +122,11 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                 onChange={() => handleTagChange(tag)}
                 style={{
                     appearance: 'none',
-                    width: '24px', // 增大宽度
-                    height: '24px', // 增大高度
+                    width: '24px', 
+                    height: '24px', 
                     backgroundColor: isDark ? 'white' : 'transparent',
                     borderColor: isDark ? 'white' : 'initial',
-                    borderRadius: '50%', // 使复选框变成圆形
+                    borderRadius: '50%',
                     border: `2px solid ${isDark ? 'white' : 'initial'}`,
                     position: 'relative',
                     cursor: 'pointer'
