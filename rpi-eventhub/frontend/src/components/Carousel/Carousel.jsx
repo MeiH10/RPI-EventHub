@@ -1,34 +1,28 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import styles from './Carousel.module.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import axios from 'axios';
-import { Skeleton } from '@mui/material';
-import config from '../../config';
-import { format } from 'date-fns';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import styles from "./Carousel.module.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import axios from "axios";
+import { Skeleton } from "@mui/material";
+import config from "../../config";
+import { DateTime } from "luxon";
 
-const placeholderImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'; 
+const placeholderImage =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
 
-const formatDateAsEST = (utcDate) => {
-  const date = new Date(utcDate);
-  const year = date.getUTCFullYear();
-  const month = date.getUTCMonth();
-  const day = date.getUTCDate();
-  const estDate = new Date(year, month, day);
-  return estDate;
+const timeZone = 'America/New_York';
+
+const formatDateAsEST = (utcDateString) => {
+  if (!utcDateString) return "Date not specified";
+
+  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+  return dateTime.toFormat('MMMM dd, yyyy');
 };
 
-const formatTime = (timeString) => {
-  if (!timeString) return 'Time not specified';
-  let [hours, minutes] = timeString.split(':');
-  hours = parseInt(hours, 10);
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12 || 12;
-  return `${hours}:${minutes} ${ampm}`;
-};
+const formatTimeAsEST = (utcDateString) => {
+  if (!utcDateString) return 'Time not specified';
 
-const formatDate = (dateString) => {
-  const date = formatDateAsEST(dateString);
-  return format(date, 'MMMM do, yyyy');
+  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+  return dateTime.toFormat('h:mm a');
 };
 
 const ImageCarousel = () => {
@@ -41,34 +35,42 @@ const ImageCarousel = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${config.apiUrl}/events`);
+  
         const sortedEvents = response.data
-          .map(event => ({
+          .map((event) => ({
             src: event.image || placeholderImage,
             caption: event.title,
-            location: event.location,
-            date: formatDate(event.date),   // Format date
-            time: formatTime(event.time),   // Format time
-            originalDate: event.date,
+            location: event.location || "Location not specified",
+            date: event.startDateTime ? formatDateAsEST(event.startDateTime) : "Unavailable",
+            endDate: event.endDateTime ? formatDateAsEST(event.endDateTime) : "Unavailable",
+            time: event.startDateTime ? formatTimeAsEST(event.startDateTime) : "Unavailable",
+            endTime: event.endDateTime ? formatTimeAsEST(event.endDateTime) : "Unavailable",
+            originalDate: event.startDateTime || event.date,
+            likes: event.likes || 0,
           }))
-          .sort((a, b) => new Date(b.originalDate) - new Date(a.originalDate))
+          .sort((a, b) => b.likes - a.likes)
           .slice(0, 5);
-
+  
         setEvents(sortedEvents);
         setIsLoading(false);
       } catch (error) {
-        console.error('Failed to fetch events:', error);
+        console.error("Failed to fetch events:", error);
       }
     };
-
+  
     fetchEvents();
   }, []);
-
+  
   const goToNext = useCallback(() => {
-    setActiveIndex(current => current === events.length - 1 ? 0 : current + 1);
+    setActiveIndex((current) =>
+      current === events.length - 1 ? 0 : current + 1
+    );
   }, [events.length]);
 
   const goToPrev = useCallback(() => {
-    setActiveIndex(current => current === 0 ? events.length - 1 : current - 1);
+    setActiveIndex((current) =>
+      current === 0 ? events.length - 1 : current - 1
+    );
   }, [events.length]);
 
   const resetTimer = useCallback(() => {
@@ -88,9 +90,11 @@ const ImageCarousel = () => {
   }, [events, isLoading, resetTimer]);
 
   return (
-    <div className="carousel"
-         onMouseEnter={pauseAutoplay} // pause carousel when on hover
-         onMouseLeave={resetTimer}>
+    <div
+      className="carousel"
+      onMouseEnter={pauseAutoplay} // pause carousel when on hover
+      onMouseLeave={resetTimer}
+    >
       <div className={styles.carousel}>
         <div className={styles.mainImage}>
           {isLoading ? (
@@ -99,22 +103,41 @@ const ImageCarousel = () => {
               <Skeleton variant="text" width={300} />
               <Skeleton variant="text" width={200} />
             </div>
-          ) : events.length > 0 && (
-            <div className={styles.carouselCard}>
-              <div className={styles.captionAbove}>{events[activeIndex].caption}</div>
-              <button onClick={() => { goToPrev(); resetTimer(); }} className={styles.prevButton}>
-                <i className="bi bi-chevron-left"></i>
-              </button>
-              <div className={styles.imgContainer}>
-                <img src={events[activeIndex].src} alt={`Slide ${activeIndex}`} />
+          ) : (
+            events.length > 0 && (
+              <div className={styles.carouselCard}>
+                <div className={styles.captionAbove}>
+                  {events[activeIndex].caption}
+                </div>
+                <button
+                  onClick={() => {
+                    goToPrev();
+                    resetTimer();
+                  }}
+                  className={styles.prevButton}
+                >
+                  <i className="bi bi-chevron-left"></i>
+                </button>
+                <div className={styles.imgContainer}>
+                  <img
+                    src={events[activeIndex].src}
+                    alt={`Slide ${activeIndex}`}
+                  />
+                </div>
+                <button
+                  onClick={() => {
+                    goToNext();
+                    resetTimer();
+                  }}
+                  className={styles.nextButton}
+                >
+                  <i className="bi bi-chevron-right"></i>
+                </button>
+                <div className={styles.captionBelow}>
+                  {`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
+                </div>
               </div>
-              <button onClick={() => { goToNext(); resetTimer(); }} className={styles.nextButton}>
-                <i className="bi bi-chevron-right"></i>
-              </button>
-              <div className={styles.captionBelow}>
-                {`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
-              </div>
-            </div>
+            )
           )}
         </div>
       </div>

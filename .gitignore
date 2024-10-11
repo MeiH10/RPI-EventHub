@@ -28,3 +28,6 @@
 # idea files
 **/.idea
 rpi-eventhub/.idea/copilot/chatSessions/00000000000.xd
+rpi-eventhub/backend/cleaned_events.json
+rpi-eventhub/backend/event_9_30_24.json
+rpi-eventhub/backend/events_202410011504.json

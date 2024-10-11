@@ -31,7 +31,7 @@ const CalendarPage = () => {
     const formatDate = (date) => {
       const mm = String(date.getMonth() + 1).padStart(2, "0");
       const dd = String(date.getDate()).padStart(2, "0");
-      const yy = date.getFullYear(); // Full year
+      const yy = date.getFullYear();
       return `${mm}/${dd}/${yy}`;
     };
 
@@ -57,6 +57,12 @@ const CalendarPage = () => {
     getWeekRange(newStartDate);
   };
 
+  const goToToday = () => {
+    const today = new Date();
+    setCurrentStartDate(today);
+    getWeekRange(today);
+  };
+
   useEffect(() => {
     getWeekRange(currentStartDate);
     fetchEvents();
@@ -72,7 +78,7 @@ const CalendarPage = () => {
 
   const filterEventsByDay = (day, firstDayOfWeek, lastDayOfWeek) => {
     return events.filter((event) => {
-      const eventDate = parseDateAsEST(event.date);
+      const eventDate = new Date(event.startDateTime || event.date);
       eventDate.setHours(0, 0, 0, 0);
       return (
         eventDate.getDay() === day &&
@@ -95,6 +101,7 @@ const CalendarPage = () => {
                 <button onClick={() => handleWeekChange(-1)}>
                   Previous Week
                 </button>
+                <button onClick={goToToday}>Today</button> {/* New Today button */}
                 <button onClick={() => handleWeekChange(1)}>Next Week</button>
               </div>
               <h2>
@@ -131,12 +138,14 @@ const CalendarPage = () => {
                             <h4 className={CalendarCSS.eventTitle}>
                               {event.title}
                             </h4>
-                            {event.image && (
+                            {event.image ? (
                               <img
                                 src={event.image}
                                 alt={event.title}
                                 className={CalendarCSS.eventImage}
                               />
+                            ) : (
+                              <p>No image available</p>
                             )}
                           </div>
                         </Link>

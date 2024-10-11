@@ -5,23 +5,24 @@ import Footer from '../../components/Footer/Footer';
 import styles from './EventDetails.module.css';
 import { useEvents } from '../../context/EventsContext';
 import RsvpButton from '../../components/rsvp-button/RsvpButton';
-import { format } from 'date-fns';
+import { DateTime } from 'luxon';
 
-const formatTime = (timeString) => {
-    let [hours, minutes] = timeString.split(':');
-    hours = parseInt(hours, 10);
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert to 12-hour format
-    return `${hours}:${minutes} ${ampm}`;
+const timeZone = 'America/New_York';
+
+const formatTime = (utcDateString) => {
+    if (!utcDateString) return 'Unavailable';
+
+    const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+    
+    return dateTime.toFormat('h:mm a');
 };
 
-const formatDateAsEST = (utcDate) => {
-    const date = new Date(utcDate);
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const day = date.getUTCDate();
-    const estDate = new Date(year, month, day);
-    return estDate;
+const formatDateAsEST = (utcDateString) => {
+    if (!utcDateString) return 'Unavailable';
+
+    const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+    
+    return dateTime.toFormat('MMMM dd, yyyy');
 };
 
 const EventDetails = () => {
@@ -40,8 +41,10 @@ const EventDetails = () => {
         return <p>Event not found.</p>;
     }
 
-    // Call the formatDateAsEST function
-    const eventDate = format(formatDateAsEST(event.date), 'MMMM do, yyyy');
+    const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
+    const eventEndDateTime = event.endDateTime ? formatDateAsEST(event.endDateTime) : (event.endDate ? formatDateAsEST(event.endDate) : null);
+    const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
+    const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
 
     return (
         <div className='outterContainer'>
@@ -55,9 +58,9 @@ const EventDetails = () => {
                         <h1>{event.title}</h1>
                         <p><strong>About:</strong> {event.description}</p>
                         <p><strong>Club/Organization:</strong> {event.club}</p>
-                        <p><strong>Date:</strong> {eventDate}</p>
-                        <p><strong>Time:</strong> {event.time && formatTime(event.time)}</p>
-                        <p><strong>Location:</strong> {event.location}</p>
+                        <p><strong>Start:</strong> {eventStartDateTime} @ {eventStartTime}</p>
+                        {eventEndDateTime && <p><strong>End:</strong> {`${eventEndDateTime} @ ${eventEndTime}`}</p>}
+                        <p><strong>Location:</strong> {event.location || 'Location Unavailable'}</p>
                         {event.tags && event.tags.length > 0 && (
                             <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                         )}

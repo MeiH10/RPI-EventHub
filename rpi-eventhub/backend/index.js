@@ -10,25 +10,44 @@ const axios = require('axios');
 const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
-
 const { PDFDocument } = require('pdf-lib');
 const sharp = require('sharp');
 const fs = require('fs');
 const { PDFImage } = require("pdf-image");
-
-
 require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
+const { startSync } = require('./sqldb');
+const { getNextSequence } = require('./counter');
 
+
+async function deleteEventsByUser(email) {
+  try {
+    const result = await Event.deleteMany({ poster: email });
+
+    if (result.deletedCount > 0) {
+      console.log(`Deleted ${result.deletedCount} events posted by ${email}`);
+    } else {
+      console.log(`No events found posted by ${email}`);
+    }
+  } catch (error) {
+    console.error('Error deleting events:', error);
+  } finally {
+    mongoose.connection.close();
+  }
+}
 
 const addEventsToDatabase = async () => {
   try {
-    const eventsPath = path.join(__dirname, 'event_9_24_24.json');
+    const eventsPath = path.join(__dirname, 'cleaned_events.json');
     const eventsData = fs.readFileSync(eventsPath, 'utf-8');
 
     const events = JSON.parse(eventsData);
 
     for (const event of events) {
+      if (!event.endDateTime) {
+        event.endDateTime = new Date(new Date(event.startDateTime).getTime() + 3 * 60 * 60 * 1000); // 3 hours later
+      }
+
       const newEvent = new Event(event);
       await newEvent.save();
       console.log(`Event ${newEvent.title} added successfully.`);
@@ -39,10 +58,6 @@ const addEventsToDatabase = async () => {
     console.error('Error adding events to the database:', error.message);
   }
 };
-
-// addEventsToDatabase();
-
-
 
 const upload = multer({
   limits: {
@@ -158,12 +173,15 @@ const authenticateAndVerify = async (req, res, next) => {
 
 
 
-// Middleware
-app.use(express.json()); // for parsing application/json
+app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI ).then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+mongoose
+.connect(process.env.MONGODB_URI)
+.then(() => {
+  console.log('MongoDB Connected');
+  startSync();
+})
+.catch((err) => console.log(err));
 
 // Signup Route
 app.post('/signup', async (req, res) => {
@@ -266,51 +284,48 @@ app.post('/login', async (req, res) => {
 });
 
 
+// Event Creation Route with Auto-Generated eventId
+// Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
-  const { title, description, poster, date, location, tags, time, club, rsvp } = req.body;
+  const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
   const file = req.file;
-
   try {
     let imageUrl = '';
-
     if (file) {
       let imageBuffer;
-
       if (file.mimetype === 'application/pdf') {
         imageBuffer = await convertPdfToImage(file.buffer);
       } else {
         imageBuffer = await compressImage(file.buffer);
       }
-
       const formData = new FormData();
       formData.append('image', imageBuffer.toString('base64'));
-
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-
       if (response.data && response.data.data && response.data.data.url) {
         imageUrl = response.data.data.url;
       } else {
         throw new Error('Image upload failed or no URL returned');
       }
     }
+    
+    // Generate a unique eventId automatically
+    const eventId = await getNextSequence('eventId');
 
     const event = new Event({
+      eventId, // Auto-generated eventId
       title,
       description,
-      poster: poster || 'admin', // Use 'admin' as the default value
-      date,
+      poster: poster || 'admin',
+      startDateTime,
+      endDateTime,
       location,
       image: imageUrl,
       tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-      time,
       club,
       rsvp
     });
-
     await event.save();
     res.status(201).json(event);
   } catch (error) {
@@ -318,6 +333,7 @@ app.post('/events', upload, async (req, res) => {
     res.status(400).json({ message: 'Error creating event', error: error.message });
   }
 });
+
 
 // Route for fetching all events
 app.get('/events', async (req, res) => {

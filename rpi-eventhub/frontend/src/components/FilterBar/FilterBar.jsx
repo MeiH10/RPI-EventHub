@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 
-function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
+function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
     const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedTime, setSelectedTime] = useState([]);
+    const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [sortMethod, setSortMethod] = useState('date');
+    const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
 
@@ -35,11 +35,12 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
     };
 
     const handleViewChange = () => {
-        setIsListView((prev) => !prev);
-        changeView(isListView);
-    }
-
-
+        setIsListView((prev) => {
+            const newValue = !prev;
+            changeView(newValue);
+            return newValue;
+        });
+    };
 
     return (
         <>
@@ -146,6 +147,7 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
             </div>
         </>
     );
+
 }
 
 export default FilterBar;

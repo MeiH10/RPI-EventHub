@@ -21,6 +21,7 @@ router.post('/', async (req, res) => {
     // `creationTimestamp` defaults to now, so no need to set it here
     poster: req.body.poster,
     date: req.body.date,
+    endDate: req.body.endDate,
     location: req.body.location,
     image: req.body.image, // Make sure you validate this is a proper Imgur URL if needed
     tags: req.body.tags,

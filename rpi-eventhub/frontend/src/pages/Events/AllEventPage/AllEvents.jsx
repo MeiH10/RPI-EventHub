@@ -14,9 +14,56 @@ function AllEvents() {
     const [isLoading, setIsLoading] = useState(true);
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [availableTags, setAvailableTags] = useState([]);
-    const [sortMethod, setSortMethod] = useState('date');
+    const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
+
+    const handleFilterChange = useCallback((filters) => {
+        let filtered = events;
+        if (filters.tags.length > 0) {
+            filtered = filtered.filter(event =>
+                filters.tags.every(tag => event.tags?.includes(tag))
+            );
+        }
+        const now = new Date();
+        if (filters.time.length > 0) {
+            let timeFiltered = [];
+            if (filters.time.includes('past')) {
+                timeFiltered = timeFiltered.concat(
+                    filtered.filter(event => new Date(event.startDateTime || event.date) < now)
+                );
+            }
+            if (filters.time.includes('upcoming')) {
+                timeFiltered = timeFiltered.concat(
+                    filtered.filter(event => new Date(event.startDateTime || event.date) >= now)
+                );
+            }
+            if (filters.time.includes('today')) {
+                const todayStart = new Date();
+                todayStart.setHours(0, 0, 0, 0);
+                const todayEnd = new Date();
+                todayEnd.setHours(23, 59, 59, 999);
+                timeFiltered = timeFiltered.concat(
+                    filtered.filter(event => {
+                        const eventDate = new Date(event.startDateTime || event.date);
+                        return eventDate >= todayStart && eventDate <= todayEnd;
+                    })
+                );
+            }
+            const uniqueTimeFiltered = [];
+            const seenIds = new Set();
+            timeFiltered.forEach(event => {
+                if (!seenIds.has(event._id)) {
+                    seenIds.add(event._id);
+                    uniqueTimeFiltered.push(event);
+                }
+            });
+            filtered = uniqueTimeFiltered;
+        }
+        setSortMethod(filters.sortMethod);
+        setSortOrder(filters.sortOrder);
+        setFilteredEvents(filtered);
+    }, [events]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,54 +75,32 @@ function AllEvents() {
     }, [fetchEvents]);
 
     useEffect(() => {
-        setFilteredEvents(events);
-        const tags = [...new Set(events.flatMap(event => event.tags))];
+        const tags = [...new Set(events.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
-    }, [events]);
 
-    const handleFilterChange = useCallback((filters) => {
-        let filtered = events;
-        if (filters.tags.length > 0) {
-            filtered = filtered.filter(event =>
-                filters.tags.every(tag => event.tags.includes(tag))
-            );
-        }
-        const now = new Date();
-        if (filters.time.length > 0) {
-            let timeFiltered = [];
-            if (filters.time.includes('past')) {
-                timeFiltered = filtered.filter(event => new Date(event.date) < now);
-            }
-            if (filters.time.includes('upcoming')) {
-                timeFiltered = timeFiltered.concat(filtered.filter(event => new Date(event.date) >= now));
-            }
-            if (filters.time.includes('today')) {
-                const todayStart = new Date();
-                todayStart.setHours(0, 0, 0, 0);
-                const todayEnd = new Date();
-                todayEnd.setHours(23, 59, 59, 999);
-                timeFiltered = timeFiltered.concat(filtered.filter(event => {
-                    const eventDate = new Date(event.date);
-                    return eventDate >= todayStart && eventDate <= todayEnd;
-                }));
-            }
-            filtered = timeFiltered;
-        }
-        setSortMethod(filters.sortMethod);
-        setSortOrder(filters.sortOrder);
-        setFilteredEvents(filtered);
-    }, [events]);
+        const defaultFilters = {
+            tags: [],
+            time: ['upcoming', 'today'],
+            sortMethod: 'likes',
+            sortOrder: 'desc'
+        };
+
+        handleFilterChange(defaultFilters);
+    }, [events, handleFilterChange]);
 
     const sortEvents = (events, sortMethod, sortOrder) => {
+        const sortedEvents = [...events];
         switch (sortMethod) {
             case 'date':
-                return events.sort((a, b) => sortOrder === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date));
+                return sortedEvents.sort((a, b) => sortOrder === 'asc' 
+                    ? new Date(a.startDateTime || a.date) - new Date(b.startDateTime || b.date) 
+                    : new Date(b.startDateTime || b.date) - new Date(a.startDateTime || a.date));
             case 'likes':
-                return events.sort((a, b) => sortOrder === 'asc' ? a.likes - b.likes : b.likes - a.likes);
+                return sortedEvents.sort((a, b) => sortOrder === 'asc' ? a.likes - b.likes : b.likes - a.likes);
             case 'title':
-                return events.sort((a, b) => sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
+                return sortedEvents.sort((a, b) => sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
             default:
-                return events;
+                return sortedEvents;
         }
     };
 
@@ -85,7 +110,6 @@ function AllEvents() {
         700: 1
     };
 
-    // Function that change the view of the events
     const changeView = () => {
         setIsListView(!isListView);
     }
@@ -94,7 +118,7 @@ function AllEvents() {
         <div className={styles.allEvents}>
             <Navbar />
             <div className="container-fluid"
-                 style={{display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row'}}>
+                 style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}
@@ -104,39 +128,39 @@ function AllEvents() {
                     />
                 </div>
                 {
-                        isListView ?
-                    (
-                        <div className={styles.eventsDisplayContainer}>
-                            <EventList
-                                events={sortEvents(filteredEvents, sortMethod, sortOrder)}
-                            />
-                        </div>
-                    ):(
-                        <div className={styles.eventsDisplayContainer}>
-                            {isLoading ? (
-                                Array.from(new Array(10)).map((_, index) => (
-                                    <div key={index} className={styles.skeletonWrapper}>
-                                        <Skeleton variant="rectangular" width={400} height={533}/>
-                                        <Skeleton variant="text" width={200}/>
-                                        <Skeleton variant="text" width={150}/>
-                                    </div>
-                                ))
-                            ) : (
-                                <Masonry
-                                    breakpointCols={breakpointColumnsObj}
-                                    className={styles.myMasonryGrid}
-                                    columnClassName={styles.myMasonryGridColumn}
-                                >
-                                    {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                        <EventCard key={event._id} event={event}/>
-                                    ))}
-                                </Masonry>
-                            )}
-                        </div>
-                    )
+                    isListView ?
+                        (
+                            <div className={styles.eventsDisplayContainer}>
+                                <EventList
+                                    events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                                />
+                            </div>
+                        ) : (
+                            <div className={styles.eventsDisplayContainer}>
+                                {isLoading ? (
+                                    Array.from(new Array(10)).map((_, index) => (
+                                        <div key={index} className={styles.skeletonWrapper}>
+                                            <Skeleton variant="rectangular" width={400} height={533} />
+                                            <Skeleton variant="text" width={200} />
+                                            <Skeleton variant="text" width={150} />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <Masonry
+                                        breakpointCols={breakpointColumnsObj}
+                                        className={styles.myMasonryGrid}
+                                        columnClassName={styles.myMasonryGridColumn}
+                                    >
+                                        {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                            <EventCard key={event._id} event={event} />
+                                        ))}
+                                    </Masonry>
+                                )}
+                            </div>
+                        )
                 }
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 }
