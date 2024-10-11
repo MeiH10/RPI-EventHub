@@ -57,7 +57,7 @@ const EventCard = ({ event, isLiked }) => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        `http://localhost:5000/events/${event._id}/like`,
+        `${config.apiUrl}/events/${event._id}/like`,
         { liked: newLikedState }, // Send the new like/unlike state
         {
           headers: {
