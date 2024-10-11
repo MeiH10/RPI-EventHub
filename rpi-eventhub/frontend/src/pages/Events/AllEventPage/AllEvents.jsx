@@ -32,7 +32,7 @@ function AllEvents() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await axios.get(`http://localhost:5000/events/like/status`, {
+                const response = await axios.get(`${config.apiUrl}/events/like/status`, {
                     headers: {
                     Authorization: `Bearer ${token}`,
                     },
