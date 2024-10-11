@@ -8,6 +8,7 @@ import { useEvents } from '../../../context/EventsContext';
 import EventList from '../../../pages/Events/AllEventList/EventsList';
 import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
+import axios from 'axios';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
@@ -17,6 +18,40 @@ function AllEvents() {
     const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
+    const [liked, setLiked] = useState([]) //Array of ids
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchEvents();
+            await getLikedEvents()
+            setIsLoading(false);
+        };
+
+        const getLikedEvents = async () => {
+            // Fetch user information or check user data to determine if the event is liked
+            const token = localStorage.getItem("token");
+
+            try {
+                const response = await axios.get(`http://localhost:5000/events/like/status`, {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    },
+                })
+                setLiked(response.data); // Update the liked state based on the server response
+            } catch (err) {
+                console.error("Error fetching like status:", err);
+            }
+          };
+
+        getLikedEvents()
+        fetchData();
+    }, [fetchEvents]);
+
+    useEffect(() => {
+        setFilteredEvents(events);
+        const tags = [...new Set(events.flatMap(event => event.tags || []))];
+        setAvailableTags(tags);
+    }, [events]);
 
     const handleFilterChange = useCallback((filters) => {
         let filtered = events;
@@ -129,35 +164,35 @@ function AllEvents() {
                 </div>
                 {
                     isListView ?
-                        (
-                            <div className={styles.eventsDisplayContainer}>
-                                <EventList
-                                    events={sortEvents(filteredEvents, sortMethod, sortOrder)}
-                                />
-                            </div>
-                        ) : (
-                            <div className={styles.eventsDisplayContainer}>
-                                {isLoading ? (
-                                    Array.from(new Array(10)).map((_, index) => (
-                                        <div key={index} className={styles.skeletonWrapper}>
-                                            <Skeleton variant="rectangular" width={400} height={533} />
-                                            <Skeleton variant="text" width={200} />
-                                            <Skeleton variant="text" width={150} />
-                                        </div>
-                                    ))
-                                ) : (
-                                    <Masonry
-                                        breakpointCols={breakpointColumnsObj}
-                                        className={styles.myMasonryGrid}
-                                        columnClassName={styles.myMasonryGridColumn}
-                                    >
-                                        {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                            <EventCard key={event._id} event={event} />
-                                        ))}
-                                    </Masonry>
-                                )}
-                            </div>
-                        )
+                    (
+                        <div className={styles.eventsDisplayContainer}>
+                            <EventList
+                                events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                            />
+                        </div>
+                    ):(
+                        <div className={styles.eventsDisplayContainer}>
+                            {isLoading ? (
+                                Array.from(new Array(10)).map((_, index) => (
+                                    <div key={index} className={styles.skeletonWrapper}>
+                                        <Skeleton variant="rectangular" width={400} height={533}/>
+                                        <Skeleton variant="text" width={200}/>
+                                        <Skeleton variant="text" width={150}/>
+                                    </div>
+                                ))
+                            ) : (
+                                <Masonry
+                                    breakpointCols={breakpointColumnsObj}
+                                    className={styles.myMasonryGrid}
+                                    columnClassName={styles.myMasonryGridColumn}
+                                >
+                                    {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                        <EventCard isLiked={liked.includes(event._id.toString())} key={event._id} event={event}/>
+                                    ))}
+                                </Masonry>
+                            )}
+                        </div>
+                    )
                 }
             </div>
             <Footer />
