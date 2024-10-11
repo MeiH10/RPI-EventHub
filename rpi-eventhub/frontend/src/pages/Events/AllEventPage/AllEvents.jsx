@@ -9,6 +9,7 @@ import EventList from '../../../pages/Events/AllEventList/EventsList';
 import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 import axios from 'axios';
+import config from '../../../config';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
