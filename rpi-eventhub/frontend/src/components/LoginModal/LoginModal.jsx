@@ -58,8 +58,9 @@ function LoginModal() {
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
+        style={{fontFamily: 'Helvetica'}}
       >
-        <Modal.Header closeButton className={styles.modalHeader}>
+        <Modal.Header className={styles.modalHeader}>
           <Modal.Title className={styles.modalTitle}>Log In</Modal.Title>
         </Modal.Header>
         <Modal.Body className={styles.modalBody}>
@@ -76,24 +77,30 @@ function LoginModal() {
           <Form>
             <Form.Group controlId="loginEmail" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.formControl}
-              />
+              <div className={styles.inputField}>
+                <i className="bi bi-envelope-fill"></i>
+                <Form.Control
+                    type="email"
+                    placeholder="Enter email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={styles.formControl}
+                />
+              </div>
             </Form.Group>
 
             <Form.Group controlId="loginPassword" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={styles.formControl}
-              />
+            <Form.Label className={styles.formLabel}>Password</Form.Label>
+              <div className={styles.inputField}>
+                <i className="bi bi-key-fill"></i>
+                <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={styles.formControl}
+                />
+              </div>
             </Form.Group>
           </Form>
         </Modal.Body>
