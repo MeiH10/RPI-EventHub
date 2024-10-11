@@ -18,6 +18,22 @@ function AllEvents() {
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
 
+    const [selectedEventIds, setSelectedEventIds] = useState([]);
+
+    console.log(selectedEventIds)
+
+    const handleSelect = (eventId) => {
+        setSelectedEventIds((prevSelectedIds) => {
+          // If the event ID is already selected, remove it from the array (unselect)
+          if (prevSelectedIds.includes(eventId)) {
+            return prevSelectedIds.filter((id) => id !== eventId);
+          } else {
+            // Otherwise, add it to the array
+            return [...prevSelectedIds, eventId];
+          }
+        });
+      };
+
     useEffect(() => {
         const fetchData = async () => {
             await fetchEvents();
@@ -113,6 +129,7 @@ function AllEvents() {
                             />
                         </div>
                     ):(
+                        <>
                         <div className={styles.eventsDisplayContainer}>
                             {isLoading ? (
                                 Array.from(new Array(10)).map((_, index) => (
@@ -123,17 +140,27 @@ function AllEvents() {
                                     </div>
                                 ))
                             ) : (
+                                <>
+                                {selectedEventIds.length > 0 && (
+                                    <div 
+                                        className="relative m-5 rounded-sm justify-center items-center bg-white p-4 cursor-pointer hover:shadow-sm"
+                                    >
+                                        <p>Download ICS</p>
+                                    </div>
+                                )}
                                 <Masonry
                                     breakpointCols={breakpointColumnsObj}
                                     className={styles.myMasonryGrid}
                                     columnClassName={styles.myMasonryGridColumn}
                                 >
                                     {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                        <EventCard key={event._id} event={event}/>
+                                        <EventCard key={event._id} event={event} onSelect={() => handleSelect(event._id)} />
                                     ))}
                                 </Masonry>
+                                </>
                             )}
                         </div>
+                        </>
                     )
                 }
             </div>

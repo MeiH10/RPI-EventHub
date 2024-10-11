@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 
 const timeZone = 'America/New_York';
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, onSelect}) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
 
@@ -60,6 +60,7 @@ const EventCard = ({ event }) => {
         </div>
       </div>
       <div className={styles.eventPosterDetails}>
+      <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" className='absolute right-4 mt-4 h-5 w-5' onClick={onSelect}/>
         <p>Posted by {event.poster}</p>
       </div>
       {canSeeDeleteButton(username) && (
