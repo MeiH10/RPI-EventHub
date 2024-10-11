@@ -3,8 +3,8 @@ import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
-import config from '../../config';
-import styles from './CreateEventModal.module.css';
+import { useColorScheme } from '../../hooks/useColorScheme'; // Assuming you have this hook
+import styles from './CreateEventModal.module.css'; // Import the CSS module
 
 function CreateEventModal() {
   const [show, setShow] = useState(false);
@@ -30,6 +30,7 @@ function CreateEventModal() {
 
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
+  const { isDark } = useColorScheme(); // Using useColorScheme hook
 
   const handleClose = () => {
     setShow(false);
@@ -63,34 +64,37 @@ function CreateEventModal() {
     }
     setError('');
     setIsSubmitting(true);
-
-    // Convert tags array to comma-separated string
+  
+    // convert the start and end times to UTC before sending to the server
+    const startDateTimeUTC = DateTime.fromISO(startDateTime, { zone: 'local' }).toUTC().toISO();
+    const endDateTimeUTC = DateTime.fromISO(endDateTime, { zone: 'local' }).toUTC().toISO();
+  
     const uniqueTags = tags.join(', ');
-
+  
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('poster', username);
     formData.append('file', file); // Attach the file
-    formData.append('startDateTime', startDateTime);
-    formData.append('endDateTime', endDateTime);
+    formData.append('startDateTime', startDateTimeUTC);
+    formData.append('endDateTime', endDateTimeUTC);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
-
+  
     if (!title || !description || !startDateTime || !endDateTime || !location || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
       return;
     }
-
+  
     if (!isLoggedIn || !emailVerified) {
       setError('Only verified users can create an event. Please login or get verified.');
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const { data } = await axios.post(`${config.apiUrl}/events`, formData, {
         headers: {
@@ -105,7 +109,8 @@ function CreateEventModal() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  };  
+
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -147,11 +152,11 @@ function CreateEventModal() {
           <Modal.Title className={styles.modalTitle}>Create an Event</Modal.Title>
         </Modal.Header>
         <Modal.Body className={styles.modalBody}>
-          {error && <Alert variant="danger">{error}</Alert>}
-          {successOpen && <Alert variant="success">Event created successfully!</Alert>}
+          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
+          {successOpen && <Alert variant="success" className={styles.alertSuccess}>Event created successfully!</Alert>}
           <Form>
             <Form.Group controlId="eventTitle" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Title <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Title <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
@@ -163,7 +168,7 @@ function CreateEventModal() {
             </Form.Group>
 
             <Form.Group controlId="eventDescription" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Description <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Description <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
                 as="textarea"
                 required
@@ -171,12 +176,12 @@ function CreateEventModal() {
                 placeholder="Event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className={styles.formControl}
+                className={`${styles.formControl} ${styles.formControlTextarea}`}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventClub">
-              <Form.Label>Club/Organization <span className='text-danger'>*</span></Form.Label>
+            <Form.Group controlId="eventClub" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>Club/Organization <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter club or organization name"
@@ -219,7 +224,7 @@ function CreateEventModal() {
             </Form.Group>
 
             <Form.Group controlId="eventLocation" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Location <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Location <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 required
@@ -243,12 +248,12 @@ function CreateEventModal() {
 
             <Form.Group controlId="eventTags" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Tags</Form.Label>
-              <div className="mt-2">
+              <div className={styles.suggestedTags}>
                 {suggestedTags.map((tag, index) => (
                   <Button
                     key={index}
                     variant={tags.includes(tag) ? 'primary' : 'outline-primary'}
-                    className={`${styles.suggestedTagButton} ${tags.includes(tag) ? styles.selected : ''}`}
+                    className={tags.includes(tag) ? `${styles.suggestedTagButton} ${styles.suggestedTagButtonSelected}` : styles.suggestedTagButton}
                     onClick={() => handleAddTag(tag)}
                   >
                     {tag}
@@ -260,10 +265,10 @@ function CreateEventModal() {
           </Form>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
-          <Button variant="secondary" onClick={handleClose} className={styles.buttonSecondary}>
+          <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting} className={styles.buttonPrimary}>
+          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting} className={`${styles.button} ${styles.buttonPrimary}`}>
             Create Event
           </Button>
         </Modal.Footer>
