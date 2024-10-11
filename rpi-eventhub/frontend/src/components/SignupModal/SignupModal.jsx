@@ -83,10 +83,13 @@ function SignupModal() {
     return pattern.test(email);
   }
 
+
+
   const verifyPassword = (password) => {
-    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
     return pattern.test(password);
-  }
+  };
+  
 
   return (
       <>
