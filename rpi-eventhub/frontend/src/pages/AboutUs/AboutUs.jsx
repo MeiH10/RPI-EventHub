@@ -53,6 +53,8 @@ function AboutUs() {
                 <br />
                 If you find any bugs or have suggestions, please submit an issue on our GitHub repository:
                 <a href="https://github.com/MeiH10/RPI-EventHub/issues" target="_blank" rel="noopener noreferrer" className={styles.link}> Report a GitHub Issue</a>.
+                <br /><br />
+                We'd like to extend a special thanks to Corbin, <a href="https://github.com/Nibroc6" target="_blank" rel="noopener noreferrer" className={styles.link}>Nibroc6</a>, for sharing his database and providing some of the events displayed on our website.
               </div>
             </div>
           </div>

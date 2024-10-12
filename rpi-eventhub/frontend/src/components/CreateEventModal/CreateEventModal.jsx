@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import config from '../../config';
-import styles from './CreateEventModal.module.css';
+import styles from './CreateEventModal.module.css'; // Import the CSS module
+import { useColorScheme } from '../../hooks/useColorScheme'; // Assuming you have this hook
 import { DateTime } from 'luxon';
 import * as pdfjsLib from "pdfjs-dist";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
@@ -34,6 +35,7 @@ function CreateEventModal() {
 
   const { addEvent } = useEvents();
   const { isLoggedIn, emailVerified, username } = useAuth();
+  const { isDark } = useColorScheme(); // Using useColorScheme hook
 
   const handleClose = () => {
     setShow(false);
@@ -221,11 +223,11 @@ function CreateEventModal() {
           <Modal.Title className={styles.modalTitle}>Create an Event</Modal.Title>
         </Modal.Header>
         <Modal.Body className={styles.modalBody}>
-          {error && <Alert variant="danger">{error}</Alert>}
-          {successOpen && <Alert variant="success">Event created successfully!</Alert>}
+          {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
+          {successOpen && <Alert variant="success" className={styles.alertSuccess}>Event created successfully!</Alert>}
           <Form>
             <Form.Group controlId="eventTitle" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Title <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Title <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
                   type="text"
                   required
@@ -237,21 +239,20 @@ function CreateEventModal() {
             </Form.Group>
 
             <Form.Group controlId="eventDescription" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Description <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Description <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
-                  as="textarea"
-                  required
-                  rows={3}
-                  placeholder="Event description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className={styles.formControl}
+                as="textarea"
+                required
+                rows={3}
+                placeholder="Event description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className={`${styles.formControl} ${styles.formControlTextarea}`}
               />
             </Form.Group>
 
             <Form.Group controlId="eventClub" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Club/Organization <span
-                  className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Club/Organization <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
                   type="text"
                   placeholder="Enter club or organization name"
@@ -325,7 +326,7 @@ function CreateEventModal() {
             </Form.Group>
 
             <Form.Group controlId="eventLocation" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Location <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Location <span className={styles.textDanger}>*</span></Form.Label>
               <Form.Control
                   type="text"
                   required
@@ -349,16 +350,16 @@ function CreateEventModal() {
 
             <Form.Group controlId="eventTags" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Tags</Form.Label>
-              <div className="mt-2">
+              <div className={styles.suggestedTags}>
                 {suggestedTags.map((tag, index) => (
-                    <Button
-                        key={index}
-                        variant={tags.includes(tag) ? 'primary' : 'outline-primary'}
-                        className={`${styles.suggestedTagButton} ${tags.includes(tag) ? styles.selected : ''}`}
-                        onClick={() => handleAddTag(tag)}
-                    >
-                      {tag}
-                    </Button>
+                  <Button
+                    key={index}
+                    variant={tags.includes(tag) ? 'primary' : 'outline-primary'}
+                    className={tags.includes(tag) ? `${styles.suggestedTagButton} ${styles.suggestedTagButtonSelected}` : styles.suggestedTagButton}
+                    onClick={() => handleAddTag(tag)}
+                  >
+                    {tag}
+                  </Button>
                 ))}
               </div>
             </Form.Group>
@@ -366,11 +367,10 @@ function CreateEventModal() {
           </Form>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
-          <Button variant="secondary" onClick={handleClose} className={styles.buttonSecondary}>
+          <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting}
-                  className={styles.buttonPrimary}>
+          <Button variant="primary" onClick={handleCreateEvent} disabled={isSubmitting} className={`${styles.button} ${styles.buttonPrimary}`}>
             Create Event
           </Button>
         </Modal.Footer>

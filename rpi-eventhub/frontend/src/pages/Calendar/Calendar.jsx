@@ -31,7 +31,7 @@ const CalendarPage = () => {
     const formatDate = (date) => {
       const mm = String(date.getMonth() + 1).padStart(2, "0");
       const dd = String(date.getDate()).padStart(2, "0");
-      const yy = date.getFullYear(); // Full year
+      const yy = date.getFullYear();
       return `${mm}/${dd}/${yy}`;
     };
 
@@ -55,6 +55,12 @@ const CalendarPage = () => {
     newStartDate.setDate(currentStartDate.getDate() + offset * 7);
     setCurrentStartDate(newStartDate);
     getWeekRange(newStartDate);
+  };
+
+  const goToToday = () => {
+    const today = new Date();
+    setCurrentStartDate(today);
+    getWeekRange(today);
   };
 
   useEffect(() => {
@@ -95,6 +101,7 @@ const CalendarPage = () => {
                 <button onClick={() => handleWeekChange(-1)}>
                   Previous Week
                 </button>
+                <button onClick={goToToday}>Today</button> {/* New Today button */}
                 <button onClick={() => handleWeekChange(1)}>Next Week</button>
               </div>
               <h2>
