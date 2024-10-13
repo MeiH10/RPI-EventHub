@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import { useColorScheme } from '../../hooks/useColorScheme'; // Assuming you have this hook
 import styles from './CreateEventModal.module.css'; // Import the CSS module
+import config from '../../config';
 
 function CreateEventModal() {
   const [show, setShow] = useState(false);
