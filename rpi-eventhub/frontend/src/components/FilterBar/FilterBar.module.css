@@ -12,7 +12,12 @@
   --clear-button-hover-bg-color: #555;
   --separator-bg-color: #ffffff;
 }
-
+.darkSelect {
+  color: black;
+}
+.darkOption {
+  color: black;
+}
 [data-theme='dark'] {
   --sidebar-bg-color: rgba(33, 32, 32, 0.5);
   --border-color: #fff;

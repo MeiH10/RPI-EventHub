@@ -94,9 +94,9 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                         value={sortMethod}
                         onChange={(e) => setSortMethod(e.target.value)}
                     >
-                        <option value="date">Date</option>
-                        <option value="likes">Likes</option>
-                        <option value="title">Title</option>
+            <option value="date" className={styles.darkOption }>Date</option>
+            <option value="likes" className={styles.darkOption }>Likes</option>
+            <option value="title" className={styles.darkOption }>Title</option>
                     </select>
                     <label htmlFor="sortOrder">Order</label>
                     <select
@@ -104,8 +104,8 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                         value={sortOrder}
                         onChange={(e) => setSortOrder(e.target.value)}
                     >
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option value="asc" className={styles.darkOption }>Ascending</option>
+                        <option value="desc" className={styles.darkOption }>Descending</option>
                     </select>
                 </div>
                 <div className={styles.separator}></div>
