@@ -5,16 +5,30 @@ import HomeCSS from './Home.module.css';
 import ImageCarousel from "../../components/Carousel/Carousel";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme'; 
 
 const Home = () => {
   const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme(); 
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
+  const pageStyles = {
+    background: isDark
+      ? '#120451'
+      : `linear-gradient(
+          217deg,
+          rgba(255, 101, 101, 0.8),
+          rgb(255 0 0 / 0%) 70.71%
+        ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+        linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
+    color: isDark ? '#fff' : '#000',
+  };
+
   return (
-    <div className="outterContainer" data-theme={theme}>
+    <div className={`${HomeCSS.outterContainer}`} style={pageStyles} data-theme={theme}>
       <NavBar />
       <div className={`${HomeCSS.content} container-fluid containerFluid`}>
         <div className="row">
@@ -28,7 +42,7 @@ const Home = () => {
                   <SearchBar />
               </div>
               <div className={`d-block d-lg-none ${HomeCSS.carouselContainer} ${HomeCSS.anim2}`}>
-                <ImageCarousel></ImageCarousel>
+                <ImageCarousel />
               </div>
               <div className={`${HomeCSS.anim1} card text-start bg-transparent border-0 p-0`}>
                 <div className={`${HomeCSS.about} card-body p-0`}>
@@ -40,7 +54,7 @@ const Home = () => {
             <hr className="text-start" /> 
           </div>
           <div className={`d-none d-lg-block col-lg-5 ${HomeCSS.carouselContainer} ${HomeCSS.anim2}`}>
-            <ImageCarousel></ImageCarousel>
+            <ImageCarousel />
           </div>
         </div>
       </div>

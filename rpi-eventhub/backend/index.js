@@ -16,6 +16,8 @@ const fs = require('fs');
 const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
+const { startSync } = require('./sqldb');
+const { getNextSequence } = require('./counter');
 
 
 async function deleteEventsByUser(email) {
@@ -34,10 +36,6 @@ async function deleteEventsByUser(email) {
   }
 }
 
-// deleteEventsByUser('larsec2');
-
-
-
 const addEventsToDatabase = async () => {
   try {
     const eventsPath = path.join(__dirname, 'cleaned_events.json');
@@ -46,7 +44,6 @@ const addEventsToDatabase = async () => {
     const events = JSON.parse(eventsData);
 
     for (const event of events) {
-      // Set endDateTime to 3 hours after startDateTime if it's null
       if (!event.endDateTime) {
         event.endDateTime = new Date(new Date(event.startDateTime).getTime() + 3 * 60 * 60 * 1000); // 3 hours later
       }
@@ -61,32 +58,6 @@ const addEventsToDatabase = async () => {
     console.error('Error adding events to the database:', error.message);
   }
 };
-
-
-
-
-// const addEventsToDatabase = async () => {
-//   try {
-//     const eventsPath = path.join(__dirname, 'event_9_24_24.json');
-//     const eventsData = fs.readFileSync(eventsPath, 'utf-8');
-
-//     const events = JSON.parse(eventsData);
-
-//     for (const event of events) {
-//       const newEvent = new Event(event);
-//       await newEvent.save();
-//       console.log(`Event ${newEvent.title} added successfully.`);
-//     }
-
-//     console.log('All events added successfully.');
-//   } catch (error) {
-//     console.error('Error adding events to the database:', error.message);
-//   }
-// };
-
-addEventsToDatabase();
-
-
 
 const upload = multer({
   limits: {
@@ -202,12 +173,15 @@ const authenticateAndVerify = async (req, res, next) => {
 
 
 
-// Middleware
-app.use(express.json()); // for parsing application/json
+app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI ).then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+mongoose
+.connect(process.env.MONGODB_URI)
+.then(() => {
+  console.log('MongoDB Connected');
+  startSync();
+})
+.catch((err) => console.log(err));
 
 // Signup Route
 app.post('/signup', async (req, res) => {
@@ -310,37 +284,36 @@ app.post('/login', async (req, res) => {
 });
 
 
+// Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
   const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
   const file = req.file;
-
   try {
     let imageUrl = '';
-
     if (file) {
       let imageBuffer;
-
       if (file.mimetype === 'application/pdf') {
         imageBuffer = await convertPdfToImage(file.buffer);
       } else {
         imageBuffer = await compressImage(file.buffer);
       }
-
       const formData = new FormData();
       formData.append('image', imageBuffer.toString('base64'));
-
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-
       if (response.data && response.data.data && response.data.data.url) {
         imageUrl = response.data.data.url;
       } else {
         throw new Error('Image upload failed or no URL returned');
       }
     }
+    
+    // Generate a unique eventId automatically
+    const eventId = await getNextSequence('eventId');
 
     const event = new Event({
+      eventId, // Auto-generated eventId
       title,
       description,
       poster: poster || 'admin',
@@ -352,7 +325,6 @@ app.post('/events', upload, async (req, res) => {
       club,
       rsvp
     });
-
     await event.save();
     res.status(201).json(event);
   } catch (error) {
@@ -360,6 +332,7 @@ app.post('/events', upload, async (req, res) => {
     res.status(400).json({ message: 'Error creating event', error: error.message });
   }
 });
+
 
 // Route for fetching all events
 app.get('/events', async (req, res) => {
@@ -390,95 +363,54 @@ app.get('/events/:id/like', async (req, res) => {
   }
 });
 
-app.get('/events/:id/like/status', authenticate, async (req, res) => {
-  const { id } = req.params; 
+app.get('/events/like/status', authenticate, async (req, res) => {
   const user = req.user;
   
   try {
-    const event = await Event.findById(id); 
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-
-    const liked = user.likedEvents.includes(id); 
-    res.status(200).json({ liked }); 
+    // const likedEvent = user.likedEvents.filter(e => e.toString() == id.toString())[0];
+    // res.status(200).json({ liked: likedEvent }); 
+    res.status(200).json(user.likedEvents.map(e => e.toString()))
   } catch (error) {
     res.status(500).json({ message: 'Server error', error }); 
   }
 });
 
-
-
-app.put('/events/:id/like', authenticateAndVerify, async (req, res) => {
-  const { id } = req.params;
-  const user = req.user;
-
-  try {
-    console.log('Received like request for event ID:', id);
-    console.log('Authenticated user:', user.username);
-
-    const event = await Event.findById(id);
-
-    if (!event) {
-      console.log('Event not found');
-      return res.status(404).json({ message: 'Event not found' });
-    }
-
-    if (user.likedEvents.includes(id)) {
-      // User has already liked the event, so unlike it
-      event.likes -= 1;
-      user.likedEvents = user.likedEvents.filter(eventId => eventId.toString() !== id);
-
-      await event.save();
-      await user.save();
-
-      console.log('Event unliked successfully', event.likes);
-      return res.json({ message: 'Event unliked successfully', likes: event.likes });
-    } else {
-      // User has not liked the event yet, so like it
-      event.likes += 1;
-      user.likedEvents.push(id);
-
-      await event.save();
-      await user.save();
-
-      console.log('Event liked successfully', event.likes);
-      return res.json({ message: 'Event liked successfully', likes: event.likes });
-    }
-  } catch (error) {
-    console.error('Failed to like event:', error);
-    res.status(500).json({ message: 'Failed to like event', error: error.message });
-  }
-});
-
-
-
 app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
-  console.log("Hits the post call\n"); 
-  const { id } = req.params;
-  const user = req.user;
+
+  const { id } = req.params; // Use 'id' to match the route parameter
+  const { liked } = req.body;
+  const userId = req.user._id; // Get user ID from the user object
 
   try {
     const event = await Event.findById(id);
+    const user = await User.findById(userId); // Fetch the user based on the ID
 
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
+    if (!event || !user) {
+      return res.status(404).json({ message: 'Event or User not found' });
     }
 
-    // Increment the likes count for the event
-    event.likes += 1;
-    await event.save();
+    // Check if the user has already liked the event
+    const hasLiked = user.likedEvents.includes(id);
 
-    // Add the event ID to the user's likedEvents array if not already liked
-    if (!user.likedEvents.includes(id)) {
-      user.likedEvents.push(id);
-      await user.save();
+    if (liked && !hasLiked) {
+      // User is liking the event, increment likes and add to likedEvents
+      event.likes += 1;
+      user.likedEvents.push(id); 
+    } else if (!liked && hasLiked) {
+      // User is unliking the event, decrement likes and remove from likedEvents
+      event.likes -= 1;
+      user.likedEvents = user.likedEvents.filter(
+        (eventId) => eventId.toString() !== id
+      );
     }
 
-    res.json({ message: 'Event liked successfully' });
+    await event.save(); 
+    await user.save();
+
+    res.json({ likes: event.likes });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to like event', error: error.message });
+    console.error('Error during like/unlike:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
