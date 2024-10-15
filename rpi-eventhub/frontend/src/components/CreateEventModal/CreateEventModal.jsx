@@ -302,15 +302,7 @@ function CreateEventModal() {
                     className={styles.formControl}
                     style={{display: 'none'}}
                 />
-                <Form.Label
-                  style={{
-                    cursor: 'pointer',
-                    borderRadius: "8px",
-                    backgroundColor: "var(--button-primary-bg-color) !important",
-                    color: "#fff",
-                    maxWidth: '50%',
-                  }} className={styles.fileFormLabel}
-                >
+                <Form.Label className={styles.fileFormLabelButton}>
                   Choose File
                 </Form.Label>
               </Form.Group>
