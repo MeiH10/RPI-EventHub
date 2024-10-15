@@ -73,6 +73,7 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                                }}>
                             </i>
                             <span style={{ color: isDark ? "black" : "var(--tags-label-color)", fontSize: "1rem" }}>Grid View </span>
+
                         </div>
                     ) : (
                         <div>
@@ -84,6 +85,7 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                                }}>
                             </i>
                             <span style={{ color: isDark ? "black" : "var(--tags-label-color)", fontSize: "1rem" }}>List View </span>
+
                         </div>
                     )}
                 </div>
