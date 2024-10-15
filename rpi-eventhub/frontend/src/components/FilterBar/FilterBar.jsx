@@ -62,25 +62,15 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                 <div className={styles.changeButton} onClick={handleViewChange}>
                     {isListView ?
                         <div>
-                            <i className="bi bi-columns-gap"
-                               style={{
-                                   fontSize: "1rem",
-                                   color: "var(--tags-label-color)",
-                                   marginRight: "10px" // Adding margin to the right of the icon
-                               }}>
+                            <i className="bi bi-columns-gap">
                             </i>
-                            <span style={{color: "var(--tags-label-color)", fontSize: "1rem"}}>Grid View </span>
+                            <span>Grid View </span>
                         </div>
                         :
                         <div>
-                            <i className="bi bi-list-nested"
-                               style={{
-                                   fontSize: "1rem",
-                                   color: "var(--tags-label-color)",
-                                   marginRight: "10px" // Adding margin to the right of the icon
-                               }}>
+                            <i className="bi bi-list-nested">
                             </i>
-                            <span style={{color: "var(--tags-label-color)", fontSize: "1rem"}}>List View </span>
+                            <span>List View </span>
                         </div>
                     }
                 </div>
