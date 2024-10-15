@@ -156,3 +156,13 @@
   padding: 5px !important;
   font-size: 1rem !important;
 }
+
+.fileFormLabelButton{
+  font-size: 1rem !important;
+  cursor: pointer;
+  padding: 8px !important;
+  background-color: var(--button-primary-bg-color) !important;
+  color: #fff !important;
+  max-width: 50% !important;
+  border-radius: 8px !important;
+}
