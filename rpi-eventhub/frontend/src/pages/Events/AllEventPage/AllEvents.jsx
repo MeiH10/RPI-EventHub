@@ -10,6 +10,7 @@ import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 import axios from 'axios';
 import config from '../../../config';
+import EventsListCard from '../../../pages/Events/AllEventList/EventsList';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
@@ -224,9 +225,16 @@ function AllEvents() {
                     isListView ?
                     (
                         <div className={styles.eventsDisplayContainer}>
-                            <EventList
-                                events={sortEvents(filteredEvents, sortMethod, sortOrder)}
-                            />
+                            {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                <EventsListCard
+                                    event={event}
+                                    selected={selectedEventIds.includes(event._id)}
+                                    events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                                    selectedEventIds={selectedEventIds}
+                                    onSelect={() => handleSelect(event._id)}
+                                 />
+                            ))}
+                            
                         </div>
                     ):(
                         <>
