@@ -65,15 +65,15 @@ function LoginModal() {
         </Modal.Header>
         <Modal.Body className={styles.modalBody}>
         {error && (
-    <Alert variant="danger" className={styles.alertDanger}>
-        <span
-            className={styles.errorText}
-            style={{ color: isDark ? 'white' : '#721c24' }}
-        >
-            {error}
-        </span>
-    </Alert>
-)}
+          <Alert variant="danger" className={styles.alertDanger}>
+            <span
+              className={styles.errorText}
+              style={{ color: isDark ? 'white' : '#721c24' }}
+            >
+              {error}
+            </span>
+          </Alert>
+        )}
           <Form>
             <Form.Group controlId="loginEmail" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Email address</Form.Label>

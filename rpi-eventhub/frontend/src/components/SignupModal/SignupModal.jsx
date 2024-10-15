@@ -104,15 +104,15 @@ function SignupModal() {
           </Modal.Header>
           <Modal.Body className={styles.modalBody}>
             {error &&(
-    <Alert variant="danger" className={styles.alertDanger}>
-        <span
-            className={styles.errorText}
-            style={{ color: isDark ? 'white' : '#721c24' }}
-        >
-            {error}
-        </span>
-    </Alert>
-)}
+              <Alert variant="danger" className={styles.alertDanger}>
+                <span
+                  className={styles.errorText}
+                  style={{ color: isDark ? 'white' : '#721c24' }}
+                >
+                  {error}
+                </span>
+              </Alert>
+            )}
             <Form>
               <Form.Group controlId="signupUsername" className={styles.formGroup}>
                 <Form.Label className={styles.formLabel}>Username</Form.Label>
