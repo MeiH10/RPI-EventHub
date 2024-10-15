@@ -285,7 +285,6 @@ app.post('/login', async (req, res) => {
 
 
 // Event Creation Route with Auto-Generated eventId
-// Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
   const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
   const file = req.file;
