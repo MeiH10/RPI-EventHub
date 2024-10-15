@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const mongoose = require('mongoose');
 const cron = require('node-cron');
-const Event = require('./path/to/event');
+const Event = require('./models/Event');
 
 mongoose.connect(process.env.MONGO_URI, {
    useNewUrlParser: true,
@@ -19,7 +19,7 @@ const deleteOldEvents = async () => {
 
    try {
       const result = await Event.deleteMany({
-         date: { $eq: oneDayAgo.toISOString().split('T')[0] }
+         endDateTime: { $lt: oneDayAgo }
       });
 
       console.log(`${result.deletedCount} old events deleted.`);
