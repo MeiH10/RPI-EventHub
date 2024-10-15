@@ -105,7 +105,12 @@ function CreateEventModal() {
       setSuccessOpen(true); 
     } catch (error) {
       console.error('Failed to create event:', error);
-      setError(error.response ? error.response.data.message : error.message);
+      // Duplicate error catch
+      if (error.response && error.response.data.message === 'Event with the same title and date already exists.') {
+        setError('Event with the same title and date already exists. If you think it is a mistake please reach our admins.');
+      } else {
+        setError(error.response ? error.response.data.message : error.message);
+      }
     } finally {
       setIsSubmitting(false);
     }
