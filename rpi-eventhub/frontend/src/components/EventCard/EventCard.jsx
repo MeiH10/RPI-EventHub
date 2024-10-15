@@ -1,15 +1,19 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './EventCard.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { useEvents } from '../../context/EventsContext';
 import { DateTime } from 'luxon';
+import axios from "axios";
+import config from '../../config';
 
 const timeZone = 'America/New_York';
 
-const EventCard = ({ event, onSelect}) => {
+const EventCard = ({ event, isLiked }) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
+
+  const [liked, setLiked] = useState(isLiked)
 
   const handleDelete = useCallback(async () => {
     try {
@@ -45,6 +49,33 @@ const EventCard = ({ event, onSelect}) => {
     ? formatTimeAsEST(event.startDateTime)
     : 'Unavailable';
 
+  const [likes, setLikes] = useState(event.likes || 0);
+
+  const handleLikeToggle = async () => {
+    const newLikedState = !liked; // Toggle the liked state
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `${config.apiUrl}/events/${event._id}/like`,
+        { liked: newLikedState }, // Send the new like/unlike state
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+        setLikes(data.likes); // Update the likes count immediately
+        setLiked(newLikedState); // Toggle the liked state
+      }
+    } catch (error) {
+      console.error("Error while toggling like:", error);
+    }
+  };
   return (
     <div key={event._id} className={styles.eventWrapper}>
       <div className={styles.imageContainer}>
@@ -82,6 +113,15 @@ const EventCard = ({ event, onSelect}) => {
             <span className={styles.tag}>No tags available</span>
           )}
         </div>
+      </div>
+      <div className={styles.likeContainer}>
+        <button
+          className={`${styles.likeButton} ${liked ? styles.liked : ""}`}
+          onClick={handleLikeToggle}
+        >
+          {likes}
+          <span>{liked ? "❤️" : "🤍"}</span>
+        </button>
       </div>
     </div>
   );

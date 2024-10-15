@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 
-function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
+function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
     const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedTime, setSelectedTime] = useState([]);
+    const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [sortMethod, setSortMethod] = useState('date');
+    const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
 
@@ -35,11 +35,12 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
     };
 
     const handleViewChange = () => {
-        setIsListView((prev) => !prev);
-        changeView(isListView);
-    }
-
-
+        setIsListView((prev) => {
+            const newValue = !prev;
+            changeView(newValue);
+            return newValue;
+        });
+    };
 
     return (
         <>
@@ -61,25 +62,15 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
                 <div className={styles.changeButton} onClick={handleViewChange}>
                     {isListView ?
                         <div>
-                            <i className="bi bi-columns-gap"
-                               style={{
-                                   fontSize: "1rem",
-                                   color: "var(--tags-label-color)",
-                                   marginRight: "10px" // Adding margin to the right of the icon
-                               }}>
+                            <i className="bi bi-columns-gap">
                             </i>
-                            <span style={{color: "var(--tags-label-color)", fontSize: "1rem"}}>Grid View </span>
+                            <span>Grid View </span>
                         </div>
                         :
                         <div>
-                            <i className="bi bi-list-nested"
-                               style={{
-                                   fontSize: "1rem",
-                                   color: "var(--tags-label-color)",
-                                   marginRight: "10px" // Adding margin to the right of the icon
-                               }}>
+                            <i className="bi bi-list-nested">
                             </i>
-                            <span style={{color: "var(--tags-label-color)", fontSize: "1rem"}}>List View </span>
+                            <span>List View </span>
                         </div>
                     }
                 </div>
@@ -146,6 +137,7 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView}) {
             </div>
         </>
     );
+
 }
 
 export default FilterBar;
