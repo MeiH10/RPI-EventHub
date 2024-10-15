@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
@@ -10,6 +10,8 @@ import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 import axios from 'axios';
 import config from '../../../config';
+import { ThemeContext } from '../../../context/ThemeContext';
+import { useColorScheme } from '../../../hooks/useColorScheme';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
@@ -19,12 +21,14 @@ function AllEvents() {
     const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
-    const [liked, setLiked] = useState([]) //Array of ids
+    const [liked, setLiked] = useState([]); // Array of ids
+    const { theme } = useContext(ThemeContext);
+    const { isDark } = useColorScheme();
 
     useEffect(() => {
         const fetchData = async () => {
             await fetchEvents();
-            await getLikedEvents()
+            await getLikedEvents();
             setIsLoading(false);
         };
 
@@ -35,16 +39,16 @@ function AllEvents() {
             try {
                 const response = await axios.get(`${config.apiUrl}/events/like/status`, {
                     headers: {
-                    Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
-                })
+                });
                 setLiked(response.data); // Update the liked state based on the server response
             } catch (err) {
                 console.error("Error fetching like status:", err);
             }
-          };
+        };
 
-        getLikedEvents()
+        getLikedEvents();
         fetchData();
     }, [fetchEvents]);
 
@@ -148,10 +152,22 @@ function AllEvents() {
 
     const changeView = () => {
         setIsListView(!isListView);
-    }
+    };
+
+    const pageStyles = {
+        background: isDark
+            ? '#120451'
+            : `linear-gradient(
+                217deg,
+                rgba(255, 101, 101, 0.8),
+                rgb(255 0 0 / 0%) 70.71%
+              ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+              linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
+        color: isDark ? '#fff' : '#000',
+    };
 
     return (
-        <div className={styles.allEvents}>
+        <div className={styles.allEvents} style={pageStyles} data-theme={theme}>
             <Navbar />
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
@@ -171,7 +187,7 @@ function AllEvents() {
                                 events={sortEvents(filteredEvents, sortMethod, sortOrder)}
                             />
                         </div>
-                    ):(
+                    ) : (
                         <div className={styles.eventsDisplayContainer}>
                             {isLoading ? (
                                 Array.from(new Array(10)).map((_, index) => (

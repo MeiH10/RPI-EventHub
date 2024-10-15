@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './EventCard.module.css';
 import { useAuth } from '../../context/AuthContext';
@@ -6,14 +6,19 @@ import { useEvents } from '../../context/EventsContext';
 import { DateTime } from 'luxon';
 import axios from "axios";
 import config from '../../config';
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
 const timeZone = 'America/New_York';
 
 const EventCard = ({ event, isLiked }) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
 
-  const [liked, setLiked] = useState(isLiked)
+  const [liked, setLiked] = useState(isLiked);
+  const [likes, setLikes] = useState(event.likes || 0);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -49,8 +54,6 @@ const EventCard = ({ event, isLiked }) => {
     ? formatTimeAsEST(event.startDateTime)
     : 'Unavailable';
 
-  const [likes, setLikes] = useState(event.likes || 0);
-
   const handleLikeToggle = async () => {
     const newLikedState = !liked; // Toggle the liked state
 
@@ -76,8 +79,21 @@ const EventCard = ({ event, isLiked }) => {
       console.error("Error while toggling like:", error);
     }
   };
+
+  const cardStyles = {
+    background: isDark
+      ? '#120451'
+      : `linear-gradient(
+          217deg,
+          rgba(255, 101, 101, 0.8),
+          rgb(255 0 0 / 0%) 70.71%
+        ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+        linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
+    color: isDark ? '#fff' : '#000',
+  };
+
   return (
-    <div key={event._id} className={styles.eventWrapper}>
+    <div key={event._id} className={styles.eventWrapper} style={cardStyles} data-theme={theme}>
       <div className={styles.imageContainer}>
         <img
           src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}

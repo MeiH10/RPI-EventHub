@@ -2,14 +2,28 @@ import React, { useContext } from 'react';
 import styles from './TermsOfService.module.css';
 import Navbar from '../../components/Navbar/Navbar';
 import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
 const TermsOfService = () => {
   const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
+
+  const pageStyles = {
+    background: isDark
+      ? '#120451'
+      : `linear-gradient(
+          217deg,
+          rgba(255, 101, 101, 0.8),
+          rgb(255 0 0 / 0%) 70.71%
+        ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+        linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
+    color: isDark ? '#fff' : '#000',
+  };
 
   return (
     <>
       <Navbar />
-      <div className={styles.termsContainer} data-theme={theme}>
+      <div className={styles.termsContainer} style={pageStyles} data-theme={theme}>
         <h1>Terms of Service</h1>
         <p><strong>Effective Date: 07/23/2024</strong></p>
         <p>

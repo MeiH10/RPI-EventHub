@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import CalendarCSS from "./Calendar.module.css";
 import axios from "axios";
 import config from "../../config";
 import { Link } from "react-router-dom";
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
 const CalendarPage = () => {
   const [weekRange, setWeekRange] = useState({ start: "", end: "" });
   const [events, setEvents] = useState([]);
   const [currentStartDate, setCurrentStartDate] = useState(new Date());
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
 
   const parseDateAsEST = (utcDate) => {
     const date = new Date(utcDate);
@@ -88,8 +92,20 @@ const CalendarPage = () => {
     });
   };
 
+  const pageStyles = {
+    background: isDark
+      ? '#120451'
+      : `linear-gradient(
+          217deg,
+          rgba(255, 101, 101, 0.8),
+          rgb(255 0 0 / 0%) 70.71%
+        ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
+        linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
+    color: isDark ? '#fff' : '#000',
+  };
+
   return (
-    <div className="outterContainer">
+    <div className="outterContainer" style={pageStyles} data-theme={theme}>
       <NavBar />
       <div className={`${CalendarCSS.content} container-fluid containerFluid`}>
         <div className={CalendarCSS.heroSection}>
