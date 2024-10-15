@@ -51,9 +51,7 @@
 .modalContainer{
   font-family: "Hevletica", sans-serif;
 }
-.errorText {
-  color: rgb(255, 255, 255); 
-}
+
 .modalTitle {
   font-size: 1.5rem;
   font-weight: bold!important;

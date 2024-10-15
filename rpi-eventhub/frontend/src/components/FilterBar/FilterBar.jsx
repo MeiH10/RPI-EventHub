@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
-
 function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
@@ -10,18 +9,6 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
     const { isDark } = useColorScheme();
-    const pageStyles = {
-        background: isDark
-            ? '#120451'
-            : `linear-gradient(
-                217deg,
-                rgba(255, 101, 101, 0.8),
-                rgb(255 0 0 / 0%) 70.71%
-              ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
-              linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
-        color: isDark ? '#fff' : '#000',
-    };
-    
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -71,41 +58,28 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                     </svg>
                 </div>
             </button>
-           
             <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
                 <div className={styles.changeButton} onClick={handleViewChange}>
-                    {isListView ? (
+                    {isListView ?
                         <div>
-                            <i className="bi bi-columns-gap"
-                               style={{
-                                   fontSize: "1rem",
-                                   color: isDark ? "black" : "var(--tags-label-color)",
-                                   marginRight: "10px" // Adding margin to the right of the icon
-                               }}>
+                            <i className="bi bi-columns-gap">
                             </i>
-                            <span style={{ color: isDark ? "black" : "var(--tags-label-color)", fontSize: "1rem" }}>Grid View </span>
+                            <span>Grid View </span>
                         </div>
-                    ) : (
+                        :
                         <div>
-                            <i className="bi bi-list-nested"
-                               style={{
-                                   fontSize: "1rem",
-                                   color: isDark ? "black" : "var(--tags-label-color)",
-                                   marginRight: "10px" // Adding margin to the right of the icon
-                               }}>
+                            <i className="bi bi-list-nested">
                             </i>
-                            <span style={{ color: isDark ? "black" : "var(--tags-label-color)", fontSize: "1rem" }}>List View </span>
+                            <span>List View </span>
                         </div>
-                    )}
+                    }
                 </div>
-                {"++++++++++++++"}
                 <div className={styles.sortContainer}>
                     <label htmlFor="sortMethod">Sort by</label>
                     <select
                         id="sortMethod"
                         value={sortMethod}
                         onChange={(e) => setSortMethod(e.target.value)}
-                        className={isDark ? styles.darkSelect : ''}
                     >
           <option value="date" className="text-black dark:text-white">Date</option>
 <option value="likes" className="text-black dark:text-white">Likes</option>
@@ -117,8 +91,8 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                         value={sortOrder}
                         onChange={(e) => setSortOrder(e.target.value)}
                     >
-                        <option value="asc" className="text-black dark:text-white">Ascending</option>
-                        <option value="desc" className="text-black dark:text-white">Descending</option>
+                          <option value="asc" className="text-black dark:text-white">Ascending</option>
+                          <option value="desc" className="text-black dark:text-white">Descending</option>
                     </select>
                 </div>
                 <div className={styles.separator}></div>
@@ -129,28 +103,17 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                 <div className={styles.filterSection}>
                     <h3 className={styles.filterBarTags}>By Tags</h3>
                     {tags.sort().map((tag) => (
-    <div key={tag} className={styles.checkboxWrapper}>
- <input
-                type="checkbox"
-                id={tag}
-                value={tag}
-                checked={selectedTags.includes(tag)}
-                onChange={() => handleTagChange(tag)}
-                style={{
-                    appearance: 'none',
-                    width: '24px', 
-                    height: '24px', 
-                    backgroundColor: isDark ? 'white' : 'transparent',
-                    borderColor: isDark ? 'white' : 'initial',
-                    borderRadius: '50%',
-                    border: `2px solid ${isDark ? 'white' : 'initial'}`,
-                    position: 'relative',
-                    cursor: 'pointer'
-                }}
-            />
-        <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
-    </div>
-))}
+                        <div key={tag} className={styles.checkboxWrapper}>
+                            <input
+                                type="checkbox"
+                                id={tag}
+                                value={tag}
+                                checked={selectedTags.includes(tag)}
+                                onChange={() => handleTagChange(tag)}
+                            />
+                            <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
+                        </div>
+                    ))}
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
