@@ -21,6 +21,7 @@ function CreateEventModal() {
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState([]);
   const [successOpen, setSuccessOpen] = useState(false); 
@@ -122,6 +123,8 @@ function CreateEventModal() {
     const selectedFile = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
     const maxSizeInMB = 10;
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    // get the name of the file, trim .pdf or .jpg
+    let fileName = selectedFile.name;
 
     if (selectedFile.numPages > 1) {
       console.log("PDF file should only have 1 page.");
@@ -151,7 +154,12 @@ function CreateEventModal() {
           const img = await getPage(i, pdf);
           imagesArray.push(img);
         }
-        setFile(imagesArray[0]);
+        //change the base64 image to file
+        setPreview(imagesArray[0]);
+        //change the file name to the .jpg file
+        fileName = fileName.replace(/\.[^/.]+$/, ".jpg");
+        const new_file = base64ToFile(imagesArray[0], fileName);
+        setFile(new_file);
       };
       reader.readAsArrayBuffer(selectedFile);
     }
@@ -159,7 +167,10 @@ function CreateEventModal() {
         console.log("Image file detected.");
         const reader = new FileReader();
         reader.onload = function (e) {
-            setFile(e.target.result);
+          setPreview(e.target.result);
+          // change the base64 image to file
+          const new_file = base64ToFile(e.target.result, fileName);
+          setFile(new_file);
         };
         reader.readAsDataURL(selectedFile);
     }
@@ -170,6 +181,18 @@ function CreateEventModal() {
         setFile(null);
     }
   }
+
+  const base64ToFile = (base64, filename) => {
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -293,9 +316,9 @@ function CreateEventModal() {
               </Form.Group>
             </div>
             {
-                file && (
+                preview && (
                     <div>
-                      <img src={file} alt={"upload-file"} style={{maxWidth: '100%', height: 'auto'}}/>
+                      <img src={preview} alt={"upload-file"} style={{maxWidth: '100%', height: 'auto'}}/>
                     </div>
                 )
             }
