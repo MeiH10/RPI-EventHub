@@ -23,7 +23,36 @@ function AllEvents() {
 
     const [selectedEventIds, setSelectedEventIds] = useState([]);
 
-    console.log(selectedEventIds)
+    const generateICS = () => {
+        // Filter events by selected event IDs
+        const filteredByIds = filteredEvents.filter(event => selectedEventIds.includes(event._id));
+      
+        let icsData = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//YourApp//Event Calendar//EN\n`;
+      
+        filteredByIds.forEach(event => {
+          icsData += `BEGIN:VEVENT\n`;
+          icsData += `UID:${event._id}\n`; // Using _id since that's the unique identifier in MongoDB
+          icsData += `DTSTAMP:${new Date().toISOString().replace(/-|:|\.\d+/g, '')}\n`; // Correct UTC format
+          icsData += `DTSTART:${new Date(event.startDateTime).toISOString().replace(/-|:|\.\d+/g, '')}\n`;
+          icsData += `DTEND:${new Date(event.endDateTime).toISOString().replace(/-|:|\.\d+/g, '')}\n`;
+          icsData += `SUMMARY:${event.title}\n`;
+          icsData += `DESCRIPTION:${event.description}\n`;
+          icsData += `LOCATION:${event.location}\n`;
+          icsData += `END:VEVENT\n`;
+        });
+      
+        icsData += `END:VCALENDAR\n`;
+      
+        // Create a Blob object for the ICS content
+        const blob = new Blob([icsData], { type: 'text/calendar' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'events.ics'; // Filename for the download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link); // Clean up the DOM element
+      };      
+      
 
     const handleSelect = (eventId) => {
         setSelectedEventIds((prevSelectedIds) => {
@@ -174,7 +203,7 @@ function AllEvents() {
                 <div className={styles.filterContainer}>
                     {selectedEventIds.length > 0 && (
                         <div className={`flex ml-6 flex-wrap z-10 absolute`}>
-                            <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 mt-24 w-3/4 bg-white rounded-sm flex justify-center items-center'>
+                            <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 mt-24 w-3/4 bg-white rounded-sm flex justify-center items-center' onClick={() => generateICS()}>
                                 <p className='text-md m-0'>Download ICS</p>
                             </div>
                             <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 mt-3 w-3/4 bg-red-500 rounded-sm flex justify-center items-center'
