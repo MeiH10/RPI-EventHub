@@ -19,7 +19,7 @@ const jwtSecret = process.env.JWT_SECRET;
 const { startSync } = require('./sqldb');
 const { getNextSequence } = require('./counter');
 
-require('./deleteOldEventsCron');
+require('./archiveOldEventsCron');
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
