@@ -19,6 +19,14 @@ const jwtSecret = process.env.JWT_SECRET;
 const { startSync } = require('./sqldb');
 const { getNextSequence } = require('./counter');
 
+require('./deleteOldEventsCron');
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.log(err));
 
 async function deleteEventsByUser(email) {
   try {

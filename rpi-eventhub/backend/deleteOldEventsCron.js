@@ -32,3 +32,5 @@ cron.schedule('0 0 * * *', () => {
    console.log('Running a scheduled job to delete old events');
    deleteOldEvents();
 });
+
+module.exports = deleteOldEvents;
