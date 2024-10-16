@@ -440,6 +440,27 @@ app.get('/verify-token', authenticate, (req, res) => {
   res.sendStatus(200);
 });
 
+app.get('/proxy/image/:eventId', async (req, res) => {
+  const { eventId } = req.params;
+
+  try {
+    const event = await Event.findById(eventId);
+
+    if (!event || !event.image) {
+      return res.status(404).json({ message: 'Event or image not found' });
+    }
+
+    const response = await axios.get(event.image, { responseType: 'arraybuffer' });
+    const contentType = response.headers['content-type'];
+    res.set('Content-Type', contentType);
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error fetching image:', error.message);
+    res.status(500).json({ message: 'Error fetching image' });
+  }
+});
+
+
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
@@ -447,6 +468,8 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
+
+
 
 
 
