@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import CalendarCSS from "./Calendar.module.css";
 import axios from "axios";
 import config from "../../config";
 import { Link } from "react-router-dom";
@@ -105,76 +104,73 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className="outterContainer" style={pageStyles} data-theme={theme}>
+    <div className={`flex flex-col min-h-screen ${isDark ? 'text-white' : 'text-black'}`} style={pageStyles} data-theme={theme}>
       <NavBar />
-      <div className={`${CalendarCSS.content} container-fluid containerFluid`}>
-        <div className={CalendarCSS.heroSection}>
-          <div className={CalendarCSS.title}></div>
-
-          <div className={CalendarCSS.grid}>
-            <div className={CalendarCSS.weeklyEvents}>
-              <div className={CalendarCSS.navigationButtons}>
-                <button onClick={() => handleWeekChange(-1)}>
-                  Previous Week
-                </button>
-                <button onClick={goToToday}>Today</button> {/* New Today button */}
-                <button onClick={() => handleWeekChange(1)}>Next Week</button>
-              </div>
-              <h2>
-                Week of {weekRange.start} - {weekRange.end}
-              </h2>
-              <div className={CalendarCSS.week}>
-                {[0, 1, 2, 3, 4, 5, 6].map((day) => (
-                  <div className={CalendarCSS.day} key={day}>
-                    <h3>
-                      {
-                        [
-                          "Sunday",
-                          "Monday",
-                          "Tuesday",
-                          "Wednesday",
-                          "Thursday",
-                          "Friday",
-                          "Saturday",
-                        ][day]
-                      }
-                    </h3>
-                    {filterEventsByDay(
-                      day,
-                      parseDateAsEST(weekRange.start),
-                      parseDateAsEST(weekRange.end)
-                    ).length > 0 ? (
-                      filterEventsByDay(
-                        day,
-                        parseDateAsEST(weekRange.start),
-                        parseDateAsEST(weekRange.end)
-                      ).map((event) => (
-                        <Link to={`/events/${event._id}`} key={event._id}>
-                          <div className={CalendarCSS.eventContainer}>
-                            <h4 className={CalendarCSS.eventTitle}>
-                              {event.title}
-                            </h4>
-                            {event.image ? (
-                              <img
-                                src={event.image}
-                                alt={event.title}
-                                className={CalendarCSS.eventImage}
-                              />
-                            ) : (
-                              <p>No image available</p>
-                            )}
-                          </div>
-                        </Link>
-                      ))
-                    ) : (
-                      <p>No events</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+      <div className="flex-1 pt-20 container mx-auto">
+        <div className="mt-10 border-3 p-4 bg-white dark:bg-gray-800 text-black dark:text-white w-11/12 mx-auto mb-10">
+          <div className="flex justify-center mb-5">
+            <button onClick={() => handleWeekChange(-1)} className="mx-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+              Previous Week
+            </button>
+            <button onClick={goToToday} className="mx-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+              Today
+            </button>
+            <button onClick={() => handleWeekChange(1)} className="mx-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+              Next Week
+            </button>
           </div>
-          <hr className={CalendarCSS.hr} />
+          <h2 className="mb-2 text-3xl text-black dark:text-white">
+            Week of {weekRange.start} - {weekRange.end}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-0 text-center">
+            {[0, 1, 2, 3, 4, 5, 6].map((day) => (
+              <div key={day} className="p-2 border border-black dark:border-white bg-gray-100 dark:bg-gray-700 text-black dark:text-white flex flex-col items-center">
+                <h3 className="text-lg border-b border-black dark:border-white w-full pb-1">
+                  {
+                    [
+                      "Sunday",
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                    ][day]
+                  }
+                </h3>
+                {filterEventsByDay(
+                  day,
+                  parseDateAsEST(weekRange.start),
+                  parseDateAsEST(weekRange.end)
+                ).length > 0 ? (
+                  filterEventsByDay(
+                    day,
+                    parseDateAsEST(weekRange.start),
+                    parseDateAsEST(weekRange.end)
+                  ).map((event) => (
+                    <Link to={`/events/${event._id}`} key={event._id} className="w-full">
+                      <div className="p-2 text-center mb-5 border border-black dark:border-white">
+                        <h4 className="font-serif text-lg font-bold text-black dark:text-white">
+                          {event.title}
+                        </h4>
+                        {event.image ? (
+                          <img
+                            src={event.image}
+                            alt={event.title}
+                            className="max-w-full h-auto my-2"
+                          />
+                        ) : (
+                          <p>No image available</p>
+                        )}
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p>No events</p>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <Footer />

@@ -10,7 +10,6 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
 const timeZone = 'America/New_York';
-
 const EventCard = ({ event, isLiked }) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
@@ -80,62 +79,71 @@ const EventCard = ({ event, isLiked }) => {
     }
   };
 
-  const cardStyles = {
-    background: isDark
-      ? '#120451'
-      : `linear-gradient(
+  const backgroundStyle = isDark
+    ? { backgroundColor: '#120451' }
+    : {
+        background: `linear-gradient(
           217deg,
           rgba(255, 101, 101, 0.8),
           rgb(255 0 0 / 0%) 70.71%
         ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
         linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
-    color: isDark ? '#fff' : '#000',
-  };
+      };
 
   return (
-    <div key={event._id} className={styles.eventWrapper} style={cardStyles} data-theme={theme}>
-      <div className={styles.imageContainer}>
+    <div
+      key={event._id}
+      className={`p-4 rounded-lg shadow-md ${isDark ? 'text-white' : 'text-black'}`}
+      style={backgroundStyle}
+      data-theme={theme}
+    >
+      <div className="relative">
         <img
           src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
           loading="lazy"
           alt={event.title}
+          className="w-full h-48 object-cover rounded-t-lg"
         />
-        <div className={styles.overlay}>
-          <Link to={`/events/${event._id}`} className={styles.overlayLink}>
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <Link to={`/events/${event._id}`} className="text-white text-lg">
             <span>Open</span>
           </Link>
         </div>
       </div>
-      <div className={styles.eventPosterDetails}>
+      <div className="mt-2">
         <p>Posted by {event.poster}</p>
       </div>
       {canSeeDeleteButton(username) && (
-        <button onClick={handleDelete} className={styles.deleteButton}>
+        <button onClick={handleDelete} className="mt-2 bg-red-500 text-white py-1 px-2 rounded">
           Delete
         </button>
       )}
-      <div className={styles.eventDetails}>
-        <h2>{event.title}</h2>
+      <div className="mt-4">
+        <h2 className="text-xl font-bold">{event.title}</h2>
         <p>{event.description}</p>
         <p><strong>Date & Time:</strong> {`${eventTime} on ${eventDate}`}</p>
         <p><strong>Location:</strong> {event.location || "Location not specified"}</p>
-        <div className={styles.tags}>
+        <div className="mt-2">
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
-              <span key={tag} className={styles.tag}>{tag}</span>
+              <span key={tag} className="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-2">
+                {tag}
+              </span>
             ))
           ) : (
-            <span className={styles.tag}>No tags available</span>
+            <span className="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-2">
+              No tags available
+            </span>
           )}
         </div>
       </div>
-      <div className={styles.likeContainer}>
+      <div className="mt-4 flex items-center">
         <button
-          className={`${styles.likeButton} ${liked ? styles.liked : ""}`}
+          className={`flex items-center ${liked ? 'text-red-500' : 'text-gray-500'}`}
           onClick={handleLikeToggle}
         >
           {likes}
-          <span>{liked ? "❤️" : "🤍"}</span>
+          <span className="ml-1">{liked ? "❤️" : "🤍"}</span>
         </button>
       </div>
     </div>

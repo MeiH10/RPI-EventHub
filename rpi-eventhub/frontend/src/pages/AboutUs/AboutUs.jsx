@@ -30,20 +30,19 @@ function AboutUs() {
     fetchContributors();
   }, []);
 
-  const pageStyles = {
-    background: isDark
-      ? '#120451'
-      : `linear-gradient(
+  const cardStyles = isDark
+    ? { backgroundColor: '#120451' }
+    : {
+        background: `linear-gradient(
           217deg,
           rgba(255, 101, 101, 0.8),
           rgb(255 0 0 / 0%) 70.71%
         ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
         linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
-    color: isDark ? '#fff' : '#000',
-  };
+      };
 
   return (
-    <div className='outterContainer' style={pageStyles} data-theme={theme}>
+    <div className={`outterContainer ${isDark ? 'text-white' : 'text-black'}`} style={cardStyles} data-theme={theme}>
       <Navbar />
       <div className="container-fluid containerFluid">
         <div className="row">
