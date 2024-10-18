@@ -187,12 +187,6 @@ const CalendarPage = () => {
                 <button onClick={goToToday}>Today</button>{" "}
                 {/* New Today button */}
                 <button onClick={() => handleWeekChange(1)}>Next Week</button>
-                <button
-                  style={{ position: "absolute", right: 0 }}
-                  onClick={generateICSFile}
-                >
-                  Download ICS For All Events
-                </button>
               </div>
               <h2>
                 Week of {weekRange.start} - {weekRange.end}

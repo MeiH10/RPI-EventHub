@@ -202,23 +202,14 @@ function AllEvents() {
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>
-                    {selectedEventIds.length > 0 && (
-                        <div className={`flex ml-6 flex-wrap z-10 absolute`}>
-                            <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 mt-24 w-3/4 bg-white rounded-sm flex justify-center items-center' onClick={() => generateICS()}>
-                                <p className='text-md m-0'>Download ICS</p>
-                            </div>
-                            <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 mt-3 w-3/4 bg-red-500 rounded-sm flex justify-center items-center'
-                                onClick={() => setSelectedEventIds([])}
-                            >
-                                <p className='text-md m-0'>Unselect All</p>
-                            </div>
-                        </div>
-                    )}
                     <FilterBar
                         tags={availableTags}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
                         changeView={changeView}
+                        showICS={selectedEventIds.length > 0}
+                        onUnselectAll={() => setSelectedEventIds([])}
+                        onDownloadICS={generateICS}
                     />
                 </div>
                 {
