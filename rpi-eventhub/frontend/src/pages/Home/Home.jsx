@@ -53,7 +53,7 @@ const Home = () => {
             </div>
             <hr className="text-start" /> 
           </div>
-          <div className={`d-none d-lg-block col-lg-5 ${HomeCSS.carouselContainer} ${HomeCSS.anim2}`}>
+          <div className={`d-none d-lg-block col-lg-5  ${HomeCSS.anim2}`}>
             <ImageCarousel />
           </div>
         </div>
