@@ -6,6 +6,7 @@ import { useEvents } from '../../context/EventsContext';
 import { DateTime } from 'luxon';
 import axios from "axios";
 import config from '../../config';
+import { toast } from 'react-toastify';
 
 const timeZone = 'America/New_York';
 
@@ -74,6 +75,11 @@ const EventCard = ({ event, isLiked }) => {
       }
     } catch (error) {
       console.error("Error while toggling like:", error);
+      if (error.response && error.response.status == 401) {
+        toast.error("Please login to like this event.");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
   };
   return (
