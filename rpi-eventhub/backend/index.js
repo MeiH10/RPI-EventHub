@@ -285,7 +285,6 @@ app.post('/login', async (req, res) => {
 
 
 // Event Creation Route with Auto-Generated eventId
-// Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
   const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
   const file = req.file;
@@ -309,7 +308,12 @@ app.post('/events', upload, async (req, res) => {
         throw new Error('Image upload failed or no URL returned');
       }
     }
-    
+
+    // check for duplicates
+    const existingEvent = await Event.findOne({ title, startDateTime });
+    if (existingEvent) {
+      return res.status(409).json({ message: 'Event with the same title and date already exists.' });
+    }
     // Generate a unique eventId automatically
     const eventId = await getNextSequence('eventId');
 
