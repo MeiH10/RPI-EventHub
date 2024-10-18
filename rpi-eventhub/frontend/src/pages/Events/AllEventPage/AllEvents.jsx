@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
@@ -153,6 +155,20 @@ function AllEvents() {
     return (
         <div className={styles.allEvents}>
             <Navbar />
+            <ToastContainer 
+            position="top-right"
+            style={{ top: '70px' }}
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition: Bounce
+            />  
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>
@@ -188,7 +204,7 @@ function AllEvents() {
                                     columnClassName={styles.myMasonryGridColumn}
                                 >
                                     {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                        <EventCard isLiked={liked.includes(event._id.toString())} key={event._id} event={event}/>
+                                        <EventCard isLiked={liked.includes(event._id.toString())} key={event._id} event={event} /> 
                                     ))}
                                 </Masonry>
                             )}
