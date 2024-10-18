@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import CalendarCSS from "./Calendar.module.css";
@@ -6,11 +6,13 @@ import axios from "axios";
 import config from "../../config";
 import ics from "ics";
 import { Link } from "react-router-dom";
+import html2canvas from "html2canvas";
 
 const CalendarPage = () => {
   const [weekRange, setWeekRange] = useState({ start: "", end: "" });
   const [events, setEvents] = useState([]);
   const [currentStartDate, setCurrentStartDate] = useState(new Date());
+  const calendarRef = useRef(null);
 
   const parseDateAsEST = (utcDate) => {
     const date = new Date(utcDate);
@@ -169,6 +171,32 @@ const CalendarPage = () => {
         );
       }
     });
+
+  const loadAllImages = () => {
+    const images = calendarRef.current.querySelectorAll("img");
+    return Promise.all(
+      Array.from(images).map((img) => {
+        if (!img.complete) {
+          return new Promise((resolve) => {
+            img.onload = img.onerror = resolve;
+          });
+        }
+        return Promise.resolve();
+      })
+    );
+  };
+
+  const captureCalendarScreenshot = async () => {
+    await loadAllImages();
+    if (calendarRef.current) {
+      html2canvas(calendarRef.current, { useCORS: true }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = `calendar-${weekRange.start}-to-${weekRange.end}.png`;
+        link.click();
+      });
+    }
   };
 
   return (
@@ -178,14 +206,19 @@ const CalendarPage = () => {
         <div className={CalendarCSS.heroSection}>
           <div className={CalendarCSS.title}></div>
 
-          <div className={CalendarCSS.grid}>
+          <div className={CalendarCSS.buttonWrapper}>
+            <button onClick={captureCalendarScreenshot} className="bg-red-500 text-white p-2 rounded-lg">
+              Save Calendar as Image
+            </button>
+          </div>
+
+          <div className={CalendarCSS.grid} ref={calendarRef}>
             <div className={CalendarCSS.weeklyEvents}>
               <div className={CalendarCSS.navigationButtons}>
                 <button onClick={() => handleWeekChange(-1)}>
                   Previous Week
                 </button>
-                <button onClick={goToToday}>Today</button>{" "}
-                {/* New Today button */}
+                <button onClick={goToToday}>Today</button>
                 <button onClick={() => handleWeekChange(1)}>Next Week</button>
               </div>
               <h2>
@@ -223,11 +256,12 @@ const CalendarPage = () => {
                               {event.title}
                             </h4>
                             {event.image ? (
-                              <img
-                                src={event.image}
-                                alt={event.title}
-                                className={CalendarCSS.eventImage}
-                              />
+                                <img
+                                  src={`${config.apiUrl}/proxy/image/${event._id}`}
+                                  alt={event.title}
+                                  className={CalendarCSS.eventImage}
+                                />
+
                             ) : (
                               <p>No image available</p>
                             )}
