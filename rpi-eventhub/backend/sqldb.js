@@ -79,23 +79,21 @@ const transformEventData = (pgEvent) => {
 };
 
 const upsertEventsToMongoDB = async (events) => {
-  const bulkOps = events.map((event) => {
+  for (const event of events) {
     const transformedEvent = transformEventData(event);
-    return {
-      updateOne: {
-        filter: { eventId: transformedEvent.eventId },
-        update: { $set: transformedEvent },
-        upsert: true,
-      },
-    };
-  });
 
-  try {
-    await Event.bulkWrite(bulkOps);
-    console.log('Events upserted successfully.');
-  } catch (error) {
-    console.error('Error upserting events to MongoDB:', error);
-    throw error;
+    const existingEvent = await Event.findOne({ eventId: transformedEvent.eventId });
+
+    if (!existingEvent) {
+      try {
+        await Event.create(transformedEvent);
+        console.log(`Inserted new event: ${transformedEvent.title}`);
+      } catch (error) {
+        console.error(`Error inserting event: ${transformedEvent.title}`, error);
+      }
+    } else {
+      console.log(`Event ${transformedEvent.title} already exists. Skipping update.`);
+    }
   }
 };
 
