@@ -2,6 +2,7 @@ const { Client } = require('pg');
 const fs = require('fs');
 const path = require('path');
 const cron = require('node-cron');
+const mongoose = require('mongoose');
 const Event = require('./models/Event');
 require('dotenv').config();
 
@@ -60,7 +61,6 @@ const transformEventData = (pgEvent) => {
   }
 
   return {
-    eventId: pgEvent.event_id,
     title: pgEvent.event_name,
     description: pgEvent.description,
     likes: pgEvent.likes || 0,
@@ -78,41 +78,48 @@ const transformEventData = (pgEvent) => {
   };
 };
 
-const upsertEventsToMongoDB = async (events) => {
-  for (const event of events) {
-    const transformedEvent = transformEventData(event);
-
-    const existingEvent = await Event.findOne({ eventId: transformedEvent.eventId });
-
-    if (!existingEvent) {
-      try {
-        await Event.create(transformedEvent);
-        console.log(`Inserted new event: ${transformedEvent.title}`);
-      } catch (error) {
-        console.error(`Error inserting event: ${transformedEvent.title}`, error);
-      }
-    } else {
-      console.log(`Event ${transformedEvent.title} already exists. Skipping update.`);
-    }
-  }
-};
-
 const syncEvents = async () => {
   try {
     console.log(`Starting sync. Last sync time: ${lastSyncTime}`);
     const newEvents = await fetchNewEventsFromPostgres(lastSyncTime);
     if (newEvents.length > 0) {
-      console.log(`Fetched ${newEvents.length} new events from PostgreSQL.`);
-      await upsertEventsToMongoDB(newEvents);
-      
-      const latestCreatedTime = newEvents.reduce((latest, event) => {
-        const eventCreatedTime = new Date(event.created);
-        return eventCreatedTime > latest ? eventCreatedTime : latest;
-      }, lastSyncTime);
-      
-      lastSyncTime = latestCreatedTime;
-      saveLastSyncTime(lastSyncTime);
-      console.log(`Sync completed. Last sync time updated to ${lastSyncTime}`);
+      console.log(`Fetched ${newEvents.length} new event(s) from PostgreSQL.`);
+
+      const transformedEvents = newEvents.map(transformEventData);
+
+      const eventIdentifiers = transformedEvents.map(event => ({
+        title: event.title,
+        startDateTime: event.startDateTime,
+      }));
+
+      const existingEvents = await Event.find({
+        $or: eventIdentifiers,
+      }).select('title startDateTime');
+
+      const existingEventSet = new Set(
+        existingEvents.map(event => `${event.title}|||${event.startDateTime.toISOString()}`)
+      );
+
+      const eventsToInsert = transformedEvents.filter(event => {
+        const identifier = `${event.title}|||${event.startDateTime.toISOString()}`;
+        return !existingEventSet.has(identifier);
+      });
+
+      if (eventsToInsert.length > 0) {
+        await Event.insertMany(eventsToInsert);
+        console.log(`Inserted ${eventsToInsert.length} new event(s) into MongoDB.`);
+
+        const latestCreatedTime = eventsToInsert.reduce((latest, event) => {
+          const eventCreatedTime = new Date(event.creationTimestamp);
+          return eventCreatedTime > latest ? eventCreatedTime : latest;
+        }, lastSyncTime);
+
+        lastSyncTime = latestCreatedTime;
+        saveLastSyncTime(lastSyncTime);
+        console.log(`Sync completed. Last sync time updated to ${lastSyncTime}`);
+      } else {
+        console.log('No new events to insert.');
+      }
     } else {
       console.log('No new events to sync.');
     }
@@ -123,11 +130,11 @@ const syncEvents = async () => {
 
 const createUniqueIndex = async () => {
   try {
-    await Event.collection.createIndex({ eventId: 1 }, { unique: true });
-    console.log('Unique index on eventId created');
+    await Event.collection.createIndex({ title: 1, startDateTime: 1 }, { unique: true });
+    console.log('Unique index on title and startDateTime created');
   } catch (error) {
     if (error.code === 11000) {
-      console.log('Unique index on eventId already exists');
+      console.log('Unique index on title and startDateTime already exists');
     } else {
       console.error('Error creating unique index:', error);
     }
@@ -137,11 +144,23 @@ const createUniqueIndex = async () => {
 const startSync = async () => {
   await createUniqueIndex();
   await syncEvents();
-  cron.schedule('0 */3 * * *', async () => {
+  cron.schedule('0 * * * *', async () => {
     console.log('Starting scheduled sync process...');
     await syncEvents();
   });
 };
+
+const startSynchronization = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('MongoDB Connected for synchronization');
+    await startSync();
+  } catch (error) {
+    console.error('Error connecting to MongoDB for synchronization:', error);
+  }
+};
+
+startSynchronization();
 
 module.exports = {
   startSync,
