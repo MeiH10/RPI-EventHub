@@ -62,7 +62,7 @@ const transformEventData = (pgEvent) => {
 
   return {
     title: pgEvent.event_name,
-    description: pgEvent.description,
+    description: pgEvent.description || 'No description provided.',
     likes: pgEvent.likes || 0,
     creationTimestamp: new Date(pgEvent.created),
     poster: poster,
@@ -78,6 +78,8 @@ const transformEventData = (pgEvent) => {
   };
 };
 
+const BATCH_SIZE = 1000;
+
 const syncEvents = async () => {
   try {
     console.log(`Starting sync. Last sync time: ${lastSyncTime}`);
@@ -86,7 +88,6 @@ const syncEvents = async () => {
       console.log(`Fetched ${newEvents.length} new event(s) from PostgreSQL.`);
 
       const transformedEvents = newEvents.map(transformEventData);
-
       const eventIdentifiers = transformedEvents.map(event => ({
         title: event.title,
         startDateTime: event.startDateTime,
@@ -106,8 +107,11 @@ const syncEvents = async () => {
       });
 
       if (eventsToInsert.length > 0) {
-        await Event.insertMany(eventsToInsert);
-        console.log(`Inserted ${eventsToInsert.length} new event(s) into MongoDB.`);
+        for (let i = 0; i < eventsToInsert.length; i += BATCH_SIZE) {
+          const batch = eventsToInsert.slice(i, i + BATCH_SIZE);
+          await Event.insertMany(batch);
+          console.log(`Inserted batch of ${batch.length} events.`);
+        }
 
         const latestCreatedTime = eventsToInsert.reduce((latest, event) => {
           const eventCreatedTime = new Date(event.creationTimestamp);
