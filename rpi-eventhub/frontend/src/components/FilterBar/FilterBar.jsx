@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
 function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
     const [selectedTags, setSelectedTags] = useState([]);
@@ -8,7 +9,7 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, o
     const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
-
+    const { isDark } = useColorScheme();
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -93,9 +94,9 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, o
                         value={sortMethod}
                         onChange={(e) => setSortMethod(e.target.value)}
                     >
-                        <option value="date">Date</option>
-                        <option value="likes">Likes</option>
-                        <option value="title">Title</option>
+                        <option value="date" className="text-black dark:text-white">Date</option>
+                        <option value="likes" className="text-black dark:text-white">Likes</option>
+                        <option value="title" className="text-black dark:text-white">Title</option>
                     </select>
                     <label htmlFor="sortOrder">Order</label>
                     <select
@@ -103,8 +104,8 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, o
                         value={sortOrder}
                         onChange={(e) => setSortOrder(e.target.value)}
                     >
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option value="asc" className="text-black dark:text-white">Ascending</option>
+                        <option value="desc" className="text-black dark:text-white">Descending</option>
                     </select>
                 </div>
                 <div className={styles.separator}></div>

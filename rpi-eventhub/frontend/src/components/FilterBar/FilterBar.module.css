@@ -12,7 +12,6 @@
   --clear-button-hover-bg-color: #555;
   --separator-bg-color: #ffffff;
 }
-
 [data-theme='dark'] {
   --sidebar-bg-color: rgba(0, 0, 0, 0.9);
   --border-color: #fff;
