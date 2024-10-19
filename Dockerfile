@@ -21,6 +21,4 @@ WORKDIR /app/backend
 
 EXPOSE 5000
 
-COPY pm2.config.js /app/backend/pm2.config.js
-
 CMD ["pm2-runtime", "pm2.config.js"]
