@@ -285,7 +285,6 @@ app.post('/login', async (req, res) => {
 
 
 // Event Creation Route with Auto-Generated eventId
-// Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
   const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
   const file = req.file;
@@ -309,7 +308,12 @@ app.post('/events', upload, async (req, res) => {
         throw new Error('Image upload failed or no URL returned');
       }
     }
-    
+
+    // check for duplicates
+    const existingEvent = await Event.findOne({ title, startDateTime });
+    if (existingEvent) {
+      return res.status(409).json({ message: 'Event with the same title and date already exists.' });
+    }
     // Generate a unique eventId automatically
     const eventId = await getNextSequence('eventId');
 
@@ -436,6 +440,27 @@ app.get('/verify-token', authenticate, (req, res) => {
   res.sendStatus(200);
 });
 
+app.get('/proxy/image/:eventId', async (req, res) => {
+  const { eventId } = req.params;
+
+  try {
+    const event = await Event.findById(eventId);
+
+    if (!event || !event.image) {
+      return res.status(404).json({ message: 'Event or image not found' });
+    }
+
+    const response = await axios.get(event.image, { responseType: 'arraybuffer' });
+    const contentType = response.headers['content-type'];
+    res.set('Content-Type', contentType);
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error fetching image:', error.message);
+    res.status(500).json({ message: 'Error fetching image' });
+  }
+});
+
+
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
@@ -443,6 +468,8 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
+
+
 
 
 
