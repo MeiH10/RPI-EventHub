@@ -55,6 +55,8 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  top: 100px;
 }
 
 .searchBarWrapper {
