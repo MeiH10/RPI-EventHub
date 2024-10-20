@@ -1,5 +1,6 @@
 const Event = require('../models/event');
 const { getNextSequence } = require('../counter');
+const cron = require('node-cron');
 
 // get the data from events.rpi.edu
 
@@ -56,6 +57,37 @@ function formatDateTime(input) {
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000+00:00`;
 }
+
+async function fetchAndUpdateEvents() {
+    try {
+        const count = "NaN";
+        const days = 7;
+        let events = await getEvents(count, days); // get events from events.rpi.edu
+        let eventsList = extractEvents(events);    // extract events from the response
+
+        for (let eventData of eventsList) {
+            let existingEvent = await Event.findOne({ title: eventData.title, startDateTime: eventData.startDateTime, endDateTime: eventData.endDateTime });
+
+            if (existingEvent) {
+                // if there is an event with the same name and timestamp, update it
+                await Event.updateOne({ _id: existingEvent._id }, eventData);
+                console.log(`Updated event: ${eventData.title}`);
+            } else {
+                // if there is no event with the same name and timestamp, insert it
+                eventData.eventId = await getNextSequence('eventId'); // 生成新的eventId
+                const newEvent = new Event(eventData);
+                console.log(newEvent);
+                // await newEvent.save();
+                console.log(`Inserted new event: ${eventData.title}`);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching and updating events:', error);
+    }
+}
+
+// Run the fetchAndUpdateEvents function every hour
+// cron.schedule('0 * * * *', fetchAndUpdateEvents);
 
 module.exports = {getEvents, extractEvents};
 
