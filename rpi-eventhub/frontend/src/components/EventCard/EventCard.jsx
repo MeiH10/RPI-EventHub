@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useContext } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './EventCard.module.css';
 import { useAuth } from '../../context/AuthContext';
@@ -6,18 +6,14 @@ import { useEvents } from '../../context/EventsContext';
 import { DateTime } from 'luxon';
 import axios from "axios";
 import config from '../../config';
-import { ThemeContext } from '../../context/ThemeContext';
-import { useColorScheme } from '../../hooks/useColorScheme';
 
 const timeZone = 'America/New_York';
-const EventCard = ({ event, isLiked }) => {
+
+const EventCard = ({ event, isLiked, onSelect, selected }) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
-  const { theme } = useContext(ThemeContext);
-  const { isDark } = useColorScheme();
 
-  const [liked, setLiked] = useState(isLiked);
-  const [likes, setLikes] = useState(event.likes || 0);
+  const [liked, setLiked] = useState(isLiked)
 
   const handleDelete = useCallback(async () => {
     try {
@@ -53,6 +49,8 @@ const EventCard = ({ event, isLiked }) => {
     ? formatTimeAsEST(event.startDateTime)
     : 'Unavailable';
 
+  const [likes, setLikes] = useState(event.likes || 0);
+
   const handleLikeToggle = async () => {
     const newLikedState = !liked; // Toggle the liked state
 
@@ -78,72 +76,51 @@ const EventCard = ({ event, isLiked }) => {
       console.error("Error while toggling like:", error);
     }
   };
-
-  const backgroundStyle = isDark
-    ? { backgroundColor: '#120451' }
-    : {
-        background: `linear-gradient(
-          217deg,
-          rgba(255, 101, 101, 0.8),
-          rgb(255 0 0 / 0%) 70.71%
-        ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
-        linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%)`,
-      };
-
   return (
-    <div
-      key={event._id}
-      className={`p-4 rounded-lg shadow-md ${isDark ? 'text-white' : 'text-black'}`}
-      style={backgroundStyle}
-      data-theme={theme}
-    >
-      <div className="relative">
+    <div key={event._id} style={{ transition: 'border-width 0.25s ease, border-color 0.25s ease' }} className={`duration-500 ${styles.eventWrapper} ${selected && 'border-8 border-indigo-400'}`}>
+      <div className={styles.imageContainer}>
         <img
           src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
           loading="lazy"
           alt={event.title}
-          className="w-full h-48 object-cover rounded-t-lg"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <Link to={`/events/${event._id}`} className="text-white text-lg">
+        <div className={styles.overlay}>
+          <Link to={`/events/${event._id}`} className={styles.overlayLink}>
             <span>Open</span>
           </Link>
         </div>
       </div>
-      <div className="mt-2">
+      <div className={styles.eventPosterDetails}>
+      <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" className='absolute right-4 mt-4 h-5 w-5' onChange={onSelect} checked={selected} />
         <p>Posted by {event.poster}</p>
       </div>
       {canSeeDeleteButton(username) && (
-        <button onClick={handleDelete} className="mt-2 bg-red-500 text-white py-1 px-2 rounded">
+        <button onClick={handleDelete} className={styles.deleteButton}>
           Delete
         </button>
       )}
-      <div className="mt-4">
-        <h2 className="text-xl font-bold">{event.title}</h2>
+      <div className={styles.eventDetails}>
+        <h2>{event.title}</h2>
         <p>{event.description}</p>
         <p><strong>Date & Time:</strong> {`${eventTime} on ${eventDate}`}</p>
         <p><strong>Location:</strong> {event.location || "Location not specified"}</p>
-        <div className="mt-2">
+        <div className={styles.tags}>
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
-              <span key={tag} className="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-2">
-                {tag}
-              </span>
+              <span key={tag} className={styles.tag}>{tag}</span>
             ))
           ) : (
-            <span className="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-2">
-              No tags available
-            </span>
+            <span className={styles.tag}>No tags available</span>
           )}
         </div>
       </div>
-      <div className="mt-4 flex items-center">
+      <div className={styles.likeContainer}>
         <button
-          className={`flex items-center ${liked ? 'text-red-500' : 'text-gray-500'}`}
+          className={`${styles.likeButton} ${liked ? styles.liked : ""}`}
           onClick={handleLikeToggle}
         >
           {likes}
-          <span className="ml-1">{liked ? "❤️" : "🤍"}</span>
+          <span>{liked ? "❤️" : "🤍"}</span>
         </button>
       </div>
     </div>
