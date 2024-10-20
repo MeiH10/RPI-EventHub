@@ -4,6 +4,7 @@ const path = require('path');
 const cron = require('node-cron');
 const mongoose = require('mongoose');
 const Event = require('./models/Event');
+const { giveTags } = require('./useful_script/tagFunction');
 require('dotenv').config();
 
 const pgClient = new Client({
@@ -60,9 +61,19 @@ const transformEventData = (pgEvent) => {
     poster = poster.slice(0, -('@rpi.edu'.length));
   }
 
+  const title = pgEvent.event_name || 'Untitled Event';
+  const description = pgEvent.description || 'No description provided.';
+
+  if (!pgEvent.event_name) {
+    console.warn(`Event with ID ${pgEvent.event_id} has a null or undefined event_name.`);
+  }
+
+  const tagsSet = giveTags(title, description);
+  const tagsArray = Array.from(tagsSet);
+
   return {
-    title: pgEvent.event_name,
-    description: pgEvent.description || 'No description provided.',
+    title: title,
+    description: description,
     likes: pgEvent.likes || 0,
     creationTimestamp: new Date(pgEvent.created),
     poster: poster,
@@ -72,7 +83,7 @@ const transformEventData = (pgEvent) => {
       : new Date(new Date(pgEvent.event_start).getTime() + 3 * 60 * 60 * 1000),
     location: pgEvent.location || 'None',
     image: pgEvent.image_id ? `${process.env.IMAGE_PREFIX}${pgEvent.image_id}` : '',
-    tags: pgEvent.tags ? pgEvent.tags.split(',').map(tag => tag.trim()) : [],
+    tags: tagsArray,
     club: pgEvent.club_name || 'Unknown Club',
     rsvp: pgEvent.more_info || '',
   };
@@ -156,7 +167,8 @@ const startSync = async () => {
 
 const startSynchronization = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(process.env.MONGODB_URI, {
+    });
     console.log('MongoDB Connected for synchronization');
     await startSync();
   } catch (error) {
