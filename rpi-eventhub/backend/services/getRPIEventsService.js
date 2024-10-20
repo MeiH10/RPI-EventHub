@@ -60,7 +60,7 @@ function formatDateTime(input) {
 
 async function fetchAndUpdateEvents() {
     try {
-        const count = "NaN";
+        const count = 1;
         const days = 7;
         let events = await getEvents(count, days); // get events from events.rpi.edu
         let eventsList = extractEvents(events);    // extract events from the response
@@ -69,15 +69,12 @@ async function fetchAndUpdateEvents() {
             let existingEvent = await Event.findOne({ title: eventData.title, startDateTime: eventData.startDateTime, endDateTime: eventData.endDateTime });
 
             if (existingEvent) {
-                // if there is an event with the same name and timestamp, update it
-                await Event.updateOne({ _id: existingEvent._id }, eventData);
-                console.log(`Updated event: ${eventData.title}`);
+                console.log(`Event already exists: ${eventData.title}`);
             } else {
                 // if there is no event with the same name and timestamp, insert it
-                eventData.eventId = await getNextSequence('eventId'); // 生成新的eventId
+                eventData.eventId = await getNextSequence('eventId');
                 const newEvent = new Event(eventData);
-                console.log(newEvent);
-                // await newEvent.save();
+                await newEvent.save();
                 console.log(`Inserted new event: ${eventData.title}`);
             }
         }
@@ -86,8 +83,11 @@ async function fetchAndUpdateEvents() {
     }
 }
 
+
+// Run when the server starts
+fetchAndUpdateEvents();
 // Run the fetchAndUpdateEvents function every hour
-// cron.schedule('0 * * * *', fetchAndUpdateEvents);
+cron.schedule('0 * * * *', fetchAndUpdateEvents);
 
 module.exports = {getEvents, extractEvents};
 

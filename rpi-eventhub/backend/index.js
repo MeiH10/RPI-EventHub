@@ -283,6 +283,24 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.get('/rpi-events', async (req, res) => {
+  //hardcoded values for now
+    const count = 1;
+    const days = 7;
+    let events = null;
+    let eventsList = [];
+    try {
+       events = await getEvents(count, days);
+       eventsList = extractEvents(events);
+       console.log('Successfully fetched RPI events');
+       res.status(200).json(eventsList);
+    } catch (error) {
+        console.error('Error fetching RPI events:', error);
+        res.status(500).json({ message: 'Error fetching RPI events', error: error.message });
+    }
+});
+
+
 // Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
   const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
