@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
-function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
+
+function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -59,6 +60,18 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                 </div>
             </button>
             <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
+                {showICS && (
+                    <div>
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 bg-white rounded-sm flex justify-center items-center' onClick={onDownloadICS}>
+                            <p className='text-md text-black m-0'>Download ICS</p>
+                        </div>
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-red-500 rounded-sm flex justify-center items-center'
+                            onClick={onUnselectAll}
+                        >
+                            <p className='text-md m-0'>Unselect All</p>
+                        </div>
+                    </div>
+                )}
                 <div className={styles.changeButton} onClick={handleViewChange}>
                     {isListView ?
                         <div>
