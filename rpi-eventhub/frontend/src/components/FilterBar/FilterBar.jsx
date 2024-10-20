@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
-function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
+function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
-
+    const { isDark } = useColorScheme();
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -59,6 +60,18 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                 </div>
             </button>
             <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
+                {showICS && (
+                    <div>
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 bg-white rounded-sm flex justify-center items-center' onClick={onDownloadICS}>
+                            <p className='text-md text-black m-0'>Download ICS</p>
+                        </div>
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-red-500 rounded-sm flex justify-center items-center'
+                            onClick={onUnselectAll}
+                        >
+                            <p className='text-md m-0'>Unselect All</p>
+                        </div>
+                    </div>
+                )}
                 <div className={styles.changeButton} onClick={handleViewChange}>
                     {isListView ?
                         <div>
@@ -81,9 +94,9 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                         value={sortMethod}
                         onChange={(e) => setSortMethod(e.target.value)}
                     >
-                        <option value="date">Date</option>
-                        <option value="likes">Likes</option>
-                        <option value="title">Title</option>
+                        <option value="date" className="text-black dark:text-white">Date</option>
+                        <option value="likes" className="text-black dark:text-white">Likes</option>
+                        <option value="title" className="text-black dark:text-white">Title</option>
                     </select>
                     <label htmlFor="sortOrder">Order</label>
                     <select
@@ -91,8 +104,8 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView }) {
                         value={sortOrder}
                         onChange={(e) => setSortOrder(e.target.value)}
                     >
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option value="asc" className="text-black dark:text-white">Ascending</option>
+                        <option value="desc" className="text-black dark:text-white">Descending</option>
                     </select>
                 </div>
                 <div className={styles.separator}></div>

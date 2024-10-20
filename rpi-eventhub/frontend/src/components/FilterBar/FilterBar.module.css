@@ -12,7 +12,6 @@
   --clear-button-hover-bg-color: #555;
   --separator-bg-color: #ffffff;
 }
-
 [data-theme='dark'] {
   --sidebar-bg-color: rgba(0, 0, 0, 0.9);
   --border-color: #fff;
@@ -37,7 +36,7 @@
   box-sizing: border-box;
   margin-bottom: auto;
   position: sticky;
-  top: 10rem;
+  top: 14rem;
   max-height: 70vh;
   z-index: 1000;
   font-family: "Hevletica Neue", sans-serif;
