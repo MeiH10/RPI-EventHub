@@ -96,7 +96,8 @@ function AllEvents() {
 
     useEffect(() => {
         setFilteredEvents(events);
-        const tags = [...new Set(events.flatMap(event => event.tags || []))];
+        const filteredEvents = events.filter(event => new Date(event.startDateTime) >= new Date());
+        const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
     }, [events]);
 
@@ -157,7 +158,8 @@ function AllEvents() {
     }, [fetchEvents]);
 
     useEffect(() => {
-        const tags = [...new Set(events.flatMap(event => event.tags || []))];
+        const filteredEvents = events.filter(event => new Date(event.startDateTime) >= new Date());
+        const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
 
         const defaultFilters = {
