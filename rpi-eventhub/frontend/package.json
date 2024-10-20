@@ -17,6 +17,7 @@
     "framer-motion": "^11.0.20",
     "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
+    "ics": "^3.8.1",
     "jwt-decode": "^4.0.0",
     "luxon": "^3.5.0",
     "pdf-lib": "^1.17.1",
