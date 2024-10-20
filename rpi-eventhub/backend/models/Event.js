@@ -20,6 +20,6 @@ const eventSchema = new mongoose.Schema({
 
 eventSchema.index({ eventId: 1 }, { unique: true });
 
-const Event = mongoose.model('Event', eventSchema);
+const Event = mongoose.models.Event || mongoose.model('Event', eventSchema);
 
 module.exports = Event;

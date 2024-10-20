@@ -18,6 +18,7 @@ require('dotenv').config({ path: '.env' });
 const jwtSecret = process.env.JWT_SECRET;
 const { startSync } = require('./sqldb');
 const { getNextSequence } = require('./counter');
+const { getEvents, extractEvents } = require('./services/getRPIEventsService');
 
 
 async function deleteEventsByUser(email) {
@@ -172,7 +173,6 @@ const authenticateAndVerify = async (req, res, next) => {
 
 
 
-
 app.use(express.json());
 
 mongoose
@@ -282,7 +282,6 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: "Login error", error: error.message });
   }
 });
-
 
 // Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
