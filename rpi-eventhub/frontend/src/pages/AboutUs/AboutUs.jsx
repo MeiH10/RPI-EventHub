@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useContext} from 'react';
 import styles from './AboutUs.module.css';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import RPIBridgePhoto from '../../assets/RPIBridgePhoto.jpg';
 import { Skeleton } from '@mui/material';
-
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 function AboutUs() {
   const [contributors, setContributors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     
@@ -27,7 +29,7 @@ function AboutUs() {
   }, []);
 
   return (
-    <div className='outterContainer'>
+    <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400'}`} data-theme={theme}>
       <Navbar />
       <div className="container-fluid containerFluid">
         <div className="row">
