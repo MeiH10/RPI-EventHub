@@ -25,10 +25,8 @@ function extractEvents(jsonResponse) {
 
     const events = jsonResponse?.bwEventList?.events || [];
     events.forEach(event => {
-        const eventId = getNextSequence('eventId'); // Generate unique _id
 
         const newEvent = new Event({
-            eventId: eventId,
             title: event.summary || '', // Using 'summary' from the response as the title
             description: event.description || '',
             poster: 'RPI', // Defaulting to 'RPI' if not provided
@@ -71,8 +69,6 @@ async function fetchAndUpdateEvents() {
             if (existingEvent) {
                 console.log(`Event already exists: ${eventData.title}`);
             } else {
-                // if there is no event with the same name and timestamp, insert it
-                eventData.eventId = await getNextSequence('eventId');
                 const newEvent = new Event(eventData);
                 await newEvent.save();
                 console.log(`Inserted new event: ${eventData.title}`);
