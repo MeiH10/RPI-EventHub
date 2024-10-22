@@ -5,7 +5,7 @@ Out site is now live at : https://rpieventhub.com/
 
 ## Figma Links
 Here is the link to the Figma design for the project: 
-[Figma Design](https://www.figma.com/file/v0cNZkxuSuKK9oWbOzVuKc/RPI-EventHub?type=design&node-id=0%3A1&mode=design&t=KkhngAJ36dMqvRKb-1)
+[Figma Design]([https://www.figma.com/file/v0cNZkxuSuKK9oWbOzVuKc/RPI-EventHub?type=design&node-id=0%3A1&mode=design&t=KkhngAJ36dMqvRKb-1](https://www.figma.com/design/v0cNZkxuSuKK9oWbOzVuKc/RPI-EventHub?node-id=0-1&t=eB62svz1oXVUen8N-1))
 
 
 Test - Git Perms.
