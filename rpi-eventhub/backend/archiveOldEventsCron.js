@@ -91,7 +91,7 @@ mongoose.connect(process.env.MONGO_URI, {
    
    
 // Cron job to run the archiveOldEvents function every day at XX:XX XM
-cron.schedule('18 17 * * *', () => {
+cron.schedule('00 00 * * *', () => {
    console.log('Running a scheduled job to archive old events');
    archiveOldEvents();
 });

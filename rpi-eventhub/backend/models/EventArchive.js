@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
 const eventArchiveSchema = new mongoose.Schema({
-   title: { type: String, required: true },         
-   description: { type: String, required: true },   
+   title: { type: String},         
+   description: { type: String},   
    likes: { type: Number, default: 0 },             
    creationTimestamp: { type: Date, default: Date.now }, 
-   poster: { type: String, required: true },      
-   startDateTime: { type: Date, required: true },   
-   endDateTime: { type: Date, required: true },     
-   location: { type: String, required: true },      
+   poster: { type: String},      
+   startDateTime: { type: Date},   
+   endDateTime: { type: Date},     
+   location: { type: String},      
    image: { type: String },                         
    tags: [String],                                  
-   club: { type: String, required: true },          
+   club: { type: String},          
    rsvp: { type: String }                           
 }, { timestamps: true });
 
