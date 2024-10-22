@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import config from '../../config';
 import styles from './SignupModal.module.css';
-
+import { useColorScheme } from '../../hooks/useColorScheme';
 function SignupModal() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
@@ -17,7 +17,7 @@ function SignupModal() {
   const [usernameTouched, setUsernameTouched] = useState(false);
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
-
+  const { isDark } = useColorScheme();
   const handleClose = () => {
     setShow(false);
     setError('');
@@ -103,7 +103,16 @@ function SignupModal() {
             <small>All RPI events in one place.</small>
           </Modal.Header>
           <Modal.Body className={styles.modalBody}>
-            {error && <Alert variant="danger" className={styles.alertDanger}>{error}</Alert>}
+            {error &&(
+              <Alert variant="danger" className={styles.alertDanger}>
+                <span
+                  className={styles.errorText}
+                  style={{ color: isDark ? 'white' : '#721c24' }}
+                >
+                  {error}
+                </span>
+              </Alert>
+            )}
             <Form>
               <Form.Group controlId="signupUsername" className={styles.formGroup}>
                 <Form.Label className={styles.formLabel}>Username</Form.Label>
