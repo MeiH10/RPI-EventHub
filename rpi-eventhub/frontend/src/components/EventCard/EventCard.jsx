@@ -6,6 +6,7 @@ import { useEvents } from '../../context/EventsContext';
 import { DateTime } from 'luxon';
 import axios from "axios";
 import config from '../../config';
+import ReactGA from "react-ga4";
 
 const timeZone = 'America/New_York';
 
@@ -51,9 +52,16 @@ const EventCard = ({ event, isLiked }) => {
 
   const [likes, setLikes] = useState(event.likes || 0);
 
+  const handleLikeClick = () => {
+    ReactGA.event({
+      category: 'Like',
+      action: 'Event Liked'
+    });
+  };
+
   const handleLikeToggle = async () => {
     const newLikedState = !liked; // Toggle the liked state
-
+    handleLikeClick();
     try {
       const token = localStorage.getItem("token");
 

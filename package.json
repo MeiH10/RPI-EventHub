@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "react-ga4": "^2.1.0"
+    "grep": "^0.1.0",
+    "react-ga4": "^2.1.0",
+    "sed": "^0.0.2"
   }
 }
