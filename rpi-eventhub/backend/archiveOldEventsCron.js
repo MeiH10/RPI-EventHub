@@ -1,4 +1,3 @@
-// Load environment variables from the .env file
 require('dotenv').config();
 
 const mongoose = require('mongoose');
@@ -13,34 +12,86 @@ mongoose.connect(process.env.MONGO_URI, {
    .then(() => console.log('MongoDB connected using env file'))
    .catch((err) => console.log(err));
 
-const archiveOldEvents = async () => {
-   const currentDate = new Date();
-
-   const oneDayAgo = new Date();
-   oneDayAgo.setDate(currentDate.getDate() - 1);
-
-   try {
-      const oldEvents = await Event.find({
-         endDateTime: { $lt: oneDayAgo }
-      });
-
-      if (oldEvents.length > 0) {
-         await EventArchive.insertMany(oldEvents);
-
-         const result = await Event.deleteMany({
-            endDateTime: { $lt: oneDayAgo }
+   const archiveOldEvents = async () => {
+      const currentDate = new Date();
+   
+      // Subtract one day from the current date
+      const oneDayAgo = new Date();
+      oneDayAgo.setDate(currentDate.getDate() - 1);
+   
+      try {
+         // Find all events where either "endDateTime" or "startDateTime" is before one day ago
+         const oldEvents = await Event.find({
+            $or: [
+               { endDateTime: { $lt: oneDayAgo } },  // Archive based on endDateTime
+               { startDateTime: { $lt: oneDayAgo } }, // Archive based on startDateTime if no endDateTime
+               { date: { $lt: oneDayAgo } }  // Archive based on date if no endDateTime or startDateTime (old schema)
+            ]
          });
+   
+         if (oldEvents.length > 0) {
+            const archivedEventsData = oldEvents.map(event => {
+               const eventObject = event.toObject();
+   
+               // Conditionally remove eventId if it exists
+               if (eventObject.hasOwnProperty('eventId')) {
+                  delete eventObject.eventId;
+               }
 
-         console.log(`${oldEvents.length} events archived and ${result.deletedCount} old events deleted.`);
-      } else {
-         console.log('No old events to archive.');
+               // If the event has a "date" field, remove it and set "startDateTime" and "endDateTime" to its value
+               if (eventObject.hasOwnProperty('date')) {
+                  let combinedDateTime;
+   
+                  if (eventObject.hasOwnProperty('time')) {
+                     // Combine the "date" and "time" fields into a single Date object
+                     const datePart = new Date(eventObject.date);
+                     const timePart = eventObject.time.split(':');
+   
+                     // Set the hours and minutes on the date object
+                     datePart.setHours(parseInt(timePart[0]));
+                     datePart.setMinutes(parseInt(timePart[1]));
+   
+                     combinedDateTime = datePart; // The full DateTime object with both date and time
+                  } else {
+                     // If there's no "time" field, just use the "date" field
+                     combinedDateTime = new Date(eventObject.date);
+                  }
+   
+                  // Set startDateTime and endDateTime to the combined DateTime
+                  eventObject.startDateTime = combinedDateTime;
+                  eventObject.endDateTime = combinedDateTime;
+   
+                  // Remove the "date" field and "time" field (if they exist)
+                  delete eventObject.date;
+                  if (eventObject.hasOwnProperty('time')) {
+                     delete eventObject.time;
+                  }
+               }
+   
+               return eventObject;
+            });
+   
+            // Insert the modified events into the EventArchive collection
+            const archivedEvents = await EventArchive.insertMany(archivedEventsData);
+            console.log(`${archivedEvents.length} events successfully archived into the EventArchive collection`);
+   
+            // Remove the archived events from the Event collection
+            const result = await Event.deleteMany({
+               _id: { $in: oldEvents.map(event => event._id) }
+            });
+   
+            console.log(`${result.deletedCount} old events deleted from the Event collection.`);
+         } else {
+            console.log('No old events to archive.');
+         }
+      } catch (error) {
+         console.error('Error archiving old events:', error);
       }
-   } catch (error) {
-      console.error('Error archiving old events:', error);
-   }
-};
-
-cron.schedule('0 0 * * *', () => {
+   };
+   
+   
+// Cron job to run the archiveOldEvents function every day at XX:XX XM
+cron.schedule('18 17 * * *', () => {
    console.log('Running a scheduled job to archive old events');
    archiveOldEvents();
 });
