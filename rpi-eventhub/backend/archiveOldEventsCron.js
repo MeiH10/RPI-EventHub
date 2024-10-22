@@ -47,17 +47,14 @@ mongoose.connect(process.env.MONGO_URI, {
                      const datePart = new Date(eventObject.date);
                      const timePart = eventObject.time.split(':');
    
-                     // Set the hours and minutes on the date object
                      datePart.setHours(parseInt(timePart[0]));
                      datePart.setMinutes(parseInt(timePart[1]));
    
-                     combinedDateTime = datePart; // The full DateTime object with both date and time
+                     combinedDateTime = datePart;
                   } else {
-                     // If there's no "time" field, just use the "date" field
                      combinedDateTime = new Date(eventObject.date);
                   }
    
-                  // Set startDateTime and endDateTime to the combined DateTime
                   eventObject.startDateTime = combinedDateTime;
                   eventObject.endDateTime = combinedDateTime;
    
