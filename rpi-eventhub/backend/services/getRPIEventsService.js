@@ -16,7 +16,7 @@ const getEvents = async (count,days) => {
     const url = setURLAndOptions(count,days);
     const response = await fetch(url);
     const res = await response.json();
-    console.log(res);
+    console.log("Successfully fetched events from events.rpi.edu");
     return res;
 }
 
@@ -58,8 +58,10 @@ function formatDateTime(input) {
 
 async function fetchAndUpdateEvents() {
     try {
-        const count = 1;
+        // Fetch events from events.rpi.edu 7 days from today
+        const count = "NaN";
         const days = 7;
+
         let events = await getEvents(count, days); // get events from events.rpi.edu
         let eventsList = extractEvents(events);    // extract events from the response
 
@@ -81,9 +83,9 @@ async function fetchAndUpdateEvents() {
 
 
 // Run when the server starts
-fetchAndUpdateEvents();
-// Run the fetchAndUpdateEvents function every hour
-cron.schedule('0 * * * *', fetchAndUpdateEvents);
+fetchAndUpdateEvents().then(r => console.log('Initial fetch and update complete'));
+// Run the fetchAndUpdateEvents function every day
+cron.schedule('0 0 * * *', fetchAndUpdateEvents);
 
 module.exports = {getEvents, extractEvents};
 

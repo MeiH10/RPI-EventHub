@@ -14,6 +14,7 @@ const sharp = require('sharp');
 const fs = require('fs');
 const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
+const { getEvents, extractEvents } = require('./services/getRPIEventsService');
 
 const jwtSecret = process.env.JWT_SECRET;
 
