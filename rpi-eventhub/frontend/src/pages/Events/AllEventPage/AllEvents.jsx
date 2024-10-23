@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback,useContext } from 'react';
 import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
@@ -10,6 +10,9 @@ import { Skeleton } from '@mui/material';
 import Masonry from 'react-masonry-css';
 import axios from 'axios';
 import config from '../../../config';
+import EventsListCard from '../../../pages/Events/AllEventList/EventsList';
+import { ThemeContext } from '../../../context/ThemeContext';
+import { useColorScheme } from '../../../hooks/useColorScheme';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
@@ -20,6 +23,52 @@ function AllEvents() {
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
     const [liked, setLiked] = useState([]) //Array of ids
+    const { theme } = useContext(ThemeContext);
+    const { isDark } = useColorScheme();
+    const [selectedEventIds, setSelectedEventIds] = useState([]);
+
+    const generateICS = () => {
+        // Filter events by selected event IDs
+        const filteredByIds = filteredEvents.filter(event => selectedEventIds.includes(event._id));
+      
+        let icsData = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//YourApp//Event Calendar//EN\n`;
+      
+        filteredByIds.forEach(event => {
+          icsData += `BEGIN:VEVENT\n`;
+          icsData += `UID:${event._id}\n`; // Using _id since that's the unique identifier in MongoDB
+          icsData += `DTSTAMP:${new Date().toISOString().replace(/-|:|\.\d+/g, '')}\n`; // Correct UTC format
+          icsData += `DTSTART:${new Date(event.startDateTime).toISOString().replace(/-|:|\.\d+/g, '')}\n`;
+          icsData += `DTEND:${new Date(event.endDateTime).toISOString().replace(/-|:|\.\d+/g, '')}\n`;
+          icsData += `SUMMARY:${event.title}\n`;
+          icsData += `DESCRIPTION:${event.description}\n`;
+          icsData += `LOCATION:${event.location}\n`;
+          icsData += `END:VEVENT\n`;
+        });
+      
+        icsData += `END:VCALENDAR\n`;
+      
+        // Create a Blob object for the ICS content
+        const blob = new Blob([icsData], { type: 'text/calendar' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'events.ics'; // Filename for the download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link); // Clean up the DOM element
+      };      
+      
+
+    const handleSelect = (eventId) => {
+        setSelectedEventIds((prevSelectedIds) => {
+          // If the event ID is already selected, remove it from the array (unselect)
+          if (prevSelectedIds.includes(eventId)) {
+            return prevSelectedIds.filter((id) => id !== eventId);
+          } else {
+            // Otherwise, add it to the array
+            return [...prevSelectedIds, eventId];
+          }
+        });
+      };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,7 +99,8 @@ function AllEvents() {
 
     useEffect(() => {
         setFilteredEvents(events);
-        const tags = [...new Set(events.flatMap(event => event.tags || []))];
+        const filteredEvents = events.filter(event => new Date(event.startDateTime) >= new Date());
+        const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
     }, [events]);
 
@@ -111,7 +161,8 @@ function AllEvents() {
     }, [fetchEvents]);
 
     useEffect(() => {
-        const tags = [...new Set(events.flatMap(event => event.tags || []))];
+        const filteredEvents = events.filter(event => new Date(event.startDateTime) >= new Date());
+        const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
 
         const defaultFilters = {
@@ -151,7 +202,7 @@ function AllEvents() {
     }
 
     return (
-        <div className={styles.allEvents}>
+        <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
             <Navbar />
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
@@ -161,17 +212,28 @@ function AllEvents() {
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
                         changeView={changeView}
+                        showICS={selectedEventIds.length > 0}
+                        onUnselectAll={() => setSelectedEventIds([])}
+                        onDownloadICS={generateICS}
                     />
                 </div>
                 {
                     isListView ?
                     (
                         <div className={styles.eventsDisplayContainer}>
-                            <EventList
-                                events={sortEvents(filteredEvents, sortMethod, sortOrder)}
-                            />
+                            {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                <EventsListCard
+                                    event={event}
+                                    selected={selectedEventIds.includes(event._id)}
+                                    events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                                    selectedEventIds={selectedEventIds}
+                                    onSelect={() => handleSelect(event._id)}
+                                 />
+                            ))}
+                            
                         </div>
                     ):(
+                        <>
                         <div className={styles.eventsDisplayContainer}>
                             {isLoading ? (
                                 Array.from(new Array(10)).map((_, index) => (
@@ -182,17 +244,20 @@ function AllEvents() {
                                     </div>
                                 ))
                             ) : (
+                                <>
                                 <Masonry
                                     breakpointCols={breakpointColumnsObj}
                                     className={styles.myMasonryGrid}
                                     columnClassName={styles.myMasonryGridColumn}
                                 >
                                     {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                        <EventCard isLiked={liked.includes(event._id.toString())} key={event._id} event={event}/>
+                                        <EventCard selected={selectedEventIds.includes(event._id)} isLiked={liked.includes(event._id.toString())} key={event._id} event={event} onSelect={() => handleSelect(event._id)}/>
                                     ))}
                                 </Masonry>
+                                </>
                             )}
                         </div>
+                        </>
                     )
                 }
             </div>

@@ -1,9 +1,6 @@
-// models/Event.js
-
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
-  eventId: { type: Number, required: true, unique: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   likes: { type: Number, default: 0 },
@@ -18,8 +15,8 @@ const eventSchema = new mongoose.Schema({
   rsvp: { type: String },
 });
 
-eventSchema.index({ eventId: 1 }, { unique: true });
+eventSchema.index({ title: 1, startDateTime: 1 }, { unique: true });
 
-const Event = mongoose.model('Event', eventSchema);
+const Event = mongoose.models.Event || mongoose.model('Event', eventSchema);
 
 module.exports = Event;
