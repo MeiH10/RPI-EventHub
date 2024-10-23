@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactGA from "react-ga4";
 import { 
   createBrowserRouter,
   RouterProvider,
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  ReactGA.initialize('G-YTNJC09YQ1')
   return (
     <ThemeProvider>
       <AuthProvider>
