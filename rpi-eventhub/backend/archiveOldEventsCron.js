@@ -81,7 +81,7 @@ const archiveOldEvents = async () => {
    
    
 // Cron job to run the archiveOldEvents function every day at XX:XX XM
-cron.schedule('42 16 * * *', () => {
+cron.schedule('00 00 * * *', () => {
    console.log('Running a scheduled job to archive old events');
    archiveOldEvents();
 });
