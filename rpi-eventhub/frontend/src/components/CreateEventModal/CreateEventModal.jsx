@@ -4,8 +4,13 @@ import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import config from '../../config';
-import styles from './CreateEventModal.module.css';
+import styles from './CreateEventModal.module.css'; // Import the CSS module
+import { useColorScheme } from '../../hooks/useColorScheme'; // Assuming you have this hook
 import { DateTime } from 'luxon';
+import * as pdfjsLib from "pdfjs-dist";
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
+
+
 
 function CreateEventModal() {
   const [show, setShow] = useState(false);
@@ -16,6 +21,7 @@ function CreateEventModal() {
   const [startDateTime, setStartDateTime] = useState('');
   const [endDateTime, setEndDateTime] = useState('');
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState([]);
   const [successOpen, setSuccessOpen] = useState(false); 
@@ -118,16 +124,104 @@ function CreateEventModal() {
 
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+    e.preventDefault();
+    const selectedFile = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
     const maxSizeInMB = 10;
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    // get the name of the file, trim .pdf or .jpg
+    let fileName = selectedFile.name;
 
-    if (selectedFile.size > maxSizeInBytes) {
-        setError(`File size should not exceed ${maxSizeInMB}MB.`);
-        setFile(null);
-    } else {
-        setFile(selectedFile);
+    if (selectedFile.numPages > 1) {
+      console.log("PDF file should only have 1 page.");
+      setError('PDF file should only have 1 page.');
+      setFile(null);
+      return;
+    }else if (selectedFile.size > maxSizeInBytes) {
+      console.log(`File size should not exceed ${maxSizeInMB}MB.`);
+      setError(`File size should not exceed ${maxSizeInMB}MB.`);
+      setFile(null);
+      return;
     }
+
+    if (selectedFile.type === 'application/pdf') {
+      console.log("PDF file detected.");
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const typedArray = new Uint8Array(this.result);
+
+        // Get the document
+        const pdf = await pdfjsLib.getDocument(typedArray).promise;
+        const numPages = pdf.numPages;
+        const imagesArray = [];
+
+        // Load and convert each page to image
+        for (let i = 1; i <= numPages; i++) {
+          const img = await getPage(i, pdf);
+          imagesArray.push(img);
+        }
+        //change the base64 image to file
+        setPreview(imagesArray[0]);
+        //change the file name to the .jpg file
+        fileName = fileName.replace(/\.[^/.]+$/, ".jpg");
+        const new_file = base64ToFile(imagesArray[0], fileName);
+        setFile(new_file);
+      };
+      reader.readAsArrayBuffer(selectedFile);
+    }
+    else if (selectedFile.type.match(/image.*/)) {
+        console.log("Image file detected.");
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          setPreview(e.target.result);
+          // change the base64 image to file
+          const new_file = base64ToFile(e.target.result, fileName);
+          setFile(new_file);
+        };
+        reader.readAsDataURL(selectedFile);
+    }
+    //alert if the file is not an image or pdf
+    else {
+        console.log("File type not supported.");
+        alert('File type not supported. Please upload an image or PDF file.');
+        setFile(null);
+    }
+  }
+
+  const base64ToFile = (base64, filename) => {
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const getPage = (num, pdf) => {
+    return new Promise((resolve, reject) => {
+      pdf.getPage(num).then(page => {
+        const scale = 1.5;
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement('canvas');
+        const canvasContext = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        page.render({
+          canvasContext,
+          viewport
+        }).promise.then(() => {
+          resolve(canvas.toDataURL());
+        }).catch(reject);
+      }).catch(reject);
+    });
   };
 
   const handleAddTag = (tag) => {
@@ -163,12 +257,12 @@ function CreateEventModal() {
             <Form.Group controlId="eventTitle" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Title <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="text"
-                required
-                placeholder="Enter event title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className={styles.formControl}
+                  type="text"
+                  required
+                  placeholder="Enter event title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className={styles.formControl}
               />
             </Form.Group>
 
@@ -188,66 +282,89 @@ function CreateEventModal() {
             <Form.Group controlId="eventClub">
               <Form.Label>Club/Organization <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Enter club or organization name"
-                value={club}
-                onChange={(e) => setClub(e.target.value)}
-                className={styles.formControl}
+                  type="text"
+                  placeholder="Enter club or organization name"
+                  value={club}
+                  onChange={(e) => setClub(e.target.value)}
+                  className={styles.formControl}
               />
             </Form.Group>
 
-            <Form.Group controlId="eventFile" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>File</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={handleFileChange}
-                accept='.jpg, .jpeg, .png, .webp'
-                className={styles.formControl}
-              />
-            </Form.Group>
+            <Form.Label className={styles.formLabel}>File/Poster</Form.Label>
+            <div
+                onDrop={handleFileChange}
+                onDragOver={handleDragOver}
+                className={styles.fileDropArea}
+            >
+              <Form.Group controlId="eventFile">
+                <Form.Label className={styles.fileFormLabel}>
+                  Drag and drop a file here, or click to select a file
+                </Form.Label>
+                <Form.Control
+                    type="file"
+                    onChange={handleFileChange}
+                    accept='.jpg, .jpeg, .png, .webp, .pdf'
+                    className={styles.formControl}
+                    style={{display: 'none'}}
+                />
+                <Form.Label className={styles.fileFormLabelButton}>
+                  Choose File
+                </Form.Label>
+              </Form.Group>
+            </div>
+            {
+                preview && (
+                    <div>
+                      <img src={preview} alt={"upload-file"} style={{maxWidth: '100%', height: 'auto'}}/>
+                    </div>
+                )
+            }
+
 
             <Form.Group controlId="eventStartDateTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Start Date & Time <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>Start Date & Time <span
+                  className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="datetime-local"
-                required
-                value={startDateTime}
-                onChange={(e) => setStartDateTime(e.target.value)}
-                className={styles.formControl}
+                  type="datetime-local"
+                  required
+                  value={startDateTime}
+                  onChange={(e) => setStartDateTime(e.target.value)}
+                  className={styles.formControl}
               />
             </Form.Group>
 
             <Form.Group controlId="eventEndDateTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>End Date & Time <span className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>End Date & Time <span
+                  className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="datetime-local"
-                required
-                value={endDateTime}
-                onChange={(e) => setEndDateTime(e.target.value)}
-                className={styles.formControl}
+                  type="datetime-local"
+                  required
+                  value={endDateTime}
+                  onChange={(e) => setEndDateTime(e.target.value)}
+                  className={styles.formControl}
               />
             </Form.Group>
 
             <Form.Group controlId="eventLocation" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Location <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="text"
-                required
-                placeholder="Event location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className={styles.formControl}
+                  type="text"
+                  required
+                  placeholder="Event location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className={styles.formControl}
               />
             </Form.Group>
 
             <Form.Group controlId="eventRSVP" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>RSVP Link</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Enter RSVP Link"
-                value={rsvp}
-                onChange={(e) => setRSVP(e.target.value)}
-                className={styles.formControl}
+                  type="text"
+                  placeholder="Enter RSVP Link"
+                  value={rsvp}
+                  onChange={(e) => setRSVP(e.target.value)}
+                  className={styles.formControl}
               />
             </Form.Group>
 

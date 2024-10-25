@@ -10,54 +10,25 @@ const axios = require('axios');
 const FormData = require('form-data');
 const path = require('path');
 const cors = require('cors');
-const { PDFDocument } = require('pdf-lib');
 const sharp = require('sharp');
 const fs = require('fs');
 const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
+const { getEvents, extractEvents } = require('./services/getRPIEventsService');
+
 const jwtSecret = process.env.JWT_SECRET;
-const { startSync } = require('./sqldb');
-const { getNextSequence } = require('./counter');
 
+const app = express();
 
-async function deleteEventsByUser(email) {
-  try {
-    const result = await Event.deleteMany({ poster: email });
-
-    if (result.deletedCount > 0) {
-      console.log(`Deleted ${result.deletedCount} events posted by ${email}`);
-    } else {
-      console.log(`No events found posted by ${email}`);
-    }
-  } catch (error) {
-    console.error('Error deleting events:', error);
-  } finally {
-    mongoose.connection.close();
-  }
-}
-
-const addEventsToDatabase = async () => {
-  try {
-    const eventsPath = path.join(__dirname, 'cleaned_events.json');
-    const eventsData = fs.readFileSync(eventsPath, 'utf-8');
-
-    const events = JSON.parse(eventsData);
-
-    for (const event of events) {
-      if (!event.endDateTime) {
-        event.endDateTime = new Date(new Date(event.startDateTime).getTime() + 3 * 60 * 60 * 1000); // 3 hours later
-      }
-
-      const newEvent = new Event(event);
-      await newEvent.save();
-      console.log(`Event ${newEvent.title} added successfully.`);
-    }
-
-    console.log('All events added successfully.');
-  } catch (error) {
-    console.error('Error adding events to the database:', error.message);
-  }
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
+  optionsSuccessStatus: 200,
 };
+
+// Apply Middleware
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const upload = multer({
   limits: {
@@ -70,17 +41,6 @@ const upload = multer({
     cb(null, true);
   },
 }).single('file');
-
-
-const app = express();
-
-const corsOptions = {
-  origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
-  optionsSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
-
 
 const compressImage = async (fileBuffer) => {
   try {
@@ -103,7 +63,6 @@ const compressImage = async (fileBuffer) => {
     throw error;
   }
 };
-
 
 const convertPdfToImage = async (pdfBuffer) => {
   try {
@@ -134,7 +93,7 @@ const convertPdfToImage = async (pdfBuffer) => {
 const authenticate = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, jwtSecret);
     const user = await User.findOne({ _id: decoded.userId });
 
     if (!user) {
@@ -148,11 +107,10 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-
 const authenticateAndVerify = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, jwtSecret);
     const user = await User.findOne({ _id: decoded.userId });
 
     if (!user) {
@@ -170,50 +128,38 @@ const authenticateAndVerify = async (req, res, next) => {
   }
 };
 
-
-
-
-app.use(express.json());
-
-mongoose
-.connect(process.env.MONGODB_URI)
-.then(() => {
-  console.log('MongoDB Connected');
-  startSync();
-})
-.catch((err) => console.log(err));
-
 // Signup Route
 app.post('/signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    // Check if the email is already in use
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use." });
     }
 
-    // Generate a 6-digit verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     
     const user = new User({
       username,
       email,
-      password, // Assuming password hashing is handled in User model
+      password,
       emailVerified: false,
       verificationCode,
     });
     await user.save();
 
-    // Send verification email with the code
     sendEmail({
       to: email,
       subject: 'RPI EventHub Email Verification Code',
       text: `Dear User,\n\nThank you for registering with RPI EventHub. To complete your email verification, please use the following code:\n\nVerification Code: ${verificationCode}\n\nPlease enter this code in the app to verify your email address.\n\nBest regards,\nRPI EventHub Team`,
     });
 
-    // Generate a JWT token
-    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username}, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ 
+      userId: user._id, 
+      email: user.email, 
+      emailVerified: user.emailVerified, 
+      username: user.username 
+    }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     res.status(201).json({
       message: "User created successfully. Please check your email to verify your account.",
@@ -258,11 +204,8 @@ app.post('/verify-email', async (req, res) => {
   }
 });
 
-
 // Login Route
 app.post('/login', async (req, res) => {
-
-  
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -274,17 +217,43 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Password is incorrect" });
     }
     // Generate a token
+    const token = jwt.sign({ 
+      userId: user._id, 
+      email: user.email, 
+      emailVerified: user.emailVerified, 
+      username: user.username  
+    }, jwtSecret, { expiresIn: '24h' });
     
-    const token = jwt.sign({ userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username  }, jwtSecret, { expiresIn: '24h' });
-    res.status(200).json({ token, userId: user._id, emailVerified: user.emailVerified, message: "Logged in successfully" });
+    res.status(200).json({ 
+      token, 
+      userId: user._id, 
+      emailVerified: user.emailVerified, 
+      message: "Logged in successfully" 
+    });
     
   } catch (error) {
     res.status(500).json({ message: "Login error", error: error.message });
   }
 });
 
+app.get('/rpi-events', async (req, res) => {
+  //hardcoded values for now
+    const count = 1;
+    const days = 7;
+    let events = null;
+    let eventsList = [];
+    try {
+       events = await getEvents(count, days);
+       eventsList = extractEvents(events);
+       console.log('Successfully fetched RPI events');
+       res.status(200).json(eventsList);
+    } catch (error) {
+        console.error('Error fetching RPI events:', error);
+        res.status(500).json({ message: 'Error fetching RPI events', error: error.message });
+    }
+});
 
-// Event Creation Route with Auto-Generated eventId
+
 // Event Creation Route with Auto-Generated eventId
 app.post('/events', upload, async (req, res) => {
   const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
@@ -315,11 +284,8 @@ app.post('/events', upload, async (req, res) => {
     if (existingEvent) {
       return res.status(409).json({ message: 'Event with the same title and date already exists.' });
     }
-    // Generate a unique eventId automatically
-    const eventId = await getNextSequence('eventId');
 
     const event = new Event({
-      eventId, // Auto-generated eventId
       title,
       description,
       poster: poster || 'admin',
@@ -335,10 +301,13 @@ app.post('/events', upload, async (req, res) => {
     res.status(201).json(event);
   } catch (error) {
     console.error('Error creating event:', error);
-    res.status(400).json({ message: 'Error creating event', error: error.message });
+    if (error.code === 11000) {
+      res.status(409).json({ message: 'Event with the same title and date already exists.' });
+    } else {
+      res.status(400).json({ message: 'Error creating event', error: error.message });
+    }
   }
 });
-
 
 // Route for fetching all events
 app.get('/events', async (req, res) => {
@@ -349,7 +318,6 @@ app.get('/events', async (req, res) => {
       res.status(500).json({ message: "Error fetching events", error: error.message });
   }
 });
-
 
 app.get('/events/:id/like', async (req, res) => {
   const { id } = req.params;
@@ -373,8 +341,6 @@ app.get('/events/like/status', authenticate, async (req, res) => {
   const user = req.user;
   
   try {
-    // const likedEvent = user.likedEvents.filter(e => e.toString() == id.toString())[0];
-    // res.status(200).json({ liked: likedEvent }); 
     res.status(200).json(user.likedEvents.map(e => e.toString()))
   } catch (error) {
     res.status(500).json({ message: 'Server error', error }); 
@@ -383,27 +349,24 @@ app.get('/events/like/status', authenticate, async (req, res) => {
 
 app.post('/events/:id/like', authenticate, async (req, res) => {
 
-  const { id } = req.params; // Use 'id' to match the route parameter
+  const { id } = req.params;
   const { liked } = req.body;
-  const userId = req.user._id; // Get user ID from the user object
+  const userId = req.user._id;
 
   try {
     const event = await Event.findById(id);
-    const user = await User.findById(userId); // Fetch the user based on the ID
+    const user = await User.findById(userId);
 
     if (!event || !user) {
       return res.status(404).json({ message: 'Event or User not found' });
     }
 
-    // Check if the user has already liked the event
     const hasLiked = user.likedEvents.includes(id);
 
     if (liked && !hasLiked) {
-      // User is liking the event, increment likes and add to likedEvents
       event.likes += 1;
       user.likedEvents.push(id); 
     } else if (!liked && hasLiked) {
-      // User is unliking the event, decrement likes and remove from likedEvents
       event.likes -= 1;
       user.likedEvents = user.likedEvents.filter(
         (eventId) => eventId.toString() !== id
@@ -436,23 +399,41 @@ app.delete('/events/:id', async (req, res) => {
   }
 });
 
-
 app.get('/verify-token', authenticate, (req, res) => {
   res.sendStatus(200);
 });
 
+app.get('/proxy/image/:eventId', async (req, res) => {
+  const { eventId } = req.params;
+  try {
+    const event = await Event.findById(eventId);
+    if (!event || !event.image) {
+      return res.status(404).json({ message: 'Event or image not found' });
+    }
+    const response = await axios.get(event.image, { responseType: 'arraybuffer' });
+    const contentType = response.headers['content-type'];
+    res.set('Content-Type', contentType);
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error fetching image:', error.message);
+    res.status(500).json({ message: 'Error fetching image' });
+  }
+});
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
-
-
-
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
+mongoose
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('MongoDB Connected');
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });

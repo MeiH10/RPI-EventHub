@@ -34,10 +34,11 @@
 
 .modalHeader {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: var(--modal-bg-color) !important;
-  border-bottom: 1px solid var(--modal-border-color) !important;
+  font-family: Helvetica, sans-serif !important;
+  border: none !important;
 }
 
 .modalTitle {
@@ -46,13 +47,15 @@
 }
 
 .modalBody {
+  font-family: Helvetica, sans-serif !important;
   background-color: var(--modal-bg-color) !important;
   color: var(--modal-text-color) !important;
 }
 
 .modalFooter {
   background-color: var(--modal-bg-color) !important;
-  border-top: 1px solid var(--modal-border-color) !important;
+  border: none !important;
+  font-family: Helvetica, sans-serif !important;
 }
 
 .formGroup {
@@ -62,6 +65,7 @@
 .formLabel {
   font-weight: bold !important;
   color: var(--modal-text-color) !important;
+  margin: 0 !important;
 }
 
 .textDanger {
@@ -134,4 +138,31 @@
 .suggestedTagButton.selected {
   background-color: #0056b3 !important;
   color: #fff !important;
+}
+
+.fileDropArea {
+  border: 2px dashed #ccc !important;
+  border-radius: 4px !important;
+  padding: 20px !important;
+  text-align: center !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem !important;
+}
+
+.fileFormLabel{
+  padding: 5px !important;
+  font-size: 1rem !important;
+}
+
+.fileFormLabelButton{
+  font-size: 1rem !important;
+  cursor: pointer;
+  padding: 8px !important;
+  background-color: var(--button-primary-bg-color) !important;
+  color: #fff !important;
+  max-width: 50% !important;
+  border-radius: 8px !important;
 }
