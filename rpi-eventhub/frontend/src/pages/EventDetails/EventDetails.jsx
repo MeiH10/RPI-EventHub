@@ -48,15 +48,16 @@ const EventDetails = () => {
 
     return (
         <div className='outterContainer'>
+            <div className={styles.topBorder}></div> {/* Top border behind the title */}
             <Navbar />
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
-                <div className={styles.container}>
+                <div className={styles.container}>  {/* This should be z-index: 2 */}
                     <div className={styles.eventPoster}>
                         <img src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title} />
                     </div>
-                    <div className={styles.eventInfo}>
-                        <h1>{event.title}</h1>
-                        <p><strong>About:</strong> {event.description}</p>
+                    <div className={styles.eventInfo}> {/* Contains the title */}
+                        <h1>{event.title}</h1> {/* Title will follow the container z-index */}
+                        <p><strong>Event Details:</strong> {event.description}</p>
                         <p><strong>Club/Organization:</strong> {event.club}</p>
                         <p><strong>Start:</strong> {eventStartDateTime} @ {eventStartTime}</p>
                         {eventEndDateTime && <p><strong>End:</strong> {`${eventEndDateTime} @ ${eventEndTime}`}</p>}
@@ -71,6 +72,9 @@ const EventDetails = () => {
             <Footer />
         </div>
     );
+    
+      
+    
 };
 
 export default EventDetails;
