@@ -176,9 +176,7 @@
         padding: 3px;
         
     }
-    .darkModeContainer {
-        border-color: white;  /* Change border to white in dark mode */
-    }
+
     .eventImagePlaceholder {
         width: 90%;  
         height: auto;
