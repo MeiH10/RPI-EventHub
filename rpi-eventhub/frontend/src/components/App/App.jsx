@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import { AuthProvider } from '../../context/AuthContext';
 import { EventsProvider } from '../../context/EventsContext';
-import { ThemeProvider } from '../../context/ThemeContext'; // Import ThemeProvider
+import { ThemeProvider } from '../../context/ThemeContext';
 
 // Import your page components
 
@@ -20,6 +20,7 @@ import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust p
 import EventDetails from '../../pages/EventDetails/EventDetails';
 import Calendar from '../../pages/Calendar/Calendar';
 import TermsOfService from '../../pages/TermsOfService/TermsOfService';
+import AdminPage from '../../pages/Admin/AdminPage'; // Import the AdminPage
 
 const router = createBrowserRouter([
   {
@@ -46,7 +47,6 @@ const router = createBrowserRouter([
     path: "/search",
     element: <SearchResults />,
   },
-  
   {
     path: "/all-events",
     element: <AllEvents />,
@@ -62,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/terms-of-service",
     element: <TermsOfService />
+  },
+  {
+    path: "/admin", // Add admin page route
+    element: <AdminPage />,
   }
 ]);
 

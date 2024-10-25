@@ -1,0 +1,40 @@
+/* src/pages/Admin/AdminPage.css */
+
+.admin-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.search-results ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.search-results li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.promote-btn, .ban-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.promote-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.ban-btn {
+    background-color: #dc3545;
+    color: white;
+}
