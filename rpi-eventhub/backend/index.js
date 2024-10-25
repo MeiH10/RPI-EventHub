@@ -28,8 +28,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { startSync } = require('./sqldb');
-const { getNextSequence } = require('./counter');
 
 require('./archiveOldEventsCron');
 
@@ -39,45 +37,6 @@ mongoose.connect(process.env.MONGO_URI, {
 })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
-
-async function deleteEventsByUser(email) {
-  try {
-    const result = await Event.deleteMany({ poster: email });
-
-    if (result.deletedCount > 0) {
-      console.log(`Deleted ${result.deletedCount} events posted by ${email}`);
-    } else {
-      console.log(`No events found posted by ${email}`);
-    }
-  } catch (error) {
-    console.error('Error deleting events:', error);
-  } finally {
-    mongoose.connection.close();
-  }
-}
-
-const addEventsToDatabase = async () => {
-  try {
-    const eventsPath = path.join(__dirname, 'cleaned_events.json');
-    const eventsData = fs.readFileSync(eventsPath, 'utf-8');
-
-    const events = JSON.parse(eventsData);
-
-    for (const event of events) {
-      if (!event.endDateTime) {
-        event.endDateTime = new Date(new Date(event.startDateTime).getTime() + 3 * 60 * 60 * 1000); // 3 hours later
-      }
-
-      const newEvent = new Event(event);
-      await newEvent.save();
-      console.log(`Event ${newEvent.title} added successfully.`);
-    }
-
-    console.log('All events added successfully.');
-  } catch (error) {
-    console.error('Error adding events to the database:', error.message);
-  }
-};
 
 const upload = multer({
   limits: {
