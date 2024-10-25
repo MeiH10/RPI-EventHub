@@ -94,7 +94,17 @@
     height: auto;
     margin: 10px 0;
 }
-
+.noImagePlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px; /* You can adjust this height */
+    background-color: #f0f0f0; /* Optional: Light gray background for the placeholder */
+    color: #333; /* Color for the text */
+    border: 1px solid #ccc; /* Optional: Add a border to match the style */
+    border-radius: 5px; /* Optional: Give it a rounded look */
+    font-size: 14px; /* Adjust font size */
+}
 .eventTitle {
     font-family: 'Italiana', serif;
     font-size: larger;
@@ -166,7 +176,23 @@
         padding: 3px;
         
     }
-
+    .darkModeContainer {
+        border-color: white;  /* Change border to white in dark mode */
+    }
+    .eventImagePlaceholder {
+        width: 90%;  /* Same width as the image */
+        height: auto;
+        margin: 10px 0;
+        background-color: #f0f0f0;  /* Light background to distinguish */
+        border: 1px solid #ccc;  /* Border to match the image's style */
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;  /* Text color */
+        font-size: 14px;
+        padding: 20px;  /* Add padding to make it visually similar to an image's space */
+    }
     .eventImage {
         max-width: 100%;
     }
