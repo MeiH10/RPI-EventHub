@@ -107,6 +107,15 @@ const authenticate = async (req, res, next) => {
   }
 };
 
+const requireRole = (role) => {
+  return (req, res, next) => {
+    if (req.user.role < role) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next();
+  };
+};
+
 const authenticateAndVerify = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
@@ -220,14 +229,14 @@ app.post('/login', async (req, res) => {
     const token = jwt.sign({ 
       userId: user._id, 
       email: user.email, 
-      emailVerified: user.emailVerified, 
+      role: user.role, 
       username: user.username  
     }, jwtSecret, { expiresIn: '24h' });
     
     res.status(200).json({ 
       token, 
       userId: user._id, 
-      emailVerified: user.emailVerified, 
+      role: user.role, 
       message: "Logged in successfully" 
     });
     
