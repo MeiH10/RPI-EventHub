@@ -381,7 +381,7 @@ app.get('/events/like/status', authenticate, async (req, res) => {
   }
 });
 
-app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
+app.post('/events/:id/like', authenticate, async (req, res) => {
 
   const { id } = req.params; // Use 'id' to match the route parameter
   const { liked } = req.body;

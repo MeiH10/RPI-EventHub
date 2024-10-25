@@ -26,23 +26,24 @@ function AllEvents() {
     useEffect(() => {
         const fetchData = async () => {
             await fetchEvents();
-            await getLikedEvents()
+            // await getLikedEvents()
             setIsLoading(false);
         };
 
         const getLikedEvents = async () => {
             // Fetch user information or check user data to determine if the event is liked
             const token = localStorage.getItem("token");
-
-            try {
-                const response = await axios.get(`${config.apiUrl}/events/like/status`, {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    },
-                })
-                setLiked(response.data); // Update the liked state based on the server response
-            } catch (err) {
-                console.error("Error fetching like status:", err);
+            if(token){
+                try {
+                    const response = await axios.get(`${config.apiUrl}/events/like/status`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }                    
+                    })
+                    setLiked(response.data); // Update the liked state based on the server response
+                } catch (err) {
+                    console.error("Error fetching like status:", err);
+                }
             }
           };
 
