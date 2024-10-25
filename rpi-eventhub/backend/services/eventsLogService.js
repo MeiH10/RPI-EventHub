@@ -71,7 +71,43 @@ async function uploadLogFileToAzure() {
     }
 }
 
+// date is the date of the log file to read in the format 'YYYY-MM-DD'
+async function readLogFile(shareName, directoryName, date) {
+    try {
+        // Get the file share client
+        const shareClient = serviceClient.getShareClient(shareName);
+
+        // Get the directory client
+        const directoryClient = shareClient.getDirectoryClient(directoryName);
+
+        // Get the file client
+        const fileClient = directoryClient.getFileClient(`events_change-${date}.log`);
+
+        // Download the file content
+        const downloadResponse = await fileClient.download();
+
+        // Read the content of the file from the stream
+        return await streamToString(downloadResponse.readableStreamBody);
+    } catch (error) {
+        console.error(`Error reading file: ${error.message}`);
+    }
+}
+
+async function streamToString(readableStream) {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        readableStream.on("data", (data) => {
+            chunks.push(data.toString());
+        });
+        readableStream.on("end", () => {
+            resolve(chunks.join(""));
+        });
+        readableStream.on("error", reject);
+    });
+}
+
+
 // Schedule the task to run at 1 AM every day
 cron.schedule('0 1 * * *', uploadLogFileToAzure);
 
-module.exports = { logger, uploadLogFileToAzure };
+module.exports = { logger, uploadLogFileToAzure, readLogFile };

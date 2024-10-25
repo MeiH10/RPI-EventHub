@@ -15,7 +15,7 @@ const fs = require('fs');
 const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
 const { getEvents, extractEvents } = require('./services/getRPIEventsService');
-const { logger, uploadLogFileToAzure} = require('./services/eventsLogService');
+const { logger, uploadLogFileToAzure, readLogFile} = require('./services/eventsLogService');
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -426,6 +426,19 @@ app.get('/proxy/image/:eventId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching image:', error.message);
     res.status(500).json({ message: 'Error fetching image' });
+  }
+});
+
+
+// Get the Content of specific log file
+app.get('/logs/:date', async (req, res) => {
+  const date = req.params.date;
+  try {
+    const logContent = await readLogFile('rpieventhub-logs', 'events_change', date);
+    res.status(200).send(logContent);
+  } catch (error) {
+    console.error('Error reading log file:', error.message);
+    res.status(500).json({ message: 'Error reading log file', error: error.message });
   }
 });
 
