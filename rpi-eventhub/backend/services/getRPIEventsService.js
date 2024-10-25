@@ -1,6 +1,7 @@
 const Event = require('../models/event');
 const { getNextSequence } = require('../counter');
 const cron = require('node-cron');
+const{logger} = require('../services/eventsLogService');
 
 // get the data from events.rpi.edu
 
@@ -74,6 +75,7 @@ async function fetchAndUpdateEvents() {
                 const newEvent = new Event(eventData);
                 await newEvent.save();
                 console.log(`Inserted new event: ${eventData.title}`);
+                logger.info(`Event CREATED: ${eventData.title} start at ${eventData.startDateTime}---${new Date()}`);
             }
         }
     } catch (error) {

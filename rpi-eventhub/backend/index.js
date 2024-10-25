@@ -15,6 +15,7 @@ const fs = require('fs');
 const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
 const { getEvents, extractEvents } = require('./services/getRPIEventsService');
+const { logger, uploadLogFileToAzure} = require('./services/eventsLogService');
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -238,7 +239,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/rpi-events', async (req, res) => {
   //hardcoded values for now
-    const count = 1;
+    const count = "NaN";
     const days = 7;
     let events = null;
     let eventsList = [];
@@ -297,7 +298,10 @@ app.post('/events', upload, async (req, res) => {
       club,
       rsvp
     });
+
     await event.save();
+    // Log the event creation
+    logger.info(`Event CREATED: ${title} start at ${startDateTime}---${new Date()}`);
     res.status(201).json(event);
   } catch (error) {
     console.error('Error creating event:', error);
@@ -376,8 +380,10 @@ app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
 
     await event.save(); 
     await user.save();
-
+    // Log the event like/unlike
+    logger.info(`Event ${event.title} ${liked ? 'LIKED' : 'UNLIKED'} by ${user.username}. count: ${event.likes}---${new Date()}`);
     res.json({ likes: event.likes });
+
   } catch (error) {
     console.error('Error during like/unlike:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -393,8 +399,10 @@ app.delete('/events/:id', async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-
+    // Log the event deletion
+    logger.info(`Event DELETED: ${event.title} start at ${event.startDateTime}---${new Date()}`);
     res.status(200).json({ message: 'Event deleted successfully' });
+
   } catch (error) {
     res.status(500).json({ message: 'Error deleting event', error: error.message });
   }
