@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
@@ -9,11 +9,15 @@ import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
 import VerifyModal from "../VerifyModal/VerifyModal";
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const { isLoggedIn, emailVerified, logout } = useAuth();
   const location = useLocation();
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
 
   const handleClick = () => setClick(!click);
 
@@ -32,7 +36,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={styles.navbar}>
+       <nav className={`w-full h-16 flex justify-center items-center text-lg fixed z-20 px-5 ${isDark ? 'bg-cyan-500' : 'bg-white bg-opacity-90'} shadow-md`} data-theme={theme}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
@@ -96,12 +100,11 @@ const Navbar = () => {
                   <li className={styles.navItem}>
                     <SignupModal />
                   </li>
-
                 </>
               )}
-                <li className={styles.navItem}>
-                  <DarkModeToggle />
-                </li>
+              <li className={styles.navItem}>
+                <DarkModeToggle />
+              </li>
             </ul>
           </div>
           <div className={styles.navIcon} onClick={handleClick}>
@@ -177,10 +180,9 @@ const Navbar = () => {
                 </li>
               </>
             )}
-
-                <li className={styles.navItem}>
-                  <DarkModeToggle />
-                </li>
+            <li className={styles.navItem}>
+              <DarkModeToggle />
+            </li>
           </ul>
         </div>
       </nav>
