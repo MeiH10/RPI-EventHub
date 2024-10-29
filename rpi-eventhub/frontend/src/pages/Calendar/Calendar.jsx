@@ -172,7 +172,7 @@ const CalendarPage = () => {
                         parseDateAsEST(weekRange.end)
                       ).map((event) => (
                         <Link to={`/events/${event._id}`} key={event._id}>
-                          <div className={CalendarCSS.eventContainer}>
+                          <div className={`${CalendarCSS.eventContainer} ${isDark ? 'border border-white' : ''}`}>
                             <h4 className={CalendarCSS.eventTitle}>
                               {event.title}
                             </h4>
@@ -184,7 +184,12 @@ const CalendarPage = () => {
                                 />
 
                             ) : (
-                              <p>No image available</p>
+                              <div
+                                  className={CalendarCSS.eventImagePlaceholder}
+                                  style={{ color: isDark ? "white" : "#666", backgroundColor: isDark ? "#333" : "#f0f0f0" }}
+                              >
+                              No image available
+                              </div>
                             )}
                           </div>
                         </Link>
