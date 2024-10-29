@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
     <>
-       <nav className={`w-full h-16 flex justify-center items-center text-lg fixed z-20 px-5 ${isDark ? 'bg-cyan-500' : 'bg-white bg-opacity-90'} shadow-md`} data-theme={theme}>
+       <nav className={`w-full h-16 flex justify-center items-center text-lg fixed z-20 px-5 ${isDark ? 'bg-gray-800' : 'bg-white bg-opacity-90'} shadow-md`} data-theme={theme}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
@@ -46,7 +46,7 @@ const Navbar = () => {
               <li className={styles.navItem}>
                 <NavLink
                   to="/"
-                  className={getNavLinkClass("/")}
+                  className={`${getNavLinkClass("/")} text-white`}
                 >
                   Home
                 </NavLink>
@@ -54,7 +54,7 @@ const Navbar = () => {
               <li className={styles.navItem}>
                 <NavLink
                   to="/all-events"
-                  className={getNavLinkClass("/all-events")}
+                  className={`${getNavLinkClass("/all-events")} text-white`}
                 >
                   Events
                 </NavLink>
@@ -62,7 +62,7 @@ const Navbar = () => {
               <li className={styles.navItem}>
                 <NavLink
                   to="/about-us"
-                  className={getNavLinkClass("/about-us")}
+                  className={`${getNavLinkClass("/about-us")} text-white`}
                 >
                   About
                 </NavLink>
@@ -70,7 +70,7 @@ const Navbar = () => {
               <li className={styles.navItem}>
                 <NavLink
                   to="/calendar"
-                  className={getNavLinkClass("/calendar")}
+                  className={`${getNavLinkClass("/calendar")} text-white`}
                 >
                   Calendar
                 </NavLink>
