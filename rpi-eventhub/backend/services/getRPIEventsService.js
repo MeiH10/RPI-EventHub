@@ -1,4 +1,4 @@
-const Event = require('../models/event');
+const Event = require('../models/Event');
 const { getNextSequence } = require('../counter');
 const cron = require('node-cron');
 const{logger} = require('../services/eventsLogService');
