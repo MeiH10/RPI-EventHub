@@ -263,16 +263,11 @@ label {
   color: white;
 }
 
-.changeButton:hover i{
-  background-color: var(--clear-button-hover-bg-color);
-}
-
 .changeButton i{
   font-size: 1rem;
   background-color: var(--clear-button-bg-color);
   color: var(--clear-button-text-color);
   Margin-right: 10px;
-  transition: all 0.3s ease;
 }
 
 .changeButton span{
