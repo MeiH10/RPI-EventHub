@@ -5,7 +5,51 @@ const cron = require('node-cron');
 const mongoose = require('mongoose');
 const Event = require('./models/Event');
 const { giveTags } = require('./useful_script/tagFunction');
+const sharp = require('sharp');
+const FormData = require('form-data');
+const axios = require('axios');
 require('dotenv').config();
+
+const compressImage = async (fileBuffer) => {
+  try {
+    let compressedBuffer = fileBuffer;
+    let quality = 95;
+    let compressedSize = fileBuffer.length;
+    
+    while (compressedSize > 100 * 1024/*get file to 100kb*/ && quality > 20) {
+      compressedBuffer = await sharp(fileBuffer)
+        .resize({ width: 1000 })
+        .jpeg({ quality })
+        .toBuffer();
+      compressedSize = compressedBuffer.length;
+      quality -= 5;
+    }
+
+    return compressedBuffer;
+  } catch (error) {
+    console.error('Error compressing image:', error);
+    throw error;
+  }
+};
+
+const uploadImageToImgbb = async (imageBuffer) => {
+  try {
+    const formData = new FormData();
+    formData.append('poster', imageBuffer.toString('blob'));
+
+    const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
+      headers: { ...formData.getHeaders() },
+    });
+    if (response.data && response.data.data && response.data.data.url) {
+      return response.data.data.url;
+    } else {
+      throw new Error('Image upload failed or no URL returned');
+    }
+  } catch (error) {
+    console.error('Error uploading image to imgbb:', error.message);
+    throw error;
+  }
+};
 
 const pgClient = new Client({
   host: process.env.PG_HOST,
@@ -55,7 +99,7 @@ const fetchNewEventsFromPostgres = async (lastSyncTime) => {
   }
 };
 
-const transformEventData = (pgEvent) => {
+const transformEventData = async (pgEvent) => {
   let poster = pgEvent.submitted_by || 'admin';
   if (poster.endsWith('@rpi.edu')) {
     poster = poster.slice(0, -('@rpi.edu'.length));
@@ -71,6 +115,21 @@ const transformEventData = (pgEvent) => {
   const tagsSet = giveTags(title, description);
   const tagsArray = Array.from(tagsSet);
 
+  let imageUrl = '';
+  if (pgEvent.image_id) {
+    const imageSourceUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
+    try {
+      const imageResponse = await axios.get(imageSourceUrl, { responseType: 'arraybuffer' });
+      let imageBuffer = imageResponse.data;
+
+      imageBuffer = await compressImage(imageBuffer);
+      imageUrl = await uploadImageToImgbb(imageBuffer);
+    }catch (error) {
+      console.error(`Error processing image for event ${title}:`, error.message);
+    }
+  }
+
+//pgEvent.image_id ? `${process.env.IMAGE_PREFIX}${pgEvent.image_id}` : ''
   return {
     title: title,
     description: description,
@@ -82,7 +141,7 @@ const transformEventData = (pgEvent) => {
       ? new Date(pgEvent.event_end)
       : new Date(new Date(pgEvent.event_start).getTime() + 3 * 60 * 60 * 1000),
     location: pgEvent.location || 'None',
-    image: pgEvent.image_id ? `${process.env.IMAGE_PREFIX}${pgEvent.image_id}` : '',
+    image: imageUrl,
     tags: tagsArray,
     club: pgEvent.club_name || 'Unknown Club',
     rsvp: pgEvent.more_info || '',
@@ -98,7 +157,7 @@ const syncEvents = async () => {
     if (newEvents.length > 0) {
       console.log(`Fetched ${newEvents.length} new event(s) from PostgreSQL.`);
 
-      const transformedEvents = newEvents.map(transformEventData);
+      const transformedEvents = await Promise.all(newEvents.map(transformEventData));
       const eventIdentifiers = transformedEvents.map(event => ({
         title: event.title,
         startDateTime: event.startDateTime,
