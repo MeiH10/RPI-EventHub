@@ -161,6 +161,7 @@ app.post('/signup', async (req, res) => {
       emailVerified: user.emailVerified, 
       username: user.username 
     }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    logger.info(`User ${user.username} signed up---${new Date()}`);
 
     res.status(201).json({
       message: "User created successfully. Please check your email to verify your account.",
@@ -194,6 +195,7 @@ app.post('/verify-email', async (req, res) => {
         emailVerified: user.emailVerified, 
         username: user.username 
       }, process.env.JWT_SECRET, { expiresIn: '24h' });
+      logger.info(`User ${user.username} email verified---${new Date()}`);
 
       res.status(200).json({ message: "Email verified successfully.", token });
     } else {
@@ -224,6 +226,8 @@ app.post('/login', async (req, res) => {
       emailVerified: user.emailVerified, 
       username: user.username  
     }, jwtSecret, { expiresIn: '24h' });
+
+    logger.info(`User ${user.username} logged in---${new Date()}`);
     
     res.status(200).json({ 
       token, 
