@@ -61,26 +61,32 @@ const Home = () => {
     //   </div>
     //   <Footer />
     // </div>
-    <div className='min-h-screen h-full max-w-screen flex flex-col'>
-      <Navbar />
-      <div className='flex flex-col md:flex-row h-full w-full justify-between mt-16'>
-        <div className='flex flex-col justify-between h-full w-full p-16 space-y-12'>
-          <div>
-            <h1 id="red" className='text-6xl'>All RPI events,</h1>
-            <h1 className='text-6xl'>in one place.</h1>
-          </div>
-          <SearchBar />
-          <div>
-            <h1 className='text-4xl'>About the website</h1>
-            <h1 className='text-2xl'>A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.</h1>
-          </div>
+   <div className='min-h-screen h-full max-w-screen flex flex-col'>
+    <Navbar />
+    <div className='flex flex-col md:flex-row h-full w-full justify-between mt-16'>
+      <div className='flex flex-col justify-between h-full w-full p-16 space-y-12'>
+        <div>
+          <h1 id="red" className='text-6xl'>All RPI events,</h1>
+          <h1 className='text-6xl'>in one place.</h1>
         </div>
-        <div className='flex justify-center items-center h-full w-full py-4'>
+        <SearchBar />
+
+        <div className='flex justify-center items-center h-full w-full py-4 md:hidden'>
           <ImageCarousel />
         </div>
+
+        <div>
+          <h1 className='text-4xl'>About the website</h1>
+          <h1 className='text-2xl'>A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.</h1>
+        </div>
       </div>
-      <Footer />
+
+      <div className='hidden md:flex justify-center items-center h-full w-full py-4'>
+        <ImageCarousel />
+      </div>
     </div>
+    <Footer />
+  </div>
   );
 };
 
