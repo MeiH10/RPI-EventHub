@@ -55,7 +55,7 @@ const RsvpButton = ({ rsvp }) => {
         onClose={() => setIsModalOpen(false)}
         title="RSVP Information"
       >
-        <p className="text-gray-700 leading-relaxed">{rsvp}</p>
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{rsvp}</p>
       </Modal>
     </>
   );

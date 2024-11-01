@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer';
 import styles from './EventDetails.module.css';
 import { useEvents } from '../../context/EventsContext';
-import RsvpButton from '../../components/rsvp-button/RsvpButton';
+import RsvpButton from '../../components/RSVPButton/RsvpButton';
 import { DateTime } from 'luxon';
 
 const timeZone = 'America/New_York';
