@@ -12,7 +12,7 @@ import VerifyModal from "../VerifyModal/VerifyModal";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout } = useAuth();
+  const { isLoggedIn, emailVerified, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
 
   const handleClick = () => setClick(!click);
@@ -28,6 +28,10 @@ const Navbar = () => {
     return location.pathname === path
       ? `${styles.navLinks} ${styles.active}`
       : styles.navLinks;
+  };
+
+  const toggleManageMode = () => {
+    setManageMode(!manageMode);
   };
 
   return (
@@ -78,6 +82,16 @@ const Navbar = () => {
               <li className={styles.navItem}>
                 <CreateEventModal />
               </li>
+              {isLoggedIn && (
+                <li className={styles.navItem}>
+                  <button
+                    onClick={toggleManageMode}
+                    className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                  >
+                    {manageMode ? 'Managing' : 'Manage Events'}
+                  </button>
+                </li>
+              )}
               {isLoggedIn ? (
                 <div>
                   <button
