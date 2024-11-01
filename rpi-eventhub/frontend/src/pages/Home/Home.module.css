@@ -8,18 +8,6 @@
   --background-color: #000; /* Background color for dark mode */
 }
 
-.outterContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: var(--background-color);
-  color: var(--card-text-color);
-}
-
-.content {
-  flex: 1;
-}
-
 .cardtext, .title h1, .content h5, .content p {
   font-family: var(--default-font);
   color: var(--card-text-color);
@@ -114,9 +102,6 @@ hr {
 }
 
 @media (max-width: 767px) {
-  .textContainer {
-    text-align: center;
-  }
 
   .content h1 {
     font-size: 42px;

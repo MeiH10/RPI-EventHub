@@ -28,11 +28,11 @@ const Home = () => {
   };
 
   return (
-    <div className={`${HomeCSS.outterContainer}`} style={pageStyles} data-theme={theme}>
+    <div className={`flex flex-col min-h-screen`} style={pageStyles} data-theme={theme}>
       <NavBar />
       <div className={`${HomeCSS.content} container-fluid containerFluid`}>
         <div className="row">
-          <div className={`col-12 col-lg-7 py-sm-2 py-md-5 px-sm-0 px-md-5 ${HomeCSS.textContainer}`}>
+          <div className={`col-12 col-lg-7 py-sm-2 py-md-5 px-sm-0 px-md-5 text-start sm:text-center`}>
             <div className={`${HomeCSS.anim1} title`}>
               <h1 id="red">All RPI events,</h1>
               <h1>in one place.</h1>
