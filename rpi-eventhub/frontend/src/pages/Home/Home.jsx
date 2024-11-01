@@ -15,9 +15,8 @@ const Home = () => {
     <Navbar />
     <div className='flex flex-col md:flex-row h-full w-full justify-between mt-16'>
       <div className='flex flex-col justify-between h-full w-full p-16 space-y-12'>
-        <div className='flex md:block'>
-          <h1 id="red" className='text-4xl md:text-6xl'>All RPI events,</h1>
-          <h1 className='text-4xl md:text-6xl ml-1 md:ml-0'>in one place.</h1>
+        <div className='flex justify-center'>
+          <h1 id="red" className='text-4xl md:text-6xl'>All RPI events, {'\n'} in one place.</h1>
         </div>
         <SearchBar />
 
