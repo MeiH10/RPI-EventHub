@@ -82,6 +82,8 @@ const fetchNewEventsFromPostgres = async (lastSyncTime) => {
   }
 };
 
+
+
 const transformEventData = async (pgEvent) => {
   let poster = pgEvent.submitted_by || 'admin';
   if (poster.endsWith('@rpi.edu')) {
@@ -104,16 +106,17 @@ const transformEventData = async (pgEvent) => {
     }
   }
 
+  const startDateTime = pgEvent.event_start;
+  const endDateTime = pgEvent.event_end || new Date(new Date(startDateTime).getTime() + (3 * 60 * 60 * 1000)).toISOString();
+
   return {
     title: title,
     description: description,
     likes: pgEvent.likes || 0,
-    creationTimestamp: new Date(pgEvent.created),
+    creationTimestamp: pgEvent.created,
     poster: poster,
-    startDateTime: new Date(pgEvent.event_start),
-    endDateTime: pgEvent.event_end
-      ? new Date(pgEvent.event_end)
-      : new Date(new Date(pgEvent.event_start).getTime() + 3 * 60 * 60 * 1000),
+    startDateTime: startDateTime,
+    endDateTime: endDateTime,
     location: pgEvent.location || 'None',
     image: imageUrl,
     tags: tagsArray,
@@ -121,8 +124,6 @@ const transformEventData = async (pgEvent) => {
     rsvp: pgEvent.more_info || '',
   };
 };
-
-const BATCH_SIZE = 1000;
 
 const syncEvents = async () => {
   try {
@@ -135,9 +136,12 @@ const syncEvents = async () => {
 
       for (const pgEvent of newEvents) {
         try {
+          console.log(`\nProcessing: ${pgEvent.event_name}`);
+          console.log(`SQL time: ${pgEvent.event_start}`);
+
           const existingEvent = await Event.findOne({
             title: pgEvent.event_name,
-            startDateTime: new Date(pgEvent.event_start)
+            startDateTime: pgEvent.event_start
           });
 
           if (!existingEvent) {
@@ -145,9 +149,11 @@ const syncEvents = async () => {
             if (transformedEvent) {
               await Event.create(transformedEvent);
               console.log(`Created new event: ${transformedEvent.title}`);
+              console.log(`Start time: ${transformedEvent.startDateTime}`);
             }
           } else {
             console.log(`Event already exists: ${pgEvent.event_name}`);
+            console.log(`Existing start time: ${existingEvent.startDateTime}`);
           }
 
           if (new Date(pgEvent.created) > latestProcessedTime) {
