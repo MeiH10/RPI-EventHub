@@ -92,7 +92,23 @@
   color: #ff0000;
   border: 1px solid #ff0000;
 }
+.darkNavItem:after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 0;
+  background: transparent;
+  transition: width 0.7s ease, background-color 0.5s ease;
+}
+.darkNavItem:hover:after {
+  width: 100%;
+  background: #ffff00;
+}
 
+.darkNavItem .active {
+  color: #ffff00;
+  border: 1px solid #ffff00;
+}
 .navIcon {
   display: none;
   color: #ff0000;

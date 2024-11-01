@@ -36,41 +36,41 @@ const Navbar = () => {
 
   return (
     <>
-       <nav className={`w-full h-16 flex justify-center items-center text-lg fixed z-20 px-5 ${isDark ? 'bg-gray-800' : 'bg-white bg-opacity-90'} shadow-md`} data-theme={theme}>
+       <nav className={styles.navbar}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
               <EventHubLogo2 className={styles.logoSvg} />
             </NavLink>
             <ul className={styles.navMenu}>
-              <li className={styles.navItem}>
-                <NavLink
-                  to="/"
-                  className={`${getNavLinkClass("/")} text-white`}
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li className={styles.navItem}>
+            <li className={isDark ? styles.darkNavItem : styles.navItem}>
+  <NavLink
+    to="/"
+    className={getNavLinkClass("/")}
+  >
+    Home
+  </NavLink>
+</li>
+              <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/all-events"
-                  className={`${getNavLinkClass("/all-events")} text-white`}
+                  className={getNavLinkClass("/all-events")}
                 >
                   Events
                 </NavLink>
               </li>
-              <li className={styles.navItem}>
+              <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/about-us"
-                  className={`${getNavLinkClass("/about-us")} text-white`}
+                  className={getNavLinkClass("/about-us")}
                 >
                   About
                 </NavLink>
               </li>
-              <li className={styles.navItem}>
+              <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/calendar"
-                  className={`${getNavLinkClass("/calendar")} text-white`}
+                  className={getNavLinkClass("/calendar")}
                 >
                   Calendar
                 </NavLink>
