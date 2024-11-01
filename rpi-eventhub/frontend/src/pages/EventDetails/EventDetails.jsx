@@ -64,7 +64,7 @@ const EventDetails = () => {
                         {event.tags && event.tags.length > 0 && (
                             <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                         )}
-                        {event.rsvp && <RsvpButton rsvp={event.rsvp} />}
+                        {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
                     </div>
                 </div>
             </div>
