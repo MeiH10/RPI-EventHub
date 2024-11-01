@@ -61,25 +61,25 @@ const Home = () => {
     //   </div>
     //   <Footer />
     // </div>
-    <div className='min-h-screen max-w-screen flex'>
+    <div className='min-h-screen h-full max-w-screen flex flex-col'>
       <Navbar />
-      <div className='flex flex-row h-full w-full justify-between mt-16 bg-blue-500'>
-        <div className='flex flex-col justify-between h-full w-full p-16 bg-red-300'>
+      <div className='flex flex-row h-full w-full justify-between mt-16'>
+        <div className='flex flex-col justify-between h-full w-full p-16'>
           <div>
             <h1 id="red" className='text-6xl'>All RPI events,</h1>
             <h1 className='text-6xl'>in one place.</h1>
-          </div>s
+          </div>
           <SearchBar />
           <div>
             <h1 className='text-4xl'>About the website</h1>
             <h1 className='text-2xl'>A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.</h1>
           </div>
         </div>
-        <div className='flex justify-center items-center h-full w-full bg-green-400'>
+        <div className='flex justify-center items-center h-full w-full'>
           <ImageCarousel />
         </div>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };
