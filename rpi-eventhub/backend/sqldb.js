@@ -3,51 +3,34 @@ const fs = require('fs');
 const path = require('path');
 const cron = require('node-cron');
 const mongoose = require('mongoose');
+const axios = require('axios');
+const FormData = require('form-data');
 const Event = require('./models/Event');
 const { giveTags } = require('./useful_script/tagFunction');
-const sharp = require('sharp');
-const FormData = require('form-data');
-const axios = require('axios');
 require('dotenv').config();
 
-const compressImage = async (fileBuffer) => {
+const uploadImageToImgBB = async (imageUrl) => {
   try {
-    let compressedBuffer = fileBuffer;
-    let quality = 95;
-    let compressedSize = fileBuffer.length;
-    
-    while (compressedSize > 100 * 1024/*get file to 100kb*/ && quality > 20) {
-      compressedBuffer = await sharp(fileBuffer)
-        .resize({ width: 1000 })
-        .jpeg({ quality })
-        .toBuffer();
-      compressedSize = compressedBuffer.length;
-      quality -= 5;
-    }
-
-    return compressedBuffer;
-  } catch (error) {
-    console.error('Error compressing image:', error);
-    throw error;
-  }
-};
-
-const uploadImageToImgbb = async (imageBuffer) => {
-  try {
-    const formData = new FormData();
-    formData.append('poster', imageBuffer.toString('blob'));
-
-    const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
-      headers: { ...formData.getHeaders() },
+    const imageResponse = await axios.get(imageUrl, {
+      responseType: 'arraybuffer'
     });
-    if (response.data && response.data.data && response.data.data.url) {
-      return response.data.data.url;
-    } else {
-      throw new Error('Image upload failed or no URL returned');
-    }
+    
+    const base64Image = Buffer.from(imageResponse.data, 'binary').toString('base64');
+    const formData = new FormData();
+    formData.append('image', base64Image);
+    
+    const response = await axios.post(
+      `https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`,
+      formData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }
+    );
+
+    return response.data?.data?.url || null;
   } catch (error) {
-    console.error('Error uploading image to imgbb:', error.message);
-    throw error;
+    console.error(`Image upload failed for ${imageUrl}: ${error.message}`);
+    return null;
   }
 };
 
@@ -108,28 +91,19 @@ const transformEventData = async (pgEvent) => {
   const title = pgEvent.event_name || 'Untitled Event';
   const description = pgEvent.description || 'No description provided.';
 
-  if (!pgEvent.event_name) {
-    console.warn(`Event with ID ${pgEvent.event_id} has a null or undefined event_name.`);
-  }
-
   const tagsSet = giveTags(title, description);
   const tagsArray = Array.from(tagsSet);
 
   let imageUrl = '';
   if (pgEvent.image_id) {
-    const imageSourceUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
-    try {
-      const imageResponse = await axios.get(imageSourceUrl, { responseType: 'arraybuffer' });
-      let imageBuffer = imageResponse.data;
-
-      imageBuffer = await compressImage(imageBuffer);
-      imageUrl = await uploadImageToImgbb(imageBuffer);
-    }catch (error) {
-      console.error(`Error processing image for event ${title}:`, error.message);
+    const originalImageUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
+    imageUrl = await uploadImageToImgBB(originalImageUrl);
+    
+    if (!imageUrl) {
+      return null;
     }
   }
 
-//pgEvent.image_id ? `${process.env.IMAGE_PREFIX}${pgEvent.image_id}` : ''
   return {
     title: title,
     description: description,
@@ -154,46 +128,39 @@ const syncEvents = async () => {
   try {
     console.log(`Starting sync. Last sync time: ${lastSyncTime}`);
     const newEvents = await fetchNewEventsFromPostgres(lastSyncTime);
+    
     if (newEvents.length > 0) {
       console.log(`Fetched ${newEvents.length} new event(s) from PostgreSQL.`);
+      let latestProcessedTime = lastSyncTime;
 
-      const transformedEvents = await Promise.all(newEvents.map(transformEventData));
-      const eventIdentifiers = transformedEvents.map(event => ({
-        title: event.title,
-        startDateTime: event.startDateTime,
-      }));
+      for (const pgEvent of newEvents) {
+        try {
+          const existingEvent = await Event.findOne({
+            title: pgEvent.event_name,
+            startDateTime: new Date(pgEvent.event_start)
+          });
 
-      const existingEvents = await Event.find({
-        $or: eventIdentifiers,
-      }).select('title startDateTime');
+          if (!existingEvent) {
+            const transformedEvent = await transformEventData(pgEvent);
+            if (transformedEvent) {
+              await Event.create(transformedEvent);
+              console.log(`Created new event: ${transformedEvent.title}`);
+            }
+          } else {
+            console.log(`Event already exists: ${pgEvent.event_name}`);
+          }
 
-      const existingEventSet = new Set(
-        existingEvents.map(event => `${event.title}|||${event.startDateTime.toISOString()}`)
-      );
-
-      const eventsToInsert = transformedEvents.filter(event => {
-        const identifier = `${event.title}|||${event.startDateTime.toISOString()}`;
-        return !existingEventSet.has(identifier);
-      });
-
-      if (eventsToInsert.length > 0) {
-        for (let i = 0; i < eventsToInsert.length; i += BATCH_SIZE) {
-          const batch = eventsToInsert.slice(i, i + BATCH_SIZE);
-          await Event.insertMany(batch);
-          console.log(`Inserted batch of ${batch.length} events.`);
+          if (new Date(pgEvent.created) > latestProcessedTime) {
+            latestProcessedTime = new Date(pgEvent.created);
+          }
+        } catch (error) {
+          console.error(`Error processing event ${pgEvent.event_name}:`, error.message);
         }
-
-        const latestCreatedTime = eventsToInsert.reduce((latest, event) => {
-          const eventCreatedTime = new Date(event.creationTimestamp);
-          return eventCreatedTime > latest ? eventCreatedTime : latest;
-        }, lastSyncTime);
-
-        lastSyncTime = latestCreatedTime;
-        saveLastSyncTime(lastSyncTime);
-        console.log(`Sync completed. Last sync time updated to ${lastSyncTime}`);
-      } else {
-        console.log('No new events to insert.');
       }
+
+      lastSyncTime = latestProcessedTime;
+      saveLastSyncTime(lastSyncTime);
+      console.log(`Sync completed. Last sync time updated to ${lastSyncTime}`);
     } else {
       console.log('No new events to sync.');
     }
