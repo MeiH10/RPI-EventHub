@@ -12,6 +12,7 @@ import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
+
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const { isLoggedIn, emailVerified, logout } = useAuth();
@@ -36,25 +37,25 @@ const Navbar = () => {
 
   return (
     <>
-       <nav className={styles.navbar}>
+       <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ''}`}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
               <EventHubLogo2 className={styles.logoSvg} />
             </NavLink>
-            <ul className={styles.navMenu}>
-            <li className={isDark ? styles.darkNavItem : styles.navItem}>
-  <NavLink
-    to="/"
-    className={getNavLinkClass("/")}
-  >
-    Home
-  </NavLink>
-</li>
+            <ul className={isDark ? styles.darkNavMenu : styles.navMenu}>
+              <li className={isDark ? styles.darkNavItem : styles.navItem}>
+                <NavLink
+                  to="/"
+                  className={`${getNavLinkClass("/")} ${isDark ? 'text-white' : ''}`}
+                >
+                  Home
+                </NavLink>
+              </li>
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/all-events"
-                  className={getNavLinkClass("/all-events")}
+                  className={`${getNavLinkClass("/all-events")} ${isDark ? 'text-white' : ''}`}
                 >
                   Events
                 </NavLink>
@@ -62,7 +63,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/about-us"
-                  className={getNavLinkClass("/about-us")}
+                  className={`${getNavLinkClass("/about-us")} ${isDark ? 'text-white' : ''}`}
                 >
                   About
                 </NavLink>
@@ -70,7 +71,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/calendar"
-                  className={getNavLinkClass("/calendar")}
+                  className={`${getNavLinkClass("/calendar")} ${isDark ? 'text-white' : ''}`}
                 >
                   Calendar
                 </NavLink>
@@ -100,11 +101,12 @@ const Navbar = () => {
                   <li className={styles.navItem}>
                     <SignupModal />
                   </li>
+
                 </>
               )}
-              <li className={styles.navItem}>
-                <DarkModeToggle />
-              </li>
+                <li className={styles.navItem}>
+                  <DarkModeToggle />
+                </li>
             </ul>
           </div>
           <div className={styles.navIcon} onClick={handleClick}>
@@ -180,9 +182,10 @@ const Navbar = () => {
                 </li>
               </>
             )}
-            <li className={styles.navItem}>
-              <DarkModeToggle />
-            </li>
+
+                <li className={styles.navItem}>
+                  <DarkModeToggle />
+                </li>
           </ul>
         </div>
       </nav>

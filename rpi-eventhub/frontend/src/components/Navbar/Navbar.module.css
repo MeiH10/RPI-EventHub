@@ -11,7 +11,9 @@
   background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
+.darkNavbar {
+  background-color: rgb(61, 45, 45);
+}
 .navContainer {
   display: flex;
   align-items: center;
@@ -60,7 +62,14 @@
   list-style: none;
   text-align: center;
 }
-
+.darkNavMenu {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+  color: white;
+}
 .navLinks {
   /* color: #ff0000; */
   text-decoration: none;
@@ -91,6 +100,11 @@
 .navItem .active {
   color: #ff0000;
   border: 1px solid #ff0000;
+}
+.darkNavItem {
+  line-height: 40px;
+  margin-right: 1rem;
+  color: white;
 }
 .darkNavItem:after {
   content: "";
