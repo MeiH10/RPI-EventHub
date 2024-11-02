@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Footer from "../../components/Footer/Footer";
 import ImageCarousel from "../../components/Carousel/Carousel";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Navbar from '../../components/Navbar/Navbar';
+import { useColorScheme } from '../../hooks/useColorScheme';
+import { ThemeContext } from '@emotion/react';
 
 const Home = () => {
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme(); 
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
   return (
-   <div className='min-h-screen h-full max-w-screen flex flex-col'>
+    <div className={`min-h-screen h-full max-w-screen flex flex-col ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
     <Navbar />
     <div className='flex flex-col md:flex-row h-full w-full justify-between mt-16'>
       <div className='flex flex-col justify-between h-full w-full p-16 space-y-12'>
