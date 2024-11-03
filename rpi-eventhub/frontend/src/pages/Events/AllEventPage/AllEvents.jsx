@@ -16,6 +16,8 @@ import EventsListCard from '../../../pages/Events/AllEventList/EventsList';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useColorScheme } from '../../../hooks/useColorScheme';
 
+import { useAuth } from '../../../context/AuthContext';
+
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
     const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +30,9 @@ function AllEvents() {
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const [selectedEventIds, setSelectedEventIds] = useState([]);
+
+    const { isLoggedIn } = useAuth();
+
 
     const generateICS = () => {
         // Filter events by selected event IDs
@@ -72,33 +77,20 @@ function AllEvents() {
         });
       };
 
-    useEffect(() => {
+      useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             await fetchEvents();
-            // await getLikedEvents()
+            if (isLoggedIn) {
+                await getLikedEvents();
+            }
             setIsLoading(false);
         };
 
-        const getLikedEvents = async () => {
-            // Fetch user information or check user data to determine if the event is liked
-            const token = localStorage.getItem("token");
-            if(token){
-                try {
-                    const response = await axios.get(`${config.apiUrl}/events/like/status`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        }                    
-                    })
-                    setLiked(response.data); // Update the liked state based on the server response
-                } catch (err) {
-                    console.error("Error fetching like status:", err);
-                }
-            }
-          };
-
-        getLikedEvents()
         fetchData();
-    }, [fetchEvents]);
+    }, [fetchEvents, isLoggedIn]);
+    
+    
 
     useEffect(() => {
         setFilteredEvents(events);

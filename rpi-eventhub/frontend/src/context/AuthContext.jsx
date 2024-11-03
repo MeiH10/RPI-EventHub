@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import config from '../config';
+import { useEvents } from '../context/EventsContext';
 
 const AuthContext = createContext(null);
 
@@ -10,6 +11,22 @@ export const AuthProvider = ({ children }) => {
     const [emailVerified, setEmailVerified] = useState(false);
     const [username, setUsername] = useState('');
 
+    const {events, fetchEvents, deleteEvent} = useEvents();
+
+    const getLikedEvents = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        try {
+            const response = await axios.get(`${config.apiUrl}/events/like/status`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setLiked(response.data);
+        } catch (err) {
+            console.error("Error fetching like status:", err);
+        }
+    };
 
     const login = (token) => {
         localStorage.setItem('token', token);
@@ -17,6 +34,9 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(true);
         setUsername(decodedToken.username);
         setEmailVerified(decodedToken.emailVerified);
+        fetchEvents();
+        getLikedEvents();
+
     };
 
     const logout = () => {
@@ -25,6 +45,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
         setEmailVerified(false);
         setUsername(''); 
+        fetchEvents();
     };
 
     useEffect(() => {
