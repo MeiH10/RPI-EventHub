@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
-import RsvpButton from '../../components/rsvp-button/RsvpButton';
+import RsvpButton from '../../components/RSVPButton/RsvpButton';
 import HoverImagePopup from '../../components/ImagePopUp/ImagePopUp';
 import logo from "./logo.svg";
 import logo2 from "./nyc.jpg";
