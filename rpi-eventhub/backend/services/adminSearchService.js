@@ -1,31 +1,15 @@
 // backend/services/adminSearchService.js
-const nodemailer = require('nodemailer');
-const sgTransport = require('nodemailer-sendgrid');
+const User = require('../models/User'); // Adjust the path as necessary
 
-const path = require('path');
-
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
-
-
-const mailer = nodemailer.createTransport(sgTransport({
-  apiKey: process.env.SENDGRID_API_KEY
-}));
-
-
-const userSearch = async ({ to, subject, text }) => {
-  const searchOptions = {
-    from: process.env.User_Form, // Your email address or one authorized by SendGrid
-    to,
-    subject,
-    text,
-  };
-
+// Function to find a user by their RCS ID
+const findUserByRcsId = async (rcsId) => {
   try {
-    await userSearch.User_From(mailOptions);
-    console.log('Email sent successfully');
+    const user = await User.findOne({ rcs_id: rcsId });
+    return user; // Returns the user object if found, otherwise returns null
   } catch (error) {
-    console.error('Failed to send email', error);
+    console.error('Error finding user by RCS ID:', error);
+    throw error; // Re-throw error so it can be handled by the route
   }
 };
 
-module.exports = { userForms };
+module.exports = { findUserByRcsId };

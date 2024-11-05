@@ -8,6 +8,8 @@ import { AuthProvider } from '../../context/AuthContext';
 import { EventsProvider } from '../../context/EventsContext';
 import { ThemeProvider } from '../../context/ThemeContext'; // Import ThemeProvider
 
+
+
 // Import your page components
 
 import Home from '../../pages/Home/Home'; // Adjust path if needed
@@ -20,6 +22,9 @@ import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust p
 import EventDetails from '../../pages/EventDetails/EventDetails';
 import Calendar from '../../pages/Calendar/Calendar';
 import TermsOfService from '../../pages/TermsOfService/TermsOfService';
+import AdminPage from '../../pages/AdminPage/AdminPage'; // Adjust path if needed
+import AdminSearch from '../../components/AdminSearch/AdminSearch'; // Adjust path if needed
+
 
 const router = createBrowserRouter([
   {
@@ -46,7 +51,6 @@ const router = createBrowserRouter([
     path: "/search",
     element: <SearchResults />,
   },
-  
   {
     path: "/all-events",
     element: <AllEvents />,
@@ -62,8 +66,17 @@ const router = createBrowserRouter([
   {
     path: "/terms-of-service",
     element: <TermsOfService />
+  },
+  {
+    path: "/admin", // Route for AdminPage
+    element: <AdminPage />,
+  },
+  {
+    path: "/admin/search", // Route for AdminSearch
+    element: <AdminSearch />,
   }
 ]);
+
 
 function App() {
   ReactGA.initialize('G-YTNJC09YQ1')

@@ -150,6 +150,18 @@
   border-bottom: none;
 }
 
+.drawerItem .navLinks:hover {
+  width: 100%;
+  margin: 10px 0; 
+  padding: 10px;
+  background: rgba(255, 255, 255, .02);
+  border-bottom: none;
+  color: white; 
+  text-decoration: none; 
+  font-size: 1.2rem;
+
+}
+
 @media screen and (max-width: 960px) {
   .navbar {
     height: 50px;

@@ -1,0 +1,46 @@
+/* src/pages/AdminPage/AdminPage.module.css */
+.outterContainer {
+    padding: 20px;
+  }
+  
+  .boldTitle {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .adminTool {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .actionButton {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .actionButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .statsContainer {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .link {
+    color: #007bff;
+    text-decoration: underline;
+  }
+  

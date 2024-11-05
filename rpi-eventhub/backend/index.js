@@ -16,6 +16,9 @@ const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
 const { getEvents, extractEvents } = require('./services/getRPIEventsService');
 
+// Import the new admin search route
+const adminSearchRoutes = require('./routes/adminSearchRoutes'); // New addition
+
 const jwtSecret = process.env.JWT_SECRET;
 
 const app = express();
@@ -25,10 +28,12 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+
 // Apply Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 const upload = multer({
   limits: {
@@ -420,6 +425,8 @@ app.get('/proxy/image/:eventId', async (req, res) => {
     res.status(500).json({ message: 'Error fetching image' });
   }
 });
+
+app.use('/api/admin/search', adminSearchRoutes); 
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 

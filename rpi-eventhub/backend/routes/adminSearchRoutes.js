@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User'); // Adjust the path as necessary
+const User = require('../models/User'); // Adjust the path based on your file structure
 
-// Get all events
-router.get('/', async (req, res) => {
+// Endpoint to get all RCS IDs
+router.get('/rcs-ids', async (req, res) => {
   try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const users = await User.find({}, 'rcs_id'); // Adjust the field name based on your schema
+    const rcsIds = users.map(user => user.rcs_id);
+    res.json(rcsIds);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve RCS IDs' });
   }
 });
-
-
-
-// Other CRUD operations (update, delete, etc.)
-
 
 module.exports = router;
