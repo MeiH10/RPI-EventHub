@@ -5,6 +5,7 @@ import Footer from '../../components/Footer/Footer';
 import { Skeleton } from '@mui/material';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
+import AdminSearch from '../../components/AdminSearch/AdminSearch'; // Import the search component
 
 function AdminPage() {
   const { theme } = useContext(ThemeContext);
@@ -55,9 +56,7 @@ function AdminPage() {
                 <div className={styles.adminTool}>
                   <h5>Manage Users</h5>
                   <p>Search for and manage user accounts by RCS ID.</p>
-                  <button className={styles.actionButton} onClick={() => window.location.href = '/admin/search'}>
-                    Go to User Search
-                  </button>
+                  <AdminSearch /> {/* Embed the search component directly */}
                 </div>
               </div>
               <div className="col-12 col-md-6">

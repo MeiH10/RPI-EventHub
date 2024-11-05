@@ -44,3 +44,31 @@
     text-decoration: underline;
   }
   
+  /* Adjust the styling to make the search bar blend well */
+.searchContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .searchInput {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .searchButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .searchButton:hover {
+    background-color: #0056b3;
+  }
+  
