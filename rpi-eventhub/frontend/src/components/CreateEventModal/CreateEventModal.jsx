@@ -321,29 +321,54 @@ function CreateEventModal() {
             }
 
 
-            <Form.Group controlId="eventStartDateTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>Start Date & Time <span
-                  className='text-danger'>*</span></Form.Label>
-              <Form.Control
-                  type="datetime-local"
-                  required
-                  value={startDateTime}
-                  onChange={(e) => setStartDateTime(e.target.value)}
-                  className={styles.formControl}
-              />
-            </Form.Group>
+<Form.Group controlId="eventStartDateTime" className={styles.formGroup}>
+  <Form.Label className={styles.formLabel}>
+    Start Date & Time <span className="text-danger">*</span>
+  </Form.Label>
+  <Form.Control
+    type="datetime-local"
+    required
+    value={startDateTime}
+    onChange={(e) => {
+      const selectedDateTime = e.target.value;
+      const currentDateTime = new Date().toISOString().slice(0, 16);
 
-            <Form.Group controlId="eventEndDateTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>End Date & Time <span
-                  className='text-danger'>*</span></Form.Label>
-              <Form.Control
-                  type="datetime-local"
-                  required
-                  value={endDateTime}
-                  onChange={(e) => setEndDateTime(e.target.value)}
-                  className={styles.formControl}
-              />
-            </Form.Group>
+      // Check if selected date is before the current date and time
+      if (selectedDateTime < currentDateTime) {
+        setStartDateTime(currentDateTime); // Reset to current date if invalid
+      } else if (endDateTime && selectedDateTime > endDateTime) {
+        setStartDateTime(currentDateTime); // Reset to current date if start is after end
+      } else {
+        setStartDateTime(selectedDateTime); // Otherwise, update normally
+      }
+    }}
+    className={styles.formControl}
+    min={new Date().toISOString().slice(0, 16)} // Set minimum to current date & time
+  />
+</Form.Group>
+
+
+<Form.Group controlId="eventEndDateTime" className={styles.formGroup}>
+  <Form.Label className={styles.formLabel}>
+    End Date & Time <span className="text-danger">*</span>
+  </Form.Label>
+  <Form.Control
+    type="datetime-local"
+    required
+    value={endDateTime}
+    onChange={(e) => {
+      const selectedEndTime = e.target.value;
+      // Check if selected end time is before start time
+      if (startDateTime && selectedEndTime < startDateTime) {
+        setEndDateTime(startDateTime); // Reset to startDateTime if invalid
+      } else {
+        setEndDateTime(selectedEndTime); // Otherwise, update normally
+      }
+    }}
+    className={styles.formControl}
+    min={startDateTime || new Date().toISOString().slice(0, 16)} // Ensure end time is after start time
+  />
+</Form.Group>
 
             <Form.Group controlId="eventLocation" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Location <span className='text-danger'>*</span></Form.Label>
