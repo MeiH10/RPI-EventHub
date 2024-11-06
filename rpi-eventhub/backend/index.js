@@ -20,6 +20,11 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const app = express();
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const ADMIN = 3;
+
 const corsOptions = {
   origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
   optionsSuccessStatus: 200,
@@ -126,8 +131,10 @@ const authenticateAndVerify = async (req, res, next) => {
       throw new Error('User not found');
     }
 
-    if (!user.emailVerified) {
+    if (user.role === UNVERIFIED) {
       return res.status(403).json({ message: 'Please verify your email to perform this action.' });
+    } else if (user.role === BANNED) {
+      return res.status(403).json({ message: 'Your account has been banned. If you believe this is a mistake, please reach out to site admin.' });
     }
 
     req.user = user;
@@ -152,7 +159,7 @@ app.post('/signup', async (req, res) => {
       username,
       email,
       password,
-      emailVerified: false,
+      role: UNVERIFIED,
       verificationCode,
     });
     await user.save();
@@ -166,7 +173,7 @@ app.post('/signup', async (req, res) => {
     const token = jwt.sign({ 
       userId: user._id, 
       email: user.email, 
-      emailVerified: user.emailVerified, 
+      role: user.role, 
       username: user.username 
     }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
@@ -174,7 +181,7 @@ app.post('/signup', async (req, res) => {
       message: "User created successfully. Please check your email to verify your account.",
       token: token,
       email: user.email, 
-      emailVerified: user.emailVerified
+      role: user.role
     });
   } catch (error) {
     res.status(500).json({ message: "Error creating user. It's possible that username or email address already exist.", error: error.message });
@@ -192,14 +199,14 @@ app.post('/verify-email', async (req, res) => {
     }
 
     if (user.verificationCode === verificationCode) {
-      user.emailVerified = true;
+      user.role = VERIFIED;
       user.verificationCode = '';
       await user.save();
 
       const token = jwt.sign({ 
         userId: user._id, 
         email: user.email, 
-        emailVerified: user.emailVerified, 
+        role: user.role, 
         username: user.username 
       }, process.env.JWT_SECRET, { expiresIn: '24h' });
 

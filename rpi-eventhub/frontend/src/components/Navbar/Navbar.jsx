@@ -10,9 +10,15 @@ import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
 import VerifyModal from "../VerifyModal/VerifyModal";
 
+//user role consts
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const ADMIN = 3;
+
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout } = useAuth();
+  const { isLoggedIn, role, logout } = useAuth();
   const location = useLocation();
 
   const handleClick = () => setClick(!click);
@@ -86,7 +92,7 @@ const Navbar = () => {
                   >
                     Sign Out
                   </button>
-                  {!emailVerified && <VerifyModal />}
+                  {!(role >= VERIFIED) && <VerifyModal />}
                 </div>
               ) : (
                 <>
@@ -165,7 +171,7 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!emailVerified && <VerifyModal />}
+                {!(role >= VERIFIED) && <VerifyModal />}
               </div>
             ) : (
               <>
