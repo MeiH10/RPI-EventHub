@@ -36,12 +36,14 @@
   box-sizing: border-box;
   margin-bottom: auto;
   position: sticky;
-  top: 140px;
+  top: 14rem;
+  max-width: 30vw;
   max-height: 70vh;
   z-index: 1000;
   font-family: "Hevletica Neue", sans-serif;
   /* Hide Scroll bar*/
   overflow-y: scroll; /* Allow scroll */
+  overflow-x: scroll; /* Allow scroll */
   scrollbar-width: none; /* No scrollbar */
 }
 
