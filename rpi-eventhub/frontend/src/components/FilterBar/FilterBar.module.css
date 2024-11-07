@@ -27,24 +27,24 @@
 }
 
 .sidebar {
-  width: max-content;
+  max-width: fit-content;
   padding: 20px;
   background-color: var(--sidebar-bg-color);
-  border: 2px solid var(--border-color); 
-  border-radius: 10px; 
-  margin-top: 25px; 
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  margin-top: 25px;
   box-sizing: border-box;
   margin-bottom: auto;
   position: sticky;
   top: 14rem;
-  max-width: 30vw;
+  width: 25vw;
   max-height: 70vh;
   z-index: 1000;
   font-family: "Hevletica Neue", sans-serif;
-  /* Hide Scroll bar*/
-  overflow-y: scroll; /* Allow scroll */
-  overflow-x: scroll; /* Allow scroll */
+  overflow-x: scroll; /* Enable horizontal scrolling */
+  overflow-y: scroll; /* Enable vertical scrolling */
   scrollbar-width: none; /* No scrollbar */
+  white-space: nowrap; /* Prevent text from wrapping */
 }
 
 .filterSection {
@@ -74,7 +74,10 @@
 .checkboxWrapper {
   display: flex;
   align-items: center;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  white-space: nowrap; /* Prevent text from wrapping */
+  max-width: fit-content;
 }
 
 label {
@@ -88,7 +91,8 @@ label {
   -webkit-appearance: none;
   appearance: none;
   /* create a custom checkbox */
-  width: 20px;
+  min-width: 20px;
+  width: 20px !important;
   height: 20px;
   position: relative;
   cursor: pointer;
