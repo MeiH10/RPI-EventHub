@@ -1,76 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import adminSearchCSS from './AdminSearch.module.css';
 
+// Mock data list of users
+const mockRcsIds = [
+  { rcsId: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu' },
+  { rcsId: 'harim', name: 'Hari M', email: 'harim@rpi.edu' },
+  { rcsId: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu' },
+  { rcsId: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu' },
+  { rcsId: 'lastf', name: 'Last F', email: 'lastf@rpi.edu' },
+  // Add more mock users as needed
+];
+
 const AdminSearch = () => {
-  const [rcsIds, setRcsIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState(null);
-  const [error, setError] = useState('');
 
-  useEffect(() => {
-    // Fetch all RCS IDs when component mounts
-    const fetchRcsIds = async () => {
-      try {
-        const response = await fetch('/api/admin/rcs-ids');
-        const data = await response.json();
-        setRcsIds(data);
-      } catch (error) {
-        console.error('Error fetching RCS IDs:', error);
-      }
-    };
-
-    fetchRcsIds();
-  }, []);
-
-  const handleSearchClick = async () => {
-    if (!searchTerm.trim()) {
-      setError("Please enter an RCS ID.");
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/admin/search/user?rcsId=${searchTerm}`);
-      if (!response.ok) {
-        throw new Error("User not found.");
-      }
-      const userData = await response.json();
-      setSearchResults(userData);
-      setError('');
-    } catch (err) {
-      setError(err.message);
-      setSearchResults(null);
-    }
-  };
+  // Filter users for autocomplete suggestions based on search term
+  const filteredSuggestions = mockRcsIds.filter(user =>
+    user.rcsId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className={adminSearchCSS.searchContainer}>
       <input
         className={adminSearchCSS.searchInput}
         type="text"
-        placeholder="Enter RCS ID"
+        placeholder="Enter RCS ID, First Name, or Last Name"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button className={adminSearchCSS.searchButton} onClick={handleSearchClick}>
-        Search
-      </button>
-
-      {error && <p className={adminSearchCSS.error}>{error}</p>}
-
-      {searchResults && (
-        <div className={adminSearchCSS.resultsContainer}>
-          <h4>User Details</h4>
-          <p><strong>RCS ID:</strong> {searchResults.rcs_id}</p>
-          <p><strong>Name:</strong> {searchResults.name}</p>
-          <p><strong>Email:</strong> {searchResults.email}</p>
-        </div>
+      
+      {/* Dropdown for autocomplete results placed directly below the input field */}
+      {searchTerm && (
+        <ul className={adminSearchCSS.dropdown}>
+          {filteredSuggestions.map((user, index) => (
+            <li
+              key={index}
+              className={adminSearchCSS.dropdownItem}
+              onClick={() => setSearchTerm(user.rcsId)}
+            >
+              {user.name} ({user.rcsId})
+            </li>
+          ))}
+          {filteredSuggestions.length === 0 && <li className={adminSearchCSS.noResult}>No results found</li>}
+        </ul>
       )}
 
-      <div className={adminSearchCSS.rcsList}>
-        <h4>All RCS IDs:</h4>
+      {/* Display all users or filtered list */}
+      <div className={adminSearchCSS.resultsContainer}>
+        <h4>User List</h4>
         <ul>
-          {rcsIds.map((rcsId, index) => (
-            <li key={index}>{rcsId}</li>
+          {(searchTerm ? filteredSuggestions : mockRcsIds).map((user, index) => (
+            <li key={index} className={adminSearchCSS.userResult}>
+              <p><strong>RCS ID:</strong> {user.rcsId}</p>
+              <p><strong>Name:</strong> {user.name}</p>
+              <p><strong>Email:</strong> {user.email}</p>
+              <button className={adminSearchCSS.promoteButton}>Promote</button>
+              <button className={adminSearchCSS.banButton}>Ban</button>
+            </li>
           ))}
         </ul>
       </div>

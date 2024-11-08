@@ -12,7 +12,7 @@ import VerifyModal from "../VerifyModal/VerifyModal";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout, isAdmin } = useAuth();
+  const { isLoggedIn, emailVerified, logout } = useAuth(); // Remove isAdmin
   const location = useLocation();
 
   const handleClick = () => setClick(!click);
@@ -23,7 +23,7 @@ const Navbar = () => {
       handleClick();
     }
   };
-  
+
   const getNavLinkClass = (path) => {
     return location.pathname === path
       ? `${styles.navLinks} ${styles.active}`
@@ -40,34 +40,22 @@ const Navbar = () => {
             </NavLink>
             <ul className={styles.navMenu}>
               <li className={styles.navItem}>
-                <NavLink
-                  to="/"
-                  className={getNavLinkClass("/")}
-                >
+                <NavLink to="/" className={getNavLinkClass("/")}>
                   Home
                 </NavLink>
               </li>
               <li className={styles.navItem}>
-                <NavLink
-                  to="/all-events"
-                  className={getNavLinkClass("/all-events")}
-                >
+                <NavLink to="/all-events" className={getNavLinkClass("/all-events")}>
                   Events
                 </NavLink>
               </li>
               <li className={styles.navItem}>
-                <NavLink
-                  to="/about-us"
-                  className={getNavLinkClass("/about-us")}
-                >
+                <NavLink to="/about-us" className={getNavLinkClass("/about-us")}>
                   About
                 </NavLink>
               </li>
               <li className={styles.navItem}>
-                <NavLink
-                  to="/calendar"
-                  className={getNavLinkClass("/calendar")}
-                >
+                <NavLink to="/calendar" className={getNavLinkClass("/calendar")}>
                   Calendar
                 </NavLink>
               </li>
@@ -78,22 +66,16 @@ const Navbar = () => {
               <li className={styles.navItem}>
                 <CreateEventModal />
               </li>
-              {isLoggedIn && isAdmin && (
+              {isLoggedIn && (
                 <li className={styles.navItem}>
-                  <NavLink
-                    to="/admin"
-                    className={getNavLinkClass("/admin")}
-                  >
+                  <NavLink to="/admin" className={getNavLinkClass("/admin")}>
                     Admin
                   </NavLink>
                 </li>
               )}
               {isLoggedIn ? (
                 <div>
-                  <button
-                    onClick={handleLogout}
-                    className={`${styles.navItem} btn-danger btn`}
-                  >
+                  <button onClick={handleLogout} className={`${styles.navItem} btn-danger btn`}>
                     Sign Out
                   </button>
                   {!emailVerified && <VerifyModal />}
@@ -128,61 +110,38 @@ const Navbar = () => {
         <div className={click ? `${styles.drawer} ${styles.open}` : styles.drawer}>
           <ul className={styles.drawerMenu}>
             <li className={styles.drawerItem}>
-              <NavLink
-                to="/"
-                className={getNavLinkClass("/")}
-                onClick={handleClick}
-              >
+              <NavLink to="/" className={getNavLinkClass("/")} onClick={handleClick}>
                 Home
               </NavLink>
             </li>
             <li className={styles.drawerItem}>
-              <NavLink
-                to="/all-events"
-                className={getNavLinkClass("/all-events")}
-                onClick={handleClick}
-              >
+              <NavLink to="/all-events" className={getNavLinkClass("/all-events")} onClick={handleClick}>
                 Events
               </NavLink>
             </li>
             <li className={styles.drawerItem}>
-              <NavLink
-                to="/about-us"
-                className={getNavLinkClass("/about-us")}
-                onClick={handleClick}
-              >
+              <NavLink to="/about-us" className={getNavLinkClass("/about-us")} onClick={handleClick}>
                 About
               </NavLink>
             </li>
             <li className={styles.drawerItem}>
-              <NavLink
-                to="/calendar"
-                className={getNavLinkClass("/calendar")}
-                onClick={handleClick}
-              >
+              <NavLink to="/calendar" className={getNavLinkClass("/calendar")} onClick={handleClick}>
                 Calendar
               </NavLink>
             </li>
             <li className={styles.drawerItem}>
               <CreateEventModal />
             </li>
-            {isLoggedIn && isAdmin && (
+            {isLoggedIn && (
               <li className={styles.drawerItem}>
-                <NavLink
-                  to="/admin"
-                  className={getNavLinkClass("/admin")}
-                  onClick={handleClick}
-                >
+                <NavLink to="/admin" className={getNavLinkClass("/admin")} onClick={handleClick}>
                   Admin
                 </NavLink>
               </li>
             )}
             {isLoggedIn ? (
               <div className={styles.drawerItem}>
-                <button
-                  onClick={handleLogout}
-                  className={`${styles.navItem} btn-danger btn`}
-                >
+                <button onClick={handleLogout} className={`${styles.navItem} btn-danger btn`}>
                   Sign Out
                 </button>
                 {!emailVerified && <VerifyModal />}

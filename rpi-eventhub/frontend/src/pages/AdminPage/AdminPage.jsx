@@ -42,51 +42,33 @@ function AdminPage() {
           <div className="col-12 px-5 py-3">
             <h4 className={styles.boldTitle}>Admin Dashboard</h4>
             <p className={styles.description}>
-              Welcome to the Admin Dashboard. Here, you can manage users, monitor events, and review site feedback.
+              Welcome to the Admin Dashboard. Here, you can manage users and monitor events.
             </p>
           </div>
         </div>
 
-        {/* Admin Tools and Actions */}
+        {/* Admin Search Section */}
         <div className="row">
           <div className="col-12 px-5 py-3">
             <h4 className={styles.sectionTitle}>Admin Tools</h4>
-            <div className="row">
-              <div className="col-12 col-md-6">
-                <div className={styles.adminTool}>
-                  <h5>Manage Users</h5>
-                  <p>Search for and manage user accounts by RCS ID.</p>
-                  <AdminSearch /> {/* Embed the search component directly */}
-                </div>
-              </div>
-              <div className="col-12 col-md-6">
-                <div className={styles.adminTool}>
-                  <h5>Manage Events</h5>
-                  <p>Create, update, or delete campus events.</p>
-                  <button className={styles.actionButton} onClick={() => window.location.href = '/admin/events'}>
-                    Go to Event Management
-                  </button>
-                </div>
-              </div>
+            <div className={styles.adminTool}>
+              <h5>Manage Users</h5>
+              <p>Search for and manage user accounts by RCS ID.</p>
+              <AdminSearch /> {/* Embed the search component directly */}
             </div>
           </div>
         </div>
 
-        {/* Site Statistics or Recent Activity */}
+        {/* Manage Events Section */}
         <div className="row">
           <div className="col-12 px-5 py-3">
-            <h4 className={styles.sectionTitle}>Site Statistics</h4>
-            {isLoading ? (
-              <Skeleton variant="rectangular" width="100%" height={150} />
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              <div className={styles.statsContainer}>
-                <p><strong>Total Users:</strong> {adminStats.totalUsers}</p>
-                <p><strong>Total Events:</strong> {adminStats.totalEvents}</p>
-                <p><strong>Active Users This Week:</strong> {adminStats.activeUsersThisWeek}</p>
-              </div>
-            )}
+            <div className={styles.adminTool}>
+              <h5>Manage Events</h5>
+              <p>Create, update, or delete campus events.</p>
+              <button className={styles.actionButton} onClick={() => window.location.href = '/admin/events'}>
+                Go to Event Management
+              </button>
+            </div>
           </div>
         </div>
       </div>
