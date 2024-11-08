@@ -332,18 +332,17 @@ function CreateEventModal() {
                     const selectedDateTime = e.target.value;
                     const currentDateTime = new Date().toISOString().slice(0, 16);
                     if (selectedDateTime < currentDateTime) {
-                      setStartDateTime(currentDateTime); // Reset to current date if invalid
+                      setStartDateTime(currentDateTime); 
                     } else if (endDateTime && selectedDateTime > endDateTime) {
-                      setStartDateTime(currentDateTime); // Reset to current date if start is after end
+                      setStartDateTime(currentDateTime); 
                     } else {
-                      setStartDateTime(selectedDateTime); // Otherwise, update normally
+                      setStartDateTime(selectedDateTime); 
                     }
                   }}
                   className={styles.formControl}
-                  min={new Date().toISOString().slice(0, 16)} // Set minimum to current date & time
+                  min={new Date().toISOString().slice(0, 16)} 
               />
             </Form.Group>
-
 
             <Form.Group controlId="eventEndDateTime" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>End Date & Time <span
@@ -355,13 +354,13 @@ function CreateEventModal() {
                   onChange={(e) => {
                     const selectedEndTime = e.target.value;
                     if (startDateTime && selectedEndTime < startDateTime) {
-                      setEndDateTime(startDateTime); // Reset to startDateTime if invalid
+                      setEndDateTime(startDateTime); 
                     }else{
-                      setEndDateTime(selectedEndTime); // Otherwise, update normally
+                      setEndDateTime(selectedEndTime); 
                     }
                     }}
                   className={styles.formControl}
-                  min={startDateTime || new Date().toISOString().slice(0, 16)} // Ensure end time is after start time
+                  min={startDateTime || new Date().toISOString().slice(0, 16)} 
               />
             </Form.Group>
 
