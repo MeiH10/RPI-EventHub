@@ -402,15 +402,13 @@ app.delete('/events/:id', async (req, res) => {
 
 // update event route
 // Route to update an event
-app.post('/events-update/:id', async (req, res) => {
+app.post('/events-update/:id', upload, async (req, res) => {
   const { id } = req.params;
   const updatedEvent = req.body;
   const file = req.file;
-  console.log('Updated event:', req.body);
 
   try {
     let imageUrl = '';
-    console.log('File:', file);
     if (file) {
       let imageBuffer;
       if (file.mimetype === 'application/pdf') {
@@ -420,7 +418,6 @@ app.post('/events-update/:id', async (req, res) => {
       }
       const formData = new FormData();
       formData.append('image', imageBuffer.toString('base64'));
-      console.log('Image buffer:', imageBuffer);
       const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
@@ -442,7 +439,7 @@ app.post('/events-update/:id', async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-    res.status(200).json(event+ "/////Image:" + imageUrl);
+    res.status(200).json("Event updated successfully");
   } catch (error) {
     res.status(400).json({ message: 'Failed to update event', error: error.message });
   }

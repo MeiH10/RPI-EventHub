@@ -36,17 +36,14 @@ const formatDateAsEST = (utcDateString) => {
 
 const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const { manageMode } = useAuth();
+    const [isOwner, setIsOwner] = useState(false);
+    const { manageMode, username } = useAuth();
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [error, setError] = useState('');
     const [tags, setTags] = useState([]);
     const [showOriginalImage, setShowOriginalImage] = useState(true);
 
-
-    useEffect(() => {
-        setIsEditing(manageMode);
-    }, [manageMode]);
 
     const { eventId } = useParams();
     const { events, fetchEvents, updateEvent } = useEvents();
@@ -94,6 +91,13 @@ const EventDetails = () => {
     const event = events.find(event => event._id === eventId);
 
     useEffect(() => {
+        if (event && username) {
+            setIsEditing(manageMode && event.poster === username);
+            setIsOwner(event.poster === username);
+        }
+    }, [manageMode, event, username]);
+
+    useEffect(() => {
         if (event) {
             setFormData({
                 title: event.title || '',
@@ -119,28 +123,37 @@ const EventDetails = () => {
     };
 
     const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+
+        const submittedFormData = new FormData();
+        submittedFormData.append('title', formData.title);
+        submittedFormData.append('description', formData.description);
+        submittedFormData.append('poster', formData.poster);
+        submittedFormData.append('club', formData.club);
+        submittedFormData.append('startDateTime', formData.startDateTime || event.startDateTime);
+        submittedFormData.append('endDateTime', formData.endDateTime || event.endDateTime);
+        submittedFormData.append('location', formData.location);
+        submittedFormData.append('tags', formData.tags);
+        submittedFormData.append('rsvp', formData.rsvp);
+
         if (file !== null) {
-            formData.file = file;
-        } else {
-            formData.file = event.image;
+            submittedFormData.append('file', file);
+            console.log('file:', file);
         }
 
-        if (formData.endDateTime === '') {
-            formData.endDateTime = event.endDateTime;
-        }
-        if (formData.startDateTime === '') {
-            formData.startDateTime = event.startDateTime;
+        console.log('submitting form data:', submittedFormData);
+        console.log('Form data is valid:', submittedFormData);
+        try {
+            const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, submittedFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log('Event updated successfully:', response.data);
+        } catch (error) {
+            console.error('Failed to update event:', error);
         }
 
-        console.log('submitting form data:', formData);
-        if (checkFormData()) {
-            try {
-                const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, formData);
-                console.log('Event updated successfully:', response.data);
-            } catch (error) {
-                console.error('Failed to update event:', error);
-            }
-        }
     };
 
     if (!event) {
@@ -162,36 +175,11 @@ const EventDetails = () => {
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
 
 
-    // function to check the form data and set the error message
-    const checkFormData = () => {
-        if (!formData.title) {
-            setError('Title is required.');
-            return false;
-        }
-        if (!formData.description) {
-            setError('Description is required.');
-            return false;
-        }
-        if (!formData.startDateTime) {
-            setError('Start Date Time is required.');
-            return false;
-        }
-        if (!formData.endDateTime) {
-            setError('End Date Time is required.');
-            return false;
-        }
-        if (!formData.rsvp) {
-            setError('RSVP is required.');
-            return false;
-        }
-        return true;
-    }
-
     return (
         <div className='outterContainer'>
             <Navbar />
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
-                { isEditing ?
+                { isEditing&&isOwner ?
                     (
                         <div className="mx-auto p-4 md:p-6 max-w-screen-lg min-h-screen">
                             {error && <div className="text-red-500 text-center">{error}</div>}
