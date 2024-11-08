@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {logger} = require('../services/eventsLogService');
 
 const eventSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -16,6 +17,7 @@ const eventSchema = new mongoose.Schema({
 });
 
 eventSchema.index({ title: 1, startDateTime: 1 }, { unique: true });
+
 
 const Event = mongoose.models.Event || mongoose.model('Event', eventSchema);
 

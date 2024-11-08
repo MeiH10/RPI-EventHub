@@ -7,6 +7,7 @@ const axios = require('axios');
 const FormData = require('form-data');
 const Event = require('./models/Event');
 const { giveTags } = require('./useful_script/tagFunction');
+const { DateTime } = require('luxon');
 require('dotenv').config();
 
 const uploadImageToImgBB = async (imageUrl) => {
@@ -71,8 +72,14 @@ const saveLastSyncTime = (time) => {
 let lastSyncTime = loadLastSyncTime();
 
 const fetchNewEventsFromPostgres = async (lastSyncTime) => {
-  const query = 'SELECT * FROM events WHERE created > $1 ORDER BY created ASC, event_id ASC';
-  const values = [lastSyncTime];
+  // Convert lastSyncTime to UTC for PostgreSQL comparison
+  const utcLastSync = DateTime.fromJSDate(lastSyncTime)
+    .toUTC()
+    .toSQL();
+
+  const query = 'SELECT * FROM events WHERE created > $1::timestamp ORDER BY created ASC, event_id ASC';
+  const values = [utcLastSync];
+  
   try {
     const res = await pgClient.query(query, values);
     return res.rows;
@@ -81,8 +88,6 @@ const fetchNewEventsFromPostgres = async (lastSyncTime) => {
     throw error;
   }
 };
-
-
 
 const transformEventData = async (pgEvent) => {
   let poster = pgEvent.submitted_by || 'admin';
@@ -106,14 +111,29 @@ const transformEventData = async (pgEvent) => {
     }
   }
 
-  const startDateTime = pgEvent.event_start;
-  const endDateTime = pgEvent.event_end || new Date(new Date(startDateTime).getTime() + (3 * 60 * 60 * 1000)).toISOString();
+  // Convert PostgreSQL timestamps to UTC ISO strings with explicit format logging
+  const startDateTime = DateTime.fromJSDate(pgEvent.event_start)
+    .toUTC()
+    .toISO();
+
+  // If no end time, use start time + 3 hours, maintaining UTC
+  const endDateTime = pgEvent.event_end 
+    ? DateTime.fromJSDate(pgEvent.event_end)
+        .toUTC()
+        .toISO()
+    : DateTime.fromJSDate(pgEvent.event_start)
+        .plus({ hours: 3 })
+        .toUTC()
+        .toISO();
+
 
   return {
     title: title,
     description: description,
     likes: pgEvent.likes || 0,
-    creationTimestamp: pgEvent.created,
+    creationTimestamp: DateTime.fromJSDate(pgEvent.created)
+      .toUTC()
+      .toISO(),
     poster: poster,
     startDateTime: startDateTime,
     endDateTime: endDateTime,
@@ -127,7 +147,7 @@ const transformEventData = async (pgEvent) => {
 
 const syncEvents = async () => {
   try {
-    console.log(`Starting sync. Last sync time: ${lastSyncTime}`);
+    console.log(`Starting sync. Last sync time (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
     const newEvents = await fetchNewEventsFromPostgres(lastSyncTime);
     
     if (newEvents.length > 0) {
@@ -136,29 +156,39 @@ const syncEvents = async () => {
 
       for (const pgEvent of newEvents) {
         try {
-          console.log(`\nProcessing: ${pgEvent.event_name}`);
-          console.log(`SQL time: ${pgEvent.event_start}`);
+          console.log('\n=== Event Processing Start ===');
+          console.log(`Event Name: ${pgEvent.event_name}`);
+          
+          const utcStartTime = DateTime.fromJSDate(pgEvent.event_start).toUTC().toISO();
+          
 
           const existingEvent = await Event.findOne({
             title: pgEvent.event_name,
-            startDateTime: pgEvent.event_start
+            startDateTime: utcStartTime
           });
 
-          if (!existingEvent) {
-            const transformedEvent = await transformEventData(pgEvent);
-            if (transformedEvent) {
-              await Event.create(transformedEvent);
-              console.log(`Created new event: ${transformedEvent.title}`);
-              console.log(`Start time: ${transformedEvent.startDateTime}`);
-            }
-          } else {
-            console.log(`Event already exists: ${pgEvent.event_name}`);
-            console.log(`Existing start time: ${existingEvent.startDateTime}`);
+          if (existingEvent) {
+            console.log('Found existing event with:');
+            console.log('Stored title:', existingEvent.title);
+            console.log('Stored startDateTime:', existingEvent.startDateTime);
+            console.log('Comparison result:', existingEvent.startDateTime === utcStartTime);
+            console.log('=== Skipping duplicate event ===');
+            continue;
+          }
+
+          const transformedEvent = await transformEventData(pgEvent);
+          if (transformedEvent) {
+            await Event.create(transformedEvent);
+            console.log('Created new event:');
+            console.log('Title:', transformedEvent.title);
+            console.log('Start time (UTC):', transformedEvent.startDateTime);
           }
 
           if (new Date(pgEvent.created) > latestProcessedTime) {
             latestProcessedTime = new Date(pgEvent.created);
           }
+          
+          console.log('=== Event Processing Complete ===');
         } catch (error) {
           console.error(`Error processing event ${pgEvent.event_name}:`, error.message);
         }
@@ -166,7 +196,7 @@ const syncEvents = async () => {
 
       lastSyncTime = latestProcessedTime;
       saveLastSyncTime(lastSyncTime);
-      console.log(`Sync completed. Last sync time updated to ${lastSyncTime}`);
+      console.log(`Sync completed. Last sync time updated to (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
     } else {
       console.log('No new events to sync.');
     }
@@ -200,6 +230,8 @@ const startSync = async () => {
 const startSynchronization = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     });
     console.log('MongoDB Connected for synchronization');
     await startSync();

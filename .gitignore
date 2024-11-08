@@ -24,6 +24,7 @@
 **/npm-debug.log*
 **/yarn-debug.log*
 **/yarn-error.log*
+/rpi-eventhub/backend/logs
 
 # idea files
 **/.idea
