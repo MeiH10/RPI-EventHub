@@ -322,29 +322,27 @@ function CreateEventModal() {
 
 
             <Form.Group controlId="eventStartDateTime" className={styles.formGroup}>
-  <Form.Label className={styles.formLabel}>
-    Start Date & Time <span className="text-danger">*</span></Form.Label>
-  <Form.Control
-    type="datetime-local"
-    required
-    value={startDateTime}
-    onChange={(e) => {
-      const selectedDateTime = e.target.value;
-      const currentDateTime = new Date().toISOString().slice(0, 16);
-
-      // Check if selected date is before the current date and time
-      if (selectedDateTime < currentDateTime) {
-        setStartDateTime(currentDateTime); // Reset to current date if invalid
-      } else if (endDateTime && selectedDateTime > endDateTime) {
-        setStartDateTime(currentDateTime); // Reset to current date if start is after end
-      } else {
-        setStartDateTime(selectedDateTime); // Otherwise, update normally
-      }
-    }}
-    className={styles.formControl}
-    min={new Date().toISOString().slice(0, 16)} // Set minimum to current date & time
-  />
-</Form.Group>
+              <Form.Label className={styles.formLabel}>Start Date & Time <span
+                  className='text-danger'>*</span></Form.Label>
+              <Form.Control
+                  type="datetime-local"
+                required
+                value={startDateTime}
+                onChange={(e) => {
+                  const selectedDateTime = e.target.value;
+                  const currentDateTime = new Date().toISOString().slice(0, 16);
+                  if (selectedDateTime < currentDateTime) {
+                    setStartDateTime(currentDateTime); // Reset to current date if invalid
+                  } else if (endDateTime && selectedDateTime > endDateTime) {
+                    setStartDateTime(currentDateTime); // Reset to current date if start is after end
+                  } else {
+                    setStartDateTime(selectedDateTime); // Otherwise, update normally
+                  }
+                }}
+                className={styles.formControl}
+                min={new Date().toISOString().slice(0, 16)} // Set minimum to current date & time
+              />
+            </Form.Group>
 
 
             <Form.Group controlId="eventEndDateTime" className={styles.formGroup}>
