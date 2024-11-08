@@ -3,22 +3,50 @@ import adminSearchCSS from './AdminSearch.module.css';
 
 // Mock data list of users
 const mockRcsIds = [
-  { rcsId: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu' },
-  { rcsId: 'harim', name: 'Hari M', email: 'harim@rpi.edu' },
-  { rcsId: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu' },
-  { rcsId: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu' },
-  { rcsId: 'lastf', name: 'Last F', email: 'lastf@rpi.edu' },
-  // Add more mock users as needed
+  { rcsId: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu', role: 0, banned: false },
+  { rcsId: 'harim', name: 'Hari M', email: 'harim@rpi.edu', role: 1, banned: false },
+  { rcsId: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu', role: 2, banned: false },
+  { rcsId: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu', role: 3, banned: false },
+  { rcsId: 'lastf', name: 'Last F', email: 'lastf@rpi.edu', role: 4, banned: false },
 ];
 
 const AdminSearch = () => {
+  const [users, setUsers] = useState(mockRcsIds);
   const [searchTerm, setSearchTerm] = useState('');
+  const [changesMade, setChangesMade] = useState(false); // Track if changes have been made
 
   // Filter users for autocomplete suggestions based on search term
-  const filteredSuggestions = mockRcsIds.filter(user =>
+  const filteredSuggestions = users.filter(user =>
     user.rcsId.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Function to handle rank change
+  const handleRankChange = (rcsId, newRole) => {
+    setUsers(prevUsers =>
+      prevUsers.map(user =>
+        user.rcsId === rcsId ? { ...user, role: newRole } : user
+      )
+    );
+    setChangesMade(true); // Mark changes as made
+  };
+
+  // Function to handle banning a user
+  const handleBan = (rcsId) => {
+    setUsers(prevUsers =>
+      prevUsers.map(user =>
+        user.rcsId === rcsId ? { ...user, banned: !user.banned } : user
+      )
+    );
+    setChangesMade(true); // Mark changes as made
+  };
+
+  // Function to save changes (this could involve an API call in a real app)
+  const handleSave = () => {
+    console.log('Changes saved:', users);
+    setChangesMade(false); // Reset changes made flag
+    alert('Changes have been saved.');
+  };
 
   return (
     <div className={adminSearchCSS.searchContainer}>
@@ -50,17 +78,49 @@ const AdminSearch = () => {
       <div className={adminSearchCSS.resultsContainer}>
         <h4>User List</h4>
         <ul>
-          {(searchTerm ? filteredSuggestions : mockRcsIds).map((user, index) => (
+          {(searchTerm ? filteredSuggestions : users).map((user, index) => (
             <li key={index} className={adminSearchCSS.userResult}>
               <p><strong>RCS ID:</strong> {user.rcsId}</p>
               <p><strong>Name:</strong> {user.name}</p>
               <p><strong>Email:</strong> {user.email}</p>
-              <button className={adminSearchCSS.promoteButton}>Promote</button>
-              <button className={adminSearchCSS.banButton}>Ban</button>
+              
+              {/* Dropdown for setting rank */}
+              <label>
+                <strong>Role Level: </strong>
+                <select
+                  className={adminSearchCSS.rankDropdown}
+                  value={user.role}
+                  onChange={(e) => handleRankChange(user.rcsId, Number(e.target.value))}
+                >
+                  {[0, 1, 2, 3, 4, 5].map(rank => (
+                    <option key={rank} value={rank}>
+                      {rank}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              
+              {/* Ban button with toggle functionality */}
+              <button
+                className={user.banned ? adminSearchCSS.unbanButton : adminSearchCSS.banButton}
+                onClick={() => handleBan(user.rcsId)}
+              >
+                {user.banned ? 'Unban' : 'Ban'}
+              </button>
             </li>
           ))}
         </ul>
       </div>
+
+      {/* Save button */}
+      {changesMade && (
+        <button
+          className={adminSearchCSS.saveButton}
+          onClick={handleSave}
+        >
+          Save Changes
+        </button>
+      )}
     </div>
   );
 };

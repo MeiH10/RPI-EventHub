@@ -33,6 +33,16 @@ function AdminPage() {
     fetchAdminStats();
   }, []);
 
+  // Explanation of each rank level
+  const rankExplanations = [
+    { level: 0, description: 'Guest: include explaination ' },
+    { level: 1, description: 'User: include explaination ' },
+    { level: 2, description: 'Moderator: include explaination ' },
+    { level: 3, description: 'Administrator: include explaination ' },
+    { level: 4, description: 'Super Admin: include explaination ' },
+    { level: 5, description: 'Owner: include explaination ' },
+  ];
+
   return (
     <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-gray-200 via-blue-200 to-blue-400'}`} data-theme={theme}>
       <Navbar />
@@ -55,6 +65,23 @@ function AdminPage() {
               <h5>Manage Users</h5>
               <p>Search for and manage user accounts by RCS ID.</p>
               <AdminSearch /> {/* Embed the search component directly */}
+            </div>
+          </div>
+        </div>
+
+        {/* Rank Explanation Section */}
+        <div className="row">
+          <div className="col-12 px-5 py-3">
+            <div className={styles.adminTool}>
+              <h5>Rank Explanation</h5>
+              <p>Explanation of each rank and its permissions:</p>
+              <ul className={styles.rankExplanationList}>
+                {rankExplanations.map((rank) => (
+                  <li key={rank.level} className={styles.rankExplanationItem}>
+                    <strong>Rank {rank.level}:</strong> {rank.description}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

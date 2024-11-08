@@ -72,3 +72,13 @@
     background-color: #0056b3;
   }
   
+  .rankExplanationList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .rankExplanationItem {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  

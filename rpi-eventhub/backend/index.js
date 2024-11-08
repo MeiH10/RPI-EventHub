@@ -16,8 +16,7 @@ const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
 const { getEvents, extractEvents } = require('./services/getRPIEventsService');
 
-// Import the new admin search route
-const adminSearchRoutes = require('./routes/adminSearchRoutes'); // New addition
+
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -426,7 +425,7 @@ app.get('/proxy/image/:eventId', async (req, res) => {
   }
 });
 
-app.use('/api/admin/search', adminSearchRoutes); 
+
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
