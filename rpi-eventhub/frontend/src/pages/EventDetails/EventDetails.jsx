@@ -69,17 +69,21 @@ const EventDetails = () => {
 
     const handleAddTag = (tag) => {
         setTags(prevTags => {
+            let newTags;
             if (prevTags.includes(tag)) {
-                return prevTags.filter(t => t !== tag);
+                newTags = prevTags.filter(t => t !== tag);
             } else if (prevTags.length < 10) {
-                return [...prevTags, tag];
+                newTags = [...prevTags, tag];
+            } else {
+                newTags = prevTags;
             }
-            return prevTags;
+            setFormData(prevState => ({
+                ...prevState,
+                tags: newTags
+            }));
+            return newTags;
         });
-        setFormData(prevState => ({
-            ...prevState,
-            tags: tags.join(', ')
-        }));
+
     };
 
     useEffect(() => {
@@ -107,10 +111,11 @@ const EventDetails = () => {
                 startDateTime: '',
                 endDateTime: '',
                 location: event.location || '',
-                tags: event.tags ? event.tags.join(', ') : '',
+                tags: event.tags || '',
                 file: '',
                 rsvp: event.rsvp || ''
             });
+            setTags(event.tags || []);
         }
     }, [event]);
 
@@ -125,6 +130,9 @@ const EventDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
 
+        console.log('tags:', tags);
+        console.log('formData:', formData);
+
         const submittedFormData = new FormData();
         submittedFormData.append('title', formData.title);
         submittedFormData.append('description', formData.description);
@@ -133,7 +141,9 @@ const EventDetails = () => {
         submittedFormData.append('startDateTime', formData.startDateTime || event.startDateTime);
         submittedFormData.append('endDateTime', formData.endDateTime || event.endDateTime);
         submittedFormData.append('location', formData.location);
-        submittedFormData.append('tags', formData.tags);
+        tags.forEach(tag => {
+            submittedFormData.append('tags[]', tag);
+        });
         submittedFormData.append('rsvp', formData.rsvp);
 
         if (file !== null) {
