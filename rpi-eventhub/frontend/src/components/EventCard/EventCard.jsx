@@ -12,10 +12,18 @@ import ReactGA from "react-ga4";
 const timeZone = 'America/New_York';
 
 const EventCard = ({ event, isLiked, onSelect, selected }) => {
+  const {isLoggedIn} = useAuth()
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
 
   const [liked, setLiked] = useState(isLiked)
+
+  useEffect(() => {
+    console.log(isLoggedIn)
+    if (!isLoggedIn) {
+      setLiked(false)
+    } 
+  }, [isLoggedIn])
 
   const handleDelete = useCallback(async () => {
     try {
