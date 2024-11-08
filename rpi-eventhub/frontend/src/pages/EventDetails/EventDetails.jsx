@@ -7,6 +7,12 @@ import { useEvents } from '../../context/EventsContext';
 import RsvpButton from '../../components/RSVPButton/RsvpButton';
 import { DateTime } from 'luxon';
 import { useAuth } from "../../context/AuthContext";
+import * as pdfjsLib from "pdfjs-dist";
+import {handleFileChange} from "../../components/CreateEventModal/CreateEventModal";
+import axios from "axios";
+import config from "../../config";
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
+
 
 
 const timeZone = 'America/New_York';
@@ -27,9 +33,16 @@ const formatDateAsEST = (utcDateString) => {
     return dateTime.toFormat('MMMM dd, yyyy');
 };
 
+
 const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
     const { manageMode } = useAuth();
+    const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState(null);
+    const [error, setError] = useState('');
+    const [tags, setTags] = useState([]);
+    const [showOriginalImage, setShowOriginalImage] = useState(true);
+
 
     useEffect(() => {
         setIsEditing(manageMode);
@@ -40,14 +53,37 @@ const EventDetails = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
+        poster: '',
         club: '',
         startDateTime: '',
         endDateTime: '',
         location: '',
         tags: '',
-        image: '',
+        file: '',
         rsvp: ''
     });
+
+    const suggestedTags = [
+        'fun', 'games', 'board games', 'food', 'social', 'competition',
+        'movie', 'anime', 'academic', 'professional', 'career', 'relax',
+        'outdoor', 'workshop', 'fundraiser', 'art', 'music', 'networking',
+        'sports', 'creative', 'tech', 'wellness', 'coding', 'other'
+    ];
+
+    const handleAddTag = (tag) => {
+        setTags(prevTags => {
+            if (prevTags.includes(tag)) {
+                return prevTags.filter(t => t !== tag);
+            } else if (prevTags.length < 10) {
+                return [...prevTags, tag];
+            }
+            return prevTags;
+        });
+        setFormData(prevState => ({
+            ...prevState,
+            tags: tags.join(', ')
+        }));
+    };
 
     useEffect(() => {
         if (events.length === 0) {
@@ -62,12 +98,13 @@ const EventDetails = () => {
             setFormData({
                 title: event.title || '',
                 description: event.description || '',
+                poster: event.poster || '',
                 club: event.club || '',
-                startDateTime: event.startDateTime || '',
-                endDateTime: event.endDateTime || '',
+                startDateTime: '',
+                endDateTime: '',
                 location: event.location || '',
                 tags: event.tags ? event.tags.join(', ') : '',
-                image: event.image || '',
+                file: '',
                 rsvp: event.rsvp || ''
             });
         }
@@ -81,13 +118,42 @@ const EventDetails = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        updateEvent(eventId, formData);
+    const handleSubmit = async (e) => {
+        if (file !== null) {
+            formData.file = file;
+        } else {
+            formData.file = event.image;
+        }
+
+        if (formData.endDateTime === '') {
+            formData.endDateTime = event.endDateTime;
+        }
+        if (formData.startDateTime === '') {
+            formData.startDateTime = event.startDateTime;
+        }
+
+        console.log('submitting form data:', formData);
+        if (checkFormData()) {
+            try {
+                const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, formData);
+                console.log('Event updated successfully:', response.data);
+            } catch (error) {
+                console.error('Failed to update event:', error);
+            }
+        }
     };
 
     if (!event) {
         return <p>Event not found.</p>;
+    }
+
+    function handleImageFileChange(e) {
+        toggleImage();
+        handleFileChange (e, setPreview, setFile, setError);
+    }
+
+    function toggleImage() {
+        setShowOriginalImage((prevState) => !prevState);
     }
 
     const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
@@ -95,166 +161,198 @@ const EventDetails = () => {
     const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
 
+
+    // function to check the form data and set the error message
+    const checkFormData = () => {
+        if (!formData.title) {
+            setError('Title is required.');
+            return false;
+        }
+        if (!formData.description) {
+            setError('Description is required.');
+            return false;
+        }
+        if (!formData.startDateTime) {
+            setError('Start Date Time is required.');
+            return false;
+        }
+        if (!formData.endDateTime) {
+            setError('End Date Time is required.');
+            return false;
+        }
+        if (!formData.rsvp) {
+            setError('RSVP is required.');
+            return false;
+        }
+        return true;
+    }
+
     return (
         <div className='outterContainer'>
             <Navbar />
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
                 { isEditing ?
                     (
-                        <div className="max-h-svh mx-auto p-6 rounded-lg">
-                            <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-6">
-                                {/* Left Column */}
-                                <div className="col-span-1">
-                                    <div>
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Image URL:
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="image"
-                                            value={formData.image}
-                                            onChange={handleChange}
-                                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
+                        <div className="mx-auto p-4 md:p-6 max-w-screen-lg min-h-screen">
+                            {error && <div className="text-red-500 text-center">{error}</div>}
+                            <form className="grid grid-cols-1 gap-6">
+                                <div className="flex flex-col lg:grid lg:grid-cols-9 gap-6">
+                                    <div className="col-span-3">
+                                        <div className="items-center">
+                                            <input
+                                                id="image-upload"
+                                                type="file"
+                                                onChange={handleImageFileChange}
+                                                accept=".jpg, .jpeg, .png, .webp, .pdf"
+                                                className="hidden"
+                                            />
+                                            <label
+                                                htmlFor="image-upload"
+                                                className="inline-block cursor-pointer px-4 py-2 mt-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition"
+                                            >
+                                                Choose Image/PDF File
+                                            </label>
+                                            <button
+                                                type="button"
+                                                onClick={toggleImage}
+                                                className="ml-0 sm:ml-2 inline-block px-4 py-2 mt-2 text-white bg-gray-600 rounded hover:bg-gray-700 transition"
+                                            >
+                                                {showOriginalImage ? 'Show Preview' : 'Show Original'}
+                                            </button>
+                                        </div>
+                                        <div className="mt-4">
+                                            <img
+                                                src={showOriginalImage? event.image : preview || 'https://via.placeholder.com/300x450'}
+                                                alt="Preview"
+                                                className="w-full h-auto rounded-md shadow-md"
+                                            />
+                                        </div>
+                                        <div className="mt-2 flex flex-wrap gap-2">
+                                            {suggestedTags.map((tag, index) => (
+                                                <button
+                                                    type="button"
+                                                    key={index}
+                                                    onClick={() => handleAddTag(tag)}
+                                                    className={`px-4 py-2 rounded-md text-white ${tags.includes(tag) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 hover:bg-gray-400'}`}
+                                                >
+                                                    {tag}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
-                                    {formData.image ? (
-                                        <div className="mt-4">
-                                            <img
-                                                src={formData.image}
-                                                alt="Preview"
-                                                className="w-full h-auto rounded-md shadow-md"
+
+                                    <div className="col-span-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                                        <div className="col-span-2">
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                                Title:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="title"
+                                                value={formData.title}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
                                             />
                                         </div>
-                                    ): (
-                                        <div className="mt-4">
-                                            <img
-                                                src={event.image || 'https://via.placeholder.com/300x450'}
-                                                alt="Preview"
-                                                className="w-full h-auto rounded-md shadow-md"
+
+                                        <div className="col-span-2">
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                                Description:
+                                            </label>
+                                            <textarea
+                                                name="description"
+                                                value={formData.description}
+                                                onChange={handleChange}
+                                                rows="5"
+                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
+                                            ></textarea>
+                                        </div>
+
+                                        <div className="md:col-span-1 col-span-2">
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                                Club/Organization:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="club"
+                                                value={formData.club}
+                                                onChange={handleChange}
+                                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
                                             />
                                         </div>
-                                    )
-                                    }
+
+                                        <div className="md:col-span-1 col-span-2">
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                                Location:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="location"
+                                                value={formData.location}
+                                                onChange={handleChange}
+                                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
+                                            />
+                                        </div>
+
+                                        <div className="md:col-span-1 col-span-2">
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                                Start Date Time:
+                                            </label>
+                                            <input
+                                                type="datetime-local"
+                                                name="startDateTime"
+                                                value={formData.startDateTime}
+                                                onChange={handleChange}
+                                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
+                                            />
+                                            <span>
+                                                Original Start Date Time: {eventStartDateTime} @ {eventStartTime}
+                                            </span>
+                                        </div>
+                                        <div className="md:col-span-1 col-span-2">
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                                End Date Time:
+                                            </label>
+                                            <input
+                                                type="datetime-local"
+                                                name="endDateTime"
+                                                value={formData.endDateTime}
+                                                onChange={handleChange}
+                                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
+                                            />
+                                            <span>
+                                                Original End Date Time: {eventEndDateTime} @ {eventEndTime}
+                                            </span>
+                                        </div>
+
+                                        <div className="md:col-span-1 col-span-2">
+                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                                RSVP:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="rsvp"
+                                                value={formData.rsvp}
+                                                onChange={handleChange}
+                                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
+                                            />
+                                        </div>
+
+                                    </div>
                                 </div>
-
-                                {/* Right Column */}
-                                <div className="max-w-lg col-span-2 grid grid-cols-2 gap-6">
-                                    <div className="col-span-2">
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                        Title:
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="title"
-                                            value={formData.title}
-                                            onChange={handleChange}
-                                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Description:
-                                        </label>
-                                        <textarea
-                                            name="description"
-                                            value={formData.description}
-                                            onChange={handleChange}
-                                            rows="5"
-                                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        ></textarea>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Club/Organization:
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="club"
-                                            value={formData.club}
-                                            onChange={handleChange}
-                                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Location:
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="location"
-                                            value={formData.location}
-                                            onChange={handleChange}
-                                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Start Date and Time:
-                                        </label>
-                                        <input
-                                            type="datetime-local"
-                                            name="startDateTime"
-                                            value={formData.startDateTime}
-                                            onChange={handleChange}
-                                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            End Date and Time:
-                                        </label>
-                                        <input
-                                            type="datetime-local"
-                                            name="endDateTime"
-                                            value={formData.endDateTime}
-                                            onChange={handleChange}
-                                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            Tags:
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="tags"
-                                            value={formData.tags}
-                                            onChange={handleChange}
-                                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-gray-700 font-medium mb-1">
-                                            RSVP:
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="rsvp"
-                                            value={formData.rsvp}
-                                            onChange={handleChange}
-                                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <button
-                                            type="submit"
-                                            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
-                                        >
-                                            Save
-                                        </button>
-                                    </div>
+                                <div>
+                                    <button
+                                        type="button"
+                                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                                        onClick={handleSubmit}
+                                    >
+                                        Save
+                                    </button>
                                 </div>
                             </form>
                         </div>
-                    ):
+
+                    ) :
                     (
                         <div className={styles.container}>
                             <div className={styles.eventPoster}>
@@ -275,14 +373,11 @@ const EventDetails = () => {
                             </div>
                         </div>
                     )
-
                 }
-
             </div>
             <Footer/>
         </div>
-    )
-        ;
+    );
 };
 
 export default EventDetails;
