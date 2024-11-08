@@ -326,21 +326,21 @@ function CreateEventModal() {
                   className='text-danger'>*</span></Form.Label>
               <Form.Control
                   type="datetime-local"
-                required
-                value={startDateTime}
-                onChange={(e) => {
-                  const selectedDateTime = e.target.value;
-                  const currentDateTime = new Date().toISOString().slice(0, 16);
-                  if (selectedDateTime < currentDateTime) {
-                    setStartDateTime(currentDateTime); // Reset to current date if invalid
-                  } else if (endDateTime && selectedDateTime > endDateTime) {
-                    setStartDateTime(currentDateTime); // Reset to current date if start is after end
-                  } else {
-                    setStartDateTime(selectedDateTime); // Otherwise, update normally
-                  }
-                }}
-                className={styles.formControl}
-                min={new Date().toISOString().slice(0, 16)} // Set minimum to current date & time
+                  required
+                  value={startDateTime}
+                  onChange={(e) => {
+                    const selectedDateTime = e.target.value;
+                    const currentDateTime = new Date().toISOString().slice(0, 16);
+                    if (selectedDateTime < currentDateTime) {
+                      setStartDateTime(currentDateTime); // Reset to current date if invalid
+                    } else if (endDateTime && selectedDateTime > endDateTime) {
+                      setStartDateTime(currentDateTime); // Reset to current date if start is after end
+                    } else {
+                      setStartDateTime(selectedDateTime); // Otherwise, update normally
+                    }
+                  }}
+                  className={styles.formControl}
+                  min={new Date().toISOString().slice(0, 16)} // Set minimum to current date & time
               />
             </Form.Group>
 
@@ -349,19 +349,19 @@ function CreateEventModal() {
               <Form.Label className={styles.formLabel}>End Date & Time <span
                   className='text-danger'>*</span></Form.Label>
               <Form.Control
-                type="datetime-local"
-                required
-                value={endDateTime}
-                onChange={(e) => {
-                  const selectedEndTime = e.target.value;
-                  if (startDateTime && selectedEndTime < startDateTime) {
-                    setEndDateTime(startDateTime); // Reset to startDateTime if invalid
-                  }else{
-                    setEndDateTime(selectedEndTime); // Otherwise, update normally
-                  }
-                  }}
-                className={styles.formControl}
-                min={startDateTime || new Date().toISOString().slice(0, 16)} // Ensure end time is after start time
+                  type="datetime-local"
+                  required
+                  value={endDateTime}
+                  onChange={(e) => {
+                    const selectedEndTime = e.target.value;
+                    if (startDateTime && selectedEndTime < startDateTime) {
+                      setEndDateTime(startDateTime); // Reset to startDateTime if invalid
+                    }else{
+                      setEndDateTime(selectedEndTime); // Otherwise, update normally
+                    }
+                    }}
+                  className={styles.formControl}
+                  min={startDateTime || new Date().toISOString().slice(0, 16)} // Ensure end time is after start time
               />
             </Form.Group>
 
