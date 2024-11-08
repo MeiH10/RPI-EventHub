@@ -19,7 +19,6 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
   const [liked, setLiked] = useState(isLiked)
 
   useEffect(() => {
-    console.log(isLoggedIn)
     if (!isLoggedIn) {
       setLiked(false)
     } 
