@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBarCSS from './SearchBar.module.css'; // Adjust the import path if necessary
 import { useEvents } from '../../context/EventsContext'; // Adjust the import path if necessary
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
 const SearchBar = () => {
   const navigate = useNavigate();
   const { events, fetchEvents } = useEvents();
   const [searchTerm, setSearchTerm] = useState('');
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
 
   useEffect(() => {
     fetchEvents();
@@ -44,6 +48,7 @@ const SearchBar = () => {
         placeholder="Search for an event!"
         onChange={handleSearchInputChange}
         onKeyPress={handleKeyPress}
+        style={{ color: isDark ? 'black' : 'inherit' }}
       />
       <button
         className={SearchBarCSS.searchButton}
