@@ -14,8 +14,7 @@ const UserCard = ({ user }) => {
   
   
   const { banUser } = useEvents();
-
-  
+    
 
   const handleBan = useCallback(async () => {
     try {
@@ -25,32 +24,32 @@ const UserCard = ({ user }) => {
     }
   }, [user._id, banUser]);
 
-
-
   
 
-
-  const [likes, setLikes] = useState(user.likes || 0);
-
   const handlePromote = () => {
-    
-      
+
+    Usernum++;  
+          
   };
 
 
+
   return (
-    <div key={user._id} style={{ transition: 'border-width 0.25s ease, border-color 0.25s ease' }} className={`duration-500 ${styles.userWrapper} ${selected && 'border-8 border-indigo-400'}`}>
+    <div key={user._id} style={{ transition: 'border-width 0.2s ease, border-color 0.2s ease' }} className={`duration-500 ${styles.userWrapper} `}>
      
       <div className={styles.userDetails}>
         <p>{user.name}</p>
         <p>{user.email}</p>
-
-
         
       </div>
       <div className={styles.container}>
         <button onClick={handleBan} className={styles.deleteButton}>
             Ban
+            </button>
+      </div>
+      <div className={styles.container}>
+        <button onClick={handleBan} className={styles.deleteButton}>
+            Promote
             </button>
       </div>
     </div>
