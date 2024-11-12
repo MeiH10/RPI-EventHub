@@ -14,7 +14,6 @@ import config from "../../config";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 
 
-
 const timeZone = 'America/New_York';
 
 const formatTime = (utcDateString) => {
@@ -231,7 +230,7 @@ const EventDetails = () => {
                                                     type="button"
                                                     key={index}
                                                     onClick={() => handleAddTag(tag)}
-                                                    className={`px-4 py-2 rounded-md text-white ${tags.includes(tag) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 hover:bg-gray-400'}`}
+                                                    className={`px-4 py-2 rounded-md ${tags.includes(tag) ? 'text-amber-50 bg-blue-600 hover:bg-blue-700' : 'text-blue-950 bg-gray-300 hover:bg-gray-400'}`}
                                                 >
                                                     {tag}
                                                 </button>
@@ -241,7 +240,7 @@ const EventDetails = () => {
 
                                     <div className="col-span-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                                         <div className="col-span-2">
-                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Title:
                                             </label>
                                             <input
@@ -254,7 +253,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="col-span-2">
-                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Description:
                                             </label>
                                             <textarea
@@ -262,12 +261,12 @@ const EventDetails = () => {
                                                 value={formData.description}
                                                 onChange={handleChange}
                                                 rows="5"
-                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
+                                                className="form-label-text w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
                                             ></textarea>
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Club/Organization:
                                             </label>
                                             <input
@@ -280,7 +279,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Location:
                                             </label>
                                             <input
@@ -293,7 +292,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Start Date Time:
                                             </label>
                                             <input
@@ -308,7 +307,7 @@ const EventDetails = () => {
                                             </span>
                                         </div>
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 End Date Time:
                                             </label>
                                             <input
@@ -324,7 +323,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-1">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 RSVP:
                                             </label>
                                             <input
