@@ -70,6 +70,9 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
   const handleLikeToggle = async () => {
     const newLikedState = !liked; // Toggle the liked state
     handleLikeClick();
+    if (!isLoggedIn) {
+      return toast.error("Please login to like this event.");
+    } 
     try {
       const token = localStorage.getItem("token");
 
@@ -90,11 +93,7 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
       }
     } catch (error) {
       console.error("Error while toggling like:", error);
-      if (error.response && error.response.status == 401) {
-        toast.error("Please login to like this event.");
-      } else {
-        toast.error("An unexpected error occurred.");
-      }
+      toast.error("An unexpected error occurred.");
     }
   };
   return (
