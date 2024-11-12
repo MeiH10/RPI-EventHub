@@ -497,6 +497,18 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
+
+//Fetching usernames from users
+app.get('/usernames', async (req, res)=> {
+  try{
+    const users = await User.find({}, 'username');
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    res.status(500).json({ message: 'Error fetching users' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 mongoose
   .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
