@@ -274,7 +274,13 @@ label {
   background-color: var(--clear-button-bg-color);
   color: var(--clear-button-text-color);
   Margin-right: 10px;
+  transition: background-color 0.3s ease;
 }
+
+.changeButton:hover i{
+  background-color: var(--clear-button-hover-bg-color);
+}
+
 
 .changeButton span{
   font-size: 1rem;
