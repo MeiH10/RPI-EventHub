@@ -35,12 +35,10 @@ function AdminPage() {
 
   // Explanation of each rank level
   const rankExplanations = [
-    { level: 0, description: 'Guest: include explaination ' },
-    { level: 1, description: 'User: include explaination ' },
-    { level: 2, description: 'Moderator: include explaination ' },
+    { level: 0, description: 'Banned: include explaination ' },
+    { level: 1, description: 'Unverified User: include explaination ' },
+    { level: 2, description: 'Verified User: include explaination ' },
     { level: 3, description: 'Administrator: include explaination ' },
-    { level: 4, description: 'Super Admin: include explaination ' },
-    { level: 5, description: 'Owner: include explaination ' },
   ];
 
   return (

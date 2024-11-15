@@ -437,6 +437,17 @@ app.get('/proxy/image/:eventId', async (req, res) => {
   }
 });
 
+// Fetching user information for admin page
+app.get('/users', async (req, res) => {
+  try {
+    const users = await User.find({}, 'rcsId name email role');
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    res.status(500).json({ message: 'Error fetching users' });
+  }
+});
+
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 app.get('*', (req, res) => {

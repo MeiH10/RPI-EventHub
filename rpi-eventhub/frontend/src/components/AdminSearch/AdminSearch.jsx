@@ -3,11 +3,11 @@ import adminSearchCSS from './AdminSearch.module.css';
 
 // Mock data list of users
 const mockRcsIds = [
-  { rcsId: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu', role: 0, banned: false },
-  { rcsId: 'harim', name: 'Hari M', email: 'harim@rpi.edu', role: 1, banned: false },
-  { rcsId: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu', role: 2, banned: false },
-  { rcsId: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu', role: 3, banned: false },
-  { rcsId: 'lastf', name: 'Last F', email: 'lastf@rpi.edu', role: 4, banned: false },
+  { rcsId: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu', role: 2 },
+  { rcsId: 'harim', name: 'Hari M', email: 'harim@rpi.edu', role: 2 },
+  { rcsId: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu', role: 1 },
+  { rcsId: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu', role: 3 },
+  { rcsId: 'lastf', name: 'Last F', email: 'lastf@rpi.edu', role: 0 },
 ];
 
 const AdminSearch = () => {
@@ -31,17 +31,25 @@ const AdminSearch = () => {
     setChangesMade(true); // Mark changes as made
   };
 
-  // Function to handle banning a user
+  // Function to handle banning/unbanning a user
   const handleBan = (rcsId) => {
     setUsers(prevUsers =>
-      prevUsers.map(user =>
-        user.rcsId === rcsId ? { ...user, banned: !user.banned } : user
-      )
+      prevUsers.map(user => {
+        if (user.rcsId === rcsId) {
+          // Toggle between 0 (banned) and previous role based on current role
+          if (user.role === 0) {
+            return { ...user, role: user.role === 1 ? 1 : 2 }; // If unbanned, set to 1 (unverified) or 2 (verified)
+          } else {
+            return { ...user, role: 0 }; // Set to 0 (banned)
+          }
+        }
+        return user;
+      })
     );
     setChangesMade(true); // Mark changes as made
   };
 
-  // Function to save changes (this could involve an API call in a real app)
+  // Function to save changes (could involve an API call in a real app)
   const handleSave = () => {
     console.log('Changes saved:', users);
     setChangesMade(false); // Reset changes made flag
@@ -92,7 +100,7 @@ const AdminSearch = () => {
                   value={user.role}
                   onChange={(e) => handleRankChange(user.rcsId, Number(e.target.value))}
                 >
-                  {[0, 1, 2, 3, 4, 5].map(rank => (
+                  {[0, 1, 2, 3].map(rank => (
                     <option key={rank} value={rank}>
                       {rank}
                     </option>
@@ -102,10 +110,10 @@ const AdminSearch = () => {
               
               {/* Ban button with toggle functionality */}
               <button
-                className={user.banned ? adminSearchCSS.unbanButton : adminSearchCSS.banButton}
+                className={user.role === 0 ? adminSearchCSS.unbanButton : adminSearchCSS.banButton}
                 onClick={() => handleBan(user.rcsId)}
               >
-                {user.banned ? 'Unban' : 'Ban'}
+                {user.role === 0 ? 'Unban' : 'Ban'}
               </button>
             </li>
           ))}
