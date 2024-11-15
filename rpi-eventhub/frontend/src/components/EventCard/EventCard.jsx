@@ -16,9 +16,13 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
 
+  console.log("Event.likes from props", event.title, event.likes)
+
   const [liked, setLiked] = useState(isLiked)
+  const [likes, setLikes] = useState(event.likes || 0);
 
   useEffect(() => {
+    console.log("Running here")
     if (!isLoggedIn) {
       setLiked(false)
     } 
@@ -58,8 +62,6 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
     ? formatTimeAsEST(event.startDateTime)
     : 'Unavailable';
 
-  const [likes, setLikes] = useState(event.likes || 0);
-
   const handleLikeClick = () => {
     ReactGA.event({
       category: 'Like',
@@ -88,6 +90,7 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
 
       if (response.status === 200) {
         const data = response.data;
+        console.log("Updating like count to", data.likes)
         setLikes(data.likes); // Update the likes count immediately
         setLiked(newLikedState); // Toggle the liked state
       }
