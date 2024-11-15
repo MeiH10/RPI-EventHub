@@ -252,6 +252,36 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// Promote or Demote User Route (Admin Only)
+app.patch('/users/role', authenticateAndVerify, requireRole(ADMIN), async (req, res) => {
+  const { username, role } = req.body;
+
+  const validRoles = [BANNED, UNVERIFIED, VERIFIED, ADMIN];
+  if (!validRoles.includes(role)) {
+    return res.status(400).json({ message: 'Invalid role specified.' });
+  }
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    if (user.role === role) {
+      return res.status(400).json({ message: 'User already has the specified role.' });
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.status(200).json({ message: 'User role updated successfully.', user });
+  } catch (error) {
+    console.error('Error updating user role:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+
 app.get('/rpi-events', async (req, res) => {
   //hardcoded values for now
     const count = 1;
