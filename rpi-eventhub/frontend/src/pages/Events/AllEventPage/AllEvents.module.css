@@ -13,6 +13,7 @@
     padding-left: 2%;
     box-sizing: border-box;
     margin-top: 10%;
+    min-height: 100vh;
 }
 
 /* Masonry grid styles */

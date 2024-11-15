@@ -33,8 +33,17 @@ export const EventsProvider = ({ children }) => {
         }
     }, []);
 
+    const updateEvent = useCallback(async (id, updatedEvent) => {
+        try {
+            const response = await axios.post(`${config.apiUrl}/events-update/${id}`, updatedEvent);
+            // setEvents((prevEvents) => prevEvents.map(event => event._id === id ? response.data : event));
+        } catch (error) {
+            console.error('Failed to update event:', error);
+        }
+    }, []);
+
     return (
-        <EventsContext.Provider value={{ events, fetchEvents, addEvent, deleteEvent }}>
+        <EventsContext.Provider value={{ events, fetchEvents, addEvent, deleteEvent, updateEvent }}>
             {children}
         </EventsContext.Provider>
     );
