@@ -28,3 +28,10 @@ How to startup application in local host:
         2. Click on System Settings
         3. In the search bar, type 'AirPlay Receiver' and enter.
         4. Find AirPlay Receiver, turn that off.
+
+## Technologies
+1. React JS
+2. Vite
+3. Tailwind CSS
+4. Node.js
+5. MongoDB
