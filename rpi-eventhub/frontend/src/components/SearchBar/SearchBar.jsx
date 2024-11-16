@@ -22,26 +22,33 @@ const SearchBar = () => {
       const currentDate = new Date();
 
       const eventText = [...eventWords, ...eventTags].join(' ');
-
       const textToVector = (text) => {
-        const words = text.split(' ');
+        const characters = text.split('');
         const vector = {};
-        words.forEach(word => {
-          vector[word] = (vector[word] || 0) + 1;
+        characters.forEach(char => {
+          vector[char] = (vector[char] || 0) + 1;
         });
         return vector;
       };
-
       const vectorA = textToVector(searchWords.join(' '));
-      const vectorB = textToVector(eventText);
-
-      
-      const similarity = cosineSimilarity(vectorA, vectorB);
-      
-      return similarity > 0.1 && eventDate >= currentDate;
+      const eventWordsArray = eventText.split(' ');
+      let maxSimilarity = 0;
+      searchWords.forEach(searchWord => {
+        const vectorSearchWord = textToVector(searchWord);
+        eventWordsArray.forEach(word => {
+          const vectorB = textToVector(word);
+          const similarity = cosineSimilarity(vectorSearchWord, vectorB);
+          
+          if (similarity > maxSimilarity) {
+            
+            maxSimilarity = similarity;
+          }
+        });
+      });
+      return maxSimilarity > 0.78 && eventDate >= currentDate;
     });
 
-    const sorted = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sorted = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));;
 
     navigate('/search', { state: { results: sorted } });
   };
