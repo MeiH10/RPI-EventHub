@@ -16,13 +16,14 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
 
-  console.log("Event.likes from props", event.title, event.likes)
-
   const [liked, setLiked] = useState(isLiked)
   const [likes, setLikes] = useState(event.likes || 0);
 
   useEffect(() => {
-    console.log("Running here")
+    setLikes(event.likes || 0);
+  }, [event.likes]);
+
+  useEffect(() => {
     if (!isLoggedIn) {
       setLiked(false)
     } 
