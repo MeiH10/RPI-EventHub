@@ -106,9 +106,6 @@ function AllEvents() {
             if(isLoggedIn) {
                 await getLikedEvents();
             }
-            // else {
-            //     setLiked()
-            // }
             setIsLoading(false);
         };
         fetchData();

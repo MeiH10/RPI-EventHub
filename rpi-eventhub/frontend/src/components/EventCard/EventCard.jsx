@@ -91,7 +91,6 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
 
       if (response.status === 200) {
         const data = response.data;
-        console.log("Updating like count to", data.likes)
         setLikes(data.likes); // Update the likes count immediately
         setLiked(newLikedState); // Toggle the liked state
       }
