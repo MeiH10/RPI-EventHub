@@ -11,7 +11,7 @@ import ReactGA from "react-ga4";
 const timeZone = 'America/New_York';
 
 const EventCard = ({ event, isLiked, onSelect, selected }) => {
-  const { username } = useAuth();
+  const { username, role } = useAuth();
   const { deleteEvent } = useEvents();
 
   const [liked, setLiked] = useState(isLiked)
@@ -38,8 +38,8 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
     return dateTime.toFormat('h:mm a');
   };
 
-  const canSeeDeleteButton = (user_name) => {
-    return user_name === 'admin' || user_name === event.poster;
+  const canSeeDeleteButton = (user_name, role) => {
+    return role === ADMIN || user_name === event.poster;
   };
 
   const eventDate = event.startDateTime

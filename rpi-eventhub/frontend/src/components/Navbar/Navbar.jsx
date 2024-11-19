@@ -13,9 +13,15 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
 
+//user role consts
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const ADMIN = 3;
+
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout } = useAuth();
+  const { isLoggedIn, role, logout } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
@@ -91,7 +97,7 @@ const Navbar = () => {
                   >
                     Sign Out
                   </button>
-                  {!emailVerified && <VerifyModal />}
+                  {!(role >= VERIFIED) && <VerifyModal />}
                 </div>
               ) : (
                 <>
@@ -170,7 +176,7 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!emailVerified && <VerifyModal />}
+                {!(role >= VERIFIED) && <VerifyModal />}
               </div>
             ) : (
               <>

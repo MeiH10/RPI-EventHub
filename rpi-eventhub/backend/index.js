@@ -21,6 +21,11 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const app = express();
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const ADMIN = 3;
+
 const corsOptions = {
   origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
   optionsSuccessStatus: 200,
@@ -108,6 +113,15 @@ const authenticate = async (req, res, next) => {
   }
 };
 
+const requireRole = (role) => {
+  return (req, res, next) => {
+    if (req.user.role < role) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next();
+  };
+};
+
 const authenticateAndVerify = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
@@ -118,8 +132,10 @@ const authenticateAndVerify = async (req, res, next) => {
       throw new Error('User not found');
     }
 
-    if (!user.emailVerified) {
+    if (user.role === UNVERIFIED) {
       return res.status(403).json({ message: 'Please verify your email to perform this action.' });
+    } else if (user.role === BANNED) {
+      return res.status(403).json({ message: 'Your account has been banned. If you believe this is a mistake, please reach out to site admin.' });
     }
 
     req.user = user;
@@ -144,7 +160,7 @@ app.post('/signup', async (req, res) => {
       username,
       email,
       password,
-      emailVerified: false,
+      role: UNVERIFIED,
       verificationCode,
     });
     await user.save();
@@ -158,7 +174,7 @@ app.post('/signup', async (req, res) => {
     const token = jwt.sign({ 
       userId: user._id, 
       email: user.email, 
-      emailVerified: user.emailVerified, 
+      role: user.role, 
       username: user.username 
     }, process.env.JWT_SECRET, { expiresIn: '24h' });
     logger.info(`User ${user.username} signed up---${new Date()}`);
@@ -167,7 +183,7 @@ app.post('/signup', async (req, res) => {
       message: "User created successfully. Please check your email to verify your account.",
       token: token,
       email: user.email, 
-      emailVerified: user.emailVerified
+      role: user.role
     });
   } catch (error) {
     res.status(500).json({ message: "Error creating user. It's possible that username or email address already exist.", error: error.message });
@@ -185,14 +201,14 @@ app.post('/verify-email', async (req, res) => {
     }
 
     if (user.verificationCode === verificationCode) {
-      user.emailVerified = true;
+      user.role = VERIFIED;
       user.verificationCode = '';
       await user.save();
 
       const token = jwt.sign({ 
         userId: user._id, 
         email: user.email, 
-        emailVerified: user.emailVerified, 
+        role: user.role, 
         username: user.username 
       }, process.env.JWT_SECRET, { expiresIn: '24h' });
       logger.info(`User ${user.username} email verified---${new Date()}`);
@@ -223,7 +239,7 @@ app.post('/login', async (req, res) => {
     const token = jwt.sign({ 
       userId: user._id, 
       email: user.email, 
-      emailVerified: user.emailVerified, 
+      role: user.role, 
       username: user.username  
     }, jwtSecret, { expiresIn: '24h' });
 
@@ -232,7 +248,7 @@ app.post('/login', async (req, res) => {
     res.status(200).json({ 
       token, 
       userId: user._id, 
-      emailVerified: user.emailVerified, 
+      role: user.role, 
       message: "Logged in successfully" 
     });
     
@@ -240,6 +256,36 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: "Login error", error: error.message });
   }
 });
+
+// Promote or Demote User Route (Admin Only)
+app.patch('/users/role', authenticateAndVerify, requireRole(ADMIN), async (req, res) => {
+  const { username, role } = req.body;
+
+  const validRoles = [BANNED, UNVERIFIED, VERIFIED, ADMIN];
+  if (!validRoles.includes(role)) {
+    return res.status(400).json({ message: 'Invalid role specified.' });
+  }
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    if (user.role === role) {
+      return res.status(400).json({ message: 'User already has the specified role.' });
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.status(200).json({ message: 'User role updated successfully.', user });
+  } catch (error) {
+    console.error('Error updating user role:', error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 
 app.get('/rpi-events', async (req, res) => {
   //hardcoded values for now
