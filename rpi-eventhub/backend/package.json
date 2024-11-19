@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@azure/storage-file-share": "^12.25.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -28,7 +29,9 @@
     "pdf-lib": "^1.17.1",
     "pg": "^8.13.0",
     "sharp": "^0.33.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "winston": "^3.15.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "eslintConfig": {
     "extends": [
