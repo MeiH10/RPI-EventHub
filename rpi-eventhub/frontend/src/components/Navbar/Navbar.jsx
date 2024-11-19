@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
@@ -9,11 +9,15 @@ import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
 import VerifyModal from "../VerifyModal/VerifyModal";
+import { ThemeContext } from "../../context/ThemeContext";
+import { useColorScheme } from "../../hooks/useColorScheme";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout } = useAuth(); // Remove isAdmin
+  const { isLoggedIn, emailVerified, logout } = useAuth();
   const location = useLocation();
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
 
   const handleClick = () => setClick(!click);
 
@@ -32,30 +36,42 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={styles.navbar}>
+      <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ""}`}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
               <EventHubLogo2 className={styles.logoSvg} />
             </NavLink>
-            <ul className={styles.navMenu}>
-              <li className={styles.navItem}>
-                <NavLink to="/" className={getNavLinkClass("/")}>
+            <ul className={`${isDark ? styles.darkNavMenu : styles.navMenu}`}>
+              <li className={`${isDark ? styles.darkNavItem : styles.navItem}`}>
+                <NavLink
+                  to="/"
+                  className={`${getNavLinkClass("/")} ${isDark ? "text-white" : ""}`}
+                >
                   Home
                 </NavLink>
               </li>
-              <li className={styles.navItem}>
-                <NavLink to="/all-events" className={getNavLinkClass("/all-events")}>
+              <li className={`${isDark ? styles.darkNavItem : styles.navItem}`}>
+                <NavLink
+                  to="/all-events"
+                  className={`${getNavLinkClass("/all-events")} ${isDark ? "text-white" : ""}`}
+                >
                   Events
                 </NavLink>
               </li>
-              <li className={styles.navItem}>
-                <NavLink to="/about-us" className={getNavLinkClass("/about-us")}>
+              <li className={`${isDark ? styles.darkNavItem : styles.navItem}`}>
+                <NavLink
+                  to="/about-us"
+                  className={`${getNavLinkClass("/about-us")} ${isDark ? "text-white" : ""}`}
+                >
                   About
                 </NavLink>
               </li>
-              <li className={styles.navItem}>
-                <NavLink to="/calendar" className={getNavLinkClass("/calendar")}>
+              <li className={`${isDark ? styles.darkNavItem : styles.navItem}`}>
+                <NavLink
+                  to="/calendar"
+                  className={`${getNavLinkClass("/calendar")} ${isDark ? "text-white" : ""}`}
+                >
                   Calendar
                 </NavLink>
               </li>
@@ -75,7 +91,10 @@ const Navbar = () => {
               )}
               {isLoggedIn ? (
                 <div>
-                  <button onClick={handleLogout} className={`${styles.navItem} btn-danger btn`}>
+                  <button
+                    onClick={handleLogout}
+                    className={`${styles.navItem} btn-danger btn`}
+                  >
                     Sign Out
                   </button>
                   {!emailVerified && <VerifyModal />}
@@ -110,22 +129,38 @@ const Navbar = () => {
         <div className={click ? `${styles.drawer} ${styles.open}` : styles.drawer}>
           <ul className={styles.drawerMenu}>
             <li className={styles.drawerItem}>
-              <NavLink to="/" className={getNavLinkClass("/")} onClick={handleClick}>
+              <NavLink
+                to="/"
+                className={getNavLinkClass("/")}
+                onClick={handleClick}
+              >
                 Home
               </NavLink>
             </li>
             <li className={styles.drawerItem}>
-              <NavLink to="/all-events" className={getNavLinkClass("/all-events")} onClick={handleClick}>
+              <NavLink
+                to="/all-events"
+                className={getNavLinkClass("/all-events")}
+                onClick={handleClick}
+              >
                 Events
               </NavLink>
             </li>
             <li className={styles.drawerItem}>
-              <NavLink to="/about-us" className={getNavLinkClass("/about-us")} onClick={handleClick}>
+              <NavLink
+                to="/about-us"
+                className={getNavLinkClass("/about-us")}
+                onClick={handleClick}
+              >
                 About
               </NavLink>
             </li>
             <li className={styles.drawerItem}>
-              <NavLink to="/calendar" className={getNavLinkClass("/calendar")} onClick={handleClick}>
+              <NavLink
+                to="/calendar"
+                className={getNavLinkClass("/calendar")}
+                onClick={handleClick}
+              >
                 Calendar
               </NavLink>
             </li>
@@ -134,14 +169,21 @@ const Navbar = () => {
             </li>
             {isLoggedIn && (
               <li className={styles.drawerItem}>
-                <NavLink to="/admin" className={getNavLinkClass("/admin")} onClick={handleClick}>
+                <NavLink
+                  to="/admin"
+                  className={getNavLinkClass("/admin")}
+                  onClick={handleClick}
+                >
                   Admin
                 </NavLink>
               </li>
             )}
             {isLoggedIn ? (
               <div className={styles.drawerItem}>
-                <button onClick={handleLogout} className={`${styles.navItem} btn-danger btn`}>
+                <button
+                  onClick={handleLogout}
+                  className={`${styles.navItem} btn-danger btn`}
+                >
                   Sign Out
                 </button>
                 {!emailVerified && <VerifyModal />}

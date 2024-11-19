@@ -15,6 +15,7 @@ const fs = require('fs');
 const { PDFImage } = require("pdf-image");
 require('dotenv').config({ path: '.env' });
 const { getEvents, extractEvents } = require('./services/getRPIEventsService');
+const { logger, uploadLogFileToAzure, readLogFile} = require('./services/eventsLogService');
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -176,6 +177,7 @@ app.post('/signup', async (req, res) => {
       role: user.role, 
       username: user.username 
     }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    logger.info(`User ${user.username} signed up---${new Date()}`);
 
     res.status(201).json({
       message: "User created successfully. Please check your email to verify your account.",
@@ -209,6 +211,7 @@ app.post('/verify-email', async (req, res) => {
         role: user.role, 
         username: user.username 
       }, process.env.JWT_SECRET, { expiresIn: '24h' });
+      logger.info(`User ${user.username} email verified---${new Date()}`);
 
       res.status(200).json({ message: "Email verified successfully.", token });
     } else {
@@ -239,7 +242,9 @@ app.post('/login', async (req, res) => {
       role: user.role, 
       username: user.username  
     }, jwtSecret, { expiresIn: '24h' });
-    
+
+    logger.info(`User ${user.username} logged in---${new Date()}`);
+
     res.status(200).json({ 
       token, 
       userId: user._id, 
@@ -254,7 +259,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/rpi-events', async (req, res) => {
   //hardcoded values for now
-    const count = 1;
+    const count = "NaN";
     const days = 7;
     let events = null;
     let eventsList = [];
@@ -313,7 +318,10 @@ app.post('/events', upload, async (req, res) => {
       club,
       rsvp
     });
+
     await event.save();
+    // Log the event creation
+    logger.info(`Event CREATED: ${title} start at ${startDateTime}---${new Date()}`);
     res.status(201).json(event);
   } catch (error) {
     console.error('Error creating event:', error);
@@ -392,8 +400,10 @@ app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
 
     await event.save(); 
     await user.save();
-
+    // Log the event like/unlike
+    logger.info(`Event ${event.title} ${liked ? 'LIKED' : 'UNLIKED'} by ${user.username}. count: ${event.likes}---${new Date()}`);
     res.json({ likes: event.likes });
+
   } catch (error) {
     console.error('Error during like/unlike:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -409,8 +419,10 @@ app.delete('/events/:id', async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-
+    // Log the event deletion
+    logger.info(`Event DELETED: ${event.title} start at ${event.startDateTime}---${new Date()}`);
     res.status(200).json({ message: 'Event deleted successfully' });
+
   } catch (error) {
     res.status(500).json({ message: 'Error deleting event', error: error.message });
   }
@@ -437,14 +449,16 @@ app.get('/proxy/image/:eventId', async (req, res) => {
   }
 });
 
-// Fetching user information for admin page
-app.get('/users', async (req, res) => {
+
+// Get the Content of specific log file
+app.get('/logs/:date', async (req, res) => {
+  const date = req.params.date;
   try {
-    const users = await User.find({}, 'rcsId name email role');
-    res.status(200).json(users);
+    const logContent = await readLogFile('rpieventhub-logs', 'events_change', date);
+    res.status(200).send(logContent);
   } catch (error) {
-    console.error('Error fetching users:', error.message);
-    res.status(500).json({ message: 'Error fetching users' });
+    console.error('Error reading log file:', error.message);
+    res.status(500).json({ message: 'Error reading log file', error: error.message });
   }
 });
 
@@ -452,6 +466,18 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
+
+//Fetching usernames from users
+app.get('/usernames', async (req, res)=> {
+  try{
+    const users = await User.find({}, 'username');
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    res.status(500).json({ message: 'Error fetching users' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
