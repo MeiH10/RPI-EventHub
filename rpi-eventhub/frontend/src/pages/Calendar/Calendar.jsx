@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef,useContext } from "react";
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import CalendarCSS from "./Calendar.module.css";
@@ -6,11 +6,14 @@ import axios from "axios";
 import config from "../../config";
 import { Link } from "react-router-dom";
 import html2canvas from "html2canvas";
-
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 const CalendarPage = () => {
   const [weekRange, setWeekRange] = useState({ start: "", end: "" });
   const [events, setEvents] = useState([]);
   const [currentStartDate, setCurrentStartDate] = useState(new Date());
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
   const calendarRef = useRef(null);
 
   const parseDateAsEST = (utcDate) => {
@@ -118,7 +121,7 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className="outterContainer">
+    <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400'}`} data-theme={theme}>
       <NavBar />
       <div className={`${CalendarCSS.content} container-fluid containerFluid`}>
         <div className={CalendarCSS.heroSection}>
@@ -169,7 +172,7 @@ const CalendarPage = () => {
                         parseDateAsEST(weekRange.end)
                       ).map((event) => (
                         <Link to={`/events/${event._id}`} key={event._id}>
-                          <div className={CalendarCSS.eventContainer}>
+                          <div className={`${CalendarCSS.eventContainer} ${isDark ? 'border border-white' : ''}`}>
                             <h4 className={CalendarCSS.eventTitle}>
                               {event.title}
                             </h4>
@@ -181,7 +184,12 @@ const CalendarPage = () => {
                                 />
 
                             ) : (
-                              <p>No image available</p>
+                              <div
+                                  className={CalendarCSS.eventImagePlaceholder}
+                                  style={{ color: isDark ? "white" : "#666", backgroundColor: isDark ? "#333" : "#f0f0f0" }}
+                              >
+                              No image available
+                              </div>
                             )}
                           </div>
                         </Link>

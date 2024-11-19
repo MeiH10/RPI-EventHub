@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback,useContext } from 'react';
 import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
@@ -11,6 +11,8 @@ import Masonry from 'react-masonry-css';
 import axios from 'axios';
 import config from '../../../config';
 import EventsListCard from '../../../pages/Events/AllEventList/EventsList';
+import { ThemeContext } from '../../../context/ThemeContext';
+import { useColorScheme } from '../../../hooks/useColorScheme';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
@@ -21,7 +23,8 @@ function AllEvents() {
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
     const [liked, setLiked] = useState([]) //Array of ids
-
+    const { theme } = useContext(ThemeContext);
+    const { isDark } = useColorScheme();
     const [selectedEventIds, setSelectedEventIds] = useState([]);
 
     const generateICS = () => {
@@ -199,7 +202,7 @@ function AllEvents() {
     }
 
     return (
-        <div className={styles.allEvents}>
+        <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
             <Navbar />
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
