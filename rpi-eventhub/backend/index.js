@@ -355,8 +355,7 @@ app.get('/events/like/status', authenticate, async (req, res) => {
   }
 });
 
-// Like/Unlike Event Route
-app.post('/events/:id/like', authenticateAndVerify, async (req, res) => {
+app.post('/events/:id/like', authenticate, async (req, res) => {
 
   const { id } = req.params;
   const { liked } = req.body;
@@ -450,6 +449,18 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
+
+//Fetching usernames from users
+app.get('/usernames', async (req, res)=> {
+  try{
+    const users = await User.find({}, 'username');
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    res.status(500).json({ message: 'Error fetching users' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
