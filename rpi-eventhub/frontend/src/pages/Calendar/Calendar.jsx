@@ -15,7 +15,8 @@ const CalendarPage = () => {
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
   const calendarRef = useRef(null);
-
+  const [showFlyers, setShowFlyers] = useState(true);
+  
   const parseDateAsEST = (utcDate) => {
     const date = new Date(utcDate);
     const year = date.getUTCFullYear();
@@ -131,6 +132,13 @@ const CalendarPage = () => {
             <button onClick={captureCalendarScreenshot} className="bg-red-500 text-white p-2 rounded-lg">
               Save Calendar as Image
             </button>
+            <button
+              onClick={() => setShowFlyers(!showFlyers)} // Toggle flyer visibility
+              className="bg-blue-500 text-white p-2 rounded-lg ml-2"
+            >
+              {showFlyers ? "Hide Flyers" : "Show Flyers"}
+            </button>
+
           </div>
 
           <div className={CalendarCSS.grid} ref={calendarRef}>
@@ -176,21 +184,26 @@ const CalendarPage = () => {
                             <h4 className={CalendarCSS.eventTitle}>
                               {event.title}
                             </h4>
-                            {event.image ? (
+                            {showFlyers ? (
+                              event.image ? (
                                 <img
                                   src={`${config.apiUrl}/proxy/image/${event._id}`}
                                   alt={event.title}
                                   className={CalendarCSS.eventImage}
                                 />
-
-                            ) : (
-                              <div
+                              ) : (
+                                <div
                                   className={CalendarCSS.eventImagePlaceholder}
-                                  style={{ color: isDark ? "white" : "#666", backgroundColor: isDark ? "#333" : "#f0f0f0" }}
-                              >
-                              No image available
-                              </div>
-                            )}
+                                  style={{
+                                    color: isDark ? "white" : "#666",
+                                    backgroundColor: isDark ? "#333" : "#f0f0f0",
+                                  }}
+                                >
+                                  No image available
+                                </div>
+                              )
+                            ) : null}
+
                           </div>
                         </Link>
                       ))
