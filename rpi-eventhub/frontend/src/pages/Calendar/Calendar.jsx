@@ -181,6 +181,7 @@ const CalendarPage = () => {
                           <div className={`${CalendarCSS.eventContainer} ${isDark ? 'border border-white' : ''}`}>
                             <h4 className={CalendarCSS.eventTitle}>
                               {event.title}
+                              {/* {event.startDateTime} */}
                             </h4>
                             {event.image ? (
                                 <img
