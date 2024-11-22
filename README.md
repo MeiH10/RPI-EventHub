@@ -1,7 +1,6 @@
 # RPI-EventHub
 
-A dynamic platform for RPI students and staff to easily create, promote, and discover campus events, fostering an engaged and connected university community.
-
+A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
 Our site is live at: https://rpieventhub.com/
 
 ### Figma Design
