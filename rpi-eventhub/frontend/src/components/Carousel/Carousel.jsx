@@ -14,14 +14,14 @@ const timeZone = 'America/New_York';
 const formatDateAsEST = (utcDateString) => {
   if (!utcDateString) return "Date not specified";
 
-  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+  const dateTime = DateTime.fromISO(utcDateString, { zone: 'est' });
   return dateTime.toFormat('MMMM dd, yyyy');
 };
 
 const formatTimeAsEST = (utcDateString) => {
   if (!utcDateString) return 'Time not specified';
 
-  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
+  const dateTime = DateTime.fromISO(utcDateString, { zone: 'est' });
   return dateTime.toFormat('h:mm a');
 };
 

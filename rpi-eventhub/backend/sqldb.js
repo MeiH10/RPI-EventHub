@@ -72,13 +72,13 @@ const saveLastSyncTime = (time) => {
 let lastSyncTime = loadLastSyncTime();
 
 const fetchNewEventsFromPostgres = async (lastSyncTime) => {
-  // Convert lastSyncTime to UTC for PostgreSQL comparison
-  const utcLastSync = DateTime.fromJSDate(lastSyncTime)
-    .toUTC()
+  // Convert lastSyncTime to EST for PostgreSQL comparison
+  const estLastSync = DateTime.fromJSDate(lastSyncTime)
+    .setZone('America/New_York')
     .toSQL();
 
   const query = 'SELECT * FROM events WHERE created > $1::timestamp ORDER BY created ASC, event_id ASC';
-  const values = [utcLastSync];
+  const values = [estLastSync];
   
   try {
     const res = await pgClient.query(query, values);
@@ -111,19 +111,19 @@ const transformEventData = async (pgEvent) => {
     }
   }
 
-  // Convert PostgreSQL timestamps to UTC ISO strings with explicit format logging
+  // Convert PostgreSQL timestamps to EST ISO strings with explicit format logging
   const startDateTime = DateTime.fromJSDate(pgEvent.event_start)
-    .toUTC()
+    .setZone('America/New_York')
     .toISO();
 
-  // If no end time, use start time + 3 hours, maintaining UTC
+  // If no end time, use start time + 3 hours, maintaining EST
   const endDateTime = pgEvent.event_end 
     ? DateTime.fromJSDate(pgEvent.event_end)
-        .toUTC()
+        .setZone('America/New_York')
         .toISO()
     : DateTime.fromJSDate(pgEvent.event_start)
         .plus({ hours: 3 })
-        .toUTC()
+        .setZone('America/New_York')
         .toISO();
 
 
@@ -132,7 +132,7 @@ const transformEventData = async (pgEvent) => {
     description: description,
     likes: pgEvent.likes || 0,
     creationTimestamp: DateTime.fromJSDate(pgEvent.created)
-      .toUTC()
+      .setZone('America/New_York')
       .toISO(),
     poster: poster,
     startDateTime: startDateTime,
@@ -147,7 +147,7 @@ const transformEventData = async (pgEvent) => {
 
 const syncEvents = async () => {
   try {
-    console.log(`Starting sync. Last sync time (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
+    console.log(`Starting sync. Last sync time (EST): ${DateTime.fromJSDate(lastSyncTime).setZone('America/New_York').toISO()}`);
     const newEvents = await fetchNewEventsFromPostgres(lastSyncTime);
     
     if (newEvents.length > 0) {
@@ -159,19 +159,19 @@ const syncEvents = async () => {
           console.log('\n=== Event Processing Start ===');
           console.log(`Event Name: ${pgEvent.event_name}`);
           
-          const utcStartTime = DateTime.fromJSDate(pgEvent.event_start).toUTC().toISO();
+          const estStartTime = DateTime.fromJSDate(pgEvent.event_start).setZone('America/New_York').toISO();
           
 
           const existingEvent = await Event.findOne({
             title: pgEvent.event_name,
-            startDateTime: utcStartTime
+            startDateTime: estStartTime
           });
 
           if (existingEvent) {
             console.log('Found existing event with:');
             console.log('Stored title:', existingEvent.title);
             console.log('Stored startDateTime:', existingEvent.startDateTime);
-            console.log('Comparison result:', existingEvent.startDateTime === utcStartTime);
+            console.log('Comparison result:', existingEvent.startDateTime === estStartTime);
             console.log('=== Skipping duplicate event ===');
             continue;
           }
@@ -181,7 +181,7 @@ const syncEvents = async () => {
             await Event.create(transformedEvent);
             console.log('Created new event:');
             console.log('Title:', transformedEvent.title);
-            console.log('Start time (UTC):', transformedEvent.startDateTime);
+            console.log('Start time (EST):', transformedEvent.startDateTime);
           }
 
           if (new Date(pgEvent.created) > latestProcessedTime) {
@@ -196,7 +196,7 @@ const syncEvents = async () => {
 
       lastSyncTime = latestProcessedTime;
       saveLastSyncTime(lastSyncTime);
-      console.log(`Sync completed. Last sync time updated to (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
+      console.log(`Sync completed. Last sync time updated to (EST): ${DateTime.fromJSDate(lastSyncTime).setZone('America/New_York').toISO()}`);
     } else {
       console.log('No new events to sync.');
     }

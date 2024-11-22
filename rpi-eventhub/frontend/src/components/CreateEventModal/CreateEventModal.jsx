@@ -71,9 +71,14 @@ function CreateEventModal() {
     setError('');
     setIsSubmitting(true);
   
-    // convert the start and end times to UTC before sending to the server
-    const startDateTimeUTC = DateTime.fromISO(startDateTime, { zone: 'local' }).toUTC().toISO();
-    const endDateTimeUTC = DateTime.fromISO(endDateTime, { zone: 'local' }).toUTC().toISO();
+    // Convert start and end times to EST before sending to the server
+    const startDateTimeEST = DateTime.fromISO(startDateTime, { zone: 'local' })
+    .setZone('America/New_York')
+    .toISO();
+    const endDateTimeEST = DateTime.fromISO(endDateTime, { zone: 'local' })
+    .setZone('America/New_York')
+    .toISO();
+
   
     const uniqueTags = tags.join(', ');
   
@@ -82,8 +87,8 @@ function CreateEventModal() {
     formData.append('description', description);
     formData.append('poster', username);
     formData.append('file', file); // Attach the file
-    formData.append('startDateTime', startDateTimeUTC);
-    formData.append('endDateTime', endDateTimeUTC);
+    formData.append('startDateTime', startDateTimeEST);
+    formData.append('endDateTime', endDateTimeEST);
     formData.append('location', location);
     formData.append('tags', uniqueTags);
     formData.append('club', club);
