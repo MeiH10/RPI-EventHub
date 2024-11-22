@@ -1,0 +1,58 @@
+import React, { useState } from 'react';
+
+const MultipleSelect = ({ options, onChange }) => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleOptionChange = (option) => {
+    setSelectedOptions((prevSelectedOptions) => {
+      if (prevSelectedOptions.includes(option)) {
+        return prevSelectedOptions.filter((selectedOption) => selectedOption !== option);
+      } else {
+        return [...prevSelectedOptions, option];
+      }
+    });
+  };
+
+  const handleApply = () => {
+    onChange(selectedOptions);
+  };
+
+  return (
+    <div className="w-full max-w-xs mx-auto">
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="multiple-select">
+            Select Options
+          </label>
+          <div id="multiple-select" className="space-y-2">
+            {options.map((option, index) => (
+              <div key={index} className="flex items-center">
+                <input
+                  type="checkbox"
+                  id={`option-${index}`}
+                  className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                  checked={selectedOptions.includes(option)}
+                  onChange={() => handleOptionChange(option)}
+                />
+                <label htmlFor={`option-${index}`} className="ml-2 block text-sm leading-5 text-gray-900">
+                  {option}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+            onClick={handleApply}
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MultipleSelect;
