@@ -41,17 +41,17 @@ const SearchBar = () => {
   };
 
   return (
-    <div className={`${SearchBarCSS.searchBarContainer} flex flex-col md:flex-row h-12 w-full min-w-40 sm:min-w-96 justify-center items-center space-x-4 space-y-4 md:space-y-0`}>
+    <div className={`${SearchBarCSS.searchBarContainer} flex flex-col md:flex-row w-full min-w-40 sm:min-w-96 justify-center items-center gap-2 p-2`}>
       <input
         type="text"
-        className={`${SearchBarCSS.searchInput} bg-white rounded shadow w-full h-full p-4`}
+        className={`${SearchBarCSS.searchInput} bg-white rounded shadow w-full p-2`}
         placeholder="Search for an event!"
         onChange={handleSearchInputChange}
-        onKeyDown={handleKeyPress} // Replaced onKeyPress with onKeyDown
+        onKeyDown={handleKeyPress}
         style={{ color: isDark ? 'black' : 'inherit' }}
       />
       <button
-        className={`${SearchBarCSS.searchButton} bg-red-500 text-white font-bold py-2 px-4 rounded shadow-sm`}
+        className={`${SearchBarCSS.searchButton} bg-red-500 text-white font-bold py-2 px-4 rounded shadow-sm whitespace-nowrap`}
         onClick={handleSearchClick}
       >
         Search
