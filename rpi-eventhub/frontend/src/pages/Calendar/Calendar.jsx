@@ -91,6 +91,10 @@ const CalendarPage = () => {
         eventDate >= firstDayOfWeek &&
         eventDate <= lastDayOfWeek
       );
+    }).sort((a, b) => {
+      const timeA = new Date(a.startDateTime || a.date).getTime();
+      const timeB = new Date(b.startDateTime || b.date).getTime();
+      return timeA - timeB; // Sort by time in ascending order
     });
   };
 
