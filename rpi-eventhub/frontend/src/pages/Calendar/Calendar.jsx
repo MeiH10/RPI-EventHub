@@ -82,7 +82,7 @@ const CalendarPage = () => {
   }, []);
 
   const filterEventsByDay = (day, firstDayOfWeek, lastDayOfWeek) => {
-    return events.filter((event) => {
+    const filteredEvents = events.filter((event) => {
       const eventDate = new Date(event.startDateTime || event.date);
       eventDate.setHours(0, 0, 0, 0);
       return (
@@ -90,6 +90,12 @@ const CalendarPage = () => {
         eventDate >= firstDayOfWeek &&
         eventDate <= lastDayOfWeek
       );
+    });
+  
+    return filteredEvents.sort((event1, event2) => {
+      const time1 = new Date(event1.startDateTime).getTime();
+      const time2 = new Date(event2.startDateTime).getTime();
+      return time1 - time2;
     });
   };
 
@@ -175,6 +181,7 @@ const CalendarPage = () => {
                           <div className={`${CalendarCSS.eventContainer} ${isDark ? 'border border-white' : ''}`}>
                             <h4 className={CalendarCSS.eventTitle}>
                               {event.title}
+                              {/* {event.startDateTime} */}
                             </h4>
                             {event.image ? (
                                 <img
