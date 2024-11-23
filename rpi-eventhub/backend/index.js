@@ -22,7 +22,24 @@ const jwtSecret = process.env.JWT_SECRET;
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'https://rpieventhub.com'
+    ];
+
+    const regex = /^https:\/\/.*\.github\.dev$/; // Allow dynamic Codespace URLs
+    if (allowedOrigins.includes(origin) || regex.test(origin) || !origin) {
+      callback(null, true);
+    } else {
+      console.log(`Blocked by CORS: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Use this only if needed
   optionsSuccessStatus: 200,
 };
 
@@ -204,6 +221,50 @@ app.post('/verify-email', async (req, res) => {
   } catch (error) {
     console.error("Error during email verification:", error.message);
     res.status(500).json({ message: "An error occurred during email verification." });
+  }
+});
+
+app.post('/resend-verification-code', async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+  
+  try { 
+    const user = await User.findOne({email});
+
+    if (!user){
+      return res.status(404).json({message: "User not found"});
+    }
+
+    if (user.emailVerified){
+      return res.status(400).json({message: "User email already verified"});
+    }
+
+    const now = new Date();
+    const cooldownPeriod = 30 * 1000;
+
+    if (user.lastVerificationEmailSent && now - user.lastVerificationEmailSent < cooldownPeriod){
+      const secondsLeft = (cooldownPeriod - (now - user.lastVerificationEmailSent))/1000
+      return res.status(429).json({message: `please wait ${secondsLeft} seconds before trying to resend verification email.`})
+    }
+
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.verificationCode = verificationCode;
+    user.lastVerificationEmailSent = now;
+    await user.save();
+
+    await sendEmail({
+      to: email,
+      subject: 'Resend: RPI EventHub Email Verification Code',
+      text: `Dear User,\n\nHere is your new verification code:\n\nVerification Code: ${verificationCode}\n\nPlease enter this code in the app to verify your email address.\n\nBest regards,\nRPI EventHub Team`,
+    });
+
+    res.status(200).json({ message: "Verification email resent successfully. Please check your email." });
+  } catch (error) {
+    console.error("Error resending verification email:", error.message);
+    res.status(500).json({ message: "Error resending verification email", error: error.message });
   }
 });
 
@@ -425,6 +486,7 @@ app.get('/proxy/image/:eventId', async (req, res) => {
     const response = await axios.get(event.image, { responseType: 'arraybuffer' });
     const contentType = response.headers['content-type'];
     res.set('Content-Type', contentType);
+    res.set('Access-Control-Allow-Origin', '*');
     res.send(response.data);
   } catch (error) {
     console.error('Error fetching image:', error.message);

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import {jwtDecode} from 'jwt-decode';
 import config from '../../config';
+import styles from './VerifyModal.module.css';
 
 function VerifyModal() {
   const [show, setShow] = useState(false);
@@ -65,29 +66,31 @@ function VerifyModal() {
         </Button>
       )}
 
-      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
-        <Modal.Header closeButton>
-          <Modal.Title>Verify Email</Modal.Title>
+      <Modal className={styles.modalContainer} show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+        <Modal.Header className={styles.modalHeader} closeButton>
+          <Modal.Title className={styles.modalTitle}>Verify Email</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={styles.modalBody}>
           <Form onSubmit={handleVerify}>
-            <Form.Group controlId="verificationCode">
-              <Form.Label>Verification Code (check for email from rpieventhub@gmail.com, and check your spam folder!)</Form.Label>
+            <Form.Group controlId="verificationCode" className={styles.formGroup}>
+              <Form.Label className={styles.formLabel}>Verification Code (check for email from rpieventhub@gmail.com, and check your spam folder!)</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter verification code"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+        <Modal.Footer className={styles.modalFooter}>
+          <Button variant="secondary" onClick={handleClose} className={`${styles.button} ${styles.buttonSecondary}`}>
             Close
           </Button>
-          <Button variant="primary" type="submit" onClick={handleVerify} disabled={isSubmitting}>
-            Verify
+          <Button variant="primary" type="submit" disabled={isSubmitting} 
+                    className={`${styles.button} ${styles.buttonPrimary}`}>
+            {isSubmitting ? 'Verifying...' : 'Verify'}
           </Button>
         </Modal.Footer>
       </Modal>
