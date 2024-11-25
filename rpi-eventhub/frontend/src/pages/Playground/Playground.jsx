@@ -1,7 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import RsvpButton from '../../components/RSVPButton/RsvpButton';
@@ -16,21 +14,21 @@ const Playground = () => {
   return (
     <div className={styles.App}>
       <Navbar />
-      <div className={`${styles.content} containerFluid`}>
-        <h1>{title}</h1>
+      <div className="container mx-auto p-4">
+        <h1 className="text-4xl font-bold mb-4">{title}</h1>
       </div>
       <motion.img
         src={logo}
         alt="IMAGE HERE"
-        style={{ width: '400px', height: '300px' }}
+        className="w-96 h-72 mx-auto"
         animate={{ y: [10, 30, 10], x: [0, 0, 0] }}
         transition={{
-        duration: 5,
-        repeat: Infinity,
-        ease: "easeInOut",
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
         }}
       />
-      <div>
+      <div className="mt-4">
         <HoverImagePopup src={logo2} alt="Insert image here" />
       </div>
       <Footer />
