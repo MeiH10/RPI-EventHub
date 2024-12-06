@@ -18,7 +18,9 @@ const SearchBar = () => {
     const filtered = events.filter(event => {
       const eventWords = event.title.toLowerCase().split(' ');
       const eventTags = event.tags.map(tag => tag.toLowerCase());
-      return searchWords.some(word => eventWords.includes(word) || eventTags.includes(word));
+      const eventStartDateTime = new Date(event.startDateTime);
+      const currentDate = new Date();
+      return  eventStartDateTime >= currentDate && searchWords.some(word => eventWords.includes(word) || eventTags.includes(word));
     });
 
     const sorted = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
