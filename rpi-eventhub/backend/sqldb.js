@@ -67,7 +67,7 @@ const uploadImageToImgBB = async (imageUrl) => {
     return response.data?.data?.url || null;
   } catch (error) {
     console.error(`Image upload failed for ${imageUrl}: ${error.message}`);
-    return null;
+    throw error;
   }
 };
 
@@ -109,21 +109,11 @@ const transformEventData = async (pgEvent) => {
   const tagsSet = giveTags(title, description);
   const tagsArray = Array.from(tagsSet);
 
-  let imageUrl = '';
-  if (pgEvent.image_id) {
-    const originalImageUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
-    imageUrl = await uploadImageToImgBB(originalImageUrl);
-    if (!imageUrl) {
-      return null;
-    }
-  }
-
-  // Convert the EST times from Postgres to UTC for MongoDB
+  // Convert times first, so they're always processed
   const startDateTime = DateTime.fromJSDate(pgEvent.event_start, { zone: 'America/New_York' })
     .toUTC()
     .toISO({ suppressMilliseconds: true });
 
-  // Handle end time similarly - if no end time, use start time + 3 hours
   const endDateTime = pgEvent.event_end 
     ? DateTime.fromJSDate(pgEvent.event_end, { zone: 'America/New_York' })
         .toUTC()
@@ -133,10 +123,21 @@ const transformEventData = async (pgEvent) => {
         .toUTC()
         .toISO({ suppressMilliseconds: true });
 
-  // Creation timestamp should also be handled in UTC
   const creationTimestamp = DateTime.fromJSDate(pgEvent.created)
     .toUTC()
     .toISO({ suppressMilliseconds: true });
+
+  // Handle image upload after time conversion
+  let imageUrl = '';
+  if (pgEvent.image_id) {
+    try {
+      const originalImageUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
+      imageUrl = await uploadImageToImgBB(originalImageUrl);
+    } catch (error) {
+      console.error(`Image upload failed for event "${title}":`, error.message);
+      // Continue processing even if image upload fails
+    }
+  }
 
   return {
     title,
@@ -169,23 +170,21 @@ const syncEvents = async () => {
           console.log(`Event Name: ${pgEvent.event_name}`);
           
           const transformedEvent = await transformEventData(pgEvent);
-          if (transformedEvent) {
-            // Log the time conversion details
-            logTimeConversion(pgEvent, transformedEvent);
-            
-            const existingEvent = await Event.findOne({
-              title: transformedEvent.title,
-              startDateTime: transformedEvent.startDateTime
-            });
+          // Remove null check since transformEventData will always return an event object now
+          logTimeConversion(pgEvent, transformedEvent);
+          
+          const existingEvent = await Event.findOne({
+            title: transformedEvent.title,
+            startDateTime: transformedEvent.startDateTime
+          });
 
-            if (!existingEvent) {
-              await Event.create(transformedEvent);
-              console.log('Created new event:');
-              console.log('Title:', transformedEvent.title);
-              console.log('Start time (UTC):', transformedEvent.startDateTime);
-            } else {
-              console.log('Duplicate event found - skipping');
-            }
+          if (!existingEvent) {
+            await Event.create(transformedEvent);
+            console.log('Created new event:');
+            console.log('Title:', transformedEvent.title);
+            console.log('Start time (UTC):', transformedEvent.startDateTime);
+          } else {
+            console.log('Duplicate event found - skipping');
           }
 
           if (new Date(pgEvent.created) > latestProcessedTime) {
