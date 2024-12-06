@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchBarCSS from './SearchBar.module.css'; // Adjust the import path if necessary
 import { useEvents } from '../../context/EventsContext'; // Adjust the import path if necessary
 
 const SearchBar = () => {
@@ -38,8 +37,19 @@ const SearchBar = () => {
 
   return (
     <div className='flex flex-col md:flex-row h-12 w-full min-w-40 sm:min-w-96 justify-center items-center space-x-4 space-y-4 md:space-y-0'>
-      <input type='text' className='bg-white rounded shadow w-full h-full p-4' placeholder='Search for an event!' onChange={handleSearchInputChange} onKeyPress={handleKeyPress}></input>
-      <button className='bg-red-500 text-white font-bold py-2 px-4 rounded shadow-sm' onClick={handleSearchClick}>Search</button>
+      <input
+        type='text'
+        className='bg-white rounded shadow w-full h-full p-4'
+        placeholder='Search for an event!'
+        onChange={handleSearchInputChange}
+        onKeyPress={handleKeyPress}
+      />
+      <button
+        className='bg-red-500 text-white font-bold py-2 px-4 rounded shadow-sm'
+        onClick={handleSearchClick}
+      >
+        Search
+      </button>
     </div>
   );
 };
