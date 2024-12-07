@@ -3,61 +3,55 @@
     src: url('../../assets/fonts/GoodTimes/GoodTimesRg-Regular.ttf') format('truetype');
   }
   
+.searchBarContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0.5rem;
+}
+
+.searchInput {
+  flex: 1;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  background-color: white;
+  color: #1a202c;
+}
+
+.darkInput {
+  background-color: white;
+  color: #1a202c;
+}
+
+.searchButton {
+  padding: 0.5rem 1rem;
+  background-color: #ef4444;
+  color: white;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.searchButton:hover {
+  background-color: #dc2626;
+}
+
+@media (max-width: 768px) {
   .searchBarContainer {
-    background: rgba(255, 255, 255, 0.75);
-    box-shadow: -12px 12px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    width: 80%;
-    max-width: 1000px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    position: relative;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
-  .searchInput {
-    border: none;
-    outline: none;
-    width: calc(100% - 100px);
-    height: 50px;
-    border-radius: 15px;
-    padding: 0 15px;
-  }
-  
+  .searchInput, 
   .searchButton {
-    background: #E20612;
-    border-radius: 15px;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    right: 20px;
-    height: 50px;
+    width: 100%;
   }
-  
-  /* Media queries for responsive design */
-  @media screen and (max-width: 960px) {
-    .searchBarContainer {
-      width: 90%;
-      height: 60px;
-      padding: 0 10px;
-      box-shadow: none; /* Remove shadow on mobile */
-    }
-  
-    .searchInput {
-      width: calc(100% - 80px);
-      height: 40px;
-      font-size: 0.9rem; /* Smaller font size on mobile */
-      padding: 0 10px;
-    }
-  
-    .searchButton {
-      height: 40px;
-      padding: 5px 15px; /* Smaller padding on mobile */
-      font-size: 0.9rem; /* Smaller font size on mobile */
-      right: 10px; /* Adjust position */
-    }
-  }
-  
+}

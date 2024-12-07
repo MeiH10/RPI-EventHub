@@ -1,21 +1,15 @@
-.rsvpButton {
-  display: inline-block;
-  bottom: 20px;
-  font-family: Italiana, serif;
-  right: 20px;
-  padding: 15px 30px;
-  background-color: #eb1220;
-  color: #ffffff!important; /* Change text color to white */
-  border-radius: 8px;
-  text-decoration: none;
-  text-align: center;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
-  font-size: 18px;
-  font-weight: bold;
+:root{
+  --rsvp-modal-bg: #ededed;
+  --rsvp-modal-text: #242424;
 }
 
-.rsvpButton:hover {
-  background-color: #ff0000;
-  color: #ffffff; /* Ensure the text color stays white on hover */
+
+[data-theme='dark']{
+  --rsvp-modal-bg: #232323;
+  --rsvp-modal-text: #dcdcdc;
+}
+
+.rsvpModal{
+  background-color: var(--rsvp-modal-bg);
+  color: var(--rsvp-modal-text);
 }
