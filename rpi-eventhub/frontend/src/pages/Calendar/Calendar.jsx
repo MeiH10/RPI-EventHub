@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef,useContext } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import CalendarCSS from "./Calendar.module.css";
 import axios from "axios";
 import config from "../../config";
 import { Link } from "react-router-dom";
 import html2canvas from "html2canvas";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
+
 const CalendarPage = () => {
   const [weekRange, setWeekRange] = useState({ start: "", end: "" });
   const [events, setEvents] = useState([]);
@@ -121,88 +121,80 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400'}`} data-theme={theme}>
+    <div className={`min-h-screen ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400'}`} data-theme={theme}>
       <NavBar />
-      <div className={`${CalendarCSS.content} container-fluid containerFluid`}>
-        <div className={CalendarCSS.heroSection}>
-          <div className={CalendarCSS.title}></div>
-
-          <div className={CalendarCSS.buttonWrapper}>
-            <button onClick={captureCalendarScreenshot} className="bg-red-500 text-white p-2 rounded-lg">
-              Save Calendar as Image
+      <div className="container mx-auto p-4">
+        <div className="text-center mb-8">
+          <button onClick={captureCalendarScreenshot} className="bg-red-500 text-white p-2 rounded-lg">
+            Save Calendar as Image
+          </button>
+        </div>
+        <div ref={calendarRef}>
+          <div className="flex justify-between mb-4">
+            <button onClick={() => handleWeekChange(-1)} className="bg-blue-500 text-white px-4 py-2 rounded">
+              Previous Week
+            </button>
+            <button onClick={goToToday} className="bg-blue-500 text-white px-4 py-2 rounded">
+              Today
+            </button>
+            <button onClick={() => handleWeekChange(1)} className="bg-blue-500 text-white px-4 py-2 rounded">
+              Next Week
             </button>
           </div>
-
-          <div className={CalendarCSS.grid} ref={calendarRef}>
-            <div className={CalendarCSS.weeklyEvents}>
-              <div className={CalendarCSS.navigationButtons}>
-                <button onClick={() => handleWeekChange(-1)}>
-                  Previous Week
-                </button>
-                <button onClick={goToToday}>Today</button>
-                <button onClick={() => handleWeekChange(1)}>Next Week</button>
-              </div>
-              <h2>
-                Week of {weekRange.start} - {weekRange.end}
-              </h2>
-              <div className={CalendarCSS.week}>
-                {[0, 1, 2, 3, 4, 5, 6].map((day) => (
-                  <div className={CalendarCSS.day} key={day}>
-                    <h3>
-                      {
-                        [
-                          "Sunday",
-                          "Monday",
-                          "Tuesday",
-                          "Wednesday",
-                          "Thursday",
-                          "Friday",
-                          "Saturday",
-                        ][day]
-                      }
-                    </h3>
-                    {filterEventsByDay(
-                      day,
-                      parseDateAsEST(weekRange.start),
-                      parseDateAsEST(weekRange.end)
-                    ).length > 0 ? (
-                      filterEventsByDay(
-                        day,
-                        parseDateAsEST(weekRange.start),
-                        parseDateAsEST(weekRange.end)
-                      ).map((event) => (
-                        <Link to={`/events/${event._id}`} key={event._id}>
-                          <div className={`${CalendarCSS.eventContainer} ${isDark ? 'border border-white' : ''}`}>
-                            <h4 className={CalendarCSS.eventTitle}>
-                              {event.title}
-                            </h4>
-                            {event.image ? (
-                                <img
-                                  src={`${config.apiUrl}/proxy/image/${event._id}`}
-                                  alt={event.title}
-                                  className={CalendarCSS.eventImage}
-                                />
-
-                            ) : (
-                              <div
-                                  className={CalendarCSS.eventImagePlaceholder}
-                                  style={{ color: isDark ? "white" : "#666", backgroundColor: isDark ? "#333" : "#f0f0f0" }}
-                              >
-                              No image available
-                              </div>
-                            )}
+          <h2 className="text-2xl font-bold mb-4">
+            Week of {weekRange.start} - {weekRange.end}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[0, 1, 2, 3, 4, 5, 6].map((day) => (
+              <div key={day} className="border p-4 rounded-lg">
+                <h3 className="text-xl font-semibold mb-2">
+                  {
+                    [
+                      "Sunday",
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                    ][day]
+                  }
+                </h3>
+                {filterEventsByDay(
+                  day,
+                  parseDateAsEST(weekRange.start),
+                  parseDateAsEST(weekRange.end)
+                ).length > 0 ? (
+                  filterEventsByDay(
+                    day,
+                    parseDateAsEST(weekRange.start),
+                    parseDateAsEST(weekRange.end)
+                  ).map((event) => (
+                    <Link to={`/events/${event._id}`} key={event._id}>
+                      <div className={`p-2 mb-2 rounded-lg ${isDark ? 'border border-white' : 'border border-gray-300'}`}>
+                        <h4 className="font-semibold">{event.title}</h4>
+                        {event.image ? (
+                          <img
+                            src={`${config.apiUrl}/proxy/image/${event._id}`}
+                            alt={event.title}
+                            className="w-full h-32 object-cover rounded-lg mt-2"
+                          />
+                        ) : (
+                          <div
+                            className="w-full h-32 flex items-center justify-center bg-gray-200 text-gray-500 rounded-lg mt-2"
+                          >
+                            No image available
                           </div>
-                        </Link>
-                      ))
-                    ) : (
-                      <p>No events</p>
-                    )}
-                  </div>
-                ))}
+                        )}
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p>No events</p>
+                )}
               </div>
-            </div>
+            ))}
           </div>
-          <hr className={CalendarCSS.hr} />
         </div>
       </div>
       <Footer />
