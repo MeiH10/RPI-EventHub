@@ -207,6 +207,46 @@ app.post('/verify-email', async (req, res) => {
   }
 });
 
+app.post('/resend-verification-code', async (req, res) => {
+  const { email } = req.body;
+
+  try { 
+    const user = await user.findOne({email});
+
+    if (!user){
+      return res.status(404).json({message: "User not found"});
+    }
+
+    if (user.emailVerified){
+      return res.status(400).json({message: "User email already verified"});
+    }
+
+    const now = new Date();
+    const cooldownPeriod = 30 * 1000;
+
+    if (user.lastVerificationEmailSent && now - user.lastVerificationEmailSent < cooldownPeriod){
+      secondsLeft = (cooldownPeriod - (now - user.lastVerificationEmailSent))/1000
+      return res.status(429).json({message: "please wait ${secondsLeft} seconds before trying to resend verification email."})
+    }
+
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.verificationCode = verificationCode;
+    user.lastVerificationEmailSent = now;
+    await user.save();
+
+    await sendEmail({
+      to: email,
+      subject: 'Resend: RPI EventHub Email Verification Code',
+      text: `Dear User,\n\nHere is your new verification code:\n\nVerification Code: ${verificationCode}\n\nPlease enter this code in the app to verify your email address.\n\nBest regards,\nRPI EventHub Team`,
+    });
+
+    res.status(200).json({ message: "Verification email resent successfully. Please check your email." });
+  } catch (error) {
+    console.error("Error resending verification email:", error.message);
+    res.status(500).json({ message: "Error resending verification email", error: error.message });
+  }
+});
+
 // Login Route
 app.post('/login', async (req, res) => {
   try {

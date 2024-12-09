@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   emailVerified: { type: Boolean, default: false }, // Added for email verification
   verificationCode: { type: String, required: false }, // Optional: For storing the email verification code
+  lastVerificationEmailSent: {
+    type: Date,
+    default: null
+  },
   likedEvents: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event'
