@@ -32,6 +32,7 @@ const CalendarPage = () => {
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const calendarRef = useRef(null);
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const parseDateAsEST = (utcDate) => {
         const date = new Date(utcDate);
@@ -113,31 +114,56 @@ const CalendarPage = () => {
         }
     };
 
-    const loadAllImages = () => {
-        const images = calendarRef.current.querySelectorAll("img");
-        return Promise.all(
-            Array.from(images).map((img) => {
-                if (!img.complete) {
-                    return new Promise((resolve) => {
-                        img.onload = img.onerror = resolve;
-                    });
-                }
-                return Promise.resolve();
+    const loadAllImages = async () => {
+        const images = calendarRef.current?.querySelectorAll("img");
+        if (!images) return;
+        await Promise.all(
+          Array.from(images).map((img) => 
+            new Promise((resolve, reject) => {
+              if (img.complete) {
+                resolve();
+              } else {
+                img.onload = () => resolve();
+                img.onerror = () => {
+                  console.error(`Failed to load image: ${img.src}`);
+                  resolve(); 
+                };
+              }
             })
+          )
         );
     };
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const captureCalendarScreenshot = async () => {
+    try {
+        setIsDisabled(true);
+        setIsLoading(true);
+
+        // Ensure all images are loaded
         await loadAllImages();
         if (calendarRef.current) {
-            html2canvas(calendarRef.current, { useCORS: true }).then((canvas) => {
-                const imgData = canvas.toDataURL("image/png");
-                const link = document.createElement("a");
-                link.href = imgData;
-                link.download = `calendar-${weekRange.start}-to-${weekRange.end}.png`;
-                link.click();
+            const canvas = await html2canvas(calendarRef.current, {
+                useCORS: true,
+                allowTaint: false,
+                scale: 2,
             });
-        }
+            const imgData = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.href = imgData;
+            link.download = `calendar-${weekRange.start}-to-${weekRange.end}.png`;
+            link.click();
+        } 
+    }catch (error) {
+        console.error("Error capturing calendar screenshot:", error);
+    } 
+    finally {
+        setIsLoading(false);
+        setTimeout(() => {
+            setIsDisabled(false);
+        }, 10000);
+    }
     };
 
     useEffect(() => {
@@ -151,11 +177,12 @@ const CalendarPage = () => {
             <div className="flex-1 pt-20 px-2 md:px-4">
                 <div className="max-w-[1400px] mx-auto">
                     <div className="text-center mb-4 space-y-2">
-                        <button 
-                            onClick={captureCalendarScreenshot}
-                            className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded transition-colors"
+                    <button 
+                        disabled={isDisabled} 
+                        onClick={captureCalendarScreenshot} 
+                        className="bg-red-500 text-white p-2 rounded-lg"
                         >
-                            Save Calendar as Image
+                        {isLoading ? 'Saving...' : 'Save Calendar as Image'}
                         </button>
                         <div className="flex items-center justify-center gap-2 mt-2">
                             <label className="inline-flex items-center cursor-pointer">
