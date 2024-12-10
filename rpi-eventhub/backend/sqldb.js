@@ -46,19 +46,6 @@ const saveLastSyncTime = (time) => {
 
 let lastSyncTime = loadLastSyncTime();
 
-const logDetailedTimeInfo = (eventName, originalDate, convertedDate) => {
-  console.log('\nDetailed Time Information for:', eventName);
-  console.log('Original Date Object:', originalDate);
-  console.log('Original Date ISO:', originalDate.toISOString());
-  console.log('Original Timezone:', originalDate.getTimezoneOffset());
-  console.log('Converted UTC:', convertedDate);
-  
-  // Parse back to verify consistency
-  const parsed = new Date(convertedDate);
-  console.log('Parsed back to local:', parsed);
-  console.log('Difference in hours:', (parsed - originalDate) / (1000 * 60 * 60));
-};
-
 const uploadImageToImgBB = async (imageUrl) => {
   try {
     const imageResponse = await axios.get(imageUrl, {
@@ -80,7 +67,7 @@ const uploadImageToImgBB = async (imageUrl) => {
     return response.data?.data?.url || null;
   } catch (error) {
     console.error(`Image upload failed for ${imageUrl}: ${error.message}`);
-    throw error;
+    return '';
   }
 };
 
@@ -101,14 +88,17 @@ const fetchNewEventsFromPostgres = async (lastSyncTime) => {
   }
 };
 
-const logTimeConversion = (pgEvent, transformedEvent) => {
-  console.log('Time Conversion Details:');
-  console.log(`Original event_start (EST): ${pgEvent.event_start}`);
-  console.log(`Transformed startDateTime (UTC): ${transformedEvent.startDateTime}`);
-  if (pgEvent.event_end) {
-    console.log(`Original event_end (EST): ${pgEvent.event_end}`);
-    console.log(`Transformed endDateTime (UTC): ${transformedEvent.endDateTime}`);
+const logTimeComparison = (eventName, existingEvent, newEvent) => {
+  console.log('\n=== Time Comparison ===');
+  console.log('Event:', eventName);
+  console.log('Existing Event Time (UTC):', existingEvent?.startDateTime);
+  console.log('New Event Time (UTC):', newEvent.startDateTime);
+  
+  if (existingEvent) {
+    const diffMinutes = Math.abs(existingEvent.startDateTime - newEvent.startDateTime) / (1000 * 60);
+    console.log('Time Difference (minutes):', diffMinutes);
   }
+  console.log('========================');
 };
 
 const transformEventData = async (pgEvent) => {
@@ -122,50 +112,34 @@ const transformEventData = async (pgEvent) => {
   const tagsSet = giveTags(title, description);
   const tagsArray = Array.from(tagsSet);
 
-  // Ensure dates are properly handled
-  const eventStart = new Date(pgEvent.event_start);
-  const startDateTime = DateTime.fromJSDate(eventStart, { zone: 'America/New_York' })
+  // Convert times to UTC Date objects
+  const startDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
     .toUTC()
-    .toISO({ suppressMilliseconds: true });
-  
-  // Log detailed time information for debugging
-  logDetailedTimeInfo(title, eventStart, startDateTime);
+    .toJSDate();  // Convert to JavaScript Date object
 
-  // Handle end time
   let endDateTime;
   if (pgEvent.event_end) {
-    const eventEnd = new Date(pgEvent.event_end);
-    endDateTime = DateTime.fromJSDate(eventEnd, { zone: 'America/New_York' })
+    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_end), { zone: 'America/New_York' })
       .toUTC()
-      .toISO({ suppressMilliseconds: true });
+      .toJSDate();
   } else {
-    endDateTime = DateTime.fromJSDate(eventStart, { zone: 'America/New_York' })
+    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
       .plus({ hours: 3 })
       .toUTC()
-      .toISO({ suppressMilliseconds: true });
+      .toJSDate();
   }
 
-  const creationTimestamp = DateTime.fromJSDate(new Date(pgEvent.created))
-    .toUTC()
-    .toISO({ suppressMilliseconds: true });
+  const creationTimestamp = new Date();  // Use current time as creation timestamp
 
   // Handle image upload after time conversion
   let imageUrl = '';
   if (pgEvent.image_id) {
-    try {
-      const originalImageUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
-      imageUrl = await uploadImageToImgBB(originalImageUrl);
-    } catch (error) {
-      console.error(`Image upload failed for event "${title}":`, error.message);
-    }
+    const originalImageUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
+    imageUrl = await uploadImageToImgBB(originalImageUrl);
   }
-
-  // Normalize the title for consistency in checks
-  const normalizedTitle = title.trim().toLowerCase();
 
   return {
     title,
-    normalizedTitle,
     description,
     likes: pgEvent.likes || 0,
     creationTimestamp,
@@ -181,66 +155,87 @@ const transformEventData = async (pgEvent) => {
 };
 
 const findExistingEvent = async (transformedEvent) => {
-  // Check for existing event within a 5-minute window
-  const startDate = DateTime.fromISO(transformedEvent.startDateTime);
-  const fiveMinutesBefore = startDate.minus({ minutes: 5 }).toISO();
-  const fiveMinutesAfter = startDate.plus({ minutes: 5 }).toISO();
+  try {
+    // Convert ISO string to Date for comparison if it's not already a Date
+    const eventStartDate = transformedEvent.startDateTime instanceof Date 
+      ? transformedEvent.startDateTime 
+      : new Date(transformedEvent.startDateTime);
+    
+    // First try exact match
+    const existingExact = await Event.findOne({
+      title: transformedEvent.title,
+      startDateTime: eventStartDate
+    });
 
-  return await Event.findOne({
-    normalizedTitle: transformedEvent.normalizedTitle,
-    startDateTime: {
-      $gte: fiveMinutesBefore,
-      $lte: fiveMinutesAfter
+    if (existingExact) {
+      return existingExact;
     }
-  });
+
+    // If no exact match, look for events within 5 minutes
+    const fiveMinutesBefore = new Date(eventStartDate.getTime() - 5 * 60000);
+    const fiveMinutesAfter = new Date(eventStartDate.getTime() + 5 * 60000);
+
+    return await Event.findOne({
+      title: transformedEvent.title,
+      startDateTime: {
+        $gte: fiveMinutesBefore,
+        $lte: fiveMinutesAfter
+      }
+    });
+  } catch (error) {
+    console.error('Error finding existing event:', error);
+    return null;
+  }
 };
 
 const syncEvents = async () => {
   try {
-    console.log(`Starting sync. Last sync time (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
+    console.log('\n=== Starting Sync Process ===');
     const newEvents = await fetchNewEventsFromPostgres(lastSyncTime);
     
     if (newEvents.length > 0) {
-      console.log(`Fetched ${newEvents.length} new event(s) from PostgreSQL.`);
+      console.log(`Found ${newEvents.length} events to process`);
       let latestProcessedTime = lastSyncTime;
 
       for (const pgEvent of newEvents) {
         try {
-          console.log('\n=== Event Processing Start ===');
-          console.log(`Event Name: ${pgEvent.event_name}`);
-          
           const transformedEvent = await transformEventData(pgEvent);
-          logTimeConversion(pgEvent, transformedEvent);
-          
           const existingEvent = await findExistingEvent(transformedEvent);
 
-          if (!existingEvent) {
-            await Event.create(transformedEvent);
-            console.log('Created new event:');
-            console.log('Title:', transformedEvent.title);
-            console.log('Start time (UTC):', transformedEvent.startDateTime);
+          if (existingEvent) {
+            console.log(`✗ Skipped duplicate: "${transformedEvent.title}"`);
+            console.log(`  Existing time: ${existingEvent.startDateTime}`);
+            console.log(`  New time: ${transformedEvent.startDateTime}`);
           } else {
-            console.log('Duplicate event found - skipping');
-            console.log('Existing start time:', existingEvent.startDateTime);
-            console.log('New start time:', transformedEvent.startDateTime);
+            try {
+              await Event.create(transformedEvent);
+              console.log(`✓ Created: "${transformedEvent.title}"`);
+              console.log(`  Time: ${transformedEvent.startDateTime}`);
+            } catch (createError) {
+              if (createError.code === 11000) {
+                console.log(`✗ Concurrent duplicate detected: "${transformedEvent.title}"`);
+              } else {
+                throw createError;
+              }
+            }
           }
 
           if (new Date(pgEvent.created) > latestProcessedTime) {
             latestProcessedTime = new Date(pgEvent.created);
           }
-          
-          console.log('=== Event Processing Complete ===');
         } catch (error) {
-          console.error(`Error processing event ${pgEvent.event_name}:`, error.message);
+          if (error.code !== 11000) {
+            console.error(`Error processing event ${pgEvent.event_name}:`, error.message);
+          }
         }
       }
 
       lastSyncTime = latestProcessedTime;
       saveLastSyncTime(lastSyncTime);
-      console.log(`Sync completed. Last sync time updated to (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
     } else {
-      console.log('No new events to sync.');
+      console.log('No new events to sync');
     }
+    console.log('=== Sync Process Complete ===\n');
   } catch (error) {
     console.error('Error during sync process:', error);
   }
@@ -249,10 +244,10 @@ const syncEvents = async () => {
 const createUniqueIndex = async () => {
   try {
     await Event.collection.createIndex(
-      { normalizedTitle: 1, startDateTime: 1 },
+      { title: 1, startDateTime: 1 },
       { unique: true }
     );
-    console.log('Unique index on normalizedTitle and startDateTime created');
+    console.log('Unique index on title and startDateTime created');
   } catch (error) {
     if (error.code === 11000) {
       console.log('Unique index already exists');
@@ -265,9 +260,9 @@ const createUniqueIndex = async () => {
 const startSync = async () => {
   await createUniqueIndex();
   await syncEvents();
-  // Run sync every hour
+  // Run sync every houw
   cron.schedule('0 * * * *', async () => {
-    console.log('Starting scheduled sync process...');
+    console.log('\nStarting scheduled sync process...');
     await syncEvents();
   });
 };
