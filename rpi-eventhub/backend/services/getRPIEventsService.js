@@ -2,23 +2,12 @@ const Event = require('../models/Event');
 const { getNextSequence } = require('../counter');
 const cron = require('node-cron');
 const { logger } = require('../services/eventsLogService');
+const { DateTime } = require('luxon');
 
-/**
- * Constructs the URL for fetching events from RPI's events feed
- * @param {string} count - Number of events to return
- * @param {number} days - Number of days from today to fetch events for
- * @returns {string} - Complete URL for the events feed
- */
 const setURLAndOptions = (count, days) => {
     return `https://events.rpi.edu/feeder/main/eventsFeed.do?f=y&sort=dtstart.utc:asc&fexpr=(categories.href!=%22/public/.bedework/categories/Ongoing%22)%20and%20(entity_type=%22event%22%20or%20entity_type=%22todo%22)&skinName=list-json&count=${count}&days=${days}`;
 };
 
-/**
- * Fetches events from RPI's events feed
- * @param {string} count - Number of events to return
- * @param {number} days - Number of days to fetch
- * @returns {Promise<Object>} - JSON response containing events
- */
 const getEvents = async (count, days) => {
     try {
         const url = setURLAndOptions(count, days);
@@ -35,40 +24,56 @@ const getEvents = async (count, days) => {
     }
 };
 
-/**
- * Formats datetime string from RPI's format to ISO 8601 format
- * @param {string} input - Datetime string in format YYYYMMDD[T]HHmmss
- * @returns {string} - ISO 8601 formatted datetime string
- */
 function formatDateTime(input) {
     if (!input) return '';
     
-    const year = input.slice(0, 4);
-    const month = input.slice(4, 6);
-    const day = input.slice(6, 8);
-    const hours = input.slice(9, 11) || '00';
-    const minutes = input.slice(11, 13) || '00';
-    const seconds = input.slice(13, 15) || '00';
+    try {
+        // Parse the input string (format: YYYYMMDD[T]HHmmss)
+        const year = input.slice(0, 4);
+        const month = input.slice(4, 6);
+        const day = input.slice(6, 8);
+        const hours = input.slice(9, 11) || '00';
+        const minutes = input.slice(11, 13) || '00';
+        const seconds = input.slice(13, 15) || '00';
 
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000+00:00`;
+        // Create DateTime object in EST
+        const estDateTime = DateTime.fromFormat(
+            `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+            'yyyy-MM-dd HH:mm:ss',
+            { zone: 'America/New_York' }
+        );
+
+        console.log('Debug - Input EST:', estDateTime.toFormat('yyyy-MM-dd HH:mm:ss ZZZZ'));
+        console.log('Debug - Output UTC:', estDateTime.toUTC().toISO());
+
+        return estDateTime.toUTC().toISO();
+    } catch (error) {
+        console.error('Error formatting datetime:', input, error);
+        return '';
+    }
 }
 
-/**
- * Extracts and formats events from the JSON response
- * @param {Object} jsonResponse - Response from RPI's events feed
- * @returns {Array} - Array of formatted event objects
- */
 function extractEvents(jsonResponse) {
     const eventsList = [];
     const events = jsonResponse?.bwEventList?.events || [];
 
     events.forEach(event => {
+        console.log('\nProcessing event:', event.summary);
+        console.log('Raw start datetime:', event.start?.datetime);
+        console.log('Raw end datetime:', event.end?.datetime);
+
+        const startDateTime = formatDateTime(event.start?.datetime);
+        const endDateTime = formatDateTime(event.end?.datetime);
+
+        console.log('Formatted start (UTC):', startDateTime);
+        console.log('Formatted end (UTC):', endDateTime);
+
         const newEvent = new Event({
             title: event.summary || '',
             description: event.description || '',
             poster: 'RPI',
-            startDateTime: formatDateTime(event.start?.datetime),
-            endDateTime: formatDateTime(event.end?.datetime),
+            startDateTime,
+            endDateTime,
             location: event.location?.address || 'unknown',
             image: '',
             tags: event.categories || [],
@@ -82,9 +87,6 @@ function extractEvents(jsonResponse) {
     return eventsList;
 }
 
-/**
- * Fetches events from RPI's feed and updates the database
- */
 async function fetchAndUpdateEvents() {
     try {
         const count = "NaN"; // Fetches all events
@@ -94,6 +96,10 @@ async function fetchAndUpdateEvents() {
         const eventsList = extractEvents(events);
 
         for (let eventData of eventsList) {
+            console.log('\nSaving event:', eventData.title);
+            console.log('Start DateTime (UTC) to save:', eventData.startDateTime);
+            console.log('End DateTime (UTC) to save:', eventData.endDateTime);
+
             // Check for duplicate events
             const existingEvent = await Event.findOne({ 
                 title: eventData.title, 
@@ -110,6 +116,11 @@ async function fetchAndUpdateEvents() {
                 const newEvent = new Event(eventData);
                 await newEvent.save();
                 console.log(`Inserted new event: ${eventData.title}`);
+                
+                const savedEvent = await Event.findById(newEvent._id);
+                console.log('Verified saved start (UTC):', savedEvent.startDateTime);
+                console.log('Verified saved end (UTC):', savedEvent.endDateTime);
+                
                 logger.info(`Event CREATED: ${eventData.title} start at ${eventData.startDateTime}---${new Date()}`);
             } catch (error) {
                 console.error(`Error saving event ${eventData.title}:`, error);
