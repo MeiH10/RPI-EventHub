@@ -1,52 +1,48 @@
 const Event = require('../models/Event');
 const { getNextSequence } = require('../counter');
 const cron = require('node-cron');
-const{logger} = require('../services/eventsLogService');
+const { logger } = require('../services/eventsLogService');
 
-// get the data from events.rpi.edu
-
-// set the URL and options for the request
-// count is the total number of events to return
-// days is the number of days from today to return events for
-const setURLAndOptions = (count,days) => {
+/**
+ * Constructs the URL for fetching events from RPI's events feed
+ * @param {string} count - Number of events to return
+ * @param {number} days - Number of days from today to fetch events for
+ * @returns {string} - Complete URL for the events feed
+ */
+const setURLAndOptions = (count, days) => {
     return `https://events.rpi.edu/feeder/main/eventsFeed.do?f=y&sort=dtstart.utc:asc&fexpr=(categories.href!=%22/public/.bedework/categories/Ongoing%22)%20and%20(entity_type=%22event%22%20or%20entity_type=%22todo%22)&skinName=list-json&count=${count}&days=${days}`;
-}
+};
 
-// get the events from events.rpi.edu
-const getEvents = async (count,days) => {
-    const url = setURLAndOptions(count,days);
-    const response = await fetch(url);
-    const res = await response.json();
-    console.log("Successfully fetched events from events.rpi.edu");
-    return res;
-}
+/**
+ * Fetches events from RPI's events feed
+ * @param {string} count - Number of events to return
+ * @param {number} days - Number of days to fetch
+ * @returns {Promise<Object>} - JSON response containing events
+ */
+const getEvents = async (count, days) => {
+    try {
+        const url = setURLAndOptions(count, days);
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const res = await response.json();
+        console.log("Successfully fetched events from events.rpi.edu");
+        return res;
+    } catch (error) {
+        console.error("Error fetching events:", error);
+        throw error;
+    }
+};
 
-function extractEvents(jsonResponse) {
-    const eventsList = [];
-
-    const events = jsonResponse?.bwEventList?.events || [];
-    events.forEach(event => {
-
-        const newEvent = new Event({
-            title: event.summary || '', // Using 'summary' from the response as the title
-            description: event.description || '',
-            poster: 'RPI', // Defaulting to 'RPI' if not provided
-            startDateTime: formatDateTime(event.start?.datetime) || '', // Extracting start date from 'drupal'
-            endDateTime: formatDateTime(event.end?.datetime) || '', // Extracting end date from 'drupal'
-            location: event.location?.address || 'unknown', // Defaulting to 'unknown' if not provided
-            image: '', // No image provided in the response, set to empty string
-            tags: event.categories || [], // Extracting categories
-            club: 'RPI Official', // Defaulting to 'RPI' if not provided
-            rsvp: event.eventlink || '', // Extracting event link
-        });
-
-        eventsList.push(newEvent);
-    });
-
-    return eventsList;
-}
-
+/**
+ * Formats datetime string from RPI's format to ISO 8601 format
+ * @param {string} input - Datetime string in format YYYYMMDD[T]HHmmss
+ * @returns {string} - ISO 8601 formatted datetime string
+ */
 function formatDateTime(input) {
+    if (!input) return '';
+    
     const year = input.slice(0, 4);
     const month = input.slice(4, 6);
     const day = input.slice(6, 8);
@@ -57,37 +53,82 @@ function formatDateTime(input) {
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000+00:00`;
 }
 
+/**
+ * Extracts and formats events from the JSON response
+ * @param {Object} jsonResponse - Response from RPI's events feed
+ * @returns {Array} - Array of formatted event objects
+ */
+function extractEvents(jsonResponse) {
+    const eventsList = [];
+    const events = jsonResponse?.bwEventList?.events || [];
+
+    events.forEach(event => {
+        const newEvent = new Event({
+            title: event.summary || '',
+            description: event.description || '',
+            poster: 'RPI',
+            startDateTime: formatDateTime(event.start?.datetime),
+            endDateTime: formatDateTime(event.end?.datetime),
+            location: event.location?.address || 'unknown',
+            image: '',
+            tags: event.categories || [],
+            club: 'RPI Official',
+            rsvp: event.eventlink || '',
+            likes: 0
+        });
+        eventsList.push(newEvent);
+    });
+
+    return eventsList;
+}
+
+/**
+ * Fetches events from RPI's feed and updates the database
+ */
 async function fetchAndUpdateEvents() {
     try {
-        // Fetch events from events.rpi.edu 7 days from today
-        const count = "NaN";
-        const days = 7;
-
-        let events = await getEvents(count, days); // get events from events.rpi.edu
-        let eventsList = extractEvents(events);    // extract events from the response
+        const count = "NaN"; // Fetches all events
+        const days = 7; // Fetch events for next 7 days
+        
+        const events = await getEvents(count, days);
+        const eventsList = extractEvents(events);
 
         for (let eventData of eventsList) {
-            let existingEvent = await Event.findOne({ title: eventData.title, startDateTime: eventData.startDateTime, endDateTime: eventData.endDateTime });
+            // Check for duplicate events
+            const existingEvent = await Event.findOne({ 
+                title: eventData.title, 
+                startDateTime: eventData.startDateTime,
+                endDateTime: eventData.endDateTime 
+            });
 
             if (existingEvent) {
                 console.log(`Event already exists: ${eventData.title}`);
-            } else {
+                continue;
+            }
+
+            try {
                 const newEvent = new Event(eventData);
                 await newEvent.save();
                 console.log(`Inserted new event: ${eventData.title}`);
                 logger.info(`Event CREATED: ${eventData.title} start at ${eventData.startDateTime}---${new Date()}`);
+            } catch (error) {
+                console.error(`Error saving event ${eventData.title}:`, error);
             }
         }
     } catch (error) {
-        console.error('Error fetching and updating events:', error);
+        console.error('Error in fetchAndUpdateEvents:', error);
     }
 }
 
+// Initialize: Run once when server starts
+fetchAndUpdateEvents()
+    .then(() => console.log('Initial fetch and update complete'))
+    .catch(error => console.error('Error in initial fetch:', error));
 
-// Run when the server starts
-fetchAndUpdateEvents().then(r => console.log('Initial fetch and update complete'));
-// Run the fetchAndUpdateEvents function every day
+// Schedule: Run daily at midnight
 cron.schedule('0 0 * * *', fetchAndUpdateEvents);
 
-module.exports = {getEvents, extractEvents};
-
+module.exports = {
+    getEvents,
+    extractEvents
+};
