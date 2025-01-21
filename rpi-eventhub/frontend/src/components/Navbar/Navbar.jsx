@@ -37,156 +37,17 @@ const Navbar = () => {
 
   return (
     <>
-       <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ''}`}>
-        <div className={styles.navContainer}>
-          <div className={styles.navLeft}>
-            <NavLink to="/" className={styles.navLogo}>
-              <EventHubLogo2 className={styles.logoSvg} />
-            </NavLink>
-            <ul className={isDark ? styles.darkNavMenu : styles.navMenu}>
-              <li className={isDark ? styles.darkNavItem : styles.navItem}>
-                <NavLink
-                  to="/"
-                  className={`${getNavLinkClass("/")} ${isDark ? 'text-white' : ''}`}
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li className={isDark ? styles.darkNavItem : styles.navItem}>
-                <NavLink
-                  to="/all-events"
-                  className={`${getNavLinkClass("/all-events")} ${isDark ? 'text-white' : ''}`}
-                >
-                  Events
-                </NavLink>
-              </li>
-              <li className={isDark ? styles.darkNavItem : styles.navItem}>
-                <NavLink
-                  to="/about-us"
-                  className={`${getNavLinkClass("/about-us")} ${isDark ? 'text-white' : ''}`}
-                >
-                  About
-                </NavLink>
-              </li>
-              <li className={isDark ? styles.darkNavItem : styles.navItem}>
-                <NavLink
-                  to="/calendar"
-                  className={`${getNavLinkClass("/calendar")} ${isDark ? 'text-white' : ''}`}
-                >
-                  Calendar
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.navRight}>
-            <ul className={styles.navMenu2}>
-              <li className={styles.navItem}>
-                <CreateEventModal />
-              </li>
-              {isLoggedIn ? (
-                <div>
-                  <button
-                    onClick={handleLogout}
-                    className={`${styles.navItem} btn-danger btn`}
-                  >
-                    Sign Out
-                  </button>
-                  {!emailVerified && <VerifyModal />}
-                </div>
-              ) : (
-                <>
-                  <li className={styles.navItem}>
-                    <LoginModal />
-                  </li>
-                  <li className={styles.navItem}>
-                    <SignupModal />
-                  </li>
-
-                </>
-              )}
-                <li className={styles.navItem}>
-                  <DarkModeToggle />
-                </li>
-            </ul>
-          </div>
-          <div className={styles.navIcon} onClick={handleClick}>
-            {click ? (
-              <span className={styles.icon}>
-                <HamburgerMenuClose />
-              </span>
-            ) : (
-              <span className={styles.icon}>
-                <HamburgerMenuOpen />
-              </span>
-            )}
-          </div>
+      <nav className={`flex justify-between font-sans text-lg shadow-sm items-center fixed z-20 px-5 h-16 w-full bg-white`}>
+        <div className="flex justify-center items-center">
+        <EventHubLogo2 className="mr-7"/>
+          <NavLink to="/" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Home</NavLink> 
+          <NavLink to="/all-events" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Events</NavLink> 
+          <NavLink to="/about-us" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>About</NavLink> 
+          <NavLink to="/calendar" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Calendar</NavLink> 
         </div>
-        <div className={click ? `${styles.drawer} ${styles.open}` : styles.drawer}>
-          <ul className={styles.drawerMenu}>
-            <li className={styles.drawerItem}>
-              <NavLink
-                to="/"
-                className={getNavLinkClass("/")}
-                onClick={handleClick}
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className={styles.drawerItem}>
-              <NavLink
-                to="/all-events"
-                className={getNavLinkClass("/all-events")}
-                onClick={handleClick}
-              >
-                Events
-              </NavLink>
-            </li>
-            <li className={styles.drawerItem}>
-              <NavLink
-                to="/about-us"
-                className={getNavLinkClass("/about-us")}
-                onClick={handleClick}
-              >
-                About
-              </NavLink>
-            </li>
-            <li className={styles.drawerItem}>
-              <NavLink
-                to="/calendar"
-                className={getNavLinkClass("/calendar")}
-                onClick={handleClick}
-              >
-                Calendar
-              </NavLink>
-            </li>
-            <li className={styles.drawerItem}>
-              <CreateEventModal />
-            </li>
-            {isLoggedIn ? (
-              <div className={styles.drawerItem}>
-                <button
-                  onClick={handleLogout}
-                  className={`${styles.navItem} btn-danger btn`}
-                >
-                  Sign Out
-                </button>
-                {!emailVerified && <VerifyModal />}
-              </div>
-            ) : (
-              <>
-                <li className={styles.drawerItem}>
-                  <LoginModal />
-                </li>
-                <li className={styles.drawerItem}>
-                  <SignupModal />
-                </li>
-              </>
-            )}
-
-                <li className={styles.navItem}>
-                  <DarkModeToggle />
-                </li>
-          </ul>
+        <div>
+          <NavLink to="/" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Home</NavLink> 
+          <NavLink to="/all-events" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Events</NavLink> 
         </div>
       </nav>
     </>
