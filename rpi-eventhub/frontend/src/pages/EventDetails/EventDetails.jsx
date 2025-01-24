@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer';
@@ -6,6 +6,7 @@ import styles from './EventDetails.module.css';
 import { useEvents } from '../../context/EventsContext';
 import RsvpButton from '../../components/RSVPButton/RsvpButton';
 import { DateTime } from 'luxon';
+import ShareButtons from "./ShareButtons";
 
 const timeZone = 'America/New_York';
 
@@ -46,6 +47,7 @@ const EventDetails = () => {
     const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
 
+    const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
     return (
         <div className='outterContainer'>
             <Navbar />
@@ -65,6 +67,12 @@ const EventDetails = () => {
                             <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                         )}
                         {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
+                        <ShareButtons
+                            url={window.location.href}
+                            title={event.title}
+                            description={eventShareDescription}
+                            image={event.image}
+                        />
                     </div>
                 </div>
             </div>
