@@ -26,7 +26,6 @@ function AllEvents() {
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
     const [liked, setLiked] = useState([]) //Array of ids
-    const {isLoggedIn} = useAuth()
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const [selectedEventIds, setSelectedEventIds] = useState([]);
