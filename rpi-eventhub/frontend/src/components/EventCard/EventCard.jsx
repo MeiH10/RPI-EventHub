@@ -6,15 +6,30 @@ import { useEvents } from '../../context/EventsContext';
 import { DateTime } from 'luxon';
 import axios from "axios";
 import config from '../../config';
+import { toast } from 'react-toastify';
 import ReactGA from "react-ga4";
 
 const timeZone = 'America/New_York';
 
+
 const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit }) => {
+  const {isLoggedIn} = useAuth();
+  
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
 
   const [liked, setLiked] = useState(isLiked)
+  const [likes, setLikes] = useState(event.likes || 0);
+
+  useEffect(() => {
+    setLikes(event.likes || 0);
+  }, [event.likes]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setLiked(false)
+    } 
+  }, [isLoggedIn])
 
   const handleDelete = useCallback(async () => {
     try {
@@ -50,8 +65,6 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
     ? formatTimeAsEST(event.startDateTime)
     : 'Unavailable';
 
-  const [likes, setLikes] = useState(event.likes || 0);
-
   const handleLikeClick = () => {
     ReactGA.event({
       category: 'Like',
@@ -62,6 +75,9 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
   const handleLikeToggle = async () => {
     const newLikedState = !liked; // Toggle the liked state
     handleLikeClick();
+    if (!isLoggedIn) {
+      return toast.error("Please login to like this event.");
+    } 
     try {
       const token = localStorage.getItem("token");
 
@@ -82,6 +98,7 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
       }
     } catch (error) {
       console.error("Error while toggling like:", error);
+      toast.error("An unexpected error occurred.");
     }
   };
   return (

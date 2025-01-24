@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback,useContext } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
@@ -24,6 +26,7 @@ function AllEvents() {
     const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
     const [liked, setLiked] = useState([]) //Array of ids
+    const {isLoggedIn} = useAuth()
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const [selectedEventIds, setSelectedEventIds] = useState([]);
@@ -78,32 +81,42 @@ function AllEvents() {
         });
       };
 
+    const getLikedEvents = async () => {
+    // Fetch user information or check user data to determine if the event is liked
+    const token = localStorage.getItem("token");
+    if(token){
+        try {
+            const response = await axios.get(`${config.apiUrl}/events/like/status`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }                    
+            })
+            setLiked(response.data); // Update the liked state based on the server response
+        } catch (err) {
+            console.error("Error fetching like status:", err);
+        }
+    }
+    };  
     useEffect(() => {
         const fetchData = async () => {
             await fetchEvents();
-            await getLikedEvents()
             setIsLoading(false);
         };
-
-        const getLikedEvents = async () => {
-            // Fetch user information or check user data to determine if the event is liked
-            const token = localStorage.getItem("token");
-
-            try {
-                const response = await axios.get(`${config.apiUrl}/events/like/status`, {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    },
-                })
-                setLiked(response.data); // Update the liked state based on the server response
-            } catch (err) {
-                console.error("Error fetching like status:", err);
-            }
-          };
-
         getLikedEvents()
         fetchData();
     }, [fetchEvents]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true);
+            await fetchEvents();
+            if(isLoggedIn) {
+                await getLikedEvents();
+            }
+            setIsLoading(false);
+        };
+        fetchData();
+      }, [isLoggedIn, fetchEvents])
 
     useEffect(() => {
         setFilteredEvents(events);
@@ -231,6 +244,20 @@ function AllEvents() {
     return (
         <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
             <Navbar />
+            <ToastContainer 
+            position="top-right"
+            style={{ top: '70px' }}
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition: Bounce
+            />  
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>

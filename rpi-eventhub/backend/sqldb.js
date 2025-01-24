@@ -10,6 +10,42 @@ const { giveTags } = require('./useful_script/tagFunction');
 const { DateTime } = require('luxon');
 require('dotenv').config();
 
+// PostgreSQL client setup with SSL
+const pgClient = new Client({
+  host: process.env.PG_HOST,
+  port: process.env.PG_PORT || 5432,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+  database: process.env.PG_DATABASE || 'defaultdb',
+  ssl: { rejectUnauthorized: false }
+});
+
+pgClient.connect((err) => {
+  if (err) {
+    console.error('Error connecting to PostgreSQL with SSL:', err);
+  } else {
+    console.log('Connected to PostgreSQL with SSL!');
+  }
+});
+
+const lastSyncFilePath = path.join(__dirname, 'lastSyncTime.txt');
+
+// Load and save sync timestamp functions
+const loadLastSyncTime = () => {
+  if (fs.existsSync(lastSyncFilePath)) {
+    const timeStr = fs.readFileSync(lastSyncFilePath, 'utf-8');
+    return new Date(timeStr);
+  }
+  return new Date(0);
+};
+
+const saveLastSyncTime = (time) => {
+  fs.writeFileSync(lastSyncFilePath, time.toISOString());
+};
+
+let lastSyncTime = loadLastSyncTime();
+
+// Image upload handling
 const uploadImageToImgBB = async (imageUrl) => {
   try {
     const imageResponse = await axios.get(imageUrl, {
@@ -23,56 +59,18 @@ const uploadImageToImgBB = async (imageUrl) => {
     const response = await axios.post(
       `https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`,
       formData,
-      {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }
+      { headers: { 'Content-Type': 'multipart/form-data' } }
     );
 
     return response.data?.data?.url || null;
   } catch (error) {
     console.error(`Image upload failed for ${imageUrl}: ${error.message}`);
-    return null;
+    return '';
   }
 };
 
-const pgClient = new Client({
-  host: process.env.PG_HOST,
-  port: process.env.PG_PORT || 5432,
-  user: process.env.PG_USER,
-  password: process.env.PG_PASSWORD,
-  database: process.env.PG_DATABASE || 'defaultdb',
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-pgClient.connect((err) => {
-  if (err) {
-    console.error('Error connecting to PostgreSQL with SSL:', err);
-  } else {
-    console.log('Connected to PostgreSQL with SSL!');
-  }
-});
-
-const lastSyncFilePath = path.join(__dirname, 'lastSyncTime.txt');
-
-const loadLastSyncTime = () => {
-  if (fs.existsSync(lastSyncFilePath)) {
-    const timeStr = fs.readFileSync(lastSyncFilePath, 'utf-8');
-    return new Date(timeStr);
-  } else {
-    return new Date(0);
-  }
-};
-
-const saveLastSyncTime = (time) => {
-  fs.writeFileSync(lastSyncFilePath, time.toISOString());
-};
-
-let lastSyncTime = loadLastSyncTime();
-
+// Fetch new events from PostgreSQL
 const fetchNewEventsFromPostgres = async (lastSyncTime) => {
-  // Convert lastSyncTime to UTC for PostgreSQL comparison
   const utcLastSync = DateTime.fromJSDate(lastSyncTime)
     .toUTC()
     .toSQL();
@@ -89,6 +87,21 @@ const fetchNewEventsFromPostgres = async (lastSyncTime) => {
   }
 };
 
+// Debug helper for time comparisons
+const logTimeComparison = (eventName, existingEvent, newEvent) => {
+  console.log('\n=== Time Comparison ===');
+  console.log('Event:', eventName);
+  console.log('Existing Event Time (UTC):', existingEvent?.startDateTime);
+  console.log('New Event Time (UTC):', newEvent.startDateTime);
+  
+  if (existingEvent) {
+    const diffMinutes = Math.abs(existingEvent.startDateTime - newEvent.startDateTime) / (1000 * 60);
+    console.log('Time Difference (minutes):', diffMinutes);
+  }
+  console.log('========================');
+};
+
+// Transform PostgreSQL event data to MongoDB format
 const transformEventData = async (pgEvent) => {
   let poster = pgEvent.submitted_by || 'admin';
   if (poster.endsWith('@rpi.edu')) {
@@ -97,46 +110,40 @@ const transformEventData = async (pgEvent) => {
 
   const title = pgEvent.event_name || 'Untitled Event';
   const description = pgEvent.description || 'No description provided.';
-
   const tagsSet = giveTags(title, description);
   const tagsArray = Array.from(tagsSet);
+
+  // Convert EST to UTC using Luxon
+  const startDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
+    .toUTC()
+    .toJSDate();
+
+  let endDateTime;
+  if (pgEvent.event_end) {
+    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_end), { zone: 'America/New_York' })
+      .toUTC()
+      .toJSDate();
+  } else {
+    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
+      .plus({ hours: 3 })
+      .toUTC()
+      .toJSDate();
+  }
 
   let imageUrl = '';
   if (pgEvent.image_id) {
     const originalImageUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
     imageUrl = await uploadImageToImgBB(originalImageUrl);
-    
-    if (!imageUrl) {
-      return null;
-    }
   }
 
-  // Convert PostgreSQL timestamps to UTC ISO strings with explicit format logging
-  const startDateTime = DateTime.fromJSDate(pgEvent.event_start)
-    .toUTC()
-    .toISO();
-
-  // If no end time, use start time + 3 hours, maintaining UTC
-  const endDateTime = pgEvent.event_end 
-    ? DateTime.fromJSDate(pgEvent.event_end)
-        .toUTC()
-        .toISO()
-    : DateTime.fromJSDate(pgEvent.event_start)
-        .plus({ hours: 3 })
-        .toUTC()
-        .toISO();
-
-
   return {
-    title: title,
-    description: description,
+    title,
+    description,
     likes: pgEvent.likes || 0,
-    creationTimestamp: DateTime.fromJSDate(pgEvent.created)
-      .toUTC()
-      .toISO(),
-    poster: poster,
-    startDateTime: startDateTime,
-    endDateTime: endDateTime,
+    creationTimestamp: new Date(),
+    poster,
+    startDateTime,
+    endDateTime,
     location: pgEvent.location || 'None',
     image: imageUrl,
     tags: tagsArray,
@@ -145,84 +152,116 @@ const transformEventData = async (pgEvent) => {
   };
 };
 
+// Check for existing events with timezone-aware comparison
+const findExistingEvent = async (transformedEvent) => {
+  try {
+    const eventStartDateTime = DateTime.fromJSDate(transformedEvent.startDateTime)
+      .toUTC();
+    
+    // Try exact match first
+    const existingExact = await Event.findOne({
+      title: transformedEvent.title,
+      startDateTime: eventStartDateTime.toJSDate()
+    });
+
+    if (existingExact) {
+      return existingExact;
+    }
+
+    // Check for events within 5-minute window
+    const fiveMinutesBefore = eventStartDateTime.minus({ minutes: 5 }).toJSDate();
+    const fiveMinutesAfter = eventStartDateTime.plus({ minutes: 5 }).toJSDate();
+
+    return await Event.findOne({
+      title: transformedEvent.title,
+      startDateTime: {
+        $gte: fiveMinutesBefore,
+        $lte: fiveMinutesAfter
+      }
+    });
+  } catch (error) {
+    console.error('Error finding existing event:', error);
+    return null;
+  }
+};
+
+// Main sync function to process events
 const syncEvents = async () => {
   try {
-    console.log(`Starting sync. Last sync time (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
+    console.log('\n=== Starting Sync Process ===');
     const newEvents = await fetchNewEventsFromPostgres(lastSyncTime);
     
     if (newEvents.length > 0) {
-      console.log(`Fetched ${newEvents.length} new event(s) from PostgreSQL.`);
+      console.log(`Found ${newEvents.length} events to process`);
       let latestProcessedTime = lastSyncTime;
 
       for (const pgEvent of newEvents) {
         try {
-          console.log('\n=== Event Processing Start ===');
-          console.log(`Event Name: ${pgEvent.event_name}`);
-          
-          const utcStartTime = DateTime.fromJSDate(pgEvent.event_start).toUTC().toISO();
-          
-
-          const existingEvent = await Event.findOne({
-            title: pgEvent.event_name,
-            startDateTime: utcStartTime
-          });
+          const transformedEvent = await transformEventData(pgEvent);
+          const existingEvent = await findExistingEvent(transformedEvent);
 
           if (existingEvent) {
-            console.log('Found existing event with:');
-            console.log('Stored title:', existingEvent.title);
-            console.log('Stored startDateTime:', existingEvent.startDateTime);
-            console.log('Comparison result:', existingEvent.startDateTime === utcStartTime);
-            console.log('=== Skipping duplicate event ===');
-            continue;
-          }
-
-          const transformedEvent = await transformEventData(pgEvent);
-          if (transformedEvent) {
-            await Event.create(transformedEvent);
-            console.log('Created new event:');
-            console.log('Title:', transformedEvent.title);
-            console.log('Start time (UTC):', transformedEvent.startDateTime);
+            console.log(`✗ Skipped duplicate: "${transformedEvent.title}"`);
+            console.log(`  Existing time: ${existingEvent.startDateTime}`);
+            console.log(`  New time: ${transformedEvent.startDateTime}`);
+          } else {
+            try {
+              await Event.create(transformedEvent);
+              console.log(`✓ Created: "${transformedEvent.title}"`);
+              console.log(`  Time: ${transformedEvent.startDateTime}`);
+            } catch (createError) {
+              if (createError.code === 11000) {
+                console.log(`✗ Concurrent duplicate detected: "${transformedEvent.title}"`);
+              } else {
+                throw createError;
+              }
+            }
           }
 
           if (new Date(pgEvent.created) > latestProcessedTime) {
             latestProcessedTime = new Date(pgEvent.created);
           }
-          
-          console.log('=== Event Processing Complete ===');
         } catch (error) {
-          console.error(`Error processing event ${pgEvent.event_name}:`, error.message);
+          if (error.code !== 11000) {
+            console.error(`Error processing event ${pgEvent.event_name}:`, error.message);
+          }
         }
       }
 
       lastSyncTime = latestProcessedTime;
       saveLastSyncTime(lastSyncTime);
-      console.log(`Sync completed. Last sync time updated to (UTC): ${DateTime.fromJSDate(lastSyncTime).toUTC().toISO()}`);
     } else {
-      console.log('No new events to sync.');
+      console.log('No new events to sync');
     }
+    console.log('=== Sync Process Complete ===\n');
   } catch (error) {
     console.error('Error during sync process:', error);
   }
 };
 
+// Create unique compound index
 const createUniqueIndex = async () => {
   try {
-    await Event.collection.createIndex({ title: 1, startDateTime: 1 }, { unique: true });
+    await Event.collection.createIndex(
+      { title: 1, startDateTime: 1 },
+      { unique: true }
+    );
     console.log('Unique index on title and startDateTime created');
   } catch (error) {
     if (error.code === 11000) {
-      console.log('Unique index on title and startDateTime already exists');
+      console.log('Unique index already exists');
     } else {
       console.error('Error creating unique index:', error);
     }
   }
 };
 
+// Initialize sync process and schedule cron job
 const startSync = async () => {
   await createUniqueIndex();
   await syncEvents();
   cron.schedule('0 * * * *', async () => {
-    console.log('Starting scheduled sync process...');
+    console.log('\nStarting scheduled sync process...');
     await syncEvents();
   });
 };

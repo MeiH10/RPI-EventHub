@@ -12,6 +12,7 @@
   --clear-button-hover-bg-color: #555;
   --separator-bg-color: #ffffff;
 }
+
 [data-theme='dark'] {
   --sidebar-bg-color: rgba(0, 0, 0, 0.9);
   --border-color: #fff;
@@ -45,22 +46,24 @@
   overflow-y: scroll; /* Enable vertical scrolling */
   scrollbar-width: none; /* No scrollbar */
   white-space: nowrap; /* Prevent text from wrapping */
+
 }
 
 .filterSection {
   margin-bottom: 20px;
   position: relative;
+  width: 100%;
 }
 
 .filterSection h3 {
   margin-bottom: 10px;
-
+  font-size: 1.2em;
 }
 
 .filterBarTags {
   border-radius: 4px;
   padding: 0;
-  font-size: 1.3em;
+  font-size: 1.1em;
   color: var(--tags-label-color);
   cursor: pointer;
 }
@@ -94,11 +97,13 @@ label {
   min-width: 20px;
   width: 20px !important;
   height: 20px;
+  flex-shrink: 0;
   position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 3px 0;
 }
 
 /* create a custom checkbox by add a fake element*/
@@ -124,6 +129,16 @@ label {
   border-radius: 0;
   transform: rotate(-45deg);
   transition: all 0.3s ease-in-out;
+}
+
+label {
+  font-size: 23px;
+  color: var(--label-color);
+  word-wrap: break-word;
+  word-break: break-word;
+  flex: 1;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .clearButton {
@@ -163,23 +178,51 @@ label {
   .sidebar {
     position: fixed;
     top: 100px;
-    animation: slideDown 0.5s ease-out;
-    width: 60vw;
     right: 10px;
+    width: 280px;
+    height: 500px;
     opacity: 0;
-    max-height: 70vh;
     transform: translateX(110%);
-    transition: transform 0.3s ease, opacity 0.3s ease, max-width 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    padding: 15px;
   }
 
   .sidebar.open {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 
   .drawerToggleBtn {
     display: block;
     right: 10px;
+  }
+
+  .filterBarTags {
+    font-size: 1em;
+  }
+
+  .checkboxWrapper {
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+
+  label {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .sortContainer select {
+    margin-bottom: 8px;
+    padding: 4px;
+  }
+
+  .changeButton {
+    padding: 8px;
+  }
+
+  .clearButton {
+    margin-top: 15px;
+    padding: 8px 16px;
   }
 }
 
@@ -269,7 +312,7 @@ label {
   color: white;
 }
 
-.changeButton i{
+.changeButton i {
   font-size: 1rem;
   background-color: var(--clear-button-bg-color);
   color: var(--clear-button-text-color);
@@ -286,4 +329,3 @@ label {
   font-size: 1rem;
   color: var(--clear-button-text-color);
 }
-

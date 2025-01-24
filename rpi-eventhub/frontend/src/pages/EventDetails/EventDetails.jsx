@@ -183,7 +183,6 @@ const EventDetails = () => {
     const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
 
-
     return (
         <div className='outterContainer'>
             <Navbar />
