@@ -12,6 +12,107 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.j
 
 
 
+
+///////////////////File Upload////////////////////
+const handleFileChange = (e, setPreview, setFile, setError) => {
+  e.preventDefault();
+  const selectedFile = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+  const maxSizeInMB = 10;
+  const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+  // get the name of the file, trim .pdf or .jpg
+  let fileName = selectedFile.name;
+
+  if (selectedFile.numPages > 1) {
+    console.log("PDF file should only have 1 page.");
+    setError('PDF file should only have 1 page.');
+    setFile(null);
+    return;
+  }else if (selectedFile.size > maxSizeInBytes) {
+    console.log(`File size should not exceed ${maxSizeInMB}MB.`);
+    setError(`File size should not exceed ${maxSizeInMB}MB.`);
+    setFile(null);
+    return;
+  }
+
+  if (selectedFile.type === 'application/pdf') {
+    console.log("PDF file detected.");
+    const reader = new FileReader();
+    reader.onload = async function () {
+      const typedArray = new Uint8Array(this.result);
+
+      // Get the document
+      const pdf = await pdfjsLib.getDocument(typedArray).promise;
+      const numPages = pdf.numPages;
+      const imagesArray = [];
+
+      // Load and convert each page to image
+      for (let i = 1; i <= numPages; i++) {
+        const img = await getPage(i, pdf);
+        imagesArray.push(img);
+      }
+      //change the base64 image to file
+      setPreview(imagesArray[0]);
+      //change the file name to the .jpg file
+      fileName = fileName.replace(/\.[^/.]+$/, ".jpg");
+      const new_file = base64ToFile(imagesArray[0], fileName);
+      setFile(new_file);
+    };
+    reader.readAsArrayBuffer(selectedFile);
+  }
+  else if (selectedFile.type.match(/image.*/)) {
+    console.log("Image file detected.");
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      setPreview(e.target.result);
+      // change the base64 image to file
+      const new_file = base64ToFile(e.target.result, fileName);
+      setFile(new_file);
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+  //alert if the file is not an image or pdf
+  else {
+    console.log("File type not supported.");
+    alert('File type not supported. Please upload an image or PDF file.');
+    setFile(null);
+  }
+}
+
+const base64ToFile = (base64, filename) => {
+  const arr = base64.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+};
+
+const getPage = (num, pdf) => {
+  return new Promise((resolve, reject) => {
+    pdf.getPage(num).then(page => {
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement('canvas');
+      const canvasContext = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      page.render({
+        canvasContext,
+        viewport
+      }).promise.then(() => {
+        resolve(canvas.toDataURL());
+      }).catch(reject);
+    }).catch(reject);
+  });
+};
+
+
+
 function CreateEventModal() {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
@@ -48,6 +149,10 @@ function CreateEventModal() {
   const handleSuccessClose = () => {
     setSuccessOpen(false);
     setShow(false);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
   };
 
   useEffect(() => {
@@ -88,6 +193,7 @@ function CreateEventModal() {
     formData.append('description', description);
     formData.append('poster', username);
     formData.append('file', file); // Attach the file
+    console.log(file);
     formData.append('startDateTime', startDateTimeUTC);
     formData.append('endDateTime', endDateTimeUTC);
     formData.append('location', location);
@@ -128,108 +234,6 @@ function CreateEventModal() {
     }
   };
 
-
-  const handleFileChange = (e) => {
-    e.preventDefault();
-    const selectedFile = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-    const maxSizeInMB = 10;
-    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
-    // get the name of the file, trim .pdf or .jpg
-    let fileName = selectedFile.name;
-
-    if (selectedFile.numPages > 1) {
-      console.log("PDF file should only have 1 page.");
-      setError('PDF file should only have 1 page.');
-      setFile(null);
-      return;
-    } else if (selectedFile.size > maxSizeInBytes) {
-      console.log(`File size should not exceed ${maxSizeInMB}MB.`);
-      setError(`File size should not exceed ${maxSizeInMB}MB.`);
-      setFile(null);
-      return;
-    }
-
-    if (selectedFile.type === 'application/pdf') {
-      console.log("PDF file detected.");
-      const reader = new FileReader();
-      reader.onload = async function () {
-        const typedArray = new Uint8Array(this.result);
-
-        // Get the document
-        const pdf = await pdfjsLib.getDocument(typedArray).promise;
-        const numPages = pdf.numPages;
-        const imagesArray = [];
-
-        // Load and convert each page to image
-        for (let i = 1; i <= numPages; i++) {
-          const img = await getPage(i, pdf);
-          imagesArray.push(img);
-        }
-        //change the base64 image to file
-        setPreview(imagesArray[0]);
-        //change the file name to the .jpg file
-        fileName = fileName.replace(/\.[^/.]+$/, ".jpg");
-        const new_file = base64ToFile(imagesArray[0], fileName);
-        setFile(new_file);
-      };
-      reader.readAsArrayBuffer(selectedFile);
-    }
-    else if (selectedFile.type.match(/image.*/)) {
-      console.log("Image file detected.");
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        setPreview(e.target.result);
-        // change the base64 image to file
-        const new_file = base64ToFile(e.target.result, fileName);
-        setFile(new_file);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-    //alert if the file is not an image or pdf
-    else {
-      console.log("File type not supported.");
-      alert('File type not supported. Please upload an image or PDF file.');
-      setFile(null);
-    }
-  }
-
-  const base64ToFile = (base64, filename) => {
-    const arr = base64.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const getPage = (num, pdf) => {
-    return new Promise((resolve, reject) => {
-      pdf.getPage(num).then(page => {
-        const scale = 1.5;
-        const viewport = page.getViewport({ scale });
-
-        const canvas = document.createElement('canvas');
-        const canvasContext = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        page.render({
-          canvasContext,
-          viewport
-        }).promise.then(() => {
-          resolve(canvas.toDataURL());
-        }).catch(reject);
-      }).catch(reject);
-    });
-  };
-
   const handleAddTag = (tag) => {
     setTags(prevTags => {
       if (prevTags.includes(tag)) {
@@ -239,6 +243,10 @@ function CreateEventModal() {
       }
       return prevTags;
     });
+  };
+
+  const handleImageFile = (e) => {
+    handleFileChange(e, setPreview, setFile, setError);
   };
 
   return (
@@ -298,20 +306,20 @@ function CreateEventModal() {
 
             <Form.Label className={styles.formLabel}>File/Poster</Form.Label>
             <div
-              onDrop={handleFileChange}
-              onDragOver={handleDragOver}
-              className={styles.fileDropArea}
+                onDrop={handleImageFile}
+                onDragOver={handleDragOver}
+                className={styles.fileDropArea}
             >
               <Form.Group controlId="eventFile">
                 <Form.Label className={styles.fileFormLabel}>
                   Drag and drop a file here, or click to select a file
                 </Form.Label>
                 <Form.Control
-                  type="file"
-                  onChange={handleFileChange}
-                  accept='.jpg, .jpeg, .png, .webp, .pdf'
-                  className={styles.formControl}
-                  style={{ display: 'none' }}
+                    type="file"
+                    onChange={handleImageFile}
+                    accept='.jpg, .jpeg, .png, .webp, .pdf'
+                    className={styles.formControl}
+                    style={{display: 'none'}}
                 />
                 <Form.Label className={styles.fileFormLabelButton}>
                   Choose File
@@ -417,3 +425,4 @@ function CreateEventModal() {
 }
 
 export default CreateEventModal;
+export { handleFileChange };
