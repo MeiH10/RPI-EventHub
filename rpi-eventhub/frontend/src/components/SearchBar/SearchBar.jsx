@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchBarCSS from './SearchBar.module.css'; // Adjust the import path if necessary
-import { useEvents } from '../../context/EventsContext'; // Adjust the import path if necessary
+import SearchBarCSS from './SearchBar.module.css';
+import { useEvents } from '../../context/EventsContext';
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
+
 import cosineSimilarity from 'cosine-similarity';
 const SearchBar = () => {
   const navigate = useNavigate();
   const { events, fetchEvents } = useEvents();
   const [searchTerm, setSearchTerm] = useState('');
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
 
   useEffect(() => {
     fetchEvents();
@@ -64,9 +69,21 @@ const SearchBar = () => {
   };
 
   return (
-    <div className='flex flex-col md:flex-row h-12 w-full min-w-40 sm:min-w-96 justify-center items-center space-x-4 space-y-4 md:space-y-0'>
-      <input type='text' className='bg-white rounded shadow w-full h-full p-4' placeholder='Search for an event!' onChange={handleSearchInputChange} onKeyPress={handleKeyPress}></input>
-      <button className='bg-red-500 text-white font-bold py-2 px-4 rounded shadow-sm' onClick={handleSearchClick}>Search</button>
+    <div className={`${SearchBarCSS.searchBarContainer} flex flex-col md:flex-row w-full min-w-40 sm:min-w-96 justify-center items-center gap-2 p-2`}>
+      <input
+        type="text"
+        className={`${SearchBarCSS.searchInput} bg-white rounded shadow w-full p-2`}
+        placeholder="Search for an event!"
+        onChange={handleSearchInputChange}
+        onKeyDown={handleKeyPress}
+        style={{ color: isDark ? 'black' : 'inherit' }}
+      />
+      <button
+        className={`${SearchBarCSS.searchButton} bg-red-500 text-white font-bold py-2 px-4 rounded shadow-sm whitespace-nowrap`}
+        onClick={handleSearchClick}
+      >
+        Search
+      </button>
     </div>
   );
 };
