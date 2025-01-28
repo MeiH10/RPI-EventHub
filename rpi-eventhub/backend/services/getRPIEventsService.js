@@ -3,6 +3,7 @@ const { getNextSequence } = require('../counter');
 const cron = require('node-cron');
 const { logger } = require('../services/eventsLogService');
 const { DateTime } = require('luxon');
+const { giveTags } = require('../useful_script/tagFunction');
 
 const setURLAndOptions = (count, days) => {
     return `https://events.rpi.edu/feeder/main/eventsFeed.do?f=y&sort=dtstart.utc:asc&fexpr=(categories.href!=%22/public/.bedework/categories/Ongoing%22)%20and%20(entity_type=%22event%22%20or%20entity_type=%22todo%22)&skinName=list-json&count=${count}&days=${days}`;
@@ -68,6 +69,9 @@ function extractEvents(jsonResponse) {
         console.log('Formatted start (UTC):', startDateTime);
         console.log('Formatted end (UTC):', endDateTime);
 
+        const tagsSet = giveTags(event.summary, event.description);
+        const tagsArray = Array.from(tagsSet);
+
         const newEvent = new Event({
             title: event.summary || '',
             description: event.description || '',
@@ -76,7 +80,7 @@ function extractEvents(jsonResponse) {
             endDateTime,
             location: event.location?.address || 'unknown',
             image: '',
-            tags: event.categories || [],
+            tags: tagsArray,
             club: 'RPI Official',
             rsvp: event.eventlink || '',
             likes: 0
