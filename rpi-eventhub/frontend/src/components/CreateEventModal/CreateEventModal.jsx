@@ -328,8 +328,19 @@ function CreateEventModal() {
                   type="datetime-local"
                   required
                   value={startDateTime}
-                  onChange={(e) => setStartDateTime(e.target.value)}
+                  onChange={(e) => {
+                    const selectedDateTime = e.target.value;
+                    const currentDateTime = new Date().toISOString().slice(0, 16);
+                    if (selectedDateTime < currentDateTime) {
+                      setStartDateTime(currentDateTime); 
+                    } else if (endDateTime && selectedDateTime > endDateTime) {
+                      setStartDateTime(currentDateTime); 
+                    } else {
+                      setStartDateTime(selectedDateTime); 
+                    }
+                  }}
                   className={styles.formControl}
+                  min={new Date().toISOString().slice(0, 16)} 
               />
             </Form.Group>
 
@@ -340,8 +351,16 @@ function CreateEventModal() {
                   type="datetime-local"
                   required
                   value={endDateTime}
-                  onChange={(e) => setEndDateTime(e.target.value)}
+                  onChange={(e) => {
+                    const selectedEndTime = e.target.value;
+                    if (startDateTime && selectedEndTime < startDateTime) {
+                      setEndDateTime(startDateTime); 
+                    }else{
+                      setEndDateTime(selectedEndTime); 
+                    }
+                    }}
                   className={styles.formControl}
+                  min={startDateTime || new Date().toISOString().slice(0, 16)} 
               />
             </Form.Group>
 
