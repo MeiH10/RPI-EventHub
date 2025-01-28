@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactGA from 'react-ga4';
 import Modal from '../Modal/Modal';
+import styles from './RsvpButton.module.css';
 
 const isValidUrl = (string) => {
   try {
@@ -54,8 +55,9 @@ const RsvpButton = ({ rsvp }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="RSVP Information"
+        className={styles.rsvpModal}
       >
-        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{rsvp}</p>
+        <p className={`leading-relaxed`}>{rsvp}</p>
       </Modal>
     </>
   );
