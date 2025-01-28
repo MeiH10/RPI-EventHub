@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchBarCSS from './SearchBar.module.css'; // Adjust the import path if necessary
-import { useEvents } from '../../context/EventsContext'; // Adjust the import path if necessary
+import SearchBarCSS from './SearchBar.module.css';
+import { useEvents } from '../../context/EventsContext';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
