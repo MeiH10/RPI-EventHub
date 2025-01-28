@@ -411,6 +411,51 @@ app.delete('/events/:id', async (req, res) => {
   }
 });
 
+// update event route
+// Route to update an event
+app.post('/events-update/:id', upload, async (req, res) => {
+  const { id } = req.params;
+  const updatedEvent = req.body;
+  const file = req.file;
+
+  try {
+    let imageUrl = '';
+    if (file) {
+      let imageBuffer;
+      if (file.mimetype === 'application/pdf') {
+        imageBuffer = await convertPdfToImage(file.buffer);
+      } else {
+        imageBuffer = await compressImage(file.buffer);
+      }
+      const formData = new FormData();
+      formData.append('image', imageBuffer.toString('base64'));
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (response.data && response.data.data && response.data.data.url) {
+        imageUrl = response.data.data.url;
+      } else {
+        return res.status(500).json({ message: 'Image URL not created' });
+      }
+    }
+
+    if (imageUrl !== '') {
+        updatedEvent.image = imageUrl
+        delete updatedEvent.file;
+    } else {
+        delete updatedEvent.file;
+    }
+
+    const event = await Event.findByIdAndUpdate(id, updatedEvent, { new: true });
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.status(200).json("Event updated successfully");
+  } catch (error) {
+    res.status(400).json({ message: 'Failed to update event', error: error.message });
+  }
+});
+
 app.get('/verify-token', authenticate, (req, res) => {
   res.sendStatus(200);
 });

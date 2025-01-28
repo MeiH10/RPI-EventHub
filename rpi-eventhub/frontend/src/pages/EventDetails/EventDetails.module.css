@@ -1,4 +1,17 @@
 /* src/pages/EventDetails/EventDetails.module.css */
+
+:root{
+    --form-text-color: rgb(44,44,46);
+}
+
+[data-theme='dark']{
+    --form-text-color: rgb(229,229,234);
+}
+
+.form-label-text{
+    color: var(--form-text-color);
+}
+
 .container {
     display: flex;
     flex-wrap: wrap;
