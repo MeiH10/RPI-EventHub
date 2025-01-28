@@ -1,9 +1,10 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { sendEmail } = require('../services/emailService');
-const logger = require('../services/eventsLogService');
+const {logger} = require('../services/eventsLogService');
 const bcrypt = require('bcrypt');
-require('dotenv').config({ path: '.env' });
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const jwtSecret = process.env.JWT_SECRET;
 
 

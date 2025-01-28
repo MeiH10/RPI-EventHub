@@ -3,6 +3,9 @@ const { getNextSequence } = require('../counter');
 const cron = require('node-cron');
 const { logger } = require('../services/eventsLogService');
 const { DateTime } = require('luxon');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
 
 const setURLAndOptions = (count, days) => {
     return `https://events.rpi.edu/feeder/main/eventsFeed.do?f=y&sort=dtstart.utc:asc&fexpr=(categories.href!=%22/public/.bedework/categories/Ongoing%22)%20and%20(entity_type=%22event%22%20or%20entity_type=%22todo%22)&skinName=list-json&count=${count}&days=${days}`;

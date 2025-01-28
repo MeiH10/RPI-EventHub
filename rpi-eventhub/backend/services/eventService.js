@@ -1,7 +1,11 @@
 const Event = require('../models/Event');
 const axios = require('axios');
-const logger = require('../services/eventsLogService');
+const {logger} = require('../services/eventsLogService');
 const { compressImage, convertPdfToImage } = require('../useful_script/imageUtils');
+const path = require('path');
+const FormData = require('form-data');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
 
 
 /**
@@ -25,15 +29,23 @@ const createEvent = async (eventData, file) => {
         const formData = new FormData();
         formData.append('image', imageBuffer.toString('base64'));
 
-        const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        try {
+            const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
 
-        if (response.data && response.data.data && response.data.data.url) {
-            imageUrl = response.data.data.url;
-        } else {
-            throw new Error('Image upload failed or no URL returned');
+            const imageUrl = response?.data?.data?.url;
+
+            if (!imageUrl) {
+                throw new Error('ImgBB API Not Give Image URL');
+            }
+
+        } catch (error) {
+            console.log('Error Message:', error.response?.data)
+            console.log(process.env.ImgBB_API_KEY)
+            throw new Error(`Image Upload Fails: ${error.response?.data?.error?.message || error.message}`)
         }
+
     }
 
     // Check for duplicates
@@ -60,7 +72,6 @@ const createEvent = async (eventData, file) => {
 
 // LIKE LOGIC BELOW
 const User = require('../models/User');
-
 
 /**
  * Get event likes

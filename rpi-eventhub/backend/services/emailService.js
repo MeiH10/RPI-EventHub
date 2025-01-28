@@ -1,10 +1,9 @@
 // backend/services/emailService.js
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid');
-
 const path = require('path');
-
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
+const {logger} = require('../services/eventsLogService');
 
 
 const mailer = nodemailer.createTransport(sgTransport({

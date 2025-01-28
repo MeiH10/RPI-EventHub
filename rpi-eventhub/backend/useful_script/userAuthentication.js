@@ -38,3 +38,5 @@ const authenticateAndVerify = async (req, res, next) => {
         res.status(401).send({ message: 'Please authenticate.' });
     }
 };
+
+module.exports = { authenticate, authenticateAndVerify };
