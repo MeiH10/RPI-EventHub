@@ -31,6 +31,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+require('./archiveOldEventsCron');
+
 const upload = multer({
   limits: {
     fileSize: 10 * 1024 * 1024,
