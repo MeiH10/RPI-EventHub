@@ -24,14 +24,14 @@ function CreateEventModal() {
   const [preview, setPreview] = useState(null);
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState([]);
-  const [successOpen, setSuccessOpen] = useState(false); 
+  const [successOpen, setSuccessOpen] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const suggestedTags = [
-    'fun', 'games', 'board games', 'food', 'social', 'competition', 
+    'fun', 'games', 'board games', 'food', 'social', 'competition',
     'movie', 'anime', 'academic', 'professional', 'career', 'relax',
-    'outdoor', 'workshop', 'fundraiser', 'art', 'music', 'networking', 
+    'outdoor', 'workshop', 'fundraiser', 'art', 'music', 'networking',
     'sports', 'creative', 'tech', 'wellness', 'coding', 'other'
   ];
 
@@ -40,7 +40,7 @@ function CreateEventModal() {
 
   const handleClose = () => {
     setShow(false);
-    setError(''); 
+    setError('');
   };
 
   const handleShow = () => setShow(true);
@@ -70,13 +70,19 @@ function CreateEventModal() {
     }
     setError('');
     setIsSubmitting(true);
-  
+
+    if (startDateTime && endDateTime && new Date(endDateTime) < new Date(startDateTime)) {
+      setError('End time must be after start time');
+      setIsSubmitting(false);
+      return;
+    }
+
     // convert the start and end times to UTC before sending to the server
     const startDateTimeUTC = DateTime.fromISO(startDateTime, { zone: 'local' }).toUTC().toISO();
     const endDateTimeUTC = DateTime.fromISO(endDateTime, { zone: 'local' }).toUTC().toISO();
-  
+
     const uniqueTags = tags.join(', ');
-  
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -88,27 +94,27 @@ function CreateEventModal() {
     formData.append('tags', uniqueTags);
     formData.append('club', club);
     formData.append('rsvp', rsvp);
-  
+
     if (!title || !description || !startDateTime || !endDateTime || !location || !club) {
       setError('Please fill in all fields. Tags, File, and RSVP Link are optional!');
       setIsSubmitting(false);
       return;
     }
-  
+
     if (!isLoggedIn || !emailVerified) {
       setError('Only verified users can create an event. Please login or get verified.');
       setIsSubmitting(false);
       return;
     }
-  
+
     try {
       const { data } = await axios.post(`${config.apiUrl}/events`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      addEvent(data); 
-      setSuccessOpen(true); 
+      addEvent(data);
+      setSuccessOpen(true);
     } catch (error) {
       console.error('Failed to create event:', error);
       // Duplicate error catch
@@ -120,7 +126,7 @@ function CreateEventModal() {
     } finally {
       setIsSubmitting(false);
     }
-  };  
+  };
 
 
   const handleFileChange = (e) => {
@@ -136,7 +142,7 @@ function CreateEventModal() {
       setError('PDF file should only have 1 page.');
       setFile(null);
       return;
-    }else if (selectedFile.size > maxSizeInBytes) {
+    } else if (selectedFile.size > maxSizeInBytes) {
       console.log(`File size should not exceed ${maxSizeInMB}MB.`);
       setError(`File size should not exceed ${maxSizeInMB}MB.`);
       setFile(null);
@@ -169,21 +175,21 @@ function CreateEventModal() {
       reader.readAsArrayBuffer(selectedFile);
     }
     else if (selectedFile.type.match(/image.*/)) {
-        console.log("Image file detected.");
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          setPreview(e.target.result);
-          // change the base64 image to file
-          const new_file = base64ToFile(e.target.result, fileName);
-          setFile(new_file);
-        };
-        reader.readAsDataURL(selectedFile);
+      console.log("Image file detected.");
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        setPreview(e.target.result);
+        // change the base64 image to file
+        const new_file = base64ToFile(e.target.result, fileName);
+        setFile(new_file);
+      };
+      reader.readAsDataURL(selectedFile);
     }
     //alert if the file is not an image or pdf
     else {
-        console.log("File type not supported.");
-        alert('File type not supported. Please upload an image or PDF file.');
-        setFile(null);
+      console.log("File type not supported.");
+      alert('File type not supported. Please upload an image or PDF file.');
+      setFile(null);
     }
   }
 
@@ -257,12 +263,12 @@ function CreateEventModal() {
             <Form.Group controlId="eventTitle" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Title <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                  type="text"
-                  required
-                  placeholder="Enter event title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className={styles.formControl}
+                type="text"
+                required
+                placeholder="Enter event title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
 
@@ -282,30 +288,30 @@ function CreateEventModal() {
             <Form.Group controlId="eventClub">
               <Form.Label>Club/Organization <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                  type="text"
-                  placeholder="Enter club or organization name"
-                  value={club}
-                  onChange={(e) => setClub(e.target.value)}
-                  className={styles.formControl}
+                type="text"
+                placeholder="Enter club or organization name"
+                value={club}
+                onChange={(e) => setClub(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
 
             <Form.Label className={styles.formLabel}>File/Poster</Form.Label>
             <div
-                onDrop={handleFileChange}
-                onDragOver={handleDragOver}
-                className={styles.fileDropArea}
+              onDrop={handleFileChange}
+              onDragOver={handleDragOver}
+              className={styles.fileDropArea}
             >
               <Form.Group controlId="eventFile">
                 <Form.Label className={styles.fileFormLabel}>
                   Drag and drop a file here, or click to select a file
                 </Form.Label>
                 <Form.Control
-                    type="file"
-                    onChange={handleFileChange}
-                    accept='.jpg, .jpeg, .png, .webp, .pdf'
-                    className={styles.formControl}
-                    style={{display: 'none'}}
+                  type="file"
+                  onChange={handleFileChange}
+                  accept='.jpg, .jpeg, .png, .webp, .pdf'
+                  className={styles.formControl}
+                  style={{ display: 'none' }}
                 />
                 <Form.Label className={styles.fileFormLabelButton}>
                   Choose File
@@ -313,77 +319,69 @@ function CreateEventModal() {
               </Form.Group>
             </div>
             {
-                preview && (
-                    <div>
-                      <img src={preview} alt={"upload-file"} style={{maxWidth: '100%', height: 'auto'}}/>
-                    </div>
-                )
+              preview && (
+                <div>
+                  <img src={preview} alt={"upload-file"} style={{ maxWidth: '100%', height: 'auto' }} />
+                </div>
+              )
             }
 
 
             <Form.Group controlId="eventStartDateTime" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Start Date & Time <span
-                  className='text-danger'>*</span></Form.Label>
+                className='text-danger'>*</span></Form.Label>
               <Form.Control
-                  type="datetime-local"
-                  required
-                  value={startDateTime}
-                  onChange={(e) => {
-                    const selectedDateTime = e.target.value;
-                    const currentDateTime = new Date().toISOString().slice(0, 16);
-                    if (selectedDateTime < currentDateTime) {
-                      setStartDateTime(currentDateTime); 
-                    } else if (endDateTime && selectedDateTime > endDateTime) {
-                      setStartDateTime(currentDateTime); 
-                    } else {
-                      setStartDateTime(selectedDateTime); 
-                    }
-                  }}
-                  className={styles.formControl}
-                  min={new Date().toISOString().slice(0, 16)} 
+                type="datetime-local"
+                required
+                value={startDateTime}
+                onChange={(e) => {
+                  const selectedDateTime = e.target.value;
+                  const currentDateTime = new Date().toISOString().slice(0, 16);
+                  if (selectedDateTime < currentDateTime) {
+                    setStartDateTime(currentDateTime);
+                  } else if (endDateTime && selectedDateTime > endDateTime) {
+                    setStartDateTime(currentDateTime);
+                  } else {
+                    setStartDateTime(selectedDateTime);
+                  }
+                }}
+                className={styles.formControl}
+                min={new Date().toISOString().slice(0, 16)}
               />
             </Form.Group>
 
             <Form.Group controlId="eventEndDateTime" className={styles.formGroup}>
-              <Form.Label className={styles.formLabel}>End Date & Time <span
-                  className='text-danger'>*</span></Form.Label>
+              <Form.Label className={styles.formLabel}>End Date & Time <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                  type="datetime-local"
-                  required
-                  value={endDateTime}
-                  onChange={(e) => {
-                    const selectedEndTime = e.target.value;
-                    if (startDateTime && selectedEndTime < startDateTime) {
-                      setEndDateTime(startDateTime); 
-                    }else{
-                      setEndDateTime(selectedEndTime); 
-                    }
-                    }}
-                  className={styles.formControl}
-                  min={startDateTime || new Date().toISOString().slice(0, 16)} 
+                type="datetime-local"
+                required
+                value={endDateTime}
+                onChange={(e) => setEndDateTime(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
+
 
             <Form.Group controlId="eventLocation" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>Location <span className='text-danger'>*</span></Form.Label>
               <Form.Control
-                  type="text"
-                  required
-                  placeholder="Event location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className={styles.formControl}
+                type="text"
+                required
+                placeholder="Event location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
 
             <Form.Group controlId="eventRSVP" className={styles.formGroup}>
               <Form.Label className={styles.formLabel}>RSVP Link</Form.Label>
               <Form.Control
-                  type="text"
-                  placeholder="Enter RSVP Link"
-                  value={rsvp}
-                  onChange={(e) => setRSVP(e.target.value)}
-                  className={styles.formControl}
+                type="text"
+                placeholder="Enter RSVP Link"
+                value={rsvp}
+                onChange={(e) => setRSVP(e.target.value)}
+                className={styles.formControl}
               />
             </Form.Group>
 
