@@ -83,7 +83,7 @@ function LoginModal() {
                     type="email"
                     placeholder="Enter email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
+                    onChange={(e) => setEmail(e.target.value)}
                     className={styles.formControl}
                 />
               </div>

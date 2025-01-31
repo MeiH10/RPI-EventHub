@@ -147,7 +147,7 @@ function SignupModal() {
                       type="email"
                       placeholder="Enter email"
                       value={email}
-                      onChange={(e) => { setEmail(e.target.value.toLowerCase()); setEmailTouched(true); }}
+                      onChange={(e) => { setEmail(e.target.value); setEmailTouched(true); }}
                       className={styles.formControl}
                   />
                 </div>
