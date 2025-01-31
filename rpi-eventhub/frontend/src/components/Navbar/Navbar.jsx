@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
+import { HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
+import EventHubLogo2 from "../../assets/EventHubLogo2.png";
 import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
@@ -41,7 +42,7 @@ const Navbar = () => {
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
-              <EventHubLogo2 className={styles.logoSvg} />
+              <img src={EventHubLogo2} alt="Event Hub Logo" className={styles.logoSvg} />
             </NavLink>
             <ul className={isDark ? styles.darkNavMenu : styles.navMenu}>
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
