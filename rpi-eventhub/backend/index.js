@@ -133,7 +133,7 @@ const authenticateAndVerify = async (req, res, next) => {
 app.post('/signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use." });
     }
@@ -211,7 +211,7 @@ app.post('/verify-email', async (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return res.status(401).json({ message: "Email does not exist" });
     }
