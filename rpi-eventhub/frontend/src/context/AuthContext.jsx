@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [emailVerified, setEmailVerified] = useState(false);
     const [username, setUsername] = useState('');
-
+    const [manageMode, setManageMode] = useState(false);
 
     const login = (token) => {
         localStorage.setItem('token', token);
@@ -53,7 +53,15 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, emailVerified, login, logout, username }}>
+        <AuthContext.Provider value={{ 
+            isLoggedIn, 
+            emailVerified, 
+            login, 
+            logout, 
+            username,
+            manageMode,
+            setManageMode
+        }}>
             {children}
         </AuthContext.Provider>
     );
