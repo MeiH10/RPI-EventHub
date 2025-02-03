@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const User = require('../models/User');
 const axios = require('axios');
 const {logger} = require('../services/eventsLogService');
 const { compressImage, convertPdfToImage } = require('../useful_script/imageUtils');
@@ -34,10 +35,10 @@ const createEvent = async (eventData, file) => {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
-            const imageUrl = response?.data?.data?.url;
-
-            if (!imageUrl) {
-                throw new Error('ImgBB API Not Give Image URL');
+            if (response.data && response.data.data && response.data.data.url) {
+                imageUrl = response.data.data.url;
+            } else {
+                throw new Error('Image upload failed or no URL returned');
             }
 
         } catch (error) {
@@ -68,10 +69,6 @@ const createEvent = async (eventData, file) => {
     return event;
 };
 
-
-
-// LIKE LOGIC BELOW
-const User = require('../models/User');
 
 /**
  * Get event likes
@@ -122,7 +119,7 @@ const toggleEventLike = async (eventId, userId, liked) => {
     } else if (!liked && hasLiked) {
         event.likes -= 1;
         user.likedEvents = user.likedEvents.filter(
-            (eventId) => eventId.toString() !== eventId
+            (id) => id.toString() !== eventId
         );
     }
 

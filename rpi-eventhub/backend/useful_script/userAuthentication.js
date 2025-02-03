@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+require('dotenv').config();
+const jwtSecret = process.env.JWT_SECRET;
 
 const authenticate = async (req, res, next) => {
     try {
@@ -14,7 +16,7 @@ const authenticate = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).send({ message: 'Please authenticate.' });
+        res.status(401).send({ message: 'Please authenticate.' , error: error.message });
     }
 };
 
@@ -35,7 +37,7 @@ const authenticateAndVerify = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).send({ message: 'Please authenticate.' });
+        res.status(401).send({ message: 'Please authenticate.' , error: error.message });
     }
 };
 

@@ -56,7 +56,7 @@ app.delete('/events/:id', removeEvent);
 app.get('/proxy/image/:eventId', getProxyImage);
 app.get('/events/:id/like', fetchEventLikes);
 app.get('/events/like/status', authenticate, fetchUserLikedEvents);
-app.post('/events/:id/like', authenticate, handleEventLike);
+app.post('/events/:id/like', authenticateAndVerify, handleEventLike);
 //#endregion
 
 //#region LOG ROUTES
