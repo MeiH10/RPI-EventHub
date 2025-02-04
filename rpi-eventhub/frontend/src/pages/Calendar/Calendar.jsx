@@ -246,9 +246,9 @@ const CalendarPage = () => {
                                                 <Link to={`/events/${event._id}`} key={event._id} className="block">
                                                     <div className={`p-1 border ${isDark ? 'border-gray-600 hover:bg-gray-600' : 'border-black hover:bg-gray-50'}`}>
                                                         <div className="space-y-1">
-                                                            <h3 className={`text-[10px] md:text-xs font-bold truncate ${isDark ? 'text-white' : 'text-black'}`}>
+                                                            <h4 className={`text-[10px] md:text-xs font-bold truncate ${isDark ? 'text-white' : 'text-black'}`}>
                                                                 {event.title}
-                                                            </h3>
+                                                            </h4>
                                                             <p className={`text-[10px] md:text-xs ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                                                                 {formatTime(event.startDateTime)}
                                                             </p>
