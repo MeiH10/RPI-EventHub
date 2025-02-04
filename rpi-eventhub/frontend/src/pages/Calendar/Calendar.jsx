@@ -130,12 +130,19 @@ const CalendarPage = () => {
     const captureCalendarScreenshot = async () => {
         await loadAllImages();
         if (calendarRef.current) {
+            // Remove the truncate class to prevent text cropping
+            const titles = calendarRef.current.querySelectorAll('.truncate');
+            titles.forEach(title => title.classList.remove('truncate'));
+
             html2canvas(calendarRef.current, { useCORS: true }).then((canvas) => {
                 const imgData = canvas.toDataURL("image/png");
                 const link = document.createElement("a");
                 link.href = imgData;
                 link.download = `calendar-${weekRange.start}-to-${weekRange.end}.png`;
                 link.click();
+
+                // Add the truncate class back after capturing the screenshot
+                titles.forEach(title => title.classList.add('truncate'));
             });
         }
     };
