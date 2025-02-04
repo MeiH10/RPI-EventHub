@@ -8,7 +8,7 @@ const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const { verifyToken } = require('./controller/userAuthController');
-const {upload} = require('./useful_script/uploadUtils')
+const {upload} = require('./useful_script/uploadUtils');
 const {authenticate, authenticateAndVerify} = require('./useful_script/userAuthentication');
 //#endregion
 
