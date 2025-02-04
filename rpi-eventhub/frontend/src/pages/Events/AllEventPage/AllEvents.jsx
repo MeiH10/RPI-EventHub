@@ -205,7 +205,6 @@ function AllEvents() {
             });
             filtered = uniqueTimeFiltered;
         }
-        
         setFilteredEvents(filtered);
     }, [events, manageMode, isLoggedIn, username, filters]);
 
@@ -262,6 +261,10 @@ function AllEvents() {
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}
+                        sortMethod={sortMethod}
+                        setSortOrder={setSortOrder}
+                        sortOrder={sortOrder}
+                        setSortMethod={setSortMethod}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
                         changeView={changeView}
