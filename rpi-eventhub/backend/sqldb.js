@@ -10,7 +10,6 @@ const { giveTags } = require('./useful_script/tagFunction');
 const { DateTime } = require('luxon');
 require('dotenv').config();
 
-// PostgreSQL client setup with SSL
 const pgClient = new Client({
   host: process.env.PG_HOST,
   port: process.env.PG_PORT || 5432,
@@ -30,7 +29,6 @@ pgClient.connect((err) => {
 
 const lastSyncFilePath = path.join(__dirname, 'lastSyncTime.txt');
 
-// Load and save sync timestamp functions
 const loadLastSyncTime = () => {
   if (fs.existsSync(lastSyncFilePath)) {
     const timeStr = fs.readFileSync(lastSyncFilePath, 'utf-8');
@@ -45,7 +43,6 @@ const saveLastSyncTime = (time) => {
 
 let lastSyncTime = loadLastSyncTime();
 
-// Image upload handling
 const uploadImageToImgBB = async (imageUrl) => {
   try {
     const imageResponse = await axios.get(imageUrl, {
@@ -69,15 +66,9 @@ const uploadImageToImgBB = async (imageUrl) => {
   }
 };
 
-// Fetch new events from PostgreSQL
 const fetchNewEventsFromPostgres = async (lastSyncTime) => {
-  // Convert lastSyncTime to UTC for PostgreSQL comparison
-  const utcLastSync = DateTime.fromJSDate(lastSyncTime)
-    .toUTC()
-    .toSQL();
-
   const query = 'SELECT * FROM events WHERE created > $1::timestamp ORDER BY created ASC, event_id ASC';
-  const values = [utcLastSync];
+  const values = [lastSyncTime.toISOString()];
   
   try {
     const res = await pgClient.query(query, values);
@@ -95,26 +86,14 @@ const transformEventData = async (pgEvent) => {
   }
 
   console.log(`\nProcessing event: ${pgEvent.event_name}`);
-  console.log('Original EST time:', pgEvent.event_start);
+  console.log('Raw PostgreSQL time:', pgEvent.event_hub_start);
 
-  // PostgreSQL time is in EST, convert to UTC
-  const startDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
-    .toUTC()
-    .toJSDate();
+  const startDateTime = new Date(pgEvent.event_hub_start + 'Z');
+  const endDateTime = pgEvent.event_hub_end ? 
+    new Date(pgEvent.event_hub_end + 'Z') : 
+    new Date(startDateTime.getTime() + 3 * 60 * 60 * 1000);
 
-  console.log('Converted UTC time:', startDateTime);
-
-  let endDateTime;
-  if (pgEvent.event_end) {
-    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_end), { zone: 'America/New_York' })
-      .toUTC()
-      .toJSDate();
-  } else {
-    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
-      .plus({ hours: 3 })
-      .toUTC()
-      .toJSDate();
-  }
+  console.log('MongoDB time:', startDateTime.toISOString());
 
   let imageUrl = '';
   if (pgEvent.image_id) {
@@ -137,8 +116,6 @@ const transformEventData = async (pgEvent) => {
     rsvp: pgEvent.more_info || '',
   };
 };
-
-// Check for existing events with timezone-aware comparison
 const findExistingEvent = async (transformedEvent) => {
   try {
     console.log('Searching for existing event with:', {
@@ -158,7 +135,7 @@ const findExistingEvent = async (transformedEvent) => {
     }
 
     // 5-minute window search
-    const startDate = new Date(transformedEvent.startDateTime);
+    const startDate = transformedEvent.startDateTime;
     const fiveMinutesBefore = new Date(startDate.getTime() - 5 * 60000);
     const fiveMinutesAfter = new Date(startDate.getTime() + 5 * 60000);
 
@@ -197,13 +174,13 @@ const syncEvents = async () => {
 
           if (existingEvent) {
             console.log(`✗ Skipped duplicate: "${transformedEvent.title}"`);
-            console.log(`  Existing time (UTC): ${existingEvent.startDateTime}`);
-            console.log(`  New time (UTC): ${transformedEvent.startDateTime}`);
+            console.log(`  Existing time: ${existingEvent.startDateTime}`);
+            console.log(`  New time: ${transformedEvent.startDateTime}`);
           } else {
             try {
               await Event.create(transformedEvent);
               console.log(`✓ Created: "${transformedEvent.title}"`);
-              console.log(`  Time (UTC): ${transformedEvent.startDateTime}`);
+              console.log(`  Time: ${transformedEvent.startDateTime}`);
             } catch (createError) {
               if (createError.code === 11000) {
                 console.log(`✗ Concurrent duplicate: "${transformedEvent.title}"`);
