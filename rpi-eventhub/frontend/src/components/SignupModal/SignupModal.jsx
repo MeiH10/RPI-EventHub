@@ -206,7 +206,7 @@ function SignupModal() {
                       onChange={(e) => setAcceptedTerms(e.target.checked)}
                   />
                   <label htmlFor={'termsOfService'} className={styles.formLabel} style={{marginLeft:"10px"}}>
-                    I agree to the <a href="/terms" target="_blank" rel="noreferrer">Terms of Service.</a>
+                    I agree to the <a href="/terms-of-service" target="_blank" rel="noreferrer">Terms of Service.</a>
                   </label>
                 </div>
               </Form.Group>
