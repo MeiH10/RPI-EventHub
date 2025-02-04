@@ -1,206 +1,206 @@
-:root {
-    --background-color: white;
-    --text-color: black;
-    --border-color: black;
-    --day-background: #f9f9f9;
-    --day-text-color: black;
-}
+/*:root {*/
+/*    --background-color: white;*/
+/*    --text-color: black;*/
+/*    --border-color: black;*/
+/*    --day-background: #f9f9f9;*/
+/*    --day-text-color: black;*/
+/*}*/
 
-[data-theme='dark'] {
-    --background-color: rgb(89, 86, 86);
-    --text-color: white;
-    --border-color: white;
-    --day-background: #333;
-    --day-text-color: white;
-}
+/*[data-theme='dark'] {*/
+/*    --background-color: rgb(89, 86, 86);*/
+/*    --text-color: white;*/
+/*    --border-color: white;*/
+/*    --day-background: #333;*/
+/*    --day-text-color: white;*/
+/*}*/
 
-.outterContainer {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /*container covers the full viewport height */
-}
+/*.outterContainer {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    min-height: 100vh; !*container covers the full viewport height *!*/
+/*}*/
 
-.container-fluid.containerFluid {
-    flex: 1;
-    padding-top: 80px;
-}
+/*.container-fluid.containerFluid {*/
+/*    flex: 1;*/
+/*    padding-top: 80px;*/
+/*}*/
 
-.weeklyEvents {
-    margin-top: 40px;
-    border: 3px solid var(--border-color);
-    padding: 10px;
-    background: var(--background-color);
-    color: var(--text-color);
-    width: 90%;
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    margin: 0 auto; /* Center the calendar */
-    margin-bottom: 40px;
-}
+/*.weeklyEvents {*/
+/*    margin-top: 40px;*/
+/*    border: 3px solid var(--border-color);*/
+/*    padding: 10px;*/
+/*    background: var(--background-color);*/
+/*    color: var(--text-color);*/
+/*    width: 90%;*/
+/*    text-align: center;*/
+/*    position: relative;*/
+/*    z-index: 2;*/
+/*    margin: 0 auto; !* Center the calendar *!*/
+/*    margin-bottom: 40px;*/
+/*}*/
 
-@media only screen and (min-width: 1024px) {
-    .weeklyEvents {
-        margin-top: 80px;
-    }
-}
+/*@media only screen and (min-width: 1024px) {*/
+/*    .weeklyEvents {*/
+/*        margin-top: 80px;*/
+/*    }*/
+/*}*/
 
-.weeklyEvents h2 {
-    margin-bottom: 10px;
-    font-size: 36px;
-    color: var(--text-color);
-}
+/*.weeklyEvents h2 {*/
+/*    margin-bottom: 10px;*/
+/*    font-size: 36px;*/
+/*    color: var(--text-color);*/
+/*}*/
 
-.week {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0px;
-    text-align: center;
-}
+/*.week {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(7, 1fr);*/
+/*    gap: 0px;*/
+/*    text-align: center;*/
+/*}*/
 
-.day {
-    padding: 5px;
-    border: 0.1px solid var(--border-color);
-    border-radius: 0px;
-    background: var(--day-background);
-    color: var(--day-text-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+/*.day {*/
+/*    padding: 5px;*/
+/*    border: 0.1px solid var(--border-color);*/
+/*    border-radius: 0px;*/
+/*    background: var(--day-background);*/
+/*    color: var(--day-text-color);*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*}*/
 
-.day h3 {
-    font-size: 18px;
-    border-bottom: 1px solid var(--border-color);
-    width: 107.5%;
-    padding-bottom: 2.5px;
-}
+/*.day h3 {*/
+/*    font-size: 18px;*/
+/*    border-bottom: 1px solid var(--border-color);*/
+/*    width: 107.5%;*/
+/*    padding-bottom: 2.5px;*/
+/*}*/
 
-.day p {
-    margin: 600px 0 0;
-    font-size: 17.5px;
-}
+/*.day p {*/
+/*    margin: 600px 0 0;*/
+/*    font-size: 17.5px;*/
+/*}*/
 
-.eventContainer {
-    padding: 5px;
-    background-color: transparent;
-    text-align: center;
-    margin-bottom: 20px;
-    border: solid black 0.5px;
-}
+/*.eventContainer {*/
+/*    padding: 5px;*/
+/*    background-color: transparent;*/
+/*    text-align: center;*/
+/*    margin-bottom: 20px;*/
+/*    border: solid black 0.5px;*/
+/*}*/
 
-.eventImage {
-    max-width: 90%;
-    height: auto;
-    margin: 10px 0;
-}
-.noImagePlaceholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px; 
-    background-color: #f0f0f0; 
-    color: #333; 
-    border: 1px solid #ccc; 
-    border-radius: 5px;
-    font-size: 14px; 
-}
-.eventTitle {
-    font-family: 'Italiana', serif;
-    font-size: larger;
-    color: var(--text-color);
-    font-weight: bold;
-    margin-top: 5px;
-    margin-bottom: 0;
-}
+/*.eventImage {*/
+/*    max-width: 90%;*/
+/*    height: auto;*/
+/*    margin: 10px 0;*/
+/*}*/
+/*.noImagePlaceholder {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    height: 200px; */
+/*    background-color: #f0f0f0; */
+/*    color: #333; */
+/*    border: 1px solid #ccc; */
+/*    border-radius: 5px;*/
+/*    font-size: 14px; */
+/*}*/
+/*.eventTitle {*/
+/*    font-family: 'Italiana', serif;*/
+/*    font-size: larger;*/
+/*    color: var(--text-color);*/
+/*    font-weight: bold;*/
+/*    margin-top: 5px;*/
+/*    margin-bottom: 0;*/
+/*}*/
 
-.navigationButtons {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
+/*.navigationButtons {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    margin-bottom: 20px;*/
+/*}*/
 
-.navigationButtons button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #c2405e;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
+/*.navigationButtons button {*/
+/*    margin: 0 10px;*/
+/*    padding: 10px 20px;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    background-color: #c2405e;*/
+/*    color: white;*/
+/*    font-size: 16px;*/
+/*    cursor: pointer;*/
+/*}*/
 
-.navigationButtons button:hover {
-    background-color: #c2405e;
-}
+/*.navigationButtons button:hover {*/
+/*    background-color: #c2405e;*/
+/*}*/
 
-/* Adjustments for mobile view */
-@media only screen and (max-width: 600px) {
-    .content h1 {
-        font-size: 50px;
-    }
+/*!* Adjustments for mobile view *!*/
+/*@media only screen and (max-width: 600px) {*/
+/*    .content h1 {*/
+/*        font-size: 50px;*/
+/*    }*/
 
-    .content h5 {
-        font-size: 21px;
-    }
+/*    .content h5 {*/
+/*        font-size: 21px;*/
+/*    }*/
 
-    .content p {
-        font-size: 10.5px;
-    }
+/*    .content p {*/
+/*        font-size: 10.5px;*/
+/*    }*/
 
-    .weeklyEvents {
-        width: 100%;
-        padding: 5px;
-        margin-bottom: 20px;
-    }
+/*    .weeklyEvents {*/
+/*        width: 100%;*/
+/*        padding: 5px;*/
+/*        margin-bottom: 20px;*/
+/*    }*/
 
-    .weeklyEvents h2 {
-        font-size: 18px;
-    }
+/*    .weeklyEvents h2 {*/
+/*        font-size: 18px;*/
+/*    }*/
 
-    .week {
-        grid-template-columns: repeat(3, 1fr);
-    }
+/*    .week {*/
+/*        grid-template-columns: repeat(3, 1fr);*/
+/*    }*/
 
-    .day h3 {
-        font-size: 14px;
-    }
+/*    .day h3 {*/
+/*        font-size: 14px;*/
+/*    }*/
 
-    .day p {
-        margin: 300px 0 0;
-        font-size: 8.75px;
-    }
+/*    .day p {*/
+/*        margin: 300px 0 0;*/
+/*        font-size: 8.75px;*/
+/*    }*/
 
-    .eventContainer {
-        padding: 3px;
-        
-    }
+/*    .eventContainer {*/
+/*        padding: 3px;*/
+/*        */
+/*    }*/
 
-    .eventImagePlaceholder {
-        width: 90%;  
-        height: auto;
-        margin: 10px 0;
-        background-color: #f0f0f0;  
-        border: 1px solid #ccc;  
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #666;  
-        font-size: 14px;
-        padding: 20px;  
-    }
-    .eventImage {
-        max-width: 100%;
-    }
+/*    .eventImagePlaceholder {*/
+/*        width: 90%;  */
+/*        height: auto;*/
+/*        margin: 10px 0;*/
+/*        background-color: #f0f0f0;  */
+/*        border: 1px solid #ccc;  */
+/*        text-align: center;*/
+/*        display: flex;*/
+/*        align-items: center;*/
+/*        justify-content: center;*/
+/*        color: #666;  */
+/*        font-size: 14px;*/
+/*        padding: 20px;  */
+/*    }*/
+/*    .eventImage {*/
+/*        max-width: 100%;*/
+/*    }*/
 
-    .eventTitle {
-        font-size: medium;
-    }
+/*    .eventTitle {*/
+/*        font-size: medium;*/
+/*    }*/
 
-    .navigationButtons button {
-        padding: 5px 10px;
-        font-size: 12px;
-    }
-}
+/*    .navigationButtons button {*/
+/*        padding: 5px 10px;*/
+/*        font-size: 12px;*/
+/*    }*/
+/*}*/

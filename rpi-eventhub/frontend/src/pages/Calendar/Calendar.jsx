@@ -130,12 +130,19 @@ const CalendarPage = () => {
     const captureCalendarScreenshot = async () => {
         await loadAllImages();
         if (calendarRef.current) {
+            // Remove the truncate class to prevent text cropping
+            const titles = calendarRef.current.querySelectorAll('.truncate');
+            titles.forEach(title => title.classList.remove('truncate'));
+
             html2canvas(calendarRef.current, { useCORS: true }).then((canvas) => {
                 const imgData = canvas.toDataURL("image/png");
                 const link = document.createElement("a");
                 link.href = imgData;
                 link.download = `calendar-${weekRange.start}-to-${weekRange.end}.png`;
                 link.click();
+
+                // Add the truncate class back after capturing the screenshot
+                titles.forEach(title => title.classList.add('truncate'));
             });
         }
     };
@@ -239,9 +246,9 @@ const CalendarPage = () => {
                                                 <Link to={`/events/${event._id}`} key={event._id} className="block">
                                                     <div className={`p-1 border ${isDark ? 'border-gray-600 hover:bg-gray-600' : 'border-black hover:bg-gray-50'}`}>
                                                         <div className="space-y-1">
-                                                            <h4 className={`text-[10px] md:text-xs font-bold truncate ${isDark ? 'text-white' : 'text-black'}`}>
+                                                            <h3 className={`text-[10px] md:text-xs font-bold truncate ${isDark ? 'text-white' : 'text-black'}`}>
                                                                 {event.title}
-                                                            </h4>
+                                                            </h3>
                                                             <p className={`text-[10px] md:text-xs ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                                                                 {formatTime(event.startDateTime)}
                                                             </p>
