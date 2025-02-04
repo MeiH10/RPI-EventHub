@@ -16,16 +16,14 @@ const pgClient = new Client({
   user: process.env.PG_USER,
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE || 'defaultdb',
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: { rejectUnauthorized: false }
 });
 
 pgClient.connect((err) => {
   if (err) {
-    console.error('Error connecting to PostgreSQL with SSL:', err);
+    console.error('Error connecting to PostgreSQL:', err);
   } else {
-    console.log('Connected to PostgreSQL with SSL!');
+    console.log('Connected to PostgreSQL');
   }
 });
 
@@ -35,9 +33,8 @@ const loadLastSyncTime = () => {
   if (fs.existsSync(lastSyncFilePath)) {
     const timeStr = fs.readFileSync(lastSyncFilePath, 'utf-8');
     return new Date(timeStr);
-  } else {
-    return new Date(0);
   }
+  return new Date(0);
 };
 
 const saveLastSyncTime = (time) => {
@@ -59,9 +56,7 @@ const uploadImageToImgBB = async (imageUrl) => {
     const response = await axios.post(
       `https://api.imgbb.com/1/upload?key=${process.env.ImgBB_API_KEY}`,
       formData,
-      {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }
+      { headers: { 'Content-Type': 'multipart/form-data' } }
     );
 
     return response.data?.data?.url || null;
@@ -72,33 +67,16 @@ const uploadImageToImgBB = async (imageUrl) => {
 };
 
 const fetchNewEventsFromPostgres = async (lastSyncTime) => {
-  const utcLastSync = DateTime.fromJSDate(lastSyncTime)
-    .toUTC()
-    .toSQL();
-
   const query = 'SELECT * FROM events WHERE created > $1::timestamp ORDER BY created ASC, event_id ASC';
-  const values = [utcLastSync];
+  const values = [lastSyncTime.toISOString()];
   
   try {
     const res = await pgClient.query(query, values);
     return res.rows;
   } catch (error) {
-    console.error('Error fetching new events from PostgreSQL:', error);
+    console.error('Error fetching from PostgreSQL:', error);
     throw error;
   }
-};
-
-const logTimeComparison = (eventName, existingEvent, newEvent) => {
-  console.log('\n=== Time Comparison ===');
-  console.log('Event:', eventName);
-  console.log('Existing Event Time (UTC):', existingEvent?.startDateTime);
-  console.log('New Event Time (UTC):', newEvent.startDateTime);
-  
-  if (existingEvent) {
-    const diffMinutes = Math.abs(existingEvent.startDateTime - newEvent.startDateTime) / (1000 * 60);
-    console.log('Time Difference (minutes):', diffMinutes);
-  }
-  console.log('========================');
 };
 
 const transformEventData = async (pgEvent) => {
@@ -107,31 +85,16 @@ const transformEventData = async (pgEvent) => {
     poster = poster.slice(0, -('@rpi.edu'.length));
   }
 
-  const title = pgEvent.event_name || 'Untitled Event';
-  const description = pgEvent.description || 'No description provided.';
-  const tagsSet = giveTags(title, description);
-  const tagsArray = Array.from(tagsSet);
+  console.log(`\nProcessing event: ${pgEvent.event_name}`);
+  console.log('Raw PostgreSQL time:', pgEvent.event_hub_start);
 
-  // Convert times to UTC Date objects
-  const startDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
-    .toUTC()
-    .toJSDate();  // Convert to JavaScript Date object
+  const startDateTime = new Date(pgEvent.event_hub_start + 'Z');
+  const endDateTime = pgEvent.event_hub_end ? 
+    new Date(pgEvent.event_hub_end + 'Z') : 
+    new Date(startDateTime.getTime() + 3 * 60 * 60 * 1000);
 
-  let endDateTime;
-  if (pgEvent.event_end) {
-    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_end), { zone: 'America/New_York' })
-      .toUTC()
-      .toJSDate();
-  } else {
-    endDateTime = DateTime.fromJSDate(new Date(pgEvent.event_start), { zone: 'America/New_York' })
-      .plus({ hours: 3 })
-      .toUTC()
-      .toJSDate();
-  }
+  console.log('MongoDB time:', startDateTime.toISOString());
 
-  const creationTimestamp = new Date();  // Use current time as creation timestamp
-
-  // Handle image upload after time conversion
   let imageUrl = '';
   if (pgEvent.image_id) {
     const originalImageUrl = `${process.env.IMAGE_PREFIX}${pgEvent.image_id}`;
@@ -139,49 +102,56 @@ const transformEventData = async (pgEvent) => {
   }
 
   return {
-    title,
-    description,
+    title: pgEvent.event_name || 'Untitled Event',
+    description: pgEvent.description || 'No description provided.',
     likes: pgEvent.likes || 0,
-    creationTimestamp,
+    creationTimestamp: new Date(),
     poster,
     startDateTime,
     endDateTime,
     location: pgEvent.location || 'None',
     image: imageUrl,
-    tags: tagsArray,
+    tags: Array.from(giveTags(pgEvent.event_name || '', pgEvent.description || '')),
     club: pgEvent.club_name || 'Unknown Club',
     rsvp: pgEvent.more_info || '',
   };
 };
-
 const findExistingEvent = async (transformedEvent) => {
   try {
-    // Convert ISO string to Date for comparison if it's not already a Date
-    const eventStartDate = transformedEvent.startDateTime instanceof Date 
-      ? transformedEvent.startDateTime 
-      : new Date(transformedEvent.startDateTime);
-    
-    // First try exact match
+    console.log('Searching for existing event with:', {
+      title: transformedEvent.title,
+      startDateTime: transformedEvent.startDateTime
+    });
+
+    // Times are already in UTC, direct comparison
     const existingExact = await Event.findOne({
       title: transformedEvent.title,
-      startDateTime: eventStartDate
+      startDateTime: transformedEvent.startDateTime
     });
 
     if (existingExact) {
+      console.log('Found exact match:', existingExact.startDateTime);
       return existingExact;
     }
 
-    // If no exact match, look for events within 5 minutes
-    const fiveMinutesBefore = new Date(eventStartDate.getTime() - 5 * 60000);
-    const fiveMinutesAfter = new Date(eventStartDate.getTime() + 5 * 60000);
+    // 5-minute window search
+    const startDate = transformedEvent.startDateTime;
+    const fiveMinutesBefore = new Date(startDate.getTime() - 5 * 60000);
+    const fiveMinutesAfter = new Date(startDate.getTime() + 5 * 60000);
 
-    return await Event.findOne({
+    const existingWithinWindow = await Event.findOne({
       title: transformedEvent.title,
       startDateTime: {
         $gte: fiveMinutesBefore,
         $lte: fiveMinutesAfter
       }
     });
+
+    if (existingWithinWindow) {
+      console.log('Found match within 5-minute window:', existingWithinWindow.startDateTime);
+    }
+
+    return existingWithinWindow;
   } catch (error) {
     console.error('Error finding existing event:', error);
     return null;
@@ -213,7 +183,7 @@ const syncEvents = async () => {
               console.log(`  Time: ${transformedEvent.startDateTime}`);
             } catch (createError) {
               if (createError.code === 11000) {
-                console.log(`✗ Concurrent duplicate detected: "${transformedEvent.title}"`);
+                console.log(`✗ Concurrent duplicate: "${transformedEvent.title}"`);
               } else {
                 throw createError;
               }
@@ -247,12 +217,12 @@ const createUniqueIndex = async () => {
       { title: 1, startDateTime: 1 },
       { unique: true }
     );
-    console.log('Unique index on title and startDateTime created');
+    console.log('Created/verified unique index');
   } catch (error) {
     if (error.code === 11000) {
-      console.log('Unique index already exists');
+      console.log('Unique index exists');
     } else {
-      console.error('Error creating unique index:', error);
+      console.error('Error creating index:', error);
     }
   }
 };
@@ -260,9 +230,8 @@ const createUniqueIndex = async () => {
 const startSync = async () => {
   await createUniqueIndex();
   await syncEvents();
-  // Run sync every houw
-  cron.schedule('0 * * * *', async () => {
-    console.log('\nStarting scheduled sync process...');
+  cron.schedule('* * * * *', async () => {
+    console.log('\nStarting scheduled sync...');
     await syncEvents();
   });
 };
@@ -273,15 +242,13 @@ const startSynchronization = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
-    console.log('MongoDB Connected for synchronization');
+    console.log('MongoDB Connected');
     await startSync();
   } catch (error) {
-    console.error('Error connecting to MongoDB for synchronization:', error);
+    console.error('MongoDB connection error:', error);
   }
 };
 
 startSynchronization();
 
-module.exports = {
-  startSync,
-};
+module.exports = { startSync };

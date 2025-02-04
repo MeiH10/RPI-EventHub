@@ -11,8 +11,10 @@ import ReactGA from "react-ga4";
 
 const timeZone = 'America/New_York';
 
-const EventCard = ({ event, isLiked, onSelect, selected }) => {
-  const {isLoggedIn} = useAuth()
+
+const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit }) => {
+  const {isLoggedIn} = useAuth();
+  
   const { username } = useAuth();
   const { deleteEvent } = useEvents();
 
@@ -146,6 +148,19 @@ const EventCard = ({ event, isLiked, onSelect, selected }) => {
           <span>{liked ? "❤️" : "🤍"}</span>
         </button>
       </div>
+      {showEditButton && (
+        <div className={styles.editControls}>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
+            className="btn btn-warning"
+          >
+            Edit Event
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
+import { HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
+import EventHubLogo2 from "../../assets/EventHubLogo2.png";
 import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
@@ -15,7 +16,7 @@ import { useColorScheme } from '../../hooks/useColorScheme';
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout } = useAuth();
+  const { isLoggedIn, emailVerified, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
@@ -33,6 +34,10 @@ const Navbar = () => {
     return location.pathname === path
       ? `${styles.navLinks} ${styles.active}`
       : styles.navLinks;
+  };
+
+  const toggleManageMode = () => {
+    setManageMode(!manageMode);
   };
 
   return (
