@@ -28,25 +28,22 @@
 }
 
 .sidebar {
-  max-width: fit-content;
+  width: 300px;
+  height: 600px;
   padding: 20px;
   background-color: var(--sidebar-bg-color);
-  border: 2px solid var(--border-color);
-  border-radius: 10px;
-  margin-top: 25px;
+  border: 2px solid var(--border-color); 
+  border-radius: 10px; 
+  margin-top: 25px; 
   box-sizing: border-box;
   margin-bottom: auto;
   position: sticky;
   top: 14rem;
-  width: 25vw;
-  max-height: 70vh;
   z-index: 1000;
   font-family: "Hevletica Neue", sans-serif;
-  overflow-x: scroll; /* Enable horizontal scrolling */
-  overflow-y: scroll; /* Enable vertical scrolling */
-  scrollbar-width: none; /* No scrollbar */
-  white-space: nowrap; /* Prevent text from wrapping */
-
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
 }
 
 .filterSection {
@@ -76,17 +73,10 @@
 
 .checkboxWrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
-  flex-wrap: nowrap; /* Prevent wrapping */
-  white-space: nowrap; /* Prevent text from wrapping */
-  max-width: fit-content;
-}
-
-label {
-  font-size: 23px; 
-  margin-left: 10px; 
-  color: var(--label-color);
+  width: 100%;
+  gap: 10px;
 }
 
 .filterSection input[type="checkbox"] {
@@ -95,7 +85,7 @@ label {
   appearance: none;
   /* create a custom checkbox */
   min-width: 20px;
-  width: 20px !important;
+  width: 20px;
   height: 20px;
   flex-shrink: 0;
   position: relative;
@@ -316,14 +306,8 @@ label {
   font-size: 1rem;
   background-color: var(--clear-button-bg-color);
   color: var(--clear-button-text-color);
-  Margin-right: 10px;
-  transition: background-color 0.3s ease;
+  margin-right: 10px;
 }
-
-.changeButton:hover i{
-  background-color: var(--clear-button-hover-bg-color);
-}
-
 
 .changeButton span{
   font-size: 1rem;
