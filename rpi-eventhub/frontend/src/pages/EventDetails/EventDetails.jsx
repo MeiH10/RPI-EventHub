@@ -8,7 +8,7 @@ import RsvpButton from '../../components/RSVPButton/RsvpButton';
 import { DateTime } from 'luxon';
 import { useAuth } from "../../context/AuthContext";
 import * as pdfjsLib from "pdfjs-dist";
-import {handleFileChange} from "../../components/CreateEventModal/CreateEventModal";
+import { handleFileChange } from "../../components/CreateEventModal/CreateEventModal";
 import axios from "axios";
 import config from "../../config";
 import ShareButtons from "./ShareButtons";
@@ -172,7 +172,7 @@ const EventDetails = () => {
 
     function handleImageFileChange(e) {
         toggleImage();
-        handleFileChange (e, setPreview, setFile, setError);
+        handleFileChange(e, setPreview, setFile, setError);
     }
 
     function toggleImage() {
@@ -191,7 +191,7 @@ const EventDetails = () => {
         <div className='outterContainer'>
             <Navbar />
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
-                { isEditing&&isOwner ?
+                {isEditing && isOwner ?
                     (
                         <div className="mx-auto p-4 md:p-6 max-w-screen-lg min-h-screen">
                             {error && <div className="text-red-500 text-center">{error}</div>}
@@ -222,7 +222,7 @@ const EventDetails = () => {
                                         </div>
                                         <div className="mt-4">
                                             <img
-                                                src={showOriginalImage? event.image : preview || 'https://via.placeholder.com/300x450'}
+                                                src={showOriginalImage ? event.image : preview || 'https://via.placeholder.com/300x450'}
                                                 alt="Preview"
                                                 className="w-full h-auto rounded-md shadow-md"
                                             />
@@ -356,7 +356,7 @@ const EventDetails = () => {
                     (
                         <div className={styles.container}>
                             <div className={styles.eventPoster}>
-                                <img src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title}/>
+                                <img src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title} />
                             </div>
                             <div className={styles.eventInfo}>
                                 <h1>{event.title}</h1>
@@ -369,7 +369,7 @@ const EventDetails = () => {
                                 {event.tags && event.tags.length > 0 && (
                                     <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                                 )}
-                                {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp}/>}
+                                {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
                                 <ShareButtons
                                     url={window.location.href}
                                     title={event.title}
@@ -381,7 +381,7 @@ const EventDetails = () => {
                     )
                 }
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };
