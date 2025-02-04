@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback,useContext } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './AllEvents.module.css';
 import Navbar from "../../../components/Navbar/Navbar";
 import FilterBar from '../../../components/FilterBar/FilterBar';
@@ -13,6 +15,7 @@ import config from '../../../config';
 import EventsListCard from '../../../pages/Events/AllEventList/EventsList';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useColorScheme } from '../../../hooks/useColorScheme';
+import { useAuth } from '../../../context/AuthContext';
 
 function AllEvents() {
     const { events, fetchEvents, deleteEvent } = useEvents();
@@ -26,6 +29,13 @@ function AllEvents() {
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const [selectedEventIds, setSelectedEventIds] = useState([]);
+    const { isLoggedIn, username, manageMode } = useAuth();
+    const [filters, setFilters] = useState({
+        tags: [],
+        time: ['upcoming', 'today'],
+        sortMethod: 'likes',
+        sortOrder: 'desc'
+    });
 
     const generateICS = () => {
         // Filter events by selected event IDs
@@ -70,32 +80,42 @@ function AllEvents() {
         });
       };
 
+    const getLikedEvents = async () => {
+    // Fetch user information or check user data to determine if the event is liked
+    const token = localStorage.getItem("token");
+    if(token){
+        try {
+            const response = await axios.get(`${config.apiUrl}/events/like/status`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }                    
+            })
+            setLiked(response.data); // Update the liked state based on the server response
+        } catch (err) {
+            console.error("Error fetching like status:", err);
+        }
+    }
+    };  
     useEffect(() => {
         const fetchData = async () => {
             await fetchEvents();
-            await getLikedEvents()
             setIsLoading(false);
         };
-
-        const getLikedEvents = async () => {
-            // Fetch user information or check user data to determine if the event is liked
-            const token = localStorage.getItem("token");
-
-            try {
-                const response = await axios.get(`${config.apiUrl}/events/like/status`, {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    },
-                })
-                setLiked(response.data); // Update the liked state based on the server response
-            } catch (err) {
-                console.error("Error fetching like status:", err);
-            }
-          };
-
         getLikedEvents()
         fetchData();
     }, [fetchEvents]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true);
+            await fetchEvents();
+            if(isLoggedIn) {
+                await getLikedEvents();
+            }
+            setIsLoading(false);
+        };
+        fetchData();
+      }, [isLoggedIn, fetchEvents])
 
     useEffect(() => {
         setFilteredEvents(events);
@@ -104,13 +124,50 @@ function AllEvents() {
         setAvailableTags(tags);
     }, [events]);
 
-    const handleFilterChange = useCallback((filters) => {
+    const handleFilterChange = useCallback((newFilters) => {
+        setFilters(newFilters);
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchEvents();
+            setIsLoading(false);
+        };
+
+        fetchData();
+    }, [fetchEvents]);
+
+    useEffect(() => {
+        const filteredEvents = events.filter(event => new Date(event.startDateTime) >= new Date());
+        const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
+        setAvailableTags(tags);
+
+        const defaultFilters = {
+            tags: [],
+            time: ['upcoming', 'today'],
+            sortMethod: 'likes',
+            sortOrder: 'desc'
+        };
+
+        handleFilterChange(defaultFilters);
+    }, [events, handleFilterChange]);
+
+    useEffect(() => {
         let filtered = events;
+        
+        // Apply manage mode filter
+        if (manageMode && isLoggedIn) {
+            filtered = events.filter(event => event.poster === username);
+        }
+
+        // Apply tag filters
         if (filters.tags.length > 0) {
             filtered = filtered.filter(event =>
                 filters.tags.every(tag => event.tags?.includes(tag))
             );
         }
+
+        // Apply time filters
         const now = new Date();
         if (filters.time.length > 0) {
             let timeFiltered = [];
@@ -136,6 +193,8 @@ function AllEvents() {
                     })
                 );
             }
+            
+            // Remove duplicates
             const uniqueTimeFiltered = [];
             const seenIds = new Set();
             timeFiltered.forEach(event => {
@@ -146,34 +205,8 @@ function AllEvents() {
             });
             filtered = uniqueTimeFiltered;
         }
-        setSortMethod(filters.sortMethod);
-        setSortOrder(filters.sortOrder);
         setFilteredEvents(filtered);
-    }, [events]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetchEvents();
-            setIsLoading(false);
-        };
-
-        fetchData();
-    }, [fetchEvents]);
-
-    useEffect(() => {
-        const filteredEvents = events.filter(event => new Date(event.startDateTime) >= new Date());
-        const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
-        setAvailableTags(tags);
-
-        const defaultFilters = {
-            tags: [],
-            time: ['upcoming', 'today'],
-            sortMethod: 'likes',
-            sortOrder: 'desc'
-        };
-
-        handleFilterChange(defaultFilters);
-    }, [events, handleFilterChange]);
+    }, [events, manageMode, isLoggedIn, username, filters]);
 
     const sortEvents = (events, sortMethod, sortOrder) => {
         const sortedEvents = [...events];
@@ -201,14 +234,37 @@ function AllEvents() {
         setIsListView(!isListView);
     }
 
+    const handleEditEvent = async (eventId) => {
+        // Implement your edit logic here
+        // You might want to open a modal or navigate to an edit page
+    };
+
     return (
         <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
             <Navbar />
+            <ToastContainer 
+            position="top-right"
+            style={{ top: '70px' }}
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition: Bounce
+            />  
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}
+                        sortMethod={sortMethod}
+                        setSortOrder={setSortOrder}
+                        sortOrder={sortOrder}
+                        setSortMethod={setSortMethod}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
                         changeView={changeView}
@@ -251,7 +307,15 @@ function AllEvents() {
                                     columnClassName={styles.myMasonryGridColumn}
                                 >
                                     {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
-                                        <EventCard selected={selectedEventIds.includes(event._id)} isLiked={liked.includes(event._id.toString())} key={event._id} event={event} onSelect={() => handleSelect(event._id)}/>
+                                        <EventCard 
+                                            key={event._id} 
+                                            event={event}
+                                            selected={selectedEventIds.includes(event._id)}
+                                            isLiked={liked.includes(event._id.toString())}
+                                            onSelect={() => handleSelect(event._id)}
+                                            showEditButton={manageMode && event.creator === username}
+                                            onEdit={() => handleEditEvent(event._id)}
+                                        />
                                     ))}
                                 </Masonry>
                                 </>

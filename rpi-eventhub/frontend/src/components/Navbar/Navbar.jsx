@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import { EventHubLogo2, HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
+import { HamburgerMenuClose, HamburgerMenuOpen } from "./Icons";
+import EventHubLogo2 from "../../assets/EventHubLogo2.png";
 import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
@@ -15,7 +16,7 @@ import { useColorScheme } from '../../hooks/useColorScheme';
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout } = useAuth();
+  const { isLoggedIn, emailVerified, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
@@ -35,15 +36,19 @@ const Navbar = () => {
       : styles.navLinks;
   };
 
+  const toggleManageMode = () => {
+    setManageMode(!manageMode);
+  };
+
   return (
     <>
        <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ''}`}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
-              <EventHubLogo2 className={styles.logoSvg} />
+              <img src={EventHubLogo2} alt="Event Hub Logo" className={styles.logoSvg} />
             </NavLink>
-            <ul className={isDark ? styles.darkNavMenu : styles.navMenu}>
+            <ul className={styles.navMenu}>
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/"
@@ -83,6 +88,16 @@ const Navbar = () => {
               <li className={styles.navItem}>
                 <CreateEventModal />
               </li>
+              {isLoggedIn && (
+                <li className={styles.navItem}>
+                  <button
+                    onClick={toggleManageMode}
+                    className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                  >
+                    {manageMode ? 'Managing' : 'Manage Events'}
+                  </button>
+                </li>
+              )}
               {isLoggedIn ? (
                 <div>
                   <button

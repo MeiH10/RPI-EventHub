@@ -18,7 +18,7 @@ const Home = () => {
     <div className={`min-h-screen h-full max-w-screen flex flex-col ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
     <Navbar />
     <div className='flex flex-col lg:flex-row h-full w-full justify-between mt-16'>
-      <div className='flex flex-col justify-between h-full w-full p-16 space-y-12'>
+      <div className='flex flex-col justify-between h-full w-full p-10 md:p-14 lg:p-16 space-y-12'>
           <div className='flex md:flex-col justify-center'>
             <h1 id="red" className='text-4xl text-center md:text-6xl block md:hidden'>All RPI events, {' '} in one place</h1>
             <h1 id="red" className='text-4xl md:text-6xl hidden md:block'>All RPI events,</h1>
@@ -26,7 +26,7 @@ const Home = () => {
         </div>
         <SearchBar />
 
-        <div className='flex justify-center items-center h-full w-full py-4 md:hidden'>
+        <div className='flex justify-center items-center h-full w-full py-2 md:hidden'>
           <ImageCarousel />
         </div>
 
@@ -36,7 +36,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className='hidden md:flex justify-center items-center h-full w-full py-4'>
+      <div className='hidden md:flex justify-center items-center h-full w-full py-2'>
         <ImageCarousel />
       </div>
     </div>

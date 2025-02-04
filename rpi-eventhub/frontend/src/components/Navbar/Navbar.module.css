@@ -50,8 +50,8 @@
 .logoSvg {
   display: inline-block;
   vertical-align: middle;
-  width: 4rem;
-  height: 4rem;
+  width: 6rem;
+  height: 6rem;
 }
 
 .navMenu,
@@ -62,14 +62,7 @@
   list-style: none;
   text-align: center;
 }
-.darkNavMenu {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  list-style: none;
-  text-align: center;
-  color: white;
-}
+
 .navLinks {
   /* color: #ff0000; */
   text-decoration: none;
