@@ -11,6 +11,7 @@ import * as pdfjsLib from "pdfjs-dist";
 import {handleFileChange} from "../../components/CreateEventModal/CreateEventModal";
 import axios from "axios";
 import config from "../../config";
+import ShareButtons from "./ShareButtons";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 
 
@@ -182,6 +183,9 @@ const EventDetails = () => {
     const eventEndDateTime = event.endDateTime ? formatDateAsEST(event.endDateTime) : (event.endDate ? formatDateAsEST(event.endDate) : null);
     const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
+
+    const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
+
 
     return (
         <div className='outterContainer'>
@@ -366,6 +370,12 @@ const EventDetails = () => {
                                     <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                                 )}
                                 {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp}/>}
+                                <ShareButtons
+                                    url={window.location.href}
+                                    title={event.title}
+                                    description={eventShareDescription}
+                                    image={event.image}
+                                />
                             </div>
                         </div>
                     )
