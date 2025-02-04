@@ -3,7 +3,7 @@ require('winston-daily-rotate-file');
 const path = require('path');
 const fs = require('fs');
 const serviceClient = require('../config/AzureStorageConfig');
-
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const cron = require('node-cron');
 
 

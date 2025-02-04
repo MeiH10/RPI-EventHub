@@ -27,7 +27,7 @@ const getEvents = async (count, days) => {
 
 function formatDateTime(input) {
     if (!input) return '';
-    
+
     try {
         // Parse the input string (format: YYYYMMDD[T]HHmmss)
         const year = input.slice(0, 4);
@@ -95,7 +95,7 @@ async function fetchAndUpdateEvents() {
     try {
         const count = "NaN"; // Fetches all events
         const days = 7; // Fetch events for next 7 days
-        
+
         const events = await getEvents(count, days);
         const eventsList = extractEvents(events);
 
@@ -105,10 +105,10 @@ async function fetchAndUpdateEvents() {
             console.log('End DateTime (UTC) to save:', eventData.endDateTime);
 
             // Check for duplicate events
-            const existingEvent = await Event.findOne({ 
-                title: eventData.title, 
+            const existingEvent = await Event.findOne({
+                title: eventData.title,
                 startDateTime: eventData.startDateTime,
-                endDateTime: eventData.endDateTime 
+                endDateTime: eventData.endDateTime
             });
 
             if (existingEvent) {
@@ -120,11 +120,11 @@ async function fetchAndUpdateEvents() {
                 const newEvent = new Event(eventData);
                 await newEvent.save();
                 console.log(`Inserted new event: ${eventData.title}`);
-                
+
                 const savedEvent = await Event.findById(newEvent._id);
                 console.log('Verified saved start (UTC):', savedEvent.startDateTime);
                 console.log('Verified saved end (UTC):', savedEvent.endDateTime);
-                
+
                 logger.info(`Event CREATED: ${eventData.title} start at ${eventData.startDateTime}---${new Date()}`);
             } catch (error) {
                 console.error(`Error saving event ${eventData.title}:`, error);
