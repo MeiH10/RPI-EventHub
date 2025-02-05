@@ -72,6 +72,7 @@ app.get('/usernames', fetchAllUsernames);
 
 //#region OTHER ROUTES
 app.get('/verify-token', authenticate, verifyToken);
+app.use('/assets', express.static(path.join(__dirname, './assets')));
 //#endregion
 
 

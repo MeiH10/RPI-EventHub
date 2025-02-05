@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer';
@@ -13,6 +13,7 @@ import axios from "axios";
 import config from "../../config";
 import ShareButtons from "./ShareButtons";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
+import OpencvQr from "opencv-qr";
 
 
 const timeZone = 'America/New_York';
@@ -33,6 +34,11 @@ const formatDateAsEST = (utcDateString) => {
     return dateTime.toFormat('MMMM dd, yyyy');
 };
 
+// Load Model
+const cvQR = new OpencvQr({
+    dw: `${config.apiUrl}/assets/Models/detect.caffemodel`,
+    sw: `${config.apiUrl}/assets/Models/sr.caffemodel`,
+});
 
 const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -43,6 +49,10 @@ const EventDetails = () => {
     const [error, setError] = useState('');
     const [tags, setTags] = useState([]);
     const [showOriginalImage, setShowOriginalImage] = useState(true);
+    // QR code
+    const [QRCodeLink, setQRCodeLink] = useState('');
+    const [QRCodeError, setQRCodeError] = useState('');
+    const qrcodeCanvasRef = useRef(null);
 
 
     const { eventId } = useParams();
@@ -67,6 +77,7 @@ const EventDetails = () => {
         'sports', 'creative', 'tech', 'wellness', 'coding', 'other'
     ];
 
+
     const handleAddTag = (tag) => {
         setTags(prevTags => {
             let newTags;
@@ -86,14 +97,24 @@ const EventDetails = () => {
 
     };
 
+    // This hook should always be at the top of the function
     useEffect(() => {
         if (events.length === 0) {
             fetchEvents();
         }
     }, [events, fetchEvents]);
 
+    // The event found by the eventId
     const event = events.find(event => event._id === eventId);
 
+
+    useEffect(() => {
+        if (event?.image) {
+            decodeQRFromUrl(event.image);
+        }
+    }, [event?.image]);
+
+    // Check if the user is the owner of the event
     useEffect(() => {
         if (event && username) {
             setIsEditing(manageMode && event.poster === username);
@@ -101,6 +122,8 @@ const EventDetails = () => {
         }
     }, [manageMode, event, username]);
 
+
+    // Set the form data to the event data
     useEffect(() => {
         if (event) {
             setFormData({
@@ -119,6 +142,7 @@ const EventDetails = () => {
         }
     }, [event]);
 
+    // Handle form data changes, update the form data (Update Event/Manage Event)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -127,6 +151,7 @@ const EventDetails = () => {
         }));
     };
 
+    //#region Update/Manage event
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
 
@@ -166,10 +191,6 @@ const EventDetails = () => {
 
     };
 
-    if (!event) {
-        return <p>Event not found.</p>;
-    }
-
     function handleImageFileChange(e) {
         toggleImage();
         handleFileChange(e, setPreview, setFile, setError);
@@ -178,14 +199,68 @@ const EventDetails = () => {
     function toggleImage() {
         setShowOriginalImage((prevState) => !prevState);
     }
+    //#endregion changed event update
 
+    if (!event) {
+        return <p>Event not found.</p>;
+    }
+
+    //#region Format the date and time for the event
     const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
     const eventEndDateTime = event.endDateTime ? formatDateAsEST(event.endDateTime) : (event.endDate ? formatDateAsEST(event.endDate) : null);
     const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
+    //#endregion
 
     const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
 
+//#region--------------------QR code to Link--------------------
+    // Convert url to ImageData
+    const loadImageData = async (url) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+
+            img.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    resolve(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                } catch (err) {
+                    reject(new Error('cannot resolve image'));
+                }
+            };
+
+            img.onerror = () => {
+                reject(new Error('cannot resolve image'));
+            };
+
+            img.src = url;
+        });
+    };
+
+    // Convert ImageData to QR code
+    const decodeQRFromUrl = async (url) => {
+        try {
+            setQRCodeError('');
+            setQRCodeLink('');
+
+            // load ImageData
+            const imageData = await loadImageData(url);
+
+
+            const result = cvQR.load(imageData);
+            const infos = result?.getInfos();
+            setQRCodeLink(JSON.stringify(infos));
+            cvQR.clear();
+        } catch (err) {
+            setQRCodeError('Cannot Resolve QR code: ' + err.message);
+        }
+    };
+//#endregion
 
     return (
         <div className='outterContainer'>
@@ -370,6 +445,17 @@ const EventDetails = () => {
                                     <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                                 )}
                                 {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
+                                <canvas ref={qrcodeCanvasRef} style={{ display: 'none' }}></canvas>
+                                {QRCodeLink ? (
+                                    <div>
+                                        <p>QR Code Link: </p>
+                                        <a href={QRCodeLink} target="_blank" rel="noopener noreferrer">
+                                            {QRCodeLink}
+                                        </a>
+                                    </div>
+                                ) : (
+                                    <p>{QRCodeError}</p>
+                                )}
                                 <ShareButtons
                                     url={window.location.href}
                                     title={event.title}
