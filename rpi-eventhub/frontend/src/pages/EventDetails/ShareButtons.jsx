@@ -5,7 +5,7 @@ import {
     WhatsappShareButton,
 } from "react-share";
 
-const ShareButtons = ({ url, title, description, image }) => {
+const ShareButtons = ({ url, title, description, image, qrCodeLink, qrCodeLinkIcon, qrCodeError}) => {
     const shareUrl = encodeURIComponent(url);
     const shareTitle = encodeURIComponent(title);
     const faceBookAppId = encodeURIComponent("535340479270215");
@@ -26,7 +26,7 @@ const ShareButtons = ({ url, title, description, image }) => {
     };
 
     return (
-        <div className="w-full h-auto py-8 flex gap-2 flex-wrap">
+        <div className="w-full h-auto py-3 flex gap-2 flex-wrap">
             {/* Facebook Share Button */}
             <FacebookShareButton
                 url={url}

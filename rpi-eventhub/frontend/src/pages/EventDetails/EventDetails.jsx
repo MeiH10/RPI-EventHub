@@ -53,6 +53,7 @@ const EventDetails = () => {
     const [QRCodeLink, setQRCodeLink] = useState('');
     const [QRCodeError, setQRCodeError] = useState('');
     const qrcodeCanvasRef = useRef(null);
+    const [QRCodeLinkIcon, setQRCodeLinkIcon] = useState('');
 
 
     const { eventId } = useParams();
@@ -254,12 +255,19 @@ const EventDetails = () => {
 
             const result = cvQR.load(imageData);
             const infos = result?.getInfos();
-            setQRCodeLink(JSON.stringify(infos));
+            setQRCodeLink(infos[0]);
+            setQRCodeLinkIcon(getFavicon(JSON.stringify(infos)))
             cvQR.clear();
         } catch (err) {
             setQRCodeError('Cannot Resolve QR code: ' + err.message);
         }
     };
+    // Get the favicon from the url
+    const getFavicon = (url) => {
+        //Extract the domain from the url
+        const domain = url.split('/')[2];
+        return `https://www.google.com/s2/favicons?sz=32&domain_url=${domain}`;
+    }
 //#endregion
 
     return (
@@ -446,28 +454,43 @@ const EventDetails = () => {
                                 )}
                                 {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
                                 <canvas ref={qrcodeCanvasRef} style={{ display: 'none' }}></canvas>
-                                {QRCodeLink ? (
-                                    <div>
-                                        <p>QR Code Link: </p>
-                                        <a href={QRCodeLink} target="_blank" rel="noopener noreferrer">
-                                            {QRCodeLink}
-                                        </a>
-                                    </div>
-                                ) : (
-                                    <p>{QRCodeError}</p>
-                                )}
+
                                 <ShareButtons
                                     url={window.location.href}
                                     title={event.title}
                                     description={eventShareDescription}
                                     image={event.image}
                                 />
+                                {QRCodeLink && (
+                                    <div
+                                        className="my-2 max-w-[max-content] flex items-center space-x-2 bg-gray-50 p-2 rounded-md border border-gray-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth={1.5} stroke="currentColor" className="size-5 text-gray-500">
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/>
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"/>
+                                        </svg>
+                                        <a href={QRCodeLink} target="_blank" rel="noopener noreferrer"
+                                           className="inline-flex items-center space-x-1 hover:underline text-blue-500">
+                                            {QRCodeLinkIcon && (
+                                                <div className="inline-flex items-center space-x-1">
+                                                    <img src={QRCodeLinkIcon} alt="favicon"
+                                                         className="w-4 h-4 rounded-sm"/>
+                                                    <span
+                                                        className="text-xs text-gray-500 truncate max-w-[150px]">{QRCodeLink.split('/')[2]}</span>
+                                                </div>
+                                            )}
+                                        </a>
+                                    </div>
+
+                                )}
                             </div>
                         </div>
                     )
                 }
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };
