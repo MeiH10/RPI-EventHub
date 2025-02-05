@@ -5,7 +5,7 @@ import {
     WhatsappShareButton,
 } from "react-share";
 
-const ShareButtons = ({ url, title, description, image, qrCodeLink, qrCodeLinkIcon, qrCodeError}) => {
+const ShareButtons = ({ url, title, description, image}) => {
     const shareUrl = encodeURIComponent(url);
     const shareTitle = encodeURIComponent(title);
     const faceBookAppId = encodeURIComponent("535340479270215");
