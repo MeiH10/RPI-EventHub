@@ -49,11 +49,17 @@ const EventDetails = () => {
     const [error, setError] = useState('');
     const [tags, setTags] = useState([]);
     const [showOriginalImage, setShowOriginalImage] = useState(true);
-    // QR code
+    // QR code (For Single QR code)
     const [QRCodeLink, setQRCodeLink] = useState('');
     const [QRCodeError, setQRCodeError] = useState('');
     const qrcodeCanvasRef = useRef(null);
     const [QRCodeLinkIcon, setQRCodeLinkIcon] = useState('');
+    // QR code (For Multiple QR codes)
+    const [showQRMask, setShowQRMask] = useState(false);
+    const [qrCodes, setQrCodes] = useState([]);
+    const [selectedQR, setSelectedQR] = useState(null);
+    const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+    const imageRef = useRef(null);
 
 
     const { eventId } = useParams();
@@ -243,25 +249,83 @@ const EventDetails = () => {
         });
     };
 
-    // Convert ImageData to QR code
     const decodeQRFromUrl = async (url) => {
         try {
             setQRCodeError('');
             setQRCodeLink('');
+            setShowQRMask(false);
 
-            // load ImageData
             const imageData = await loadImageData(url);
-
-
             const result = cvQR.load(imageData);
             const infos = result?.getInfos();
-            setQRCodeLink(infos[0]);
-            setQRCodeLinkIcon(getFavicon(JSON.stringify(infos)))
+            const sizes = result?.getSizes();
+
+            if (!infos || infos.length === 0) {
+                setQRCodeError('No QR code found');
+                console.log("No QR code found");
+                return;
+            }
+
+            // Get the actual image size
+            const img = imageRef.current;
+            const { naturalWidth, naturalHeight, offsetWidth, offsetHeight } = img;
+
+            // Calculate the scale factor
+            const scaleX = offsetWidth / naturalWidth;
+            const scaleY = offsetHeight / naturalHeight;
+
+            // Set the image size
+            const qrData = infos.map((info, index) => ({
+                info,
+                position: {
+                    x: sizes[index].x * scaleX,
+                    y: sizes[index].y * scaleY,
+                    w: sizes[index].w * scaleX,
+                    h: sizes[index].h * scaleY
+                }
+            }));
+
+            setQrCodes(qrData);
+
+            if (qrData.length === 1) {
+                setQRCodeLink(qrData[0].info);
+                setQRCodeLinkIcon(getFavicon(qrData[0].info));
+            } else {
+                setShowQRMask(true);
+            }
+
             cvQR.clear();
         } catch (err) {
-            setQRCodeError('Cannot Resolve QR code: ' + err.message);
+            setQRCodeError('Cannot resolve QR code: ' + err.message);
+            console.log(QRCodeError);
         }
     };
+
+    // Overlay for QR code
+    const QRMaskOverlay = ({ qrCodes, onSelect }) => {
+        return (
+            <div className="absolute inset-0 cursor-pointer">
+                {qrCodes.map((qr, index) => (
+                    <div
+                        key={index}
+                        className="absolute border-4 border-blue-400 hover:border-blue-600 transition-all"
+                        style={{
+                            left: qr.position.x + 'px',
+                            top: qr.position.y + 'px',
+                            width: qr.position.w + 'px',
+                            height: qr.position.h + 'px',
+                        }}
+                        onClick={() => onSelect(index)}
+                    >
+                        <div className="absolute -right-2 -top-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                            {index + 1}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
     // Get the favicon from the url
     const getFavicon = (url) => {
         //Extract the domain from the url
@@ -439,7 +503,29 @@ const EventDetails = () => {
                     (
                         <div className={styles.container}>
                             <div className={styles.eventPoster}>
-                                <img src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title} />
+                                <div className="relative max-w-full">
+                                    <img
+                                        ref={imageRef}
+                                        src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title}
+                                        className="max-w-full h-auto"
+                                        onLoad={(e) => {
+                                            setImageSize({
+                                                width: e.target.offsetWidth,
+                                                height: e.target.offsetHeight
+                                            });
+                                        }}
+                                    />
+                                    {showQRMask && (
+                                        <QRMaskOverlay
+                                            qrCodes={qrCodes}
+                                            onSelect={(index) => {
+                                                setSelectedQR(index);
+                                                setQRCodeLink(qrCodes[index].info);
+                                                setQRCodeLinkIcon(getFavicon(qrCodes[index].info));
+                                            }}
+                                        />
+                                    )}
+                                </div>
                             </div>
                             <div className={styles.eventInfo}>
                                 <h1>{event.title}</h1>
@@ -474,11 +560,28 @@ const EventDetails = () => {
                                         <a href={QRCodeLink} target="_blank" rel="noopener noreferrer"
                                            className="inline-flex items-center space-x-1 hover:underline text-blue-500">
                                             {QRCodeLinkIcon && (
-                                                <div className="inline-flex items-center space-x-1">
-                                                    <img src={QRCodeLinkIcon} alt="favicon"
-                                                         className="w-4 h-4 rounded-sm"/>
-                                                    <span
-                                                        className="text-xs text-gray-500 truncate max-w-[150px]">{QRCodeLink.split('/')[2]}</span>
+                                                <div
+                                                    className="relative inline-flex items-center space-x-1 p-1 bg-white rounded">
+                                                    <div className="relative">
+                                                        <img
+                                                            src={QRCodeLinkIcon}
+                                                            alt="favicon"
+                                                            className="w-4 h-4 rounded-sm"
+                                                        />
+                                                    </div>
+                                                    <span className="text-xs text-gray-500 truncate max-w-[150px]">
+                                                        {QRCodeLink.split('/')[2]}
+                                                    </span>
+                                                    {showQRMask &&
+                                                        <span className="absolute -top-[3px] -right-[3px] inline-block w-6 h-6
+                                                                         text-[13px] text-center content-center font-bold leading-none text-white bg-blue-500
+                                                                         rounded-full border-2 border-white
+                                                                         transform translate-x-1/2 -translate-y-1/2
+                                                                         shadow-sm z-10">
+                                                            {selectedQR + 1}
+                                                        </span>
+                                                    }
+
                                                 </div>
                                             )}
                                         </a>
