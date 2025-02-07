@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer';
@@ -13,6 +13,7 @@ import axios from "axios";
 import config from "../../config";
 import ShareButtons from "./ShareButtons";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
+import OpencvQr from "opencv-qr";
 
 
 const timeZone = 'America/New_York';
@@ -33,6 +34,11 @@ const formatDateAsEST = (utcDateString) => {
     return dateTime.toFormat('MMMM dd, yyyy');
 };
 
+// Load Model
+const cvQR = new OpencvQr({
+    dw: `${config.apiUrl}/assets/Models/detect.caffemodel`,
+    sw: `${config.apiUrl}/assets/Models/sr.caffemodel`,
+});
 
 const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -43,6 +49,17 @@ const EventDetails = () => {
     const [error, setError] = useState('');
     const [tags, setTags] = useState([]);
     const [showOriginalImage, setShowOriginalImage] = useState(true);
+    // QR code (For Single QR code)
+    const [QRCodeLink, setQRCodeLink] = useState('');
+    const [QRCodeError, setQRCodeError] = useState('');
+    const qrcodeCanvasRef = useRef(null);
+    const [QRCodeLinkIcon, setQRCodeLinkIcon] = useState('');
+    // QR code (For Multiple QR codes)
+    const [showQRMask, setShowQRMask] = useState(false);
+    const [qrCodes, setQrCodes] = useState([]);
+    const [selectedQR, setSelectedQR] = useState(null);
+    const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+    const imageRef = useRef(null);
 
 
     const { eventId } = useParams();
@@ -67,6 +84,7 @@ const EventDetails = () => {
         'sports', 'creative', 'tech', 'wellness', 'coding', 'other'
     ];
 
+
     const handleAddTag = (tag) => {
         setTags(prevTags => {
             let newTags;
@@ -86,14 +104,24 @@ const EventDetails = () => {
 
     };
 
+    // This hook should always be at the top of the function
     useEffect(() => {
         if (events.length === 0) {
             fetchEvents();
         }
     }, [events, fetchEvents]);
 
+    // The event found by the eventId
     const event = events.find(event => event._id === eventId);
 
+
+    useEffect(() => {
+        if (event?.image) {
+            decodeQRFromUrl(event.image);
+        }
+    }, [event?.image]);
+
+    // Check if the user is the owner of the event
     useEffect(() => {
         if (event && username) {
             setIsEditing(manageMode && event.poster === username);
@@ -101,6 +129,8 @@ const EventDetails = () => {
         }
     }, [manageMode, event, username]);
 
+
+    // Set the form data to the event data
     useEffect(() => {
         if (event) {
             setFormData({
@@ -119,6 +149,7 @@ const EventDetails = () => {
         }
     }, [event]);
 
+    // Handle form data changes, update the form data (Update Event/Manage Event)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -127,6 +158,7 @@ const EventDetails = () => {
         }));
     };
 
+    //#region Update/Manage event
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
 
@@ -166,10 +198,6 @@ const EventDetails = () => {
 
     };
 
-    if (!event) {
-        return <p>Event not found.</p>;
-    }
-
     function handleImageFileChange(e) {
         toggleImage();
         handleFileChange(e, setPreview, setFile, setError);
@@ -178,14 +206,133 @@ const EventDetails = () => {
     function toggleImage() {
         setShowOriginalImage((prevState) => !prevState);
     }
+    //#endregion changed event update
 
+    if (!event) {
+        return <p>Event not found.</p>;
+    }
+
+    //#region Format the date and time for the event
     const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
     const eventEndDateTime = event.endDateTime ? formatDateAsEST(event.endDateTime) : (event.endDate ? formatDateAsEST(event.endDate) : null);
     const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
+    //#endregion
 
     const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
 
+//#region--------------------QR code to Link--------------------
+    // Convert url to ImageData
+    const loadImageData = async (url) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+
+            img.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    resolve(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                } catch (err) {
+                    reject(new Error('cannot resolve image'));
+                }
+            };
+
+            img.onerror = () => {
+                reject(new Error('cannot resolve image'));
+            };
+
+            img.src = url;
+        });
+    };
+
+    const decodeQRFromUrl = async (url) => {
+        try {
+            setQRCodeError('');
+            setQRCodeLink('');
+            setShowQRMask(false);
+
+            const imageData = await loadImageData(url);
+            const result = cvQR.load(imageData);
+            const infos = result?.getInfos();
+            const sizes = result?.getSizes();
+
+            if (!infos || infos.length === 0) {
+                setQRCodeError('No QR code found');
+                console.log("No QR code found");
+                return;
+            }
+
+            // Get the actual image size
+            const img = imageRef.current;
+            const { naturalWidth, naturalHeight, offsetWidth, offsetHeight } = img;
+
+            // Calculate the scale factor
+            const scaleX = offsetWidth / naturalWidth;
+            const scaleY = offsetHeight / naturalHeight;
+
+            // Set the image size
+            const qrData = infos.map((info, index) => ({
+                info,
+                position: {
+                    x: sizes[index].x * scaleX,
+                    y: sizes[index].y * scaleY,
+                    w: sizes[index].w * scaleX,
+                    h: sizes[index].h * scaleY
+                }
+            }));
+
+            setQrCodes(qrData);
+
+            if (qrData.length === 1) {
+                setQRCodeLink(qrData[0].info);
+                setQRCodeLinkIcon(getFavicon(qrData[0].info));
+            } else {
+                setShowQRMask(true);
+            }
+
+            cvQR.clear();
+        } catch (err) {
+            setQRCodeError('Cannot resolve QR code: ' + err.message);
+            console.log(QRCodeError);
+        }
+    };
+
+    // Overlay for QR code
+    const QRMaskOverlay = ({ qrCodes, onSelect }) => {
+        return (
+            <div className="absolute inset-0 cursor-pointer">
+                {qrCodes.map((qr, index) => (
+                    <div
+                        key={index}
+                        className="absolute border-4 border-blue-400 hover:border-blue-600 transition-all"
+                        style={{
+                            left: qr.position.x + 'px',
+                            top: qr.position.y + 'px',
+                            width: qr.position.w + 'px',
+                            height: qr.position.h + 'px',
+                        }}
+                        onClick={() => onSelect(index)}
+                    >
+                        <div className="absolute -right-2 -top-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                            {index + 1}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
+    // Get the favicon from the url
+    const getFavicon = (url) => {
+        //Extract the domain from the url
+        const domain = url.split('/')[2];
+        return `https://www.google.com/s2/favicons?sz=32&domain_url=${domain}`;
+    }
+//#endregion
 
     return (
         <div className='outterContainer'>
@@ -356,7 +503,29 @@ const EventDetails = () => {
                     (
                         <div className={styles.container}>
                             <div className={styles.eventPoster}>
-                                <img src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title} />
+                                <div className="relative max-w-full">
+                                    <img
+                                        ref={imageRef}
+                                        src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title}
+                                        className="max-w-full h-auto"
+                                        onLoad={(e) => {
+                                            setImageSize({
+                                                width: e.target.offsetWidth,
+                                                height: e.target.offsetHeight
+                                            });
+                                        }}
+                                    />
+                                    {showQRMask && (
+                                        <QRMaskOverlay
+                                            qrCodes={qrCodes}
+                                            onSelect={(index) => {
+                                                setSelectedQR(index);
+                                                setQRCodeLink(qrCodes[index].info);
+                                                setQRCodeLinkIcon(getFavicon(qrCodes[index].info));
+                                            }}
+                                        />
+                                    )}
+                                </div>
                             </div>
                             <div className={styles.eventInfo}>
                                 <h1>{event.title}</h1>
@@ -370,18 +539,61 @@ const EventDetails = () => {
                                     <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                                 )}
                                 {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
+                                <canvas ref={qrcodeCanvasRef} style={{ display: 'none' }}></canvas>
+
                                 <ShareButtons
                                     url={window.location.href}
                                     title={event.title}
                                     description={eventShareDescription}
                                     image={event.image}
                                 />
+                                {QRCodeLink && (
+                                    <div
+                                        className="my-2 max-w-[max-content] flex items-center space-x-2 bg-gray-50 p-2 rounded-md border border-gray-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth={1.5} stroke="currentColor" className="size-5 text-gray-500">
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/>
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"/>
+                                        </svg>
+                                        <a href={QRCodeLink} target="_blank" rel="noopener noreferrer"
+                                           className="inline-flex items-center space-x-1 hover:underline text-blue-500">
+                                            {QRCodeLinkIcon && (
+                                                <div
+                                                    className="relative inline-flex items-center space-x-1 p-1 bg-white rounded">
+                                                    <div className="relative">
+                                                        <img
+                                                            src={QRCodeLinkIcon}
+                                                            alt="favicon"
+                                                            className="w-4 h-4 rounded-sm"
+                                                        />
+                                                    </div>
+                                                    <span className="text-xs text-gray-500 truncate max-w-[150px]">
+                                                        {QRCodeLink.split('/')[2]}
+                                                    </span>
+                                                    {showQRMask &&
+                                                        <span className="absolute -top-[3px] -right-[3px] inline-block w-6 h-6
+                                                                         text-[13px] text-center content-center font-bold leading-none text-white bg-blue-500
+                                                                         rounded-full border-2 border-white
+                                                                         transform translate-x-1/2 -translate-y-1/2
+                                                                         shadow-sm z-10">
+                                                            {selectedQR + 1}
+                                                        </span>
+                                                    }
+
+                                                </div>
+                                            )}
+                                        </a>
+                                    </div>
+
+                                )}
                             </div>
                         </div>
                     )
                 }
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };
