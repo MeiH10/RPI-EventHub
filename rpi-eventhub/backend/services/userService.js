@@ -114,6 +114,13 @@ const verifyEmail = async (email, verificationCode) => {
  */
 const loginUser = async (email, password) => {
 
+    if (typeof email != "string") {
+        throw new Error("Email does not exist");
+    }
+    if (typeof password != "string") {
+        throw new Error("Password is incorrect");
+    }
+
     // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
