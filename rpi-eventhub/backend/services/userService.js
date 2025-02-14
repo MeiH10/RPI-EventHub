@@ -46,11 +46,31 @@ const signUpUser = async (username, email, password) => {
     });
     await user.save();
 
-    // Send verification email
     await sendEmail({
         to: email,
-        subject: 'RPI EventHub Email Verification Code',
-        text: `Welcome to RPI EventHub!\n\nYour verification code is: ${verificationCode}\n\nPlease enter this code to complete your registration.\n\nBest regards,\nRPI EventHub Team`
+        subject: 'Action Required: Verify Your RPI EventHub Account',
+        text: `Dear RPI EventHub User,
+
+Thank you for registering with RPI EventHub! To activate your account, please use the following security code:
+
+Verification Code: ${verificationCode}
+
+This code will expire in 10 minutes.
+
+How to complete your registration:
+1. Return to the RPI EventHub registration page
+2. Enter the 6-digit verification code above
+3. Click "Verify"
+
+If you didn't request this code, please ignore this message or create an issue at https://github.com/MeiH10/RPI-EventHub.
+
+Security Reminder:
+- Never share this code with others
+- Our team will never ask for your password or verification codes
+
+Best regards,
+The RPI EventHub Team
+Official Website: https://rpieventhub.com`
     });
 
     return {
