@@ -20,6 +20,9 @@ import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust p
 import EventDetails from '../../pages/EventDetails/EventDetails';
 import Calendar from '../../pages/Calendar/Calendar';
 import TermsOfService from '../../pages/TermsOfService/TermsOfService';
+// import AdminPage from '../../pages/AdminPage';
+// import AdminSearch from '../../pages/AdminSearch';
+
 
 const router = createBrowserRouter([
   {
@@ -62,7 +65,17 @@ const router = createBrowserRouter([
   {
     path: "/terms-of-service",
     element: <TermsOfService />
+  },
+  /*
+  {
+    path: "/admin", // Route for AdminPage
+    element: <AdminPage />,
+  },
+  {
+    path: "/admin/search", // Route for AdminSearch
+    element: <AdminSearch />,
   }
+  */
 ]);
 
 function App() {
