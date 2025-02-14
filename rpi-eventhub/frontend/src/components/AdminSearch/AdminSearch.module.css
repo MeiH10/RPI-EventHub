@@ -1,0 +1,127 @@
+.searchContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .searchInput {
+    width: 80%;
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .searchButton {
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 0.5rem;
+  }
+  
+  .resultsContainer {
+    margin-top: 1rem;
+    text-align: left;
+    width: 80%;
+  }
+  
+  .userResult {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .promoteButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .banButton {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .saveButton {
+    background-color: #029905;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  .banButton {
+    background-color: #f44336;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .unbanButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds shadow for dropdown effect */
+    z-index: 10;
+    margin-top: 0.5rem;
+    padding: 0; /* Removes padding around items */
+  }
+  
+  .dropdownItem {
+    padding: 0.75rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .dropdownItem:last-child {
+    border-bottom: none; /* Removes border for last item */
+  }
+  
+  .dropdownItem:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .noResult {
+    padding: 0.75rem;
+    color: #888;
+    font-size: 1rem;
+    text-align: center;
+  }
