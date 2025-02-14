@@ -98,6 +98,13 @@ const Navbar = () => {
                   </button>
                 </li>
               )}
+              {isLoggedIn && (
+                <li className={styles.navItem}>
+                  <NavLink to="/admin" className={getNavLinkClass("/admin")}>
+                    Admin
+                  </NavLink>
+                </li>
+              )}
               {isLoggedIn ? (
                 <div>
                   <button
