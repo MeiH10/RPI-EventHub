@@ -59,10 +59,10 @@ const uploadImageToImgBB = async (imageUrl) => {
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
 
-    return response.data?.data?.url || null;
+    return response.data?.data?.url || imageUrl;
   } catch (error) {
     console.error(`Image upload failed for ${imageUrl}: ${error.message}`);
-    return '';
+    return `${process.env.IMAGE_PREFIX}${imageUrl.split('/').pop()}`;
   }
 };
 
