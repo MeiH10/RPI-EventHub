@@ -59,7 +59,7 @@ function AdminPage() {
         <div className="row">
           <div className="col-12 px-5 py-3">
             <h4 className={styles.sectionTitle}>Admin Tools</h4>
-            <div className={styles.adminTool}>
+            <div className={`${styles.adminTool} ${isDark ? styles.DarkAdminTool : ''}`}>
               <h5>Manage Users</h5>
               <p>Search for and manage user accounts by RCS ID.</p>
               <AdminSearch /> {/* Embed the search component directly */}

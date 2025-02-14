@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import adminSearchCSS from './AdminSearch.module.css';
+import { DarkModeToggle } from "../DarkMode/DarkMode";
+import { ThemeContext } from '../../context/ThemeContext';
+import { useColorScheme } from '../../hooks/useColorScheme';
 
 // Mock data list of users
 const mockRcsIds = [
@@ -11,6 +14,9 @@ const mockRcsIds = [
 ];
 
 const AdminSearch = () => {
+  const { theme } = useContext(ThemeContext);
+  const { isDark } = useColorScheme();
+
   const [users, setUsers] = useState(mockRcsIds);
   const [searchTerm, setSearchTerm] = useState('');
   const [changesMade, setChangesMade] = useState(false); // Track if changes have been made
@@ -57,7 +63,7 @@ const AdminSearch = () => {
   };
 
   return (
-    <div className={adminSearchCSS.searchContainer}>
+    <div className={`${adminSearchCSS.searchContainer} ${isDark ? adminSearchCSS.DarkSearchContainer : ''}`}>
       <input
         className={adminSearchCSS.searchInput}
         type="text"
