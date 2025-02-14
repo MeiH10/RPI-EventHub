@@ -42,17 +42,18 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`flex justify-between font-sans text-lg shadow-sm items-center fixed z-20 px-5 h-16 w-full bg-white`}>
+      <nav className={`flex justify-between font-sans text-lg shadow items-center fixed z-20 px-2 h-16 w-full bg-white`}>
         <div className="flex justify-center items-center">
-        <EventHubLogo2 className="mr-7"/>
+        <img src={EventHubLogo2} alt="EventHub Logo" className="h-16 w-16 mr-7" />
           <NavLink to="/" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Home</NavLink> 
           <NavLink to="/all-events" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Events</NavLink> 
           <NavLink to="/about-us" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>About</NavLink> 
           <NavLink to="/calendar" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Calendar</NavLink> 
         </div>
         <div>
-          <NavLink to="/" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Home</NavLink> 
-          <NavLink to="/all-events" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Events</NavLink> 
+            <NavLink to="/" className={"p-2 hover:bg-emerald-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Create Event</NavLink> 
+            <NavLink to="/" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Login</NavLink> 
+            <NavLink to="/" className={"p-2 hover:bg-gray-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Signup</NavLink> 
         </div>
       </nav>
     </>
