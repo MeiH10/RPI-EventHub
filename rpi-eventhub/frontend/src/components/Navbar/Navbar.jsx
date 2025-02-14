@@ -9,7 +9,6 @@ import SignupModal from "../SignupModal/SignupModal";
 import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
-import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
@@ -106,7 +105,6 @@ const Navbar = () => {
                   >
                     Sign Out
                   </button>
-                  {!emailVerified && <VerifyModal />}
                 </div>
               ) : (
                 <>
@@ -185,7 +183,6 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!emailVerified && <VerifyModal />}
               </div>
             ) : (
               <>

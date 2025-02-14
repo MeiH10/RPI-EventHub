@@ -27,10 +27,16 @@ const signUpUser = async (username, email, password) => {
         throw new Error("Email already in use.");
     }
 
-    // Generate a random 6-digit verification code
+    // Check if username exists
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+        throw new Error("Username already taken.");
+    }
+
+    // Generate verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Create a new user
+    // Create unverified user
     const user = new User({
         username,
         email,
@@ -40,27 +46,16 @@ const signUpUser = async (username, email, password) => {
     });
     await user.save();
 
-
-    // Send verification email， and create a JWT token
+    // Send verification email
     await sendEmail({
         to: email,
         subject: 'RPI EventHub Email Verification Code',
-        text: `Dear User,\n\nThank you for registering with RPI EventHub. To complete your email verification, please use the following code:\n\nVerification Code: ${verificationCode}\n\nPlease enter this code in the app to verify your email address.\n\nBest regards,\nRPI EventHub Team`,
+        text: `Welcome to RPI EventHub!\n\nYour verification code is: ${verificationCode}\n\nPlease enter this code to complete your registration.\n\nBest regards,\nRPI EventHub Team`
     });
 
-    const token = jwt.sign(
-        { userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username },
-        process.env.JWT_SECRET,
-        { expiresIn: '24h' }
-    );
-
-    logger.info(`User ${user.username} signed up---${new Date()}`);
-
     return {
-        message: "User created successfully. Please check your email to verify your account.",
-        token,
-        email: user.email,
-        emailVerified: user.emailVerified,
+        message: "Please check your email for the verification code.",
+        email: user.email
     };
 };
 
