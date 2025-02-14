@@ -81,6 +81,14 @@ const Navbar = () => {
                   Calendar
                 </NavLink>
               </li>
+              {isLoggedIn && (
+                <li className={styles.navItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : ''}`}>
+                    Admin
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
           <div className={styles.navRight}>
@@ -96,13 +104,6 @@ const Navbar = () => {
                   >
                     {manageMode ? 'Managing' : 'Manage Events'}
                   </button>
-                </li>
-              )}
-              {isLoggedIn && (
-                <li className={styles.navItem}>
-                  <NavLink to="/admin" className={getNavLinkClass("/admin")}>
-                    Admin
-                  </NavLink>
                 </li>
               )}
               {isLoggedIn ? (
@@ -181,9 +182,18 @@ const Navbar = () => {
                 Calendar
               </NavLink>
             </li>
+            {isLoggedIn && (
+                <li className={styles.drawerItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : ''}`}>
+                    Admin
+                  </NavLink>
+                </li>
+            )}
             <li className={styles.drawerItem}>
               <CreateEventModal />
             </li>
+            
             {isLoggedIn ? (
               <div className={styles.drawerItem}>
                 <button
