@@ -66,7 +66,7 @@ const router = createBrowserRouter([
     path: "/terms-of-service",
     element: <TermsOfService />
   },
-  /*
+  
   {
     path: "/admin", // Route for AdminPage
     element: <AdminPage />,
@@ -75,7 +75,7 @@ const router = createBrowserRouter([
     path: "/admin/search", // Route for AdminSearch
     element: <AdminSearch />,
   }
-  */
+  
 ]);
 
 function App() {
