@@ -9,6 +9,9 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 import { DateTime } from 'luxon';
 
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; //import for button on calander view
+
+
 const timeZone = 'America/New_York';
 
 const formatTime = (utcDateString) => {
@@ -151,7 +154,7 @@ const CalendarPage = () => {
         getWeekRange(currentStartDate);
         fetchEvents();
     }, [currentStartDate]);
-
+    //Line 188: look into how you can change the icon to be more accurate
     return (
         <div className={`min-h-screen flex flex-col ${isDark ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400'}`}>
             <NavBar />
@@ -172,7 +175,7 @@ const CalendarPage = () => {
                                     onChange={(e) => setShowFlyers(e.target.checked)}
                                     className="sr-only peer"
                                 />
-                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#C2405E]"></div>
+                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#E8495F]"></div>
                                 <span className={`ml-2 text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
                                     Show Flyers
                                 </span>
@@ -184,21 +187,23 @@ const CalendarPage = () => {
                         <div className="flex flex-wrap justify-center gap-2 mb-4">
                             <button 
                                 onClick={() => handleWeekChange(-1)}
-                                className="bg-[#C2405E] hover:bg-[#b33754] text-white px-4 py-2 rounded text-sm whitespace-nowrap"
+                                className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded text-sm whitespace-nowrap flex items-center gap-2"
                             >
-                                Previous Week
+                                <FaChevronLeft />
+                                <span>Previous Week</span>
                             </button>
                             <button 
                                 onClick={goToToday}
-                                className="bg-[#C2405E] hover:bg-[#b33754] text-white px-4 py-2 rounded text-sm"
+                                className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded text-sm"
                             >
                                 Today
                             </button>
                             <button 
                                 onClick={() => handleWeekChange(1)}
-                                className="bg-[#C2405E] hover:bg-[#b33754] text-white px-4 py-2 rounded text-sm whitespace-nowrap"
+                                className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded text-sm whitespace-nowrap flex items-center gap-2"
                             >
-                                Next Week
+                                <span>Next Week</span>
+                                <FaChevronRight />
                             </button>
                         </div>
 
