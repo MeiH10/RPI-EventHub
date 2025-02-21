@@ -65,7 +65,7 @@ const AdminSearch = () => {
   return (
     <div className={`${adminSearchCSS.searchContainer} ${isDark ? adminSearchCSS.DarkSearchContainer : ''}`}>
       <input
-        className={adminSearchCSS.searchInput}
+        className={`${adminSearchCSS.searchInput} ${isDark ? adminSearchCSS.DarkSearchInput : ''}`}
         type="text"
         placeholder="Enter RCS ID, First Name, or Last Name"
         value={searchTerm}
@@ -94,15 +94,16 @@ const AdminSearch = () => {
         <ul>
           {(searchTerm ? filteredSuggestions : users).map((user, index) => (
             <li key={index} className={adminSearchCSS.userResult}>
-              <p><strong>RCS ID:</strong> {user.rcsId}</p>
-              <p><strong>Name:</strong> {user.name}</p>
-              <p><strong>Email:</strong> {user.email}</p>
+              <p>
+              <strong>RCS ID:</strong> {user.rcsId} <br />
+              <strong>Name:</strong> {user.name} <br />
+              <strong>Email:</strong> {user.email}</p>
 
               {/* Dropdown for setting rank */}
-              <label>
+              <label className={adminSearchCSS.roleControl}>
                 <strong>Role Level: </strong>
                 <select
-                  className={adminSearchCSS.rankDropdown}
+                  className={`${adminSearchCSS.rankDropdown} ${isDark ? adminSearchCSS.DarkRankDropdown : ''}`}
                   value={user.role}
                   onChange={(e) => handleRankChange(user.rcsId, Number(e.target.value))}
                 >

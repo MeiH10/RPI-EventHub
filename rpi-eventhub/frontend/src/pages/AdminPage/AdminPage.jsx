@@ -70,12 +70,12 @@ function AdminPage() {
         {/* Rank Explanation Section */}
         <div className="row">
           <div className="col-12 px-5 py-3">
-            <div className={styles.adminTool}>
+            <div className={`${styles.adminTool} ${isDark ? styles.DarkAdminTool : ''}`}>
               <h5>Rank Explanation</h5>
               <p>Explanation of each rank and its permissions:</p>
-              <ul className={styles.rankExplanationList}>
+              <ul className={`${styles.rankExplanationList} ${isDark ? styles.DarkRankExplanationList : ''} `}>
                 {rankExplanations.map((rank) => (
-                  <li key={rank.level} className={styles.rankExplanationItem}>
+                  <li key={rank.level} className={`${styles.rankExplanationItem} ${isDark ? styles.DarkRankExplanationItem : ''} `}>
                     <strong>Rank {rank.level}:</strong> {rank.description}
                   </li>
                 ))}
@@ -87,7 +87,7 @@ function AdminPage() {
         {/* Manage Events Section */}
         <div className="row">
           <div className="col-12 px-5 py-3">
-            <div className={styles.adminTool}>
+            <div className={`${styles.adminTool} ${isDark ? styles.DarkAdminTool : ''}`}>
               <h5>Manage Events</h5>
               <p>Create, update, or delete campus events.</p>
               <button className={styles.actionButton} onClick={() => window.location.href = '/admin/events'}>
