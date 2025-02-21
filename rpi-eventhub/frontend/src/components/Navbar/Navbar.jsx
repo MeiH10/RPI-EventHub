@@ -16,6 +16,7 @@ import { useColorScheme } from '../../hooks/useColorScheme';
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
+  const [showCreate, setShowCreate] = useState(false)
   const { isLoggedIn, emailVerified, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
@@ -51,10 +52,13 @@ const Navbar = () => {
           <NavLink to="/calendar" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Calendar</NavLink> 
         </div>
         <div>
-            <NavLink to="/" className={"px-3 py-2 bg-emerald-500 hover:bg-emerald-700 rounded-md mr-5 duration-150 text-white text-md font-normal hover:font-bold hover:shadow-sm"}>Create Event</NavLink> 
-            <NavLink to="/" className={"px-3 py-2 bg-blue-500 hover:bg-blue-700 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm"}>Login</NavLink> 
-            <NavLink to="/" className={"px-3 py-2 bg-gray-500 hover:bg-gray-700 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm"}>Signup</NavLink> 
+          <NavLink onClick={() => setShowCreate(true)} className={"px-3 py-2 bg-emerald-500 hover:bg-emerald-700 rounded-md mr-5 duration-150 text-white text-md font-normal hover:font-bold hover:shadow-sm"}>
+            Create Event
+          </NavLink> 
+          <NavLink to="/" className={"px-3 py-2 bg-blue-500 hover:bg-blue-700 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm"}>Login</NavLink> 
+          <NavLink to="/" className={"px-3 py-2 bg-gray-500 hover:bg-gray-700 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm"}>Signup</NavLink> 
         </div>
+        <CreateEventModal show={showCreate} setShow={setShowCreate} />
       </nav>
     </>
   );

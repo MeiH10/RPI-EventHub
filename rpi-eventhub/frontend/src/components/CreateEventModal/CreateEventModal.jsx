@@ -113,8 +113,7 @@ const getPage = (num, pdf) => {
 
 
 
-function CreateEventModal() {
-  const [show, setShow] = useState(false);
+function CreateEventModal({show, setShow}) {
   const [title, setTitle] = useState('');
   const [club, setClub] = useState('');
   const [rsvp, setRSVP] = useState('');
@@ -251,10 +250,6 @@ function CreateEventModal() {
 
   return (
     <>
-      <Button variant="success" onClick={handleShow}>
-        Create Event
-      </Button>
-
       <Modal
         show={show}
         onHide={handleClose}
