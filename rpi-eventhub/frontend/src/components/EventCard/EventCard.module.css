@@ -102,7 +102,7 @@
     color: var(--muted-text-color);
   }
   
-  .tags {
+  /* .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -115,8 +115,41 @@
     padding: 4px 8px;
     font-size: 0.875em;
     color: var(--tag-text-color);
-  }
-  
+  } */
+  /* Updated styles for event tags */
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background-color: #f3f4f6;
+  color: #333;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+
+/* Different colors for different tags */
+.tag.tech { background-color: #4CAF50; color: white; }
+.tag.academic { background-color: #2196F3; color: white; }
+.tag.food { background-color: #FF9800; color: white; }
+.tag.sports { background-color: #E91E63; color: white; }
+.tag.career { background-color: #9C27B0; color: white; }
+.tag.default { background-color: #607D8B; color: white; }
+
+/* Hover effect */
+.tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
   .deleteButton {
     background: var(--delete-button-bg-color);
     color: var(--delete-button-text-color);
