@@ -5,8 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import config from '../../config';
 import styles from './LoginModal.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
-function LoginModal() {
-  const [show, setShow] = useState(false);
+function LoginModal({ show, setShow }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,10 +48,6 @@ function LoginModal() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Log In
-      </Button>
-
       <Modal
         show={show}
         onHide={handleClose}
