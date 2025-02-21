@@ -9,7 +9,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 import { DateTime } from 'luxon';
 
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; //import for button on calander view
+import { FaChevronLeft, FaChevronRight, FaCalendar, FaDownload } from "react-icons/fa"; //import for button on calander view
 
 
 const timeZone = 'America/New_York';
@@ -160,14 +160,14 @@ const CalendarPage = () => {
             <NavBar />
             <div className="flex-1 pt-20 px-2 md:px-4">
                 <div className="max-w-[1400px] mx-auto">
-                    <div className="text-center mb-4 space-y-2">
+                    <div className="flex justify-center text-center gap-2 mb-4 space-y-2">
                         <button 
                             onClick={captureCalendarScreenshot}
-                            className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded transition-colors"
-                        >
-                            Save Calendar as Image
+                            className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded transition-colorswhitespace-nowrap flex items-center gap-2"
+                        >   <FaDownload />
+                            <span>Save Calendar as Image</span>
                         </button>
-                        <div className="flex items-center justify-center gap-2 mt-2">
+                        <div className="flex items-center gap-2 mt-1">
                             <label className="inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -194,9 +194,9 @@ const CalendarPage = () => {
                             </button>
                             <button 
                                 onClick={goToToday}
-                                className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded text-sm"
-                            >
-                                Today
+                                className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded text-sm whitespace-nowrap flex items-center gap-2"
+                            >   <FaCalendar />
+                                <span>Today</span>
                             </button>
                             <button 
                                 onClick={() => handleWeekChange(1)}
