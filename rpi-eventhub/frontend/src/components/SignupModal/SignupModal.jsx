@@ -5,8 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import config from '../../config';
 import styles from './SignupModal.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
-function SignupModal() {
-  const [show, setShow] = useState(false);
+function SignupModal({show, setShow}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -93,10 +92,6 @@ function SignupModal() {
 
   return (
       <>
-        <Button variant="secondary" onClick={handleShow}>
-          Sign Up
-        </Button>
-
         <Modal className={styles.modalContainer} show={show} onHide={handleClose} backdrop="static" keyboard={false}>
           <Modal.Header className={styles.modalHeader}>
             <Modal.Title className={styles.modalTitle}>Join RPI Event Hub!</Modal.Title>
