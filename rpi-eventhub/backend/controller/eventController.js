@@ -77,7 +77,6 @@ const createNewEvent = async (req, res) => {
  */
 const getAllEvents = async (req, res) => {
     try {
-
         // make sure that the Event model here is the Event schema from Mongoose, not the JS one.
         const events = await Event.find();
         res.status(200).json(events);

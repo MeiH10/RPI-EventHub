@@ -22,6 +22,9 @@ function SignupModal() {
   const [passwordTouched, setPasswordTouched] = useState(false);
   const { isDark } = useColorScheme();
 
+  // Email Verification Countdown
+  const [countdown, setCountdown] = useState(0);
+
   const handleClose = () => {
     setShow(false);
     setError('');
@@ -69,14 +72,26 @@ function SignupModal() {
       const response = await axios.post(`${config.apiUrl}/signup`, user);
       console.log('Initial signup successful');
       setShowVerification(true);
+      // Start countdown
+      setCountdown(60);
       setError('');
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
+      setCountdown(Math.ceil(error.response.data.retryAfter / 1000));
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Countdown effect
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdown]);
 
   const handleVerification = async (e) => {
     e.preventDefault();
@@ -269,6 +284,18 @@ function SignupModal() {
           >
             {showVerification ? 'Verify' : 'Sign Up'}
           </Button>
+          {showVerification &&
+              (
+                <Button
+                  variant="success"
+                  className={`${styles.button}`}
+                  onClick={handleInitialSignup}
+                  disabled={countdown > 0}
+                >
+                  {countdown > 0 ? `Resend Code (${countdown}s)` : 'Resend Code'}
+                </Button>
+              )
+          }
         </Modal.Footer>
       </Modal>
     </>
