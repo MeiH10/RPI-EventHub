@@ -33,6 +33,7 @@ function AllEvents() {
     const [filters, setFilters] = useState({
         tags: [],
         time: ['upcoming', 'today'],
+        postedBy: ['student', 'rpi'],
         sortMethod: 'likes',
         sortOrder: 'desc'
     });
@@ -145,6 +146,7 @@ function AllEvents() {
         const defaultFilters = {
             tags: [],
             time: ['upcoming', 'today'],
+            postedBy: ['student', 'rpi'],
             sortMethod: 'likes',
             sortOrder: 'desc'
         };
@@ -164,6 +166,14 @@ function AllEvents() {
         if (filters.tags.length > 0) {
             filtered = filtered.filter(event =>
                 filters.tags.every(tag => event.tags?.includes(tag))
+            );
+        }
+
+        // Apply "Posted by" filter
+        if (filters.postedBy && filters.postedBy.length > 0) {
+            filtered = filtered.filter(event =>
+                (filters.postedBy.includes("student") && event.poster !== "RPI") ||
+                (filters.postedBy.includes("rpi") && event.poster === "RPI")
             );
         }
 
