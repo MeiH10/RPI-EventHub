@@ -9,11 +9,13 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 import { DateTime } from 'luxon';
 
-import { FaChevronLeft, FaChevronRight, FaCalendar, FaDownload } from "react-icons/fa"; //import for button on calander view
+import { FaChevronLeft, FaChevronRight, FaCalendar, FaDownload, FaPencilAlt} from "react-icons/fa"; //import for button on calander view
 
 
 const timeZone = 'America/New_York';
-const weekButtonClassName = "flex flex-wrap justify-center gap-2 mb-4"
+const weekButtonClassName = "flex flex-wrap justify-center gap-2 mb-4";
+const DATE = new Date();
+const TODAY = DATE.getDay();
                         
 
 const formatTime = (utcDateString) => {
@@ -190,8 +192,9 @@ const CalendarPage = () => {
                                     className="sr-only peer"
                                 />
                                 <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#E8495F]"></div>
-                                <span className={`ml-2 text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                                    Show Flyers
+                                <span className={`px-2 py-2 rounded-md flex items-center gap-1 hover:bg-[#d13b50] transition-colors duration-200 cursor-pointer ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                    <FaPencilAlt />
+                                    <span>Show Flyers</span>
                                 </span>
                             </label>
                         </div>
@@ -241,14 +244,15 @@ const CalendarPage = () => {
                                 →
                             </button>
                         </div>
-
+                        
                         <div className={`grid grid-cols-3 md:grid-cols-7 gap-[1px] ${isDark ? 'bg-gray-600' : 'bg-black'}`}>
                             {[0, 1, 2, 3, 4, 5, 6].map((day) => (
                                 <div 
                                     key={day}
+                                    
                                     className={`${isDark ? 'bg-gray-700' : 'bg-white'} ${day < mobileStartIndex || day >= mobileStartIndex + 3 ? 'md:block hidden' : 'block'}`}
                                 >
-                                    <h3 className={`text-xs md:text-sm font-bold p-2 border-b ${isDark ? 'border-gray-600 text-white' : 'border-black text-black'} text-center truncate`}>
+                                    <h3 className={`text-xs md:text-sm font-bold p-2 border-b ${isDark ? 'border-gray-600 text-white' : 'border-black text-black'} ${day === TODAY ? 'bg-gradient-to-r from-[#E8495F] to-[#f595a5] text-white' : ''} text-center truncate`}>
                                         {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]}
                                     </h3>
                                     <div className="min-h-[100px] p-1 space-y-1">
