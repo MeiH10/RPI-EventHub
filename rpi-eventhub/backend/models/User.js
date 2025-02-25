@@ -6,7 +6,11 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  emailVerified: { type: Boolean, default: false }, // Added for email verification
+  role: {
+    type: Number, // Role as an integer
+    enum: [0, 1, 2, 3, 4], // Banned, Unverified, Verified, ClubOfficer, Admin
+    default: 1 // Default to "unverified" for new users
+  },
   verificationCode: { type: String, required: false }, // Optional: For storing the email verification code
   likedEvents: [{
     type: mongoose.Schema.Types.ObjectId,
