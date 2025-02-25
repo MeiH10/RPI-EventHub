@@ -13,6 +13,8 @@ import { FaChevronLeft, FaChevronRight, FaCalendar, FaDownload } from "react-ico
 
 
 const timeZone = 'America/New_York';
+const weekButtonClassName = "flex flex-wrap justify-center gap-2 mb-4"
+                        
 
 const formatTime = (utcDateString) => {
     if (!utcDateString) return 'Unavailable';
@@ -134,7 +136,16 @@ const CalendarPage = () => {
         await loadAllImages();
         if (calendarRef.current) {
             // Remove the truncate class to prevent text cropping
+
+            //find a way to remove the 3 buttons
             const titles = calendarRef.current.querySelectorAll('.truncate');
+
+            //add buttons to a hidden class so not captured
+            const BCN = '.' + weekButtonClassName.replace(/\s+/g, '.');
+            const buttonContainer = calendarRef.current.querySelector(BCN);
+            buttonContainer.classList.add('hidden');
+
+
             titles.forEach(title => title.classList.remove('truncate'));
 
             html2canvas(calendarRef.current, { useCORS: true }).then((canvas) => {
@@ -144,6 +155,8 @@ const CalendarPage = () => {
                 link.download = `calendar-${weekRange.start}-to-${weekRange.end}.png`;
                 link.click();
 
+                //remove the hidden class
+                buttonContainer.classList.remove('hidden');
                 // Add the truncate class back after capturing the screenshot
                 titles.forEach(title => title.classList.add('truncate'));
             });
@@ -155,6 +168,7 @@ const CalendarPage = () => {
         fetchEvents();
     }, [currentStartDate]);
     //Line 188: look into how you can change the icon to be more accurate
+    //Hide the Three Buttons in the screenshot
     return (
         <div className={`min-h-screen flex flex-col ${isDark ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400'}`}>
             <NavBar />
@@ -182,9 +196,9 @@ const CalendarPage = () => {
                             </label>
                         </div>
                     </div>
-
+                    
                     <div ref={calendarRef} className={`w-full p-4 border-2 ${isDark ? 'bg-gray-800 border-gray-600' : 'bg-white border-black'}`}>
-                        <div className="flex flex-wrap justify-center gap-2 mb-4">
+                        <div className={weekButtonClassName}>
                             <button 
                                 onClick={() => handleWeekChange(-1)}
                                 className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded text-sm whitespace-nowrap flex items-center gap-2"
