@@ -16,6 +16,7 @@ const timeZone = 'America/New_York';
 const weekButtonClassName = "flex flex-wrap justify-center gap-2 mb-4";
 const DATE = new Date();
 const TODAY = DATE.getDay();
+
                         
 
 const formatTime = (utcDateString) => {
@@ -39,6 +40,7 @@ const CalendarPage = () => {
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const calendarRef = useRef(null);
+    const [weekOffSet, setWeekOffSet] = useState(0);
 
     const parseDateAsEST = (utcDate) => {
         const date = new Date(utcDate);
@@ -81,6 +83,7 @@ const CalendarPage = () => {
 
     const handleWeekChange = (offset) => {
         const newStartDate = new Date(currentStartDate);
+        setWeekOffSet((prevWeekOffSet) => prevWeekOffSet + offset);
         newStartDate.setDate(currentStartDate.getDate() + offset * 7);
         setCurrentStartDate(newStartDate);
         setMobileStartIndex(0);
@@ -89,6 +92,7 @@ const CalendarPage = () => {
 
     const goToToday = () => {
         const today = new Date();
+        setWeekOffSet(0);
         setCurrentStartDate(today);
         setMobileStartIndex(0);
         getWeekRange(today);
@@ -210,7 +214,9 @@ const CalendarPage = () => {
                                 <span>Previous Week</span>
                             </button>
                             <button 
+                            
                                 onClick={goToToday}
+                                
                                 className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded text-sm whitespace-nowrap flex items-center gap-2"
                             >   <FaCalendar />
                                 <span>Today</span>
@@ -249,10 +255,11 @@ const CalendarPage = () => {
                             {[0, 1, 2, 3, 4, 5, 6].map((day) => (
                                 <div 
                                     key={day}
+                                
                                     
                                     className={`${isDark ? 'bg-gray-700' : 'bg-white'} ${day < mobileStartIndex || day >= mobileStartIndex + 3 ? 'md:block hidden' : 'block'}`}
-                                >
-                                    <h3 className={`text-xs md:text-sm font-bold p-2 border-b ${isDark ? 'border-gray-600 text-white' : 'border-black text-black'} ${day === TODAY ? 'bg-gradient-to-r from-[#E8495F] to-[#f595a5] text-white' : ''} text-center truncate`}>
+                                >   
+                                    <h3 className={`text-xs md:text-sm font-bold p-2 border-b ${isDark ? 'border-gray-600 text-white' : 'border-black text-black'} ${day === TODAY && weekOffSet === 0 ? 'bg-gradient-to-r from-[#E8495F] to-[#f595a5] text-white' : ''} text-center truncate`}>
                                         {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]}
                                     </h3>
                                     <div className="min-h-[100px] p-1 space-y-1">
