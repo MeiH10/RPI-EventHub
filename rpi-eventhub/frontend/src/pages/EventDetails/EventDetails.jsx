@@ -503,10 +503,10 @@ const EventDetails = () => {
                     (
                         <div className={styles.container}>
                             <div className={styles.eventPoster}>
-                                <div className="relative max-w-full">
+                                <div className="flex justify-center relative max-w-full">
                                     <img
                                         ref={imageRef}
-                                        src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title}
+                                        src={event.image || ''}
                                         className="max-w-full h-auto"
                                         onLoad={(e) => {
                                             setImageSize({
@@ -527,7 +527,7 @@ const EventDetails = () => {
                                     )}
                                 </div>
                             </div>
-                            <div className={styles.eventInfo}>
+                            <div className={`${!event.image ? 'text-center' : styles.eventInfo}`}>
                                 <h1>{event.title}</h1>
                                 <p><strong>About:</strong> {event.description}</p>
                                 <p><strong>Club/Organization:</strong> {event.club}</p>
