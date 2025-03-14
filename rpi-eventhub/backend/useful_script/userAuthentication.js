@@ -3,6 +3,12 @@ const User = require("../models/User");
 require('dotenv').config();
 const jwtSecret = process.env.JWT_SECRET;
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
+
 const authenticate = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
@@ -30,8 +36,10 @@ const authenticateAndVerify = async (req, res, next) => {
             throw new Error('User not found');
         }
 
-        if (!user.emailVerified) {
+        if (user.role === UNVERIFIED) {
             return res.status(403).json({ message: 'Please verify your email to perform this action.' });
+        } else if (user.role === BANNED) {
+            return res.status(403).json({ message: 'Your account has been banned. If you believe this is a mistake, please reach out to site admin.' });
         }
 
         req.user = user;

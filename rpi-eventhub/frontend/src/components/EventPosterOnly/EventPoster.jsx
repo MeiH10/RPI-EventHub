@@ -6,8 +6,13 @@ import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const ADMIN = 3;
+
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
-  const { username } = useAuth();
+  const { username, role } = useAuth();
   const { deleteEvent } = useEvents();
   const [likeCount, setLikeCount] = useState(0); 
   const [liked, setLiked] = useState(false); 
@@ -30,8 +35,8 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
     fetchUserLikeStatus();
   }, [id]);
 
-  const canSeeDeleteButton = (user_name) => {
-    return user_name === 'admin' || user_name === author;
+  const canSeeDeleteButton = (user_name, role) => {
+    return role === ADMIN || user_name === author;
   };
 
   const handleLike = useCallback(async () => {
@@ -123,7 +128,7 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
           <h1 className={style.eventPosterTitle}>{title}</h1>
         </Link>
         <p className={style.eventPosterDescription}>{description}</p>
-        {canSeeDeleteButton(username) && (
+        {canSeeDeleteButton(username, role) && (
           <button onClick={handleDelete} className={`${style.deleteButton} btn-danger btn`}>
             Delete
           </button>
