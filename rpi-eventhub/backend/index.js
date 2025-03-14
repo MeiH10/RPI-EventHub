@@ -74,6 +74,7 @@ app.get('/usernames', fetchAllUsernames);
 app.get('/verify-token', authenticate, verifyToken);
 //#endregion
 
+require('./archiveOldEventsCron');
 
 // ---------------------------- FRONTEND ----------------------------
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
