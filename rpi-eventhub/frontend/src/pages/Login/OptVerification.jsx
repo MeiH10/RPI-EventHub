@@ -1,34 +1,32 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from "axios";
 import config from "../../config";
+import { useAuth } from "../../context/AuthContext";
+import {Bounce, toast, ToastContainer} from "react-toastify";
 
 const OTPVerification = ( email ) => {
     const [digits, setDigits] = useState(['', '', '', '', '', '']);
     const inputsRef = useRef([]);
     const submitRef = useRef(null);
+    const { login } = useAuth();
 
     const handleKeyDown = (index) => (e) => {
-        // 允许使用的按键
         const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'];
 
-        // 阻止非法字符输入
         if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key) && !e.metaKey) {
             e.preventDefault();
         }
 
-        // 处理删除逻辑
         if (e.key === 'Backspace' || e.key === 'Delete') {
             e.preventDefault();
             const newDigits = [...digits];
 
-            // 情况1：当前有值，直接删除当前值
             if (newDigits[index]) {
                 newDigits[index] = '';
                 setDigits(newDigits);
                 return;
             }
 
-            // 情况2：当前无值，删除前一个值
             if (index > 0) {
                 newDigits[index - 1] = '';
                 setDigits(newDigits);
@@ -38,7 +36,7 @@ const OTPVerification = ( email ) => {
     };
 
     const handleInput = (index) => (e) => {
-        const value = e.target.value.slice(-1); // 确保只取最后一个字符
+        const value = e.target.value.slice(-1);
         if (/^[0-9]$/.test(value)) {
             const newDigits = [...digits];
             newDigits[index] = value;
@@ -67,8 +65,6 @@ const OTPVerification = ( email ) => {
         e.preventDefault();
         const otp = digits.join('');
         const rpiEmail = email.email + "@rpi.edu";
-        console.log('Submitted OTP:', otp);
-        console.log('Email:', rpiEmail);
         try {
             const response = await axios.post(
                 `${config.apiUrl}/verify-email`,
@@ -76,7 +72,8 @@ const OTPVerification = ( email ) => {
             );
 
             if (response.status === 200) {
-                //TODO: update Token
+                const { token } = response.data;
+                login(token);
                 console.log('Verification successful');
                 handelRedirect();
             }
@@ -86,11 +83,32 @@ const OTPVerification = ( email ) => {
     };
 
     const handelRedirect = () => {
-        window.location.href = '/login';
+        toast.success("Verification successful! You will be redirected to homepage.", {
+            onClose: () => {
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            }
+        });
     }
+
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center">
+            <ToastContainer
+                position="top-right"
+                style={{ top: '70px' }}
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                transition={Bounce}
+            />
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-full max-w-md mx-auto text-center bg-white p-4 sm:px-8 sm:py-10 rounded-xl shadow font-sans">
                 <header className="mb-8 sm:mb-8">
                     <h1 className="text-2xl font-bold mb-1">Email Verification</h1>

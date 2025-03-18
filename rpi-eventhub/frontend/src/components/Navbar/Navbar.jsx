@@ -107,15 +107,22 @@ const Navbar = () => {
                   </button>
                 </div>
               ) : (
-                <>
-                  <li className={styles.navItem}>
-                    <LoginModal />
-                  </li>
-                  <li className={styles.navItem}>
-                    <SignupModal />
-                  </li>
-
-                </>
+                <div className="flex gap-4 m-2">
+                  <NavLink to={'/login'} >
+                    <button
+                        className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                    >
+                      {'Log In'}
+                    </button>
+                  </NavLink>
+                  <NavLink to={'/signup'}>
+                    <button
+                        className={`btn ${manageMode ? 'btn-warning' : 'btn-primary'}`}
+                    >
+                      {'Sign Up'}
+                    </button>
+                  </NavLink>
+                </div>
               )}
                 <li className={styles.navItem}>
                   <DarkModeToggle />
@@ -185,14 +192,22 @@ const Navbar = () => {
                 </button>
               </div>
             ) : (
-              <>
-                <li className={styles.drawerItem}>
-                  <LoginModal />
-                </li>
-                <li className={styles.drawerItem}>
-                  <SignupModal />
-                </li>
-              </>
+                <div className="flex gap-4 m-2">
+                <NavLink to={'/login'} >
+                  <button
+                      className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                  >
+                    {'Sign Up'}
+                  </button>
+                </NavLink>
+                <NavLink to={'/signup'}>
+                  <button
+                      className={`btn ${manageMode ? 'btn-warning' : 'btn-primary'}`}
+                  >
+                    {'Sign In'}
+                  </button>
+                </NavLink>
+              </div>
             )}
 
                 <li className={styles.navItem}>

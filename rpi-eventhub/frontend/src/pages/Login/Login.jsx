@@ -1,16 +1,24 @@
 import React from "react";
 import EventHubLogo from "../../assets/EventHubLogo2.png";
+import {NavLink} from "react-router-dom";
 
 export default function Login() {
+
+
+
     return (
         <div className="flex min-h-full justify-center items-center">
             <div className="bg-white/30 backdrop-blur-lg rounded-3 h-max w-2/4 mt-10 flex-col justify-center items-center px-6 py-12 lg:px-8 font-sans">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm justify-content-center items-center">
-                    <img
-                        alt="EventHub Logo"
-                        src={EventHubLogo}
-                        className="mx-auto h-20 w-auto"
-                    />
+                    <NavLink
+                        to="/"
+                    >
+                        <img
+                            alt="EventHub Logo"
+                            src={EventHubLogo}
+                            className="mx-auto h-20 w-auto hover:cursor-pointer"
+                        />
+                    </NavLink>
                     <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
                         Sign in to your account
                     </h2>

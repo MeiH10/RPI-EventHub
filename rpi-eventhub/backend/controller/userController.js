@@ -1,4 +1,12 @@
-const { signUpUser, verifyEmail, loginUser, getAllUsernames } = require('../services/userService');
+const {
+    signUpUser,
+    verifyEmail,
+    loginUser,
+    getAllUsernames,
+    verifyEmailExists,
+    resetPassword,
+    sendCode,
+} = require('../services/userService');
 
 const signUp = async (req, res) => {
     try {
@@ -47,4 +55,43 @@ const fetchAllUsernames = async (req, res) => {
     }
 };
 
-module.exports = { signUp, verifyUserEmail, login, fetchAllUsernames };
+
+const resetUserPassword = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const result = await resetPassword(email, password);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ message: error.message, error: error.message });
+    }
+}
+
+const userExists = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const result = await verifyEmailExists(email)
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ message: error.message, error: error.message });
+    }
+}
+
+const sendCodeEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const result = await sendCode( email );
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ message: error.message, error: error.message });
+    }
+}
+
+module.exports = {
+    signUp,
+    verifyUserEmail,
+    login,
+    fetchAllUsernames,
+    userExists,
+    resetUserPassword,
+    sendCodeEmail
+};

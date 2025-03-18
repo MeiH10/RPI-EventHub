@@ -1,5 +1,9 @@
 import React, {useEffect, useState} from "react";
 import EventHubLogo from "../../assets/EventHubLogo2.png";
+import {NavLink} from "react-router-dom";
+import axios from "axios";
+import {Bounce, toast, ToastContainer} from "react-toastify";
+import config from "../../config";
 
 const Stepper = ({ steps, currentStep }) => {
     return (
@@ -30,8 +34,8 @@ const Stepper = ({ steps, currentStep }) => {
                                 currentStep === index ? "text-indigo-600 font-medium" : "text-gray-500"
                             }`}
                         >
-              {step}
-            </span>
+                          {step}
+                        </span>
                     </div>
                 ))}
             </div>
@@ -45,7 +49,6 @@ function ForgetPassWord() {
     const [code, setCode] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-
     const [countdown, setCountdown] = useState(0);
 
     useEffect(() => {
@@ -58,18 +61,80 @@ function ForgetPassWord() {
 
     const steps = ["Verify Email", "Enter Code", "New Password"];
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (email === "") {
+            toast.error("Please enter your email.");
+            setLoading(false);
+            return;
+        }
+
+        switch (currentStep) {
+            case 0:
+                try {
+                    console.log(email+"@rpi.edu");
+                    const response = await axios.post(`${config.apiUrl}/check-user-exists`, {email: email+"@rpi.edu"});
+                    if (response.status === 200) {
+                        const codeResponse = await axios.post(`${config.apiUrl}/send-code`, {email: email+"@rpi.edu"});
+                        if (codeResponse.status === 200) {
+                            toast.success("Verification code sent to your email.");
+                            setCurrentStep(1);
+                        }
+                    }
+                }catch (error) {
+                    console.error("Error:", error);
+                    toast.error("Bad Request: " + error.response?.data?.error);
+                    setLoading(false);
+                    return;
+                }
+                break;
+            case 1:
+                // Handle code verification
+                console.log("Code:", code);
+                setCurrentStep(2);
+                break;
+            case 2:
+                // Handle password reset
+                console.log("New Password:", password);
+                break;
+            default:
+
+                console.error("Invalid step");
+        }
+
+        setLoading(false);
+    }
 
 
     return (
         <div>
             <div className="flex min-h-full justify-center items-center">
+                <ToastContainer
+                    position="top-right"
+                    style={{ top: '70px' }}
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                    transition={Bounce}
+                />
                 <div className="bg-white/30 backdrop-blur-lg rounded-3 h-max w-2/4 mt-10 flex-col justify-center items-center px-6 py-12 lg:px-8 font-sans">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm justify-content-center items-center">
-                        <img
-                            alt="EventHub Logo"
-                            src={EventHubLogo}
-                            className="mx-auto h-20 w-auto"
-                        />
+                        <NavLink
+                            to="/"
+                        >
+                            <img
+                                alt="EventHub Logo"
+                                src={EventHubLogo}
+                                className="mx-auto h-20 w-auto hover:cursor-pointer"
+                            />
+                        </NavLink>
                         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
                             Reset your password
                         </h2>
@@ -79,7 +144,7 @@ function ForgetPassWord() {
 
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form action="#" method="POST" className="space-y-6">
-                            {currentStep === 1 && <div>
+                            {currentStep === 0 && <div>
                                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                                     RPI Email address
                                 </label>
@@ -90,6 +155,7 @@ function ForgetPassWord() {
                                             name="email"
                                             type="email"
                                             required
+                                            onChange={(e) => setEmail(e.target.value)}
                                             autoComplete="email"
                                             className="block w-full rounded-md bg-white px-3 py-1.5 pr-20 text-base text-gray-900
                 outline outline-1 outline-gray-300 placeholder:text-gray-400
@@ -137,7 +203,7 @@ function ForgetPassWord() {
                             }
 
                             {
-                                currentStep === 0 &&
+                                currentStep === 2 &&
                                 <div>
                                     <div className="flex items-center justify-between">
                                         <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
@@ -178,12 +244,12 @@ function ForgetPassWord() {
                                 <button
                                     type="submit"
                                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                    onClick={handleSubmit}
                                 >
                                     Continue
                                 </button>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>

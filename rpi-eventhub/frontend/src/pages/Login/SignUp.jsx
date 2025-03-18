@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import EventHubLogo from "../../assets/EventHubLogo2.png";
 import OptVerification from "./OptVerification";
 import axios from "axios";
 import config from "../../config";
-import {jwtDecode} from "jwt-decode";
-import {AuthProvider} from "../../context/AuthContext";
+import {useAuth} from "../../context/AuthContext";
+import {Bounce, toast, ToastContainer} from "react-toastify";
+import {NavLink} from "react-router-dom";
 
 export default function Signup() {
     // form information
@@ -76,26 +77,28 @@ export default function Signup() {
 
         try {
             const response = await axios.post(`${config.apiUrl}/signup`, user);
-            console.log(response.data);
+            toast.success("Sign up successful, please check your email for verification.");
+            setVerificationButtonShow(true);
         } catch (error) {
             console.error(error);
+            toast.error("Error signing up, " + error.response.data.message);
         }
-
-        console.log("Email: ", email);
-        console.log("Password: ", password);
-        console.log("Confirm Password: ", confirmPassword);
-        setVerificationButtonShow(true);
     };
+
 
     return (
         <div className="flex min-h-full justify-center items-center">
-            <div className="z-10 bg-white/30 backdrop-blur-lg rounded-3 h-max w-full md:w-2/4 mt-10 flex-col justify-center items-center px-4 py-8 md:px-6 md:py-12 lg:px-8 font-sans">
+            <div className="z-10 bg-white/30 backdrop-blur-md rounded-3 h-max w-full md:w-2/4 mt-10 flex-col justify-center items-center px-4 py-8 md:px-6 md:py-12 lg:px-8 font-sans">
                 <div className="w-full px-4 md:px-0 sm:mx-auto sm:w-full sm:max-w-sm justify-content-center items-center">
-                    <img
-                        alt="EventHub Logo"
-                        src={EventHubLogo}
-                        className="mx-auto h-20 w-auto"
-                    />
+                    <NavLink
+                        to="/"
+                    >
+                        <img
+                            alt="EventHub Logo"
+                            src={EventHubLogo}
+                            className="mx-auto h-20 w-auto hover:cursor-pointer"
+                        />
+                    </NavLink>
                     <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
                         Join RPI EventHub!
                     </h2>
@@ -140,7 +143,7 @@ export default function Signup() {
                                 Username
                             </label>
                             <div className="mt-2 relative">
-                                <div className="flex items-center">
+                                <div className="flex items-center" data-tip="hello">
                                     <input
                                         id="username"
                                         name="username"
