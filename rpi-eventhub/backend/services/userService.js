@@ -41,7 +41,7 @@ const signUpUser = async (username, email, password) => {
         username,
         email,
         password,
-        role: UNIVERIFIED,
+        role: UNVERIFIED,
         verificationCode,
     });
     await user.save();
