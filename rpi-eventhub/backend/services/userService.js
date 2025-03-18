@@ -7,6 +7,12 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const jwtSecret = process.env.JWT_SECRET;
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
+
 
 /**
  * Sign up a new user
@@ -35,7 +41,7 @@ const signUpUser = async (username, email, password) => {
         username,
         email,
         password,
-        emailVerified: false,
+        role: UNIVERIFIED,
         verificationCode,
     });
     await user.save();
@@ -49,7 +55,7 @@ const signUpUser = async (username, email, password) => {
     });
 
     const token = jwt.sign(
-        { userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username },
+        { userId: user._id, email: user.email, role: user.role, username: user.username },
         process.env.JWT_SECRET,
         { expiresIn: '24h' }
     );
@@ -60,7 +66,7 @@ const signUpUser = async (username, email, password) => {
         message: "User created successfully. Please check your email to verify your account.",
         token,
         email: user.email,
-        emailVerified: user.emailVerified,
+        role: user.role,
     };
 };
 
@@ -84,12 +90,12 @@ const verifyEmail = async (email, verificationCode) => {
 
     // If the verification code matches, update the user's emailVerified status
     if (user.verificationCode === verificationCode) {
-        user.emailVerified = true;
+        user.role = VERIFIED;
         user.verificationCode = '';
         await user.save();
 
         const token = jwt.sign(
-            { userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username },
+            { userId: user._id, email: user.email, role: user.role, username: user.username },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
@@ -110,7 +116,7 @@ const verifyEmail = async (email, verificationCode) => {
  * This function logs in the user
  * @param email
  * @param password
- * @returns {Promise<{emailVerified: *, message: string, userId: *, token: (*)}>}
+ * @returns {Promise<{role: *, message: string, userId: *, token: (*)}>}
  */
 const loginUser = async (email, password) => {
 
@@ -128,7 +134,7 @@ const loginUser = async (email, password) => {
 
     // use the jwt token to authenticate the user
     const token = jwt.sign(
-        { userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username },
+        { userId: user._id, email: user.email, role: user.role, username: user.username },
         jwtSecret,
         { expiresIn: '24h' }
     );
@@ -138,7 +144,7 @@ const loginUser = async (email, password) => {
     return {
         token,
         userId: user._id,
-        emailVerified: user.emailVerified,
+        role: user.role,
         message: "Logged in successfully",
     };
 };
