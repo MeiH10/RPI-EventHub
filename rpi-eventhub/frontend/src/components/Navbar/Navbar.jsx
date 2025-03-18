@@ -16,8 +16,8 @@ import { useColorScheme } from '../../hooks/useColorScheme';
 const BANNED = 0;
 const UNVERIFIED = 1;
 const VERIFIED = 2;
-const ADMIN = 3;
-
+const OFFICER = 3;
+const ADMIN = 4;
 
 const Navbar = () => {
   const [click, setClick] = useState(false);

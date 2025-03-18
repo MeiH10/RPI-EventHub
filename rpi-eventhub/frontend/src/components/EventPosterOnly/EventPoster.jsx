@@ -9,7 +9,8 @@ import { useAuth } from '../../context/AuthContext';
 const BANNED = 0;
 const UNVERIFIED = 1;
 const VERIFIED = 2;
-const ADMIN = 3;
+const OFFICER = 3;
+const ADMIN = 4;
 
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   const { username, role } = useAuth();
