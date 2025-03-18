@@ -11,6 +11,12 @@ import ReactGA from "react-ga4";
 
 const timeZone = 'America/New_York';
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
+
 
 const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit }) => {
   const {isLoggedIn} = useAuth();
