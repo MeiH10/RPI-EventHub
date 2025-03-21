@@ -5,10 +5,16 @@ import { useAuth } from '../../context/AuthContext';
 import {jwtDecode} from 'jwt-decode';
 import config from '../../config';
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
+
 function VerifyModal() {
   const [show, setShow] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
-  const { isLoggedIn, login } = useAuth();
+  const { isLoggedIn, login, role } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -59,7 +65,7 @@ function VerifyModal() {
 
   return (
     <>
-      {isLoggedIn && (
+      {isLoggedIn && role < VERIFIED && (
         <Button variant="warning" onClick={handleShow}>
           Verify Email
         </Button>
