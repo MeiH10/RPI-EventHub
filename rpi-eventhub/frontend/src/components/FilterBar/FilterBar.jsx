@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
+import formData from '../../pages/EventDetails/EventDetails'
 
-function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
+function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, sortOrg, setSortOrg, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isListView, setIsListView] = useState(false);
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
+    const [selectedPostedByOrg, setSelectedPostedByOrg] = useState(["a-z", "z-a"])
     const { isDark } = useColorScheme();
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -27,14 +29,20 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
         );
     };
 
+    const handlePostedByOrgChange = (org) => {
+        setSelectedPostedByOrg((prev) =>
+            prev.includes(org) ? prev.filter((p) => p !== org) : [...prev, org]
+        );
+    };
+
     const clearAll = () => {
         setSelectedTags([]);
         setSelectedTime([]);
     };
 
     useEffect(() => {
-        onFilterChange({ tags: selectedTags, time: selectedTime, postedBy: selectedPostedBy, sortMethod, sortOrder });
-    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange]);
+        onFilterChange({ tags: selectedTags, time: selectedTime, postedBy: selectedPostedBy, postedByOrg: selectedPostedByOrg, sortMethod, sortOrder, sortOrg });
+    }, [selectedTags, selectedTime, selectedPostedBy,selectedPostedByOrg, sortMethod, sortOrder, sortOrg, onFilterChange]);
 
     const toggleDrawer = () => {
         setIsDrawerOpen((prev) => !prev);
@@ -111,6 +119,15 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                     >
                         <option value="asc" className="text-black dark:text-white">Ascending</option>
                         <option value="desc" className="text-black dark:text-white">Descending</option>
+                    </select>
+                    <label htmlFor="sortOrg">Organization</label>
+                    <select
+                        id="sortOrg"
+                        value={sortOrg}
+                        onChange={(e) => setSortOrg(e.target.value)}
+                    >   <option value="asc" className="text-black dark:text-white">a to z</option>
+                        <option value="dsc" className="text-black dark:text-white">z to a</option>
+                        <option value={formData.club} className="text-black dark:text-white">{formData.club}</option>
                     </select>
                 </div>
                 <div className={styles.separator}></div>
