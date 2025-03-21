@@ -38,7 +38,7 @@ const signUpUser = async (username, email, password) => {
         if (!existingUser.emailVerified) {
             existingUser.verificationCode = verificationCode;
             await existingUser.save();
-            await sendCode(username, email, password)
+            await sendCode( email, code )
             return {
                 message: "Your code has resend, please check your email for the verification code.",
             };
@@ -96,8 +96,9 @@ const verifyEmail = async (email, verificationCode) => {
 
 
     // Check if its expired
-    const isExpired = Date.now() > parseInt(expiresAt, 10);
+    const isExpired = Date.now() > parseInt(expiresAt, 15);
     if (isExpired) {
+        user.emailVerified = false;
         user.verificationCode = '';
         await user.save();
         throw new Error("Verification Code Expired, Please Send Again");
@@ -185,7 +186,9 @@ const getAllUsernames = async () => {
 };
 
 /**
- *
+ * This function is serving to send a new verification code to the user
+ * @param email the email of the user
+ * @param code the verification code
  */
 const sendCode = async ( email, code ) => {
     await sendEmail({
@@ -223,7 +226,7 @@ Official Website: https://rpieventhub.com`
 /**
  * This function will be used to delete the user by just email
  * @param email
- * @returns {Promise<{message: string, deletedUser: {username: *, email: *}}>}
+ * @returns {Promise<{message: string, deletedUser: {username: string, email: string}}>}
  */
 const deleteUser = async (email) => {
     try {
@@ -252,15 +255,34 @@ const deleteUser = async (email) => {
  * This function will be used to reset the password
  * @param email
  * @param newPassword
+ * @param verificationCode
  */
-const resetPassword = async (email, newPassword) => {
+const resetPassword = async (email, newPassword, verificationCode) => {
     // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
         throw new Error("Email does not exist" + email);
     }
+    // Check verification code
+    const [codeType, storedCode, expiresAt] = user.verificationCode.split(':');
+    if (codeType !== "reset"){
+        throw new Error("The verification code type isn't match")
+    }
+    // Check if its expired
+    const isExpired = Date.now() > parseInt(expiresAt, 15);
+    if (isExpired) {
+        user.emailVerified = false;
+        user.verificationCode = '';
+        await user.save();
+        throw new Error("Verification Code Expired, Please Send Again");
+    }
+    // compare verification code
+    if (verificationCode !== storedCode) {
+        throw new Error("Verification Code Error");
+    }
+
     // Hash the new password
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(15);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
     // Update the user's password
     user.password = hashedPassword;
@@ -276,6 +298,8 @@ const resetPassword = async (email, newPassword) => {
 /**
  * This function will verify if the email exists
  * @param email
+ * @requires email the user's email is end with @rpi.edu
+ * @returns {Promise<{message: string, emailVerified: boolean}>}
  */
 const verifyEmailExists = async (email) => {
     // Find the user by email
@@ -292,7 +316,7 @@ const verifyEmailExists = async (email) => {
     if (!emailRegex.test(email)) {
         throw new Error("Email is not in the correct format");
     }
-    // Check if the email is in the correct domain
+    // Double check if the email is in the correct domain
     const domain = email.split('@')[1];
     if (domain !== 'rpi.edu') {
         throw new Error("Email is not in the correct domain");
