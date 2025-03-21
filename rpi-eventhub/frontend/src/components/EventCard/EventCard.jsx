@@ -125,7 +125,7 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
       <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" className='absolute right-4 mt-4 h-5 w-5' onChange={onSelect} checked={selected} />
         <p>Posted by {event.poster}</p>
       </div>
-      {canSeeDeleteButton(username) && (
+      {canSeeDeleteButton(username, role) && (
         <button onClick={handleDelete} className={styles.deleteButton}>
           Delete
         </button>
