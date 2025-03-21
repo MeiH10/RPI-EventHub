@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
-function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
-    const [selectedTags, setSelectedTags] = useState([]);
+function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS, selectedTags: externalSelectedTags }) {
+    const [selectedTags, setSelectedTags] = useState(externalSelectedTags || []);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isListView, setIsListView] = useState(false);
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
     const { isDark } = useColorScheme();
+
+    useEffect(() => {
+        if (externalSelectedTags) {
+            setSelectedTags(externalSelectedTags);
+        }
+    }, [externalSelectedTags]);
+
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]

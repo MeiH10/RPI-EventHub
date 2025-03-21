@@ -38,3 +38,5 @@ rpi-eventhub/backend/events_202410011504.json
 rpi-eventhub/backend/logs/events_change-2024-10-30.log
 *.log
 rpi-eventhub/backend/logs/.9680bf6f03f3747961fdb9a12fd7104d5ca3878d-audit.json
+
+.early.coverage

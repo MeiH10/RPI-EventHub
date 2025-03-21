@@ -12,7 +12,7 @@ import ReactGA from "react-ga4";
 const timeZone = 'America/New_York';
 
 
-const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit }) => {
+const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit, onTagClick }) => {
   const {isLoggedIn} = useAuth();
   
   const { username } = useAuth();
@@ -101,6 +101,20 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
       toast.error("An unexpected error occurred.");
     }
   };
+  const handleTagClick = (tag) => {
+    // Log tag click to GA
+    ReactGA.event({
+      category: 'Filter',
+      action: 'Tag Selected',
+      label: tag
+    });
+    
+    // Call the onTagClick prop if provided
+    if (onTagClick) {
+      onTagClick(tag);
+    }
+  };
+
   return (
     <div key={event._id} style={{ transition: 'border-width 0.25s ease, border-color 0.25s ease' }} className={`duration-500 ${styles.eventWrapper} ${selected && 'border-8 border-indigo-400'}`}>
       <div className={styles.imageContainer}>
@@ -132,7 +146,15 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
         <div className={styles.tags}>
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
-              <span key={tag} className={styles.tag}>{tag}</span>
+              // <span key={tag} className={styles.tag}>{tag}</span>
+              <span 
+                key={tag} 
+                className={styles.tag}
+                onClick={() => handleTagClick(tag)}
+                style={{ cursor: 'pointer' }}
+              >
+                {tag}
+              </span>
             ))
           ) : (
             <span className={styles.tag}>No tags available</span>
