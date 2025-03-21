@@ -5,6 +5,7 @@ import Footer from '../../components/Footer/Footer';
 import styles from './EventDetails.module.css';
 import { useEvents } from '../../context/EventsContext';
 import RsvpButton from '../../components/RSVPButton/RsvpButton';
+import DeleteButton from '../../components/DeleteButton/DeleteButton';
 import { DateTime } from 'luxon';
 import { useAuth } from "../../context/AuthContext";
 import * as pdfjsLib from "pdfjs-dist";
@@ -485,6 +486,8 @@ const EventDetails = () => {
                                             />
                                         </div>
 
+                                        
+
                                     </div>
                                 </div>
                                 <div>
@@ -494,6 +497,16 @@ const EventDetails = () => {
                                         onClick={handleSubmit}
                                     >
                                         Save
+                                    </button>
+                                </div>
+
+                                <div> 
+                                    <button 
+                                        type="button"
+                                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-red-700"
+                                        onClick={DeleteButton}
+                                    >
+                                        Delete
                                     </button>
                                 </div>
                             </form>
@@ -539,6 +552,7 @@ const EventDetails = () => {
                                     <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                                 )}
                                 {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
+                                {event.delete !== "" && <DeleteButton delete={event.delete} />}
                                 <canvas ref={qrcodeCanvasRef} style={{ display: 'none' }}></canvas>
 
                                 <ShareButtons

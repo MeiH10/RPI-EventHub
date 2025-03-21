@@ -82,7 +82,7 @@ const Navbar = () => {
                 </NavLink>
               </li>
               {isLoggedIn && (
-                <li className={styles.navItem}>
+                <li className={isDark ? styles.darkNavItem : styles.navItem}>
                   <NavLink to="/admin" 
                   className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : ''}`}>
                     Admin
