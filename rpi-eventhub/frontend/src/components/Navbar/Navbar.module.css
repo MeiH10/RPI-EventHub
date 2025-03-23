@@ -62,14 +62,7 @@
   list-style: none;
   text-align: center;
 }
-.darkNavMenu {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  list-style: none;
-  text-align: center;
-  color: white;
-}
+
 .navLinks {
   /* color: #ff0000; */
   text-decoration: none;

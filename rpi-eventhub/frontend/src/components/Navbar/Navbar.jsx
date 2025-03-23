@@ -53,7 +53,7 @@ const Navbar = () => {
             <NavLink to="/" className={styles.navLogo}>
               <img src={EventHubLogo2} alt="Event Hub Logo" className={styles.logoSvg} />
             </NavLink>
-            <ul className={isDark ? styles.darkNavMenu : styles.navMenu}>
+            <ul className={styles.navMenu}>
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/"

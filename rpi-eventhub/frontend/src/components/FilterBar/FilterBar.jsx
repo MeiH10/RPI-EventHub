@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
-function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
+function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [sortMethod, setSortMethod] = useState('likes');
-    const [sortOrder, setSortOrder] = useState('desc');
     const [isListView, setIsListView] = useState(false);
+    const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
     const { isDark } = useColorScheme();
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -22,14 +21,20 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, o
         );
     };
 
+    const handlePostedByChange = (poster) => {
+        setSelectedPostedBy((prev) =>
+            prev.includes(poster) ? prev.filter((p) => p !== poster) : [...prev, poster]
+        );
+    };
+
     const clearAll = () => {
         setSelectedTags([]);
         setSelectedTime([]);
     };
 
     useEffect(() => {
-        onFilterChange({ tags: selectedTags, time: selectedTime, sortMethod, sortOrder });
-    }, [selectedTags, selectedTime, sortMethod, sortOrder, onFilterChange]);
+        onFilterChange({ tags: selectedTags, time: selectedTime, postedBy: selectedPostedBy, sortMethod, sortOrder });
+    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange]);
 
     const toggleDrawer = () => {
         setIsDrawerOpen((prev) => !prev);
@@ -113,22 +118,7 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, o
                     <h3 className={styles.filterBarTags}>Filtered Results: {filteredCount}</h3>
                 </div>
                 <div className={styles.separator}></div>
-                <div className={styles.filterSection}>
-                    <h3 className={styles.filterBarTags}>By Tags</h3>
-                    {tags.sort().map((tag) => (
-                        <div key={tag} className={styles.checkboxWrapper}>
-                            <input
-                                type="checkbox"
-                                id={tag}
-                                value={tag}
-                                checked={selectedTags.includes(tag)}
-                                onChange={() => handleTagChange(tag)}
-                            />
-                            <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
-                        </div>
-                    ))}
-                </div>
-                <div className={styles.separator}></div>
+
                 <div className={styles.filterSection}>
                     <h3 className={styles.filterBarTags}>By Time</h3>
                     {['past', 'upcoming', 'today'].map((time) => (
@@ -142,6 +132,48 @@ function FilterBar({ tags, onFilterChange, filteredCount, changeView, showICS, o
                             />
                             <label className={styles.filterBarTags}
                                    htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
+                        </div>
+                    ))}
+
+                    <div className={styles.separator}></div>
+
+                    <h3 className={styles.filterBarTags}>Posted by</h3>
+                    <div className={styles.checkboxWrapper}>
+                   
+                </div>
+            <div className={styles.checkboxWrapper}>
+                <input
+                    type="checkbox"
+                    id="student"
+                    value="student"
+                    checked={selectedPostedBy.includes("student")}
+                    onChange={() => handlePostedByChange("student")}
+                />
+                <label htmlFor="student" className={styles.filterBarTags}>Student</label>
+            </div>
+            <div className={styles.checkboxWrapper}>
+                <input
+                    type="checkbox"
+                    id="rpi"
+                    value="rpi"
+                    checked={selectedPostedBy.includes("rpi")}
+                    onChange={() => handlePostedByChange("rpi")}
+                />
+                <label htmlFor="rpi" className={styles.filterBarTags}>RPI</label>
+            </div>
+
+                <div className={styles.separator}></div>
+                    <h3 className={styles.filterBarTags}>By Tags</h3>
+                    {tags.sort().map((tag) => (
+                        <div key={tag} className={styles.checkboxWrapper}>
+                            <input
+                                type="checkbox"
+                                id={tag}
+                                value={tag}
+                                checked={selectedTags.includes(tag)}
+                                onChange={() => handleTagChange(tag)}
+                            />
+                            <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
                         </div>
                     ))}
                 </div>
