@@ -34,7 +34,7 @@ const Navbar = () => {
       handleClick();
     }
   };
-  
+
   const getNavLinkClass = (path) => {
     return location.pathname === path
       ? `${styles.navLinks} ${styles.active}`
@@ -47,7 +47,7 @@ const Navbar = () => {
 
   return (
     <>
-       <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ''}`}>
+      <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ''}`}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
@@ -89,10 +89,18 @@ const Navbar = () => {
             </ul>
           </div>
           <div className={styles.navRight}>
+
             <ul className={styles.navMenu2}>
-              <li className={styles.navItem}>
-                <CreateEventModal />
-              </li>
+              {isLoggedIn && role >= VERIFIED ? (
+                <li className={styles.navItem}>
+                  <CreateEventModal />
+                </li>
+              ) : isLoggedIn ? (
+                <li className={styles.navItem}>
+                  <VerifyModal />
+                </li>
+              ) : null}
+
               {isLoggedIn && (
                 <li className={styles.navItem}>
                   <button
@@ -103,6 +111,7 @@ const Navbar = () => {
                   </button>
                 </li>
               )}
+
               {isLoggedIn ? (
                 <div>
                   <button
@@ -111,7 +120,6 @@ const Navbar = () => {
                   >
                     Sign Out
                   </button>
-                  {!(role >= VERIFIED) && <VerifyModal />}
                 </div>
               ) : (
                 <>
@@ -121,14 +129,13 @@ const Navbar = () => {
                   <li className={styles.navItem}>
                     <SignupModal />
                   </li>
-
                 </>
               )}
-                <li className={styles.navItem}>
-                  <DarkModeToggle />
-                </li>
-            </ul>
-          </div>
+
+              <li className={styles.navItem}>
+                <DarkModeToggle />
+              </li>
+            </ul>          </div>
           <div className={styles.navIcon} onClick={handleClick}>
             {click ? (
               <span className={styles.icon}>
@@ -205,9 +212,9 @@ const Navbar = () => {
               </>
             )}
 
-                <li className={styles.navItem}>
-                  <DarkModeToggle />
-                </li>
+            <li className={styles.navItem}>
+              <DarkModeToggle />
+            </li>
           </ul>
         </div>
       </nav>

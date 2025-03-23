@@ -211,6 +211,10 @@ function CreateEventModal() {
       return;
     }
 
+
+    console.log("isLoggedIn: ", isLoggedIn);
+    console.log("role: ", role);
+
     if (!isLoggedIn || role === UNVERIFIED) {
       setError('Only verified users can create an event. Please login or get verified.');
       setIsSubmitting(false);
