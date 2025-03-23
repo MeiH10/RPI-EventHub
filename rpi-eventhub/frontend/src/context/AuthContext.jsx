@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import config from '../config';
 
 const AuthContext = createContext(null);
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         const decodedToken = jwtDecode(token);
         setIsLoggedIn(true);
         setUsername(decodedToken.username);
-        setRole(null);
+        setRole(decodedToken.role);
     };
 
     const logout = () => {
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
         setRole(null);
-        setUsername(''); 
+        setUsername('');
     };
 
     useEffect(() => {
@@ -55,11 +55,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ 
-            isLoggedIn, 
-            role, 
-            login, 
-            logout, 
+        <AuthContext.Provider value={{
+            isLoggedIn,
+            role,
+            login,
+            logout,
             username,
             manageMode,
             setManageMode
