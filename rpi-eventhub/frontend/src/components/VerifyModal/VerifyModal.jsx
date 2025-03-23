@@ -51,8 +51,9 @@ function VerifyModal() {
       if (response.status === 200) {
         const newToken = response.data.token;
 
-        login(newToken);
         localStorage.setItem('token', newToken);
+        login(newToken);
+
 
         handleClose();
       }

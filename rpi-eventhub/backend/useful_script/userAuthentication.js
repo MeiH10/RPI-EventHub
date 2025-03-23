@@ -11,23 +11,32 @@ const ADMIN = 4;
 
 const authenticate = async (req, res, next) => {
     try {
+        if (!req.header('Authorization') || !req.header('Authorization').startsWith('Bearer ')) {
+            return res.status(401).send({ message: 'No authentication token provided' });
+        }
+
         const token = req.header('Authorization').replace('Bearer ', '');
+
         const decoded = jwt.verify(token, jwtSecret);
         const user = await User.findOne({ _id: decoded.userId });
 
         if (!user) {
-            throw new Error();
+            throw new Error('User not found');
         }
 
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).send({ message: 'Please authenticate.' , error: error.message });
+        res.status(401).send({ message: 'Please authenticate.', error: error.message });
     }
 };
 
 const authenticateAndVerify = async (req, res, next) => {
     try {
+        if (!req.header('Authorization') || !req.header('Authorization').startsWith('Bearer ')) {
+            return res.status(401).send({ message: 'No authentication token provided' });
+        }
+
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded = jwt.verify(token, jwtSecret);
         const user = await User.findOne({ _id: decoded.userId });
@@ -45,7 +54,7 @@ const authenticateAndVerify = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).send({ message: 'Please authenticate.' , error: error.message });
+        res.status(401).send({ message: 'Please authenticate.', error: error.message });
     }
 };
 
