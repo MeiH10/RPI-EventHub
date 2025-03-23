@@ -228,9 +228,11 @@ function CreateEventModal() {
     }
 
     try {
+      const token = localStorage.getItem('token');
       const { data } = await axios.post(`${config.apiUrl}/events`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
         }
       });
       addEvent(data);
