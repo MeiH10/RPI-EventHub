@@ -7,7 +7,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [emailVerified, setEmailVerified] = useState(false);
+    const [role, setRole] = useState(null);
     const [username, setUsername] = useState('');
     const [manageMode, setManageMode] = useState(false);
 
@@ -16,14 +16,14 @@ export const AuthProvider = ({ children }) => {
         const decodedToken = jwtDecode(token);
         setIsLoggedIn(true);
         setUsername(decodedToken.username);
-        setEmailVerified(decodedToken.emailVerified);
+        setRole(null);
     };
 
     const logout = () => {
         console.log("Logging out");
         localStorage.removeItem('token');
         setIsLoggedIn(false);
-        setEmailVerified(false);
+        setRole(null);
         setUsername(''); 
     };
 
@@ -41,11 +41,13 @@ export const AuthProvider = ({ children }) => {
                         const decodedToken = jwtDecode(token);
                         setIsLoggedIn(true);
                         setUsername(decodedToken.username);
-                        setEmailVerified(decodedToken.emailVerified);
+                        setRole(decodedToken.role);
                     }
                 } catch (error) {
                     console.error('Token verification failed:', error);
                     localStorage.removeItem('token');
+                    setIsLoggedIn(false);
+                    setRole(null);
                 }
             }
         };
@@ -55,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={{ 
             isLoggedIn, 
-            emailVerified, 
+            role, 
             login, 
             logout, 
             username,

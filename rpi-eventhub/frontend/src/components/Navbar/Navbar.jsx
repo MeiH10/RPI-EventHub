@@ -13,10 +13,15 @@ import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout, manageMode, setManageMode } = useAuth();
+  const { isLoggedIn, role, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
@@ -106,7 +111,7 @@ const Navbar = () => {
                   >
                     Sign Out
                   </button>
-                  {!emailVerified && <VerifyModal />}
+                  {!(role >= VERIFIED) && <VerifyModal />}
                 </div>
               ) : (
                 <>
@@ -174,9 +179,11 @@ const Navbar = () => {
                 Calendar
               </NavLink>
             </li>
-            <li className={styles.drawerItem}>
-              <CreateEventModal />
-            </li>
+            {isLoggedIn && role >= VERIFIED && (
+              <li className={styles.drawerItem}>
+                <CreateEventModal />
+              </li>
+            )}
             {isLoggedIn ? (
               <div className={styles.drawerItem}>
                 <button
@@ -185,7 +192,7 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!emailVerified && <VerifyModal />}
+                {!(role >= VERIFIED) && <VerifyModal />}
               </div>
             ) : (
               <>

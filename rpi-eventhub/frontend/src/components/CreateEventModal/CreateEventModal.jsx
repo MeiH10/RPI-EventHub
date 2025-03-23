@@ -10,7 +10,11 @@ import { DateTime } from 'luxon';
 import * as pdfjsLib from "pdfjs-dist";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 
-
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
 
 ///////////////////File Upload////////////////////
@@ -137,7 +141,7 @@ function CreateEventModal() {
   ];
 
   const { addEvent } = useEvents();
-  const { isLoggedIn, emailVerified, username } = useAuth();
+  const { isLoggedIn, role, username } = useAuth();
 
   const handleClose = () => {
     setShow(false);
@@ -207,8 +211,14 @@ function CreateEventModal() {
       return;
     }
 
-    if (!isLoggedIn || !emailVerified) {
+    if (!isLoggedIn || role === UNVERIFIED) {
       setError('Only verified users can create an event. Please login or get verified.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (isLoggedIn && role === BANNED) {
+      setError('You are banned from creating events. Please contact our admins for more information.');
       setIsSubmitting(false);
       return;
     }
