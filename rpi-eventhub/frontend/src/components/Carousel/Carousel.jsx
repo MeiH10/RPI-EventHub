@@ -7,7 +7,7 @@ import config from "../../config";
 import { DateTime } from "luxon";
 
 const placeholderImage =
-  "https://www.iconpacks.net/icons/4/free-no-image-icon-14596-thumb.png";
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
 
 const timeZone = 'America/New_York';
 
