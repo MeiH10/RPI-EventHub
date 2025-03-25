@@ -8,6 +8,12 @@ const {Error} = require("mongoose");
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const jwtSecret = process.env.JWT_SECRET;
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
+
 
 /**
  * Sign up a new user
@@ -57,7 +63,7 @@ const signUpUser = async (username, email, password) => {
         username,
         email,
         password,
-        emailVerified: false,
+        role: UNVERIFIED,
         verificationCode,
     });
     await user.save();
@@ -80,7 +86,7 @@ const signUpUser = async (username, email, password) => {
 const verifyEmail = async (email, verificationCode) => {
 
     // Find the user by email and verification code
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, verificationCode });
 
     // If user not found, throw an error
     if (!user) {
@@ -133,7 +139,7 @@ const verifyEmail = async (email, verificationCode) => {
  * This function logs in the user
  * @param email
  * @param password
- * @returns {Promise<{emailVerified: *, message: string, userId: *, token: (*)}>}
+ * @returns {Promise<{role: *, message: string, userId: *, token: (*)}>}
  */
 const loginUser = async (email, password) => {
 
@@ -168,7 +174,7 @@ const loginUser = async (email, password) => {
     return {
         token,
         userId: user._id,
-        emailVerified: user.emailVerified,
+        role: user.role,
         message: "Logged in successfully",
     };
 };

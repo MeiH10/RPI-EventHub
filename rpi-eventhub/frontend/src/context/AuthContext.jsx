@@ -1,13 +1,13 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import config from '../config';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [emailVerified, setEmailVerified] = useState(false);
+    const [role, setRole] = useState(null);
     const [username, setUsername] = useState('');
     const [manageMode, setManageMode] = useState(false);
 
@@ -20,15 +20,15 @@ export const AuthProvider = ({ children }) => {
         const decodedToken = jwtDecode(token);
         setIsLoggedIn(true);
         setUsername(decodedToken.username);
-        setEmailVerified(decodedToken.emailVerified);
+        setRole(decodedToken.role);
     };
 
     const logout = () => {
         console.log("Logging out");
         localStorage.removeItem('token');
         setIsLoggedIn(false);
-        setEmailVerified(false);
-        setUsername(''); 
+        setRole(null);
+        setUsername('');
     };
 
     useEffect(() => {
@@ -45,11 +45,13 @@ export const AuthProvider = ({ children }) => {
                         const decodedToken = jwtDecode(token);
                         setIsLoggedIn(true);
                         setUsername(decodedToken.username);
-                        setEmailVerified(decodedToken.emailVerified);
+                        setRole(decodedToken.role);
                     }
                 } catch (error) {
                     console.error('Token verification failed:', error);
                     localStorage.removeItem('token');
+                    setIsLoggedIn(false);
+                    setRole(null);
                 }
             }
         };
@@ -57,11 +59,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ 
-            isLoggedIn, 
-            emailVerified, 
-            login, 
-            logout, 
+        <AuthContext.Provider value={{
+            isLoggedIn,
+            role,
+            login,
+            logout,
             username,
             manageMode,
             setManageMode
