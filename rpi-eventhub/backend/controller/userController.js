@@ -85,7 +85,7 @@ const userExists = async (req, res) => {
 
 /**
  * This function is serving to send a new verification code to the user
- * @param req
+ * @param req email and type of code.
  * @param res
  * @requires email the user's email is not verified.
  * @returns {Promise<*>} if the user is not found, it will return a 400 status code with a message "User not found."

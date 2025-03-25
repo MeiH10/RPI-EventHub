@@ -199,7 +199,7 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!(role >= VERIFIED) && <VerifyModal />}
+                {/*{!(role >= VERIFIED) && <VerifyModal />}*/}
               </div>
             ) : (
                 <div className="flex gap-4 m-2">
