@@ -10,11 +10,16 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
     const { isDark } = useColorScheme();
 
+    const [isExternalUpdate, setIsExternalUpdate] = useState(false);
+
+    // FIXED: Update internal state when external tags change, with flag to prevent cycles
     useEffect(() => {
-        if (externalSelectedTags) {
+        if (externalSelectedTags && JSON.stringify(externalSelectedTags) !== JSON.stringify(selectedTags)) {
+            setIsExternalUpdate(true);
             setSelectedTags(externalSelectedTags);
         }
     }, [externalSelectedTags]);
+
 
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -40,8 +45,20 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
     };
 
     useEffect(() => {
-        onFilterChange({ tags: selectedTags, time: selectedTime, postedBy: selectedPostedBy, sortMethod, sortOrder });
-    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange]);
+        if (isExternalUpdate) {
+            setIsExternalUpdate(false);
+            return;
+        }
+        
+        onFilterChange({ 
+            tags: selectedTags, 
+            time: selectedTime, 
+            postedBy: selectedPostedBy, 
+            sortMethod, 
+            sortOrder 
+        });
+    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange, isExternalUpdate]);
+
 
     const toggleDrawer = () => {
         setIsDrawerOpen((prev) => !prev);
