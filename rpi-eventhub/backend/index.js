@@ -50,7 +50,7 @@ app.use(express.urlencoded({ extended: true }));
 // ---------------------------- ROUTES ----------------------------
 //#region EVENT ROUTES
 app.get('/rpi-events', getRPIEvents);
-app.post('/events', upload, createNewEvent);
+app.post('/events', upload, authenticateAndVerify, createNewEvent);
 app.get('/events', getAllEvents);
 app.delete('/events/:id', removeEvent);
 app.get('/proxy/image/:eventId', getProxyImage);
@@ -75,6 +75,7 @@ app.get('/verify-token', authenticate, verifyToken);
 app.use('/assets', express.static(path.join(__dirname, './assets')));
 //#endregion
 
+require('./archiveOldEventsCron');
 
 // ---------------------------- FRONTEND ----------------------------
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
