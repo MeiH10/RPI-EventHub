@@ -84,7 +84,8 @@ app.post('/check-user-exists', userExists);
 
 //#region OTHER ROUTES
 app.get('/verify-token', authenticate, verifyToken);
-// This route is for resend verification email
+// This route is for resend verification email, need format: {email, typeofCode}
+// The typeofCode is either "signup","reset"
 app.post('/send-code', sendCodeEmail)
 app.use('/assets', express.static(path.join(__dirname, './assets')));
 //#endregion

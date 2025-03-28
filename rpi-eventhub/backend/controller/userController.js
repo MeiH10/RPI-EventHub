@@ -10,6 +10,13 @@ const {
 
 const User = require('../models/User');
 
+
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
+
 const signUp = async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -65,8 +72,8 @@ const fetchAllUsernames = async (req, res) => {
  */
 const resetUserPassword = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const result = await resetPassword(email, password);
+        const { email, password, verificationCode } = req.body;
+        const result = await resetPassword(email, password, verificationCode);
         res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: error.message, error: error.message });
@@ -103,7 +110,7 @@ const sendCodeEmail = async (req, res) => {
         }
 
         // Check if the user has already verified their email and not requesting reset
-        if (user.emailVerified && type !== "reset") {
+        if (user.role === VERIFIED && type !== "reset") {
             return res.status(400).json({ message: "Bad Request, please contact administrator" });
         }
 
@@ -113,7 +120,7 @@ const sendCodeEmail = async (req, res) => {
         const verificationCode = `${type}:${code}:${expiresAt}`;
 
         // Save verification code
-        user.emailVerified = false;
+        user.role = UNVERIFIED;
         user.verificationCode = verificationCode;
         await user.save();
 

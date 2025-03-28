@@ -92,6 +92,19 @@ const OTPVerification = ( email ) => {
         });
     }
 
+    // Function to resend the verification code
+    const resendCode = async () => {
+        try {
+            const codeResponse = await axios.post(`${config.apiUrl}/send-code`, {type: "reset", email: email+"@rpi.edu"});
+            if (codeResponse.status === 200) {
+                toast.success("Verification code sent to your email.");
+            }
+        }catch (error) {
+            console.error("Error:", error);
+            toast.error("Bad Request: " + error.response?.data?.message || "Bad Request: " + error.response?.data?.error);
+        }
+    }
+
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center">
@@ -149,7 +162,9 @@ const OTPVerification = ( email ) => {
 
                 <div className="text-sm text-slate-500 mt-4">
                     Didn't receive code?{' '}
-                    <a href="#0" className="font-medium text-indigo-500 hover:text-indigo-600">
+                    <a href="#" className="font-medium text-indigo-500 hover:text-indigo-600"
+                        onClick={resendCode}
+                    >
                         Resend
                     </a>
                 </div>

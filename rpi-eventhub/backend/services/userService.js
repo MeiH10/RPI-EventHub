@@ -20,12 +20,7 @@ const ADMIN = 4;
  * @param username
  * @param email
  * @param password
- * @returns
- * {
- * Promise<{emailVerified: ({default: boolean, type: Boolean | BooleanConstructor}|*),
- * message: string, email: ({unique: boolean, type: String | StringConstructor, required: boolean}|*),
- * token: (*)}>
- * }
+ * @returns {Promise<{message: string, email: string}>}
  */
 const signUpUser = async (username, email, password) => {
     // Check if email is end with @rpi.edu
@@ -36,19 +31,31 @@ const signUpUser = async (username, email, password) => {
     // Generate verification code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes
-    const verificationCode = `email:${code}:${expiresAt}`;
+
+    // IMPORTANT Schema here
+    const verificationCode = `signup:${code}:${expiresAt}`;
 
     // Check if email already exists
+    // This happened when the user is trying to sign up again
+    // or the user is trying to resend the verification code
+    // or the user has refresh the page
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-        if (!existingUser.emailVerified) {
+
+        // Check if the user is unverified
+        if (existingUser.role === UNVERIFIED) {
+            // Apply newly generated verification code
             existingUser.verificationCode = verificationCode;
             await existingUser.save();
+            // resend the verification code
             await sendCode( email, code )
+
+            // This message will show up in the frontend by toast.
             return {
                 message: "Your code has resend, please check your email for the verification code.",
             };
         }
+        // if the user is already verified, means the user is trying to sign up again
         throw new Error("Email already in use.");
     }
 
@@ -80,34 +87,36 @@ const signUpUser = async (username, email, password) => {
 /**
  * This function verifies the email of the user
  * @param email
- * @param verificationCode
+ * @param verificationCode the verification code here has only number phrase
  * @returns {Promise<{message: string, token: (*)}>}
  */
 const verifyEmail = async (email, verificationCode) => {
 
-    // Find the user by email and verification code
-    const user = await User.findOne({ email, verificationCode });
+    // Find the user by email
+    const user = await User.findOne({ email });
 
     // If user not found, throw an error
     if (!user) {
         throw new Error("Invalid email or verification code.");
     }
 
-    // parse code in db
+    // parse code from db
     const [codeType, storedCode, expiresAt] = user.verificationCode.split(':');
 
-    if (codeType !== "email"){
+    if (codeType !== "signup"){
         throw new Error("The verification code type isn't match")
     }
 
 
-    // Check if its expired
+    // Check if its expired, 15 minutes
     const isExpired = Date.now() > parseInt(expiresAt, 15);
     if (isExpired) {
-        user.emailVerified = false;
+        // set the user to unverified
+        user.role = UNVERIFIED;
         user.verificationCode = '';
         await user.save();
-        throw new Error("Verification Code Expired, Please Send Again");
+
+        throw new Error("Verification Code Expired, Please resend the code");
     }
 
     // compare verification code
@@ -115,15 +124,17 @@ const verifyEmail = async (email, verificationCode) => {
         throw new Error("Verification Code Error");
     }
 
-    user.emailVerified = true;
+    // set the user to verified
+    user.role = VERIFIED;
     user.verificationCode = ''; // clean verification code
     await user.save();
 
+    // local token for frontend
     const token = jwt.sign(
         {
             userId: user._id,
             email: user.email,
-            emailVerified: true,
+            role: user.role,
             username: user.username
         },
         process.env.JWT_SECRET,
@@ -144,10 +155,10 @@ const verifyEmail = async (email, verificationCode) => {
 const loginUser = async (email, password) => {
 
     if (typeof email != "string") {
-        throw new Error("Email does not exist");
+        throw new Error("Invalid email");
     }
     if (typeof password != "string") {
-        throw new Error("Password is incorrect");
+        throw new Error("Invalid password");
     }
 
     // Find the user by email
@@ -156,15 +167,23 @@ const loginUser = async (email, password) => {
         throw new Error("Email does not exist");
     }
 
-    // Check if the password is correct
-    const isMatch = await bcrypt.compare(password.trim(), user.password);
-    if (!isMatch) {
-        throw new Error("Password is incorrect");
+    // Define validation checks
+    const validations = [
+        { condition: async () => !(await bcrypt.compare(password.trim(), user.password)), message: "Password is incorrect" },
+        { condition: () => user.role === BANNED, message: "User is banned" },
+        { condition: () => user.role === UNVERIFIED, message: "Please verify your email first" }
+    ];
+
+    // Run validations
+    for (const validation of validations) {
+        if (await validation.condition()) {
+            throw new Error(validation.message);
+        }
     }
 
     // use the jwt token to authenticate the user
     const token = jwt.sign(
-        { userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username },
+        { userId: user._id, email: user.email, role: user.role, username: user.username },
         jwtSecret,
         { expiresIn: '24h' }
     );
@@ -206,7 +225,7 @@ Thank you for registering with RPI EventHub! To activate your account, please us
 
 Verification Code: ${code}
 
-This code will expire in 10 minutes.
+This code will expire in 15 minutes.
 
 How to complete your registration:
 1. Return to the RPI EventHub registration page
@@ -272,32 +291,32 @@ const resetPassword = async (email, newPassword, verificationCode) => {
     // Check verification code
     const [codeType, storedCode, expiresAt] = user.verificationCode.split(':');
     if (codeType !== "reset"){
-        throw new Error("The verification code type isn't match")
+        throw new Error("The verification code type isn't match, contact administrator")
     }
     // Check if its expired
     const isExpired = Date.now() > parseInt(expiresAt, 15);
     if (isExpired) {
-        user.emailVerified = false;
+        user.role = UNVERIFIED;
         user.verificationCode = '';
         await user.save();
         throw new Error("Verification Code Expired, Please Send Again");
     }
     // compare verification code
     if (verificationCode !== storedCode) {
-        throw new Error("Verification Code Error");
+        throw new Error("Verification Code Error" + verificationCode);
     }
 
-    // Hash the new password
-    const salt = await bcrypt.genSalt(15);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
     // Update the user's password
-    user.password = hashedPassword;
+    // user.password = hashedPassword;
+    user.password = newPassword;
+    user.role = VERIFIED; // set the user to verified
+    user.verificationCode = ''; // clean verification code
     await user.save();
     logger.info(`User ${user.username} password reset --- ${new Date()}`);
     return {
         message: "Password reset successfully",
         userId: user._id,
-        emailVerified: user.emailVerified,
+        role: user.role,
     };
 }
 
@@ -305,7 +324,7 @@ const resetPassword = async (email, newPassword, verificationCode) => {
  * This function will verify if the email exists
  * @param email
  * @requires email the user's email is end with @rpi.edu
- * @returns {Promise<{message: string, emailVerified: boolean}>}
+ * @returns {Promise<{message: string, role: *}>}
  */
 const verifyEmailExists = async (email) => {
     // Find the user by email
@@ -314,7 +333,7 @@ const verifyEmailExists = async (email) => {
         throw new Error("Email does not exist" + email);
     }
     // Check if the email is verified
-    if (!user.emailVerified) {
+    if (user.role === UNVERIFIED) {
         throw new Error("Email is not verified");
     }
     // Check if the email is in the correct format
@@ -330,7 +349,7 @@ const verifyEmailExists = async (email) => {
 
     return {
         message: "Email is valid",
-        emailVerified: user.emailVerified,
+        role: user.role,
     };
 }
 

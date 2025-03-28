@@ -12,8 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [manageMode, setManageMode] = useState(false);
 
     /**
-     *
-     * @param token contains { userId: user._id, email: user.email, emailVerified: user.emailVerified, username: user.username },
+     * @param token { userId: user._id, email: user.email, role: user.role, username: user.username },
      */
     const login = (token) => {
         localStorage.setItem('token', token);

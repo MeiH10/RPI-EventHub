@@ -1,18 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import EventHubLogo from "../../assets/EventHubLogo2.png";
-import {NavLink} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import config from "../../config";
+import {useAuth} from "../../context/AuthContext";
 
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { login } = useAuth();
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        setLoading(true);
 
+        try {
+            // Format email with @rpi.edu if not included
+            const fullEmail = email.includes("@") ? email : `${email}@rpi.edu`;
+
+            const response = await axios.post(`${config.apiUrl}/login`, {
+                email: fullEmail,
+                password: password
+            });
+
+            const { token } = response.data;
+            //login and store token in localStorage
+            login(token);
+            // Redirect to homepage or dashboard
+            navigate("/");
+        } catch (err) {
+            setError(err.response?.data?.message || "Login failed. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="flex min-h-full justify-center items-center">
             <div className="bg-white/30 backdrop-blur-lg rounded-3 h-max w-2/4 mt-10 flex-col justify-center items-center px-6 py-12 lg:px-8 font-sans">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm justify-content-center items-center">
-                    <NavLink
-                        to="/"
-                    >
+                    <NavLink to="/">
                         <img
                             alt="EventHub Logo"
                             src={EventHubLogo}
@@ -25,7 +56,12 @@ export default function Login() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form action="#" method="POST" className="space-y-6">
+                    {error && (
+                        <div className="mb-4 p-2 text-sm text-red-800 bg-red-100 rounded-md">
+                            {error}
+                        </div>
+                    )}
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                                 RPI Email address
@@ -35,13 +71,15 @@ export default function Login() {
                                     <input
                                         id="email"
                                         name="email"
-                                        type="email"
+                                        type="text"
                                         required
                                         autoComplete="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         className="block w-full rounded-md bg-white px-3 py-1.5 pr-20 text-base text-gray-900
-                outline outline-1 outline-gray-300 placeholder:text-gray-400
-                focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
-                hover:outline-gray-400 transition-all"
+                                        outline outline-1 outline-gray-300 placeholder:text-gray-400
+                                        focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
+                                        hover:outline-gray-400 transition-all"
                                     />
                                     <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <span className="text-gray-500 text-sm bg-white pl-2">@rpi.edu</span>
@@ -68,6 +106,8 @@ export default function Login() {
                                     type="password"
                                     required
                                     autoComplete="current-password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                             </div>
@@ -76,9 +116,10 @@ export default function Login() {
                         <div>
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                disabled={loading}
+                                className={`flex w-full justify-center rounded-md ${loading ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-500'} px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                             >
-                                Sign in
+                                {loading ? "Signing in..." : "Sign in"}
                             </button>
                         </div>
                     </form>
@@ -89,7 +130,6 @@ export default function Login() {
                             Sign up now
                         </a>
                     </p>
-
                 </div>
             </div>
         </div>
