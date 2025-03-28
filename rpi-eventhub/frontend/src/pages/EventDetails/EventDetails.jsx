@@ -162,8 +162,6 @@ const EventDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
 
-        console.log('tags:', tags);
-        console.log('formData:', formData);
 
         const submittedFormData = new FormData();
         submittedFormData.append('title', formData.title);
@@ -180,11 +178,8 @@ const EventDetails = () => {
 
         if (file !== null) {
             submittedFormData.append('file', file);
-            console.log('file:', file);
         }
 
-        console.log('submitting form data:', submittedFormData);
-        console.log('Form data is valid:', submittedFormData);
         try {
             const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, submittedFormData, {
                 headers: {
@@ -200,6 +195,7 @@ const EventDetails = () => {
 
     function handleImageFileChange(e) {
         toggleImage();
+        // Notice this function will also handle PDF file, no worries.
         handleFileChange(e, setPreview, setFile, setError);
     }
 
@@ -338,7 +334,9 @@ const EventDetails = () => {
         <div className='outterContainer'>
             <Navbar />
             <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
+
                 {isEditing && isOwner ?
+                    /* Manage/Edit Event Part*/
                     (
                         <div className="mx-auto p-4 md:p-6 max-w-screen-lg min-h-screen">
                             {error && <div className="text-red-500 text-center">{error}</div>}
