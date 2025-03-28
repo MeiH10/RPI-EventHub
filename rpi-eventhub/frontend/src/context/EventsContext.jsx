@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import config from '../config';
 
@@ -10,6 +10,15 @@ export function useEvents() {
 
 export const EventsProvider = ({ children }) => {
     const [events, setEvents] = useState([]);
+    const [clubs, setClubs] = useState([]);
+
+    useEffect(() => {
+        if (events.length > 0) {
+            const uniqueClubs = [...new Set(events.map(event => event.club).filter(Boolean))];
+            const sortedClubs = uniqueClubs.sort((a, b) => a.localeCompare(b));
+            setClubs(sortedClubs);
+        }
+    }, [events]);
 
     const fetchEvents = useCallback(async () => {
         try {
@@ -43,7 +52,7 @@ export const EventsProvider = ({ children }) => {
     }, []);
 
     return (
-        <EventsContext.Provider value={{ events, fetchEvents, addEvent, deleteEvent, updateEvent }}>
+        <EventsContext.Provider value={{ events, clubs,fetchEvents, addEvent, deleteEvent, updateEvent }}>
             {children}
         </EventsContext.Provider>
     );

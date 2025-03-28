@@ -49,6 +49,9 @@ const EventDetails = () => {
     const [error, setError] = useState('');
     const [tags, setTags] = useState([]);
     const [showOriginalImage, setShowOriginalImage] = useState(true);
+    //Get clubs for FilterBar
+    const [clubs, setClubs] = useState([]);
+    const [sortOrg, setSortOrg] = useState('')
     // QR code (For Single QR code)
     const [QRCodeLink, setQRCodeLink] = useState('');
     const [QRCodeError, setQRCodeError] = useState('');
@@ -148,6 +151,20 @@ const EventDetails = () => {
             setTags(event.tags || []);
         }
     }, [event]);
+
+    //extract unique clubs from events
+    useEffect(() => {
+        if(events && events.length > 0){
+            const uniqueClubs = Array.from(
+                new Set(events.map(event => event.club).filter(Boolean))
+            );
+            setClubs(uniqueClubs);
+
+            if(event?.club && !sortOrg){
+                setSortOrg(event.club)
+            }
+        }
+    }, [events,event])
 
     // Handle form data changes, update the form data (Update Event/Manage Event)
     const handleChange = (e) => {

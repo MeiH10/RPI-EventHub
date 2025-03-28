@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
-import formData from '../../pages/EventDetails/EventDetails'
+import { useEvents } from '../../context/EventsContext';
 
 function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, sortOrg, setSortOrg, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
     const [selectedTags, setSelectedTags] = useState([]);
@@ -9,7 +9,8 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, s
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isListView, setIsListView] = useState(false);
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
-    const [selectedPostedByOrg, setSelectedPostedByOrg] = useState(["a-z", "z-a"])
+    const [selectedPostedByOrg, setSelectedPostedByOrg] = useState(["a-z", "z-a"]);
+    const { clubs } = useEvents();
     const { isDark } = useColorScheme();
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -26,12 +27,6 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, s
     const handlePostedByChange = (poster) => {
         setSelectedPostedBy((prev) =>
             prev.includes(poster) ? prev.filter((p) => p !== poster) : [...prev, poster]
-        );
-    };
-
-    const handlePostedByOrgChange = (org) => {
-        setSelectedPostedByOrg((prev) =>
-            prev.includes(org) ? prev.filter((p) => p !== org) : [...prev, org]
         );
     };
 
@@ -127,7 +122,12 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, s
                         onChange={(e) => setSortOrg(e.target.value)}
                     >   <option value="asc" className="text-black dark:text-white">a to z</option>
                         <option value="dsc" className="text-black dark:text-white">z to a</option>
-                        <option value={formData.club} className="text-black dark:text-white">{formData.club}</option>
+                        <option value="" className="text-black dark:text-white"> All Organizations</option>
+                                {clubs.map((club, index) => (
+                                    <option key={index} value={club} className="text-black dark:text-white">
+                                        {club}
+                                    </option>
+                                ))}
                     </select>
                 </div>
                 <div className={styles.separator}></div>
