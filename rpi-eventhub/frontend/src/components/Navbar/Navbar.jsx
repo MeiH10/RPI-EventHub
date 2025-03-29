@@ -48,10 +48,10 @@ const Navbar = () => {
       <nav className={`flex justify-between font-sans text-lg shadow items-center fixed z-20 px-2 h-16 w-full bg-white`}>
         <div className="flex justify-center items-center">
         <img src={EventHubLogo2} alt="EventHub Logo" className="h-16 w-16 mr-7" />
-          <NavLink to="/" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Home</NavLink> 
-          <NavLink to="/all-events" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Events</NavLink> 
-          <NavLink to="/about-us" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>About</NavLink> 
-          <NavLink to="/calendar" className={"p-2 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Calendar</NavLink> 
+          <NavLink to="/" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Home</NavLink> 
+          <NavLink to="/all-events" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Events</NavLink> 
+          <NavLink to="/about-us" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>About</NavLink> 
+          <NavLink to="/calendar" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Calendar</NavLink> 
         </div>
         <div>
           <NavLink onClick={() => setShowCreate(true)} className={"px-3 py-2 bg-emerald-500 hover:bg-emerald-700 rounded-md mr-5 duration-150 text-white text-md font-normal hover:font-bold hover:shadow-sm"}>
