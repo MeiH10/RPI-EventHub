@@ -5,7 +5,7 @@ import Footer from '../../components/Footer/Footer';
 import { Skeleton } from '@mui/material';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
-import AdminSearch from '../../components/AdminSearch/AdminSearch'; // Import the search component
+//import AdminSearch from '../../components/AdminSearch/AdminSearch'; // Import the search component
 
 function AdminPage() {
   const { theme } = useContext(ThemeContext);
@@ -38,7 +38,7 @@ function AdminPage() {
     { level: 0, description: 'Banned: Banned users are unable to log in or intract with the site using their credentials.' },
     { level: 1, description: 'Unverified User: Unverified users are users who have signed up but have not verified their email.' },
     { level: 2, description: 'Verified User: Verified users are users who have signed up and have verified their email.' },
-    { level: 3, description: 'Administrator: Administrators have elevated privileges on the site and may edit other users or events.' },
+    { level: 3, description: 'Officer: Administrators have elevated privileges on the site and may edit other users or events.' },
   ];
 
   return (

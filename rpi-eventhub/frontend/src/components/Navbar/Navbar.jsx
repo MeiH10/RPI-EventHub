@@ -86,6 +86,14 @@ const Navbar = () => {
                   Calendar
                 </NavLink>
               </li>
+              {(role === ADMIN) && (
+                <li className={isDark ? styles.darkNavItem : styles.navItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : ''}`}>
+                    Admin
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
           <div className={styles.navRight}>
