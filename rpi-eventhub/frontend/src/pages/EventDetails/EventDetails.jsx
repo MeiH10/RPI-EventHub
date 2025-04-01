@@ -506,7 +506,7 @@ const EventDetails = () => {
                                 <div className="relative max-w-full">
                                     <img
                                         ref={imageRef}
-                                        src={event.image || 'https://via.placeholder.com/300x450'} alt={event.title}
+                                        src={event.image || 'https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg'} alt={event.title}
                                         className="max-w-full h-auto"
                                         onLoad={(e) => {
                                             setImageSize({

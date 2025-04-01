@@ -2,13 +2,25 @@ import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
-function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS }) {
-    const [selectedTags, setSelectedTags] = useState([]);
+function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS, selectedTags: externalSelectedTags }) {
+    const [selectedTags, setSelectedTags] = useState(externalSelectedTags || []);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isListView, setIsListView] = useState(false);
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
     const { isDark } = useColorScheme();
+
+    const [isExternalUpdate, setIsExternalUpdate] = useState(false);
+
+    // FIXED: Update internal state when external tags change, with flag to prevent cycles
+    useEffect(() => {
+        if (externalSelectedTags && JSON.stringify(externalSelectedTags) !== JSON.stringify(selectedTags)) {
+            setIsExternalUpdate(true);
+            setSelectedTags(externalSelectedTags);
+        }
+    }, [externalSelectedTags]);
+
+
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -33,8 +45,20 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
     };
 
     useEffect(() => {
-        onFilterChange({ tags: selectedTags, time: selectedTime, postedBy: selectedPostedBy, sortMethod, sortOrder });
-    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange]);
+        if (isExternalUpdate) {
+            setIsExternalUpdate(false);
+            return;
+        }
+        
+        onFilterChange({ 
+            tags: selectedTags, 
+            time: selectedTime, 
+            postedBy: selectedPostedBy, 
+            sortMethod, 
+            sortOrder 
+        });
+    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange, isExternalUpdate]);
+
 
     const toggleDrawer = () => {
         setIsDrawerOpen((prev) => !prev);

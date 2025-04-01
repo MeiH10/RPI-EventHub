@@ -13,13 +13,18 @@ import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const [showCreate, setShowCreate] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
   const [showSignup, setShowSignup] = useState(false)
-  const { isLoggedIn, emailVerified, logout, manageMode, setManageMode } = useAuth();
+  const { isLoggedIn, role, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
@@ -32,7 +37,7 @@ const Navbar = () => {
       handleClick();
     }
   };
-  
+
   const getNavLinkClass = (path) => {
     return location.pathname === path
       ? `${styles.navLinks} ${styles.active}`
