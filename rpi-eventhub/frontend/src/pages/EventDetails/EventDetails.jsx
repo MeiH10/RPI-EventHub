@@ -5,7 +5,7 @@ import Footer from '../../components/Footer/Footer';
 import styles from './EventDetails.module.css';
 import { useEvents } from '../../context/EventsContext';
 import RsvpButton from '../../components/RSVPButton/RsvpButton';
-import DeleteButton from '../../components/DeleteButton/DeleteButton';
+// import DeleteButton from '../../components/DeleteButton/DeleteButton';
 import { DateTime } from 'luxon';
 import { useAuth } from "../../context/AuthContext";
 import * as pdfjsLib from "pdfjs-dist";
