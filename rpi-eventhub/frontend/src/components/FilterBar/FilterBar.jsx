@@ -3,16 +3,21 @@ import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
 function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS, selectedTags: externalSelectedTags }) {
+    // Preserve existing state management
     const [selectedTags, setSelectedTags] = useState(externalSelectedTags || []);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isListView, setIsListView] = useState(false);
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
     const { isDark } = useColorScheme();
-
     const [isExternalUpdate, setIsExternalUpdate] = useState(false);
 
-    // FIXED: Update internal state when external tags change, with flag to prevent cycles
+    // New state for radio button selections
+    const [timeFilter, setTimeFilter] = useState('future');
+    const [posterFilter, setPosterFilter] = useState('student');
+    const [eventType, setEventType] = useState('all');
+
+    // Update internal state when external tags change
     useEffect(() => {
         if (externalSelectedTags && JSON.stringify(externalSelectedTags) !== JSON.stringify(selectedTags)) {
             setIsExternalUpdate(true);
@@ -20,30 +25,39 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
         }
     }, [externalSelectedTags]);
 
-
+    // Handle tag selection (keep existing functionality)
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
         );
     };
 
-    const handleTimeChange = (time) => {
-        setSelectedTime((prev) =>
-            prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
-        );
+    // Map selected time radio button to existing functionality
+    const handleTimeFilterChange = (newFilter) => {
+        setTimeFilter(newFilter);
+        
+        // Update time filters to match existing functionality
+        if (newFilter === 'future') {
+            setSelectedTime(['upcoming']);
+        } else if (newFilter === 'present') {
+            setSelectedTime(['today']);
+        } else if (newFilter === 'past') {
+            setSelectedTime(['past']);
+        }
     };
 
-    const handlePostedByChange = (poster) => {
-        setSelectedPostedBy((prev) =>
-            prev.includes(poster) ? prev.filter((p) => p !== poster) : [...prev, poster]
-        );
+    // Map selected poster radio button to existing functionality
+    const handlePosterFilterChange = (newFilter) => {
+        setPosterFilter(newFilter);
+        
+        if (newFilter === 'student') {
+            setSelectedPostedBy(['student']);
+        } else if (newFilter === 'rpi') {
+            setSelectedPostedBy(['rpi']);
+        }
     };
 
-    const clearAll = () => {
-        setSelectedTags([]);
-        setSelectedTime([]);
-    };
-
+    // Send filter updates to parent component
     useEffect(() => {
         if (isExternalUpdate) {
             setIsExternalUpdate(false);
@@ -55,21 +69,33 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
             time: selectedTime, 
             postedBy: selectedPostedBy, 
             sortMethod, 
-            sortOrder 
+            sortOrder,
+            eventType: eventType !== 'all' ? [eventType] : []
         });
-    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange, isExternalUpdate]);
+    }, [selectedTags, selectedTime, selectedPostedBy, eventType, sortMethod, sortOrder, onFilterChange, isExternalUpdate]);
 
-
+    // Toggle drawer
     const toggleDrawer = () => {
         setIsDrawerOpen((prev) => !prev);
     };
 
+    // Handle view change (keep existing functionality)
     const handleViewChange = () => {
         setIsListView((prev) => {
             const newValue = !prev;
             changeView(newValue);
             return newValue;
         });
+    };
+
+    // Clear all filters
+    const clearAll = () => {
+        setSelectedTags([]);
+        setTimeFilter('future');
+        setPosterFilter('student');
+        setEventType('all');
+        setSelectedTime(['upcoming']);
+        setSelectedPostedBy(['student']);
     };
 
     return (
@@ -88,105 +114,195 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                     </svg>
                 </div>
             </button>
-            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
-                {showICS && (
-                    <div>
-                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 bg-white rounded-sm flex justify-center items-center' onClick={onDownloadICS}>
-                            <p className='text-md text-black m-0'>Download ICS</p>
-                        </div>
-                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-red-500 rounded-sm flex justify-center items-center'
-                            onClick={onUnselectAll}
-                        >
-                            <p className='text-md m-0'>Unselect All</p>
-                        </div>
+            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ""}`}>
+                {/* List/Grid View Selection (using radio buttons) */}
+                <div className={styles.filterSection}>
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="listView" 
+                            name="viewMode" 
+                            checked={isListView} 
+                            onChange={() => handleViewChange()} 
+                        />
+                        <label htmlFor="listView">List View</label>
                     </div>
-                )}
-                <div className={styles.changeButton} onClick={handleViewChange}>
-                    {isListView ?
-                        <div>
-                            <i className="bi bi-columns-gap">
-                            </i>
-                            <span>Grid View </span>
-                        </div>
-                        :
-                        <div>
-                            <i className="bi bi-list-nested">
-                            </i>
-                            <span>List View </span>
-                        </div>
-                    }
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="gridView" 
+                            name="viewMode" 
+                            checked={!isListView} 
+                            onChange={() => handleViewChange()} 
+                        />
+                        <label htmlFor="gridView">Grid View</label>
+                    </div>
                 </div>
+
+                {/* Sort Options */}
                 <div className={styles.sortContainer}>
-                    <label htmlFor="sortMethod">Sort by</label>
+                    <label htmlFor="sortMethod">Sort By:</label>
                     <select
                         id="sortMethod"
                         value={sortMethod}
                         onChange={(e) => setSortMethod(e.target.value)}
                     >
-                        <option value="date" className="text-black dark:text-white">Date</option>
-                        <option value="likes" className="text-black dark:text-white">Likes</option>
-                        <option value="title" className="text-black dark:text-white">Title</option>
+                        <option value="date">Date</option>
+                        <option value="likes">Likes</option>
+                        <option value="title">Title</option>
                     </select>
-                    <label htmlFor="sortOrder">Order</label>
+                    
+                    <label htmlFor="sortOrder">Order:</label>
                     <select
                         id="sortOrder"
                         value={sortOrder}
                         onChange={(e) => setSortOrder(e.target.value)}
                     >
-                        <option value="asc" className="text-black dark:text-white">Ascending</option>
-                        <option value="desc" className="text-black dark:text-white">Descending</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
                     </select>
                 </div>
+
                 <div className={styles.separator}></div>
+                
+                {/* Filtered Results Count */}
                 <div className={styles.filterSection}>
                     <h3 className={styles.filterBarTags}>Filtered Results: {filteredCount}</h3>
                 </div>
+
                 <div className={styles.separator}></div>
 
+                {/* Time Filter (using radio buttons) */}
                 <div className={styles.filterSection}>
-                    <h3 className={styles.filterBarTags}>By Time</h3>
-                    {['past', 'upcoming', 'today'].map((time) => (
-                        <div key={time} className={styles.checkboxWrapper}>
-                            <input
-                                type="checkbox"
-                                id={time}
-                                value={time}
-                                checked={selectedTime.includes(time)}
-                                onChange={() => handleTimeChange(time)}
-                            />
-                            <label className={styles.filterBarTags}
-                                   htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
-                        </div>
-                    ))}
-
-                    <div className={styles.separator}></div>
-
-                    <h3 className={styles.filterBarTags}>Posted by</h3>
-                    <div className={styles.checkboxWrapper}>
-                   
+                    <h3 className={styles.filterBarTags}>Time:</h3>
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="future" 
+                            name="timeFilter" 
+                            checked={timeFilter === 'future'} 
+                            onChange={() => handleTimeFilterChange('future')} 
+                        />
+                        <label htmlFor="future">Future</label>
+                    </div>
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="present" 
+                            name="timeFilter" 
+                            checked={timeFilter === 'present'} 
+                            onChange={() => handleTimeFilterChange('present')} 
+                        />
+                        <label htmlFor="present">Present</label>
+                    </div>
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="past" 
+                            name="timeFilter" 
+                            checked={timeFilter === 'past'} 
+                            onChange={() => handleTimeFilterChange('past')} 
+                        />
+                        <label htmlFor="past">Past</label>
+                    </div>
                 </div>
-            <div className={styles.checkboxWrapper}>
-                <input
-                    type="checkbox"
-                    id="student"
-                    value="student"
-                    checked={selectedPostedBy.includes("student")}
-                    onChange={() => handlePostedByChange("student")}
-                />
-                <label htmlFor="student" className={styles.filterBarTags}>Student</label>
-            </div>
-            <div className={styles.checkboxWrapper}>
-                <input
-                    type="checkbox"
-                    id="rpi"
-                    value="rpi"
-                    checked={selectedPostedBy.includes("rpi")}
-                    onChange={() => handlePostedByChange("rpi")}
-                />
-                <label htmlFor="rpi" className={styles.filterBarTags}>RPI</label>
-            </div>
 
                 <div className={styles.separator}></div>
+
+                {/* Posted By (using radio buttons) */}
+                <div className={styles.filterSection}>
+                    <h3 className={styles.filterBarTags}>Posted by:</h3>
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="studentPoster" 
+                            name="posterFilter" 
+                            checked={posterFilter === 'student'} 
+                            onChange={() => handlePosterFilterChange('student')} 
+                        />
+                        <label htmlFor="studentPoster">Student</label>
+                    </div>
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="rpiPoster" 
+                            name="posterFilter" 
+                            checked={posterFilter === 'rpi'} 
+                            onChange={() => handlePosterFilterChange('rpi')} 
+                        />
+                        <label htmlFor="rpiPoster">RPI</label>
+                    </div>
+                </div>
+
+                <div className={styles.separator}></div>
+
+                {/* Event Type Filter (new from Figma) */}
+                <div className={styles.filterSection}>
+                    <h3 className={styles.filterBarTags}>Type:</h3>
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="allEvents" 
+                            name="eventType" 
+                            checked={eventType === 'all'} 
+                            onChange={() => setEventType('all')} 
+                        />
+                        <label htmlFor="allEvents">Club Event</label>
+                    </div>
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="sportsEvents" 
+                            name="eventType" 
+                            checked={eventType === 'sports'} 
+                            onChange={() => setEventType('sports')} 
+                        />
+                        <label htmlFor="sportsEvents">Sports</label>
+                    </div>
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="greekLifeEvents" 
+                            name="eventType" 
+                            checked={eventType === 'greek'} 
+                            onChange={() => setEventType('greek')} 
+                        />
+                        <label htmlFor="greekLifeEvents">Greek Life</label>
+                    </div>
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="freeFood" 
+                            name="eventType" 
+                            checked={eventType === 'food'} 
+                            onChange={() => setEventType('food')} 
+                        />
+                        <label htmlFor="freeFood">Free food</label>
+                    </div>
+                    
+                    <div className={styles.radioOption}>
+                        <input 
+                            type="radio" 
+                            id="creativeEvents" 
+                            name="eventType" 
+                            checked={eventType === 'creative'} 
+                            onChange={() => setEventType('creative')} 
+                        />
+                        <label htmlFor="creativeEvents">Creative</label>
+                    </div>
+                </div>
+
+                <div className={styles.separator}></div>
+
+                {/* Tag Filters (keep existing functionality) */}
+                <div className={styles.filterSection}>
                     <h3 className={styles.filterBarTags}>By Tags</h3>
                     {tags.sort().map((tag) => (
                         <div key={tag} className={styles.checkboxWrapper}>
@@ -201,12 +317,26 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         </div>
                     ))}
                 </div>
-                <div className={styles.separator}></div>
+
+                {/* ICS Download Options */}
+                {showICS && (
+                    <div>
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 bg-white rounded-sm flex justify-center items-center' onClick={onDownloadICS}>
+                            <p className='text-md text-black m-0'>Download ICS</p>
+                        </div>
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-red-500 rounded-sm flex justify-center items-center'
+                            onClick={onUnselectAll}
+                        >
+                            <p className='text-md m-0'>Unselect All</p>
+                        </div>
+                    </div>
+                )}
+
+                {/* Clear All Button */}
                 <button onClick={clearAll} className={styles.clearButton}>Clear All</button>
             </div>
         </>
     );
-
 }
 
 export default FilterBar;
