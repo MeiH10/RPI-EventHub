@@ -41,7 +41,7 @@ export default function Login() {
 
     return (
         <div className="flex min-h-full justify-center items-center">
-            <div className="bg-white/30 backdrop-blur-lg rounded-3 h-max w-2/4 mt-10 flex-col justify-center items-center px-6 py-12 lg:px-8 font-sans">
+            <div className="z-10 bg-white/30 backdrop-blur-md rounded-3 h-max w-full md:w-2/4 mt-10 flex-col justify-center items-center px-4 py-8 md:px-6 md:py-12 lg:px-8 font-sans">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm justify-content-center items-center">
                     <NavLink to="/">
                         <img
@@ -76,14 +76,14 @@ export default function Login() {
                                         autoComplete="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 pr-20 text-base text-gray-900
-                                        outline outline-1 outline-gray-300 placeholder:text-gray-400
-                                        focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
-                                        hover:outline-gray-400 transition-all"
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900
+                                                    outline outline-1 outline-gray-300 placeholder:text-gray-400
+                                                    focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
+                                                    hover:outline-gray-400 transition-all rounded-r-none"
                                     />
-                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <span className="text-gray-500 text-sm bg-white pl-2">@rpi.edu</span>
-                                    </div>
+                                    <span className="bg-gray-100 text-gray-500 py-1.5 px-2 text-sm sm:text-sm/6 rounded-r-md outline outline-1 outline-gray-300">
+                                        @rpi.edu
+                                    </span>
                                 </div>
                             </div>
                         </div>

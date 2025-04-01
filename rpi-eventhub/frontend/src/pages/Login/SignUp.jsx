@@ -6,6 +6,7 @@ import config from "../../config";
 import {useAuth} from "../../context/AuthContext";
 import {Bounce, toast, ToastContainer} from "react-toastify";
 import {NavLink} from "react-router-dom";
+import Tooltip from "../../components/Tooltip/Tooltip";
 
 export default function Signup() {
     // form information
@@ -118,19 +119,19 @@ export default function Signup() {
                                     <input
                                         id="email"
                                         name="email"
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => {setEmail(e.target.value); setEmailTouched(true)}}
+                                        type="text"
                                         required
                                         autoComplete="email"
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 pr-20 text-base text-gray-900
-                outline outline-1 outline-gray-300 placeholder:text-gray-400
-                focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
-                hover:outline-gray-400 transition-all"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900
+                                                    outline outline-1 outline-gray-300 placeholder:text-gray-400
+                                                    focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
+                                                    hover:outline-gray-400 transition-all rounded-r-none"
                                     />
-                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <span className="text-gray-500 text-sm bg-white pl-2">@rpi.edu</span>
-                                    </div>
+                                    <span className="bg-gray-100 text-gray-500 py-1.5 px-2 text-sm sm:text-sm/6 rounded-r-md outline outline-1 outline-gray-300">
+                                        @rpi.edu
+                                    </span>
                                 </div>
                             </div>
                             <small className="text-red-500 text-sm">
@@ -153,9 +154,9 @@ export default function Signup() {
                                         required
                                         autoComplete="username"
                                         className="block w-full rounded-md bg-white px-3 py-1.5 pr-20 text-base text-gray-900
-                outline outline-1 outline-gray-300 placeholder:text-gray-400
-                focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
-                hover:outline-gray-400 transition-all"
+                                                    outline outline-1 outline-gray-300 placeholder:text-gray-400
+                                                    focus:outline-2 focus:outline-indigo-600 sm:text-sm/6
+                                                    hover:outline-gray-400 transition-all"
                                     />
                                 </div>
                             </div>
@@ -275,5 +276,6 @@ export default function Signup() {
         </div>
     );
 }
+
 
 
