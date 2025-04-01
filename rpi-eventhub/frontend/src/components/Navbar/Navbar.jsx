@@ -24,7 +24,7 @@ const Navbar = () => {
   const [showCreate, setShowCreate] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
   const [showSignup, setShowSignup] = useState(false)
-  const { isLoggedIn, role, logout, manageMode, setManageMode } = useAuth();
+  const { isLoggedIn, emailVerified, role, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
