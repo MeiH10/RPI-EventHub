@@ -8,7 +8,7 @@ import LoginModal from "../LoginModal/LoginModal";
 import SignupModal from "../SignupModal/SignupModal";
 import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { useAuth } from "../../context/AuthContext";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
@@ -20,6 +20,8 @@ const OFFICER = 3;
 const ADMIN = 4;
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  
   const [click, setClick] = useState(false);
   const [showCreate, setShowCreate] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
@@ -53,17 +55,17 @@ const Navbar = () => {
       <nav className={`flex justify-between font-sans text-lg shadow items-center fixed z-20 px-2 h-16 w-full bg-white`}>
         <div className="flex justify-center items-center">
         <img src={EventHubLogo2} alt="EventHub Logo" className="h-16 w-16 mr-7" />
-          <NavLink to="/" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Home</NavLink> 
-          <NavLink to="/all-events" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Events</NavLink> 
-          <NavLink to="/about-us" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>About</NavLink> 
-          <NavLink to="/calendar" className={"p-3 hover:bg-blue-500 rounded-md mr-5 duration-150 hover:text-white hover:font-bold hover:shadow-sm"}>Calendar</NavLink> 
+          <div onClick={() => navigate("/")} className="p-2 rounded-md mr-5 duration-150 hover:bg-red-500 hover:text-white hover:font-bold hover:shadow-sm cursor-pointer">Home</div>
+          <div onClick={() => navigate("/all-events")} className="p-2 rounded-md mr-5 duration-150 hover:bg-red-500 hover:text-white hover:font-bold hover:shadow-sm cursor-pointer">Events</div>
+          <div onClick={() => navigate("/about-us")} className="p-2 rounded-md mr-5 duration-150 hover:bg-red-500 hover:text-white hover:font-bold hover:shadow-sm cursor-pointer">About</div>
+          <div onClick={() => navigate("/calendar")} className="p-2 rounded-md mr-5 duration-150 hover:bg-red-500 hover:text-white hover:font-bold hover:shadow-sm cursor-pointer">Calendar</div>
         </div>
         <div>
-          <NavLink onClick={() => setShowCreate(true)} className={"px-3 py-2 bg-emerald-500 hover:bg-emerald-700 rounded-md mr-5 duration-150 text-white text-md font-normal hover:font-bold hover:shadow-sm"}>
+          <NavLink onClick={() => setShowCreate(true)} className={"px-3 py-2 bg-red-600 hover:bg-red-800 rounded-md mr-5 duration-150 text-white text-md font-normal hover:font-bold hover:shadow-sm"}>
             Create Event
           </NavLink> 
-          <NavLink onClick={() => setShowLogin(true)} className={`px-3 py-2 ${isLoggedIn ? "bg-gray-500 hover:bg-gray-700" : "bg-blue-500 hover:bg-blue-700"} rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm`}>{isLoggedIn ? 'Manage Events' : 'Login'}</NavLink> 
-          <NavLink onClick={isLoggedIn ? handleLogout : () => setShowSignup(true)} className={`px-3 py-2 ${isLoggedIn ? "bg-red-500 hover:bg-red-700" : "bg-gray-500 hover:bg-gray-700"} rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm`}>{isLoggedIn ? "Sign Out" : "Signup"}</NavLink> 
+          <NavLink onClick={() => setShowLogin(true)} className={`px-3 py-2 bg-red-600 hover:bg-red-800 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm`}>{isLoggedIn ? 'Manage Events' : 'Login'}</NavLink> 
+          <NavLink onClick={isLoggedIn ? handleLogout : () => setShowSignup(true)} className={`px-3 py-2 bg-red-600 hover:bg-red-800 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm`}>{isLoggedIn ? "Sign Out" : "Signup"}</NavLink> 
         </div>
         <CreateEventModal show={showCreate} setShow={setShowCreate} />
         <LoginModal show={showLogin} setShow={setShowLogin} />
