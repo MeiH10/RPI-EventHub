@@ -25,14 +25,15 @@ const {
     sendCodeEmail,
 } = require('./controller/userController');
 const {
-    removeEvent,
-    getProxyImage,
-    getRPIEvents,
-    createNewEvent,
-    fetchEventLikes,
-    handleEventLike,
-    fetchUserLikedEvents,
-    getAllEvents
+  removeEvent,
+  getProxyImage,
+  getRPIEvents,
+  createNewEvent,
+  fetchEventLikes,
+  handleEventLike,
+  fetchUserLikedEvents,
+  getAllEvents,
+  updateEvents,
 } = require('./controller/eventController');
 const { getLogContent } = require('./controller/logController');
 //#endregion
@@ -67,6 +68,7 @@ app.get('/proxy/image/:eventId', getProxyImage);
 app.get('/events/:id/like', fetchEventLikes);
 app.get('/events/like/status', authenticate, fetchUserLikedEvents);
 app.post('/events/:id/like', authenticateAndVerify, handleEventLike);
+app.post('/events-update/:id', upload, updateEvents);
 //#endregion
 
 //#region LOG ROUTES
