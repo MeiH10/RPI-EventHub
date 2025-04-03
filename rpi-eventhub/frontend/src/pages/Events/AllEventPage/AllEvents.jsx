@@ -30,6 +30,7 @@ function AllEvents() {
     const { isDark } = useColorScheme();
     const [selectedEventIds, setSelectedEventIds] = useState([]);
     const { isLoggedIn, username, manageMode } = useAuth();
+    const [selectedTags, setSelectedTags] = useState([]);
     const [filters, setFilters] = useState({
         tags: [],
         time: ['upcoming', 'today'],
@@ -37,6 +38,25 @@ function AllEvents() {
         sortMethod: 'likes',
         sortOrder: 'desc'
     });
+
+    const handleTagClick = (tag) => {
+        // This creates the same behavior as FilterBar's handleTagChange function
+        const updatedTags = selectedTags.includes(tag)
+            ? selectedTags.filter(t => t !== tag)
+            : [...selectedTags, tag];
+        
+        // Update selected tags
+        setSelectedTags(updatedTags);
+        
+        // Show toast message
+        if (selectedTags.includes(tag)) {
+            toast.info(`Removed filter: ${tag}`);
+        } else {
+            toast.success(`Added filter: ${tag}`);
+        }
+    };
+
+
 
     const generateICS = () => {
         // Filter events by selected event IDs
@@ -127,6 +147,7 @@ function AllEvents() {
 
     const handleFilterChange = useCallback((newFilters) => {
         setFilters(newFilters);
+        setSelectedTags(newFilters.tags);
     }, []);
 
     useEffect(() => {
@@ -153,6 +174,15 @@ function AllEvents() {
 
         handleFilterChange(defaultFilters);
     }, [events, handleFilterChange]);
+
+    useEffect(() => {
+        // Update the filters object when selectedTags changes
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            tags: selectedTags
+        }));
+    }, [selectedTags]);
+
 
     useEffect(() => {
         let filtered = events;
@@ -281,6 +311,7 @@ function AllEvents() {
                         showICS={selectedEventIds.length > 0}
                         onUnselectAll={() => setSelectedEventIds([])}
                         onDownloadICS={generateICS}
+                        selectedTags={selectedTags}
                     />
                 </div>
                 {
@@ -325,6 +356,7 @@ function AllEvents() {
                                             onSelect={() => handleSelect(event._id)}
                                             showEditButton={manageMode && event.creator === username}
                                             onEdit={() => handleEditEvent(event._id)}
+                                            onTagClick={handleTagClick}
                                         />
                                     ))}
                                 </Masonry>

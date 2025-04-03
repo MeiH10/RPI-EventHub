@@ -102,7 +102,7 @@
     color: var(--muted-text-color);
   }
   
-  .tags {
+  /* .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -115,8 +115,34 @@
     padding: 4px 8px;
     font-size: 0.875em;
     color: var(--tag-text-color);
-  }
-  
+  } */
+/* Updated styles for event tags */
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;  /* Increased gap for better spacing */
+  margin-top: 10px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;  /* Slightly increased padding for better readability */
+  border-radius: 16px; /* More rounded corners */
+  background-color: #f3f4f6;
+  color: #333;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Prevents wrapping inside a single tag */
+}
+
+.tag:hover {
+  transform: scale(1.07);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+
   .deleteButton {
     background: var(--delete-button-bg-color);
     color: var(--delete-button-text-color);
