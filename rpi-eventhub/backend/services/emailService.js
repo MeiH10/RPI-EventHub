@@ -1,14 +1,19 @@
 // backend/services/emailService.js
 const nodemailer = require('nodemailer');
-const sgTransport = require('nodemailer-sendgrid');
+// const sgTransport = require('nodemailer-sendgrid');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const {logger} = require('../services/eventsLogService');
 
-
-const mailer = nodemailer.createTransport(sgTransport({
-  apiKey: process.env.SENDGRID_API_KEY
-}));
+const mailer = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_FROM,
+    pass: process.env.SMTP_PASSWORD
+  }
+});
 
 
 const sendEmail = async ({ to, subject, text }) => {

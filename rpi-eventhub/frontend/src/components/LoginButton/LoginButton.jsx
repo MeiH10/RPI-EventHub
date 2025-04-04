@@ -9,7 +9,6 @@ const LoginButton = () => {
                     Header
                 </div>
                 <div className={styles.modalBody}>
-                    dksamdlksamdlksamdlksamd
                 </div>
             </div>
         </div>
