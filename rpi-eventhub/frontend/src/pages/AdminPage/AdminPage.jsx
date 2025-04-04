@@ -105,7 +105,7 @@ function AdminPage() {
             <div className={`${styles.adminTool} ${isDark ? styles.DarkAdminTool : ''}`}>
               <h5>Manage Events</h5>
               <p>Create, update, or delete campus events.</p>
-              <button className={styles.actionButton} onClick={() => window.location.href = '/admin/events'}>
+              <button className={styles.actionButton} onClick={() => window.location.href = '/all-events'}>
                 Go to Event Management
               </button>
             </div>
