@@ -14,8 +14,27 @@ export const EventsProvider = ({ children }) => {
 
     useEffect(() => {
         if (events.length > 0) {
-            const uniqueClubs = [...new Set(events.map(event => event.club).filter(Boolean))];
-            const sortedClubs = uniqueClubs.sort((a, b) => a.localeCompare(b));
+            const currentDate = new Date(); // Today's date
+        
+            const clubEventCount = {};
+            
+            events.forEach(event => {
+                // Skip if no club name
+                if (!event.club) return;
+                
+                // Get event date (fallback to startDateTime or date)
+                const eventDate = new Date(event.startDateTime || event.date);
+                
+                // Only count if event is today or in the future
+                if (eventDate >= currentDate) {
+                    clubEventCount[event.club] = (clubEventCount[event.club] || 0) + 1;
+                }
+            });
+            //only put these clubs into active clubs
+            const activeClubs = Object.keys(clubEventCount)
+                .filter(club => clubEventCount[club] > 0)
+            //sort alphabeticlly
+            const sortedClubs = activeClubs.sort((a, b) => a.localeCompare(b));
             setClubs(sortedClubs);
         }
     }, [events]);

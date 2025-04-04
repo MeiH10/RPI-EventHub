@@ -9,7 +9,6 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, s
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isListView, setIsListView] = useState(false);
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
-    const [selectedPostedByOrg, setSelectedPostedByOrg] = useState(["a-z", "z-a"]);
     const { clubs } = useEvents();
     const { isDark } = useColorScheme();
     const handleTagChange = (tag) => {
@@ -36,8 +35,8 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, s
     };
 
     useEffect(() => {
-        onFilterChange({ tags: selectedTags, time: selectedTime, postedBy: selectedPostedBy, postedByOrg: selectedPostedByOrg, sortMethod, sortOrder, sortOrg });
-    }, [selectedTags, selectedTime, selectedPostedBy,selectedPostedByOrg, sortMethod, sortOrder, sortOrg, onFilterChange]);
+        onFilterChange({ tags: selectedTags, time: selectedTime, postedBy: selectedPostedBy, sortMethod, sortOrder, sortOrg });
+    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, sortOrg, onFilterChange]);
 
     const toggleDrawer = () => {
         setIsDrawerOpen((prev) => !prev);
@@ -120,9 +119,9 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, s
                         id="sortOrg"
                         value={sortOrg}
                         onChange={(e) => setSortOrg(e.target.value)}
-                    >   <option value="asc" className="text-black dark:text-white">a to z</option>
-                        <option value="dsc" className="text-black dark:text-white">z to a</option>
-                        <option value="" className="text-black dark:text-white"> All Organizations</option>
+                    >   
+                        
+                        <option value="all" className="text-black dark:text-white"> All Organizations</option>
                                 {clubs.map((club, index) => (
                                     <option key={index} value={club} className="text-black dark:text-white">
                                         {club}

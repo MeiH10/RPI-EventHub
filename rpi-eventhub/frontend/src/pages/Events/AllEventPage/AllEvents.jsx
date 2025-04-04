@@ -24,6 +24,7 @@ function AllEvents() {
     const [availableTags, setAvailableTags] = useState([]);
     const [sortMethod, setSortMethod] = useState('likes');
     const [sortOrder, setSortOrder] = useState('desc');
+    const [sortOrg, setSortOrg] = useState('all');
     const [isListView, setIsListView] = useState(false);
     const [liked, setLiked] = useState([]) //Array of ids
     const { theme } = useContext(ThemeContext);
@@ -35,7 +36,8 @@ function AllEvents() {
         time: ['upcoming', 'today'],
         postedBy: ['student', 'rpi'],
         sortMethod: 'likes',
-        sortOrder: 'desc'
+        sortOrder: 'desc',
+        sortOrg: 'all'
     });
 
     const generateICS = () => {
@@ -148,7 +150,9 @@ function AllEvents() {
             time: ['upcoming', 'today'],
             postedBy: ['student', 'rpi'],
             sortMethod: 'likes',
-            sortOrder: 'desc'
+            sortOrder: 'desc',
+            sortOrg: 'all'
+
         };
 
         handleFilterChange(defaultFilters);
@@ -160,6 +164,10 @@ function AllEvents() {
         // Apply manage mode filter
         if (manageMode && isLoggedIn) {
             filtered = events.filter(event => event.poster === username);
+        }
+
+        if (filters.sortOrg && filters.sortOrg !== "all") {
+            filtered = filtered.filter(event => event.club === filters.sortOrg);
         }
 
         // Apply tag filters
@@ -218,7 +226,7 @@ function AllEvents() {
         setFilteredEvents(filtered);
     }, [events, manageMode, isLoggedIn, username, filters]);
 
-    const sortEvents = (events, sortMethod, sortOrder) => {
+    const sortEvents = (events, sortMethod, sortOrder, sortOrg) => {
         const sortedEvents = [...events];
         switch (sortMethod) {
             case 'date':
@@ -229,6 +237,8 @@ function AllEvents() {
                 return sortedEvents.sort((a, b) => sortOrder === 'asc' ? a.likes - b.likes : b.likes - a.likes);
             case 'title':
                 return sortedEvents.sort((a, b) => sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
+            case 'sortOrg':
+                return sortedEvents.sort((a, b) => sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)); //Remove events not in organization
             default:
                 return sortedEvents;
         }
@@ -275,6 +285,8 @@ function AllEvents() {
                         setSortOrder={setSortOrder}
                         sortOrder={sortOrder}
                         setSortMethod={setSortMethod}
+                        sortOrg={sortOrg}
+                        setSortOrg={setSortOrg}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
                         changeView={changeView}
@@ -287,11 +299,11 @@ function AllEvents() {
                     isListView ?
                     (
                         <div className={styles.eventsDisplayContainer}>
-                            {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                            {sortEvents(filteredEvents, sortMethod, sortOrder, sortOrg).map((event) => (
                                 <EventsListCard
                                     event={event}
                                     selected={selectedEventIds.includes(event._id)}
-                                    events={sortEvents(filteredEvents, sortMethod, sortOrder)}
+                                    events={sortEvents(filteredEvents, sortMethod, sortOrder, sortOrg)}
                                     selectedEventIds={selectedEventIds}
                                     onSelect={() => handleSelect(event._id)}
                                  />
@@ -316,7 +328,7 @@ function AllEvents() {
                                     className={styles.myMasonryGrid}
                                     columnClassName={styles.myMasonryGridColumn}
                                 >
-                                    {sortEvents(filteredEvents, sortMethod, sortOrder).map((event) => (
+                                    {sortEvents(filteredEvents, sortMethod, sortOrder, sortOrg).map((event) => (
                                         <EventCard 
                                             key={event._id} 
                                             event={event}
