@@ -4,15 +4,25 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { Skeleton } from '@mui/material';
 import { ThemeContext } from '../../context/ThemeContext';
+import { useAuth } from "../../context/AuthContext";
 import { useColorScheme } from '../../hooks/useColorScheme';
-//import AdminSearch from '../../components/AdminSearch/AdminSearch'; // Import the search component
+import AdminSearch from '../../components/AdminSearch/AdminSearch'; // Import the search component
+
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
 function AdminPage() {
+
+
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
   const [isLoading, setIsLoading] = useState(true);
   const [adminStats, setAdminStats] = useState({});
   const [error, setError] = useState(null);
+  const { isLoggedIn, role, logout, manageMode, setManageMode } = useAuth();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -38,11 +48,16 @@ function AdminPage() {
     { level: 0, description: 'Banned: Banned users are unable to log in or intract with the site using their credentials.' },
     { level: 1, description: 'Unverified User: Unverified users are users who have signed up but have not verified their email.' },
     { level: 2, description: 'Verified User: Verified users are users who have signed up and have verified their email.' },
-    { level: 3, description: 'Officer: Administrators have elevated privileges on the site and may edit other users or events.' },
+    { level: 3, description: 'Officer: TBA' },
+    { level: 4, description: 'Admin: Administrators have elevated privileges on the site and may edit other users or events.'}
   ];
 
-  return (
-    <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-gray-200 via-blue-200 to-blue-400'}`} data-theme={theme}>
+  var Page = <div>
+        <p>Unauthorized</p>
+        </div>;
+
+  if (role === 4) {
+  Page =  <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-gray-200 via-blue-200 to-blue-400'}`} data-theme={theme}>
       <Navbar />
       <div className="container-fluid containerFluid">
         {/* Page Title and Introduction */}
@@ -99,7 +114,19 @@ function AdminPage() {
       </div>
       <Footer />
     </div>
-  );
+    ;
+              } else {
+                Page = <div>
+                  <p>Unauthorized</p>
+                </div>
+              }
+    return (
+
+      <div>
+        {Page}
+      </div>
+
+    );
 }
 
 export default AdminPage;
