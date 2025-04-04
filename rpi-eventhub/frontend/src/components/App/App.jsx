@@ -19,6 +19,7 @@ import AllEvents from "../../pages/Events/AllEventPage/AllEvents";
 import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust path if needed
 import EventDetails from '../../pages/EventDetails/EventDetails';
 import Calendar from '../../pages/Calendar/Calendar';
+import AdminPage from '../../pages/AdminPage/AdminPage';
 import TermsOfService from '../../pages/TermsOfService/TermsOfService';
 
 const router = createBrowserRouter([
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
   {
     path: "/terms-of-service",
     element: <TermsOfService />
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />
   }
 ]);
 
