@@ -194,6 +194,14 @@ const Navbar = () => {
                 Calendar
               </NavLink>
             </li>
+            {(role === ADMIN) && (
+                <li className={styles.drawerItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")}`}>
+                    Admin
+                  </NavLink>
+                </li>
+            )}
             {isLoggedIn && role >= VERIFIED && (
               <li className={styles.drawerItem}>
                 <CreateEventModal />
