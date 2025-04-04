@@ -48,7 +48,7 @@ function AdminPage() {
     { level: 0, description: 'Banned: Banned users are unable to log in or intract with the site using their credentials.' },
     { level: 1, description: 'Unverified User: Unverified users are users who have signed up but have not verified their email.' },
     { level: 2, description: 'Verified User: Verified users are users who have signed up and have verified their email.' },
-    { level: 3, description: 'Officer: TBA' },
+    { level: 3, description: 'Officer: Officers are users that are RPI employees and are affiliated with the school. Only assign faculty to this role, not any other user.' },
     { level: 4, description: 'Admin: Administrators have elevated privileges on the site and may edit other users or events.'}
   ];
 
@@ -57,14 +57,14 @@ function AdminPage() {
         </div>;
 
   if (role === 4) {
-  Page =  <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-gray-200 via-blue-200 to-blue-400'}`} data-theme={theme}>
+  Page =  <div className={`${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-gray-200 via-blue-200 to-blue-400'}`} data-theme={theme}>
       <Navbar />
       <div className="container-fluid containerFluid">
         {/* Page Title and Introduction */}
         <div className="row">
           <div className="col-12 px-5 py-3">
-            <h4 className={styles.boldTitle}>Admin Dashboard</h4>
-            <p className={styles.description}>
+            <h4 className='font-bold text-xl'>Admin Dashboard</h4>
+            <p className=''>
               Welcome to the Admin Dashboard. Here, you can manage users and monitor events.
             </p>
           </div>
@@ -73,8 +73,8 @@ function AdminPage() {
         {/* Admin Search Section */}
         <div className="row">
           <div className="col-12 px-5 py-3">
-            <h4 className={styles.sectionTitle}>Admin Tools</h4>
-            <div className={`${styles.adminTool} ${isDark ? styles.DarkAdminTool : ''}`}>
+            <h4 className='text-lg font-bold mb-4'>Admin Tools</h4>
+            <div className={`${isDark ? 'bg-[#777] p-5 rounded-lg mb-5' : 'bg-[#f9f9f9] p-5 rounded-lg mb-5'}`}>
               <h5>Manage Users</h5>
               <p>Search for and manage user accounts by RCS ID.</p>
               <AdminSearch /> {/* Embed the search component directly */}
@@ -85,12 +85,12 @@ function AdminPage() {
         {/* Rank Explanation Section */}
         <div className="row">
           <div className="col-12 px-5 py-3">
-            <div className={`${styles.adminTool} ${isDark ? styles.DarkAdminTool : ''}`}>
+            <div className={`${isDark ? 'bg-[#777] p-5 rounded-lg mb-5' : 'bg-[#f9f9f9] p-5 rounded-lg mb-5'}`}>
               <h5>Rank Explanation</h5>
               <p>Explanation of each rank and its permissions:</p>
-              <ul className={`${styles.rankExplanationList} ${isDark ? styles.DarkRankExplanationList : ''} `}>
+              <ul className={`${isDark ? 'bg-[#777] list-none p-0' : 'list-none p-0'} `}>
                 {rankExplanations.map((rank) => (
-                  <li key={rank.level} className={`${styles.rankExplanationItem} ${isDark ? styles.DarkRankExplanationItem : ''} `}>
+                  <li key={rank.level} className={`${isDark ? 'bg-[#777] my-2 text-base' : 'my-2 text-base'}`}>
                     <strong>Rank {rank.level}:</strong> {rank.description}
                   </li>
                 ))}
@@ -102,7 +102,7 @@ function AdminPage() {
         {/* Manage Events Section */}
         <div className="row">
           <div className="col-12 px-5 py-3">
-            <div className={`${styles.adminTool} ${isDark ? styles.DarkAdminTool : ''}`}>
+            <div className={`${isDark ? 'bg-[#777] p-5 rounded-lg mb-5' : 'bg-[#f9f9f9] p-5 rounded-lg mb-5'}`}>
               <h5>Manage Events</h5>
               <p>Create, update, or delete campus events.</p>
               <button className={styles.actionButton} onClick={() => window.location.href = '/all-events'}>
