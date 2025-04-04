@@ -15,6 +15,11 @@ import ShareButtons from "./ShareButtons";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 import OpencvQr from "opencv-qr";
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
 const timeZone = 'America/New_York';
 
@@ -43,7 +48,7 @@ const cvQR = new OpencvQr({
 const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isOwner, setIsOwner] = useState(false);
-    const { manageMode, username } = useAuth();
+    const { manageMode, username, role } = useAuth();
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [error, setError] = useState('');
@@ -124,10 +129,10 @@ const EventDetails = () => {
     // Check if the user is the owner of the event
     useEffect(() => {
         if (event && username) {
-            setIsEditing(manageMode && event.poster === username);
-            setIsOwner(event.poster === username);
+            setIsEditing((manageMode && event.poster === username) || role === ADMIN);
+            setIsOwner(event.poster === username || role === ADMIN);
         }
-    }, [manageMode, event, username]);
+    }, [manageMode, event, username, role]);
 
 
     // Set the form data to the event data
