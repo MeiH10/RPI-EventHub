@@ -1,9 +1,9 @@
+/* Updated styles to position the filter bar correctly */
 :root {
   --sidebar-bg-color: #AB2328; /* Dark red background from Figma */
   --border-color: transparent;
   --label-color: #ffffff;
   --tags-label-color: #ffffff;
-  --tags-label-bg-color: rgba(229, 231, 233, 0.5);
   --checkbox-bg-color: transparent;
   --checkbox-checked-bg-color: transparent;
   --checkbox-checked-color: #ffffff;
@@ -27,25 +27,46 @@
   --separator-bg-color: rgba(255, 255, 255, 0.2);
 }
 
+/* FIXED: Adjusted positioning to make filter bar fixed in place */
 .sidebar {
-  width: 300px;
+  width: 250px;
   padding: 20px;
   background-color: var(--sidebar-bg-color);
   border: none;
   border-radius: 6px; 
-  margin-top: 25px; 
   box-sizing: border-box;
-  margin-bottom: auto;
-  position: sticky;
-  top: 14rem;
+  
+  /* Fixed positioning */
+  position: fixed;
+  top: 150px; /* Adjust as needed based on your header height */
+  left: 10px; /* Adjust as needed */
+  bottom: 30px; /* Leave some space at the bottom */
   height: auto;
-  max-height: 80vh;
-  z-index: 1000;
-  font-family: "Helvetica Neue", sans-serif;
+  
+  /* Allow scrolling within the filter bar */
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
+  
+  /* Visual styles */
   color: white;
+  font-family: "Helvetica Neue", sans-serif;
+  z-index: 100;
+}
+
+/* Style the scrollbar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
 }
 
 .filterSection {
@@ -74,7 +95,7 @@
   margin: 15px 0; 
 }
 
-/* New styles for radio buttons */
+/* Radio button styles */
 .radioOption {
   display: flex;
   align-items: center;
@@ -113,7 +134,7 @@
   cursor: pointer;
 }
 
-/* Keep existing checkbox styles */
+/* Checkbox styles */
 .checkboxWrapper {
   display: flex;
   align-items: center;
@@ -202,7 +223,7 @@ label {
   margin: 0;
 }
 
-/* Updated Sort Container */
+/* Sort container styles */
 .sortContainer {
   width: 100%;
   display: flex;
@@ -232,18 +253,19 @@ label {
   color: white;
 }
 
-/* Style for mobile */
+/* Mobile styles */
 @media (max-width: 960px) {
   .sidebar {
     position: fixed;
     top: 100px;
+    left: auto;
     right: 10px;
     width: 280px;
+    height: calc(100vh - 120px);
     opacity: 0;
     transform: translateX(110%);
     transition: transform 0.3s ease, opacity 0.3s ease;
     padding: 15px;
-    margin-top: 0;
   }
 
   .sidebar.open {
