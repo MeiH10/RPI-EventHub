@@ -6,7 +6,6 @@ import config from "../../config";
 import {useAuth} from "../../context/AuthContext";
 import {Bounce, toast, ToastContainer} from "react-toastify";
 import {NavLink} from "react-router-dom";
-import Tooltip from "../../components/Tooltip/Tooltip";
 
 export default function Signup() {
     // form information
