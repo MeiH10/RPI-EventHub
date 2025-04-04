@@ -56,7 +56,7 @@ function AdminPage() {
         <p>Unauthorized</p>
         </div>;
 
-  if (role === 4) {
+  if (role === ADMIN) {
   Page =  <div className={`${isDark ? 'text-white bg-[#120451]' : 'text-black bg-gradient-to-r from-gray-200 via-blue-200 to-blue-400'}`} data-theme={theme}>
       <Navbar />
       <div className="container-fluid containerFluid">
