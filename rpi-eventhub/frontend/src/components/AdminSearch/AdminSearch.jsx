@@ -63,9 +63,9 @@ const AdminSearch = () => {
   };
 
   return (
-    <div className={`${adminSearchCSS.searchContainer} ${isDark ? adminSearchCSS.DarkSearchContainer : ''}`}>
+    <div className={`${isDark ? 'flex flex-col items-center p-4' : 'flex flex-col items-center p-4'}`}>
       <input
-        className={`${adminSearchCSS.searchInput} ${isDark ? adminSearchCSS.DarkSearchInput : ''}`}
+        className={`${isDark ? 'w-4/5 p-3 text-[1.2rem] border border-gray-300 bg-[rgb(90,89,94)] rounded-md mb-4' : 'w-4/5 p-3 text-xl border border-gray-300 rounded-md mb-4'}`}
         type="text"
         placeholder="Enter RCS ID, First Name, or Last Name"
         value={searchTerm}
@@ -74,36 +74,36 @@ const AdminSearch = () => {
 
       {/* Dropdown for autocomplete results placed directly below the input field */}
       {searchTerm && (
-        <ul className={adminSearchCSS.dropdown}>
+        <ul className='absolute top-full left-0 w-full max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded-md shadow-md z-10 mt-2 p-0'>
           {filteredSuggestions.map((user, index) => (
             <li
               key={index}
-              className={adminSearchCSS.dropdownItem}
+              className='p-3 cursor-pointer text-base border-b border-gray-200'
               onClick={() => setSearchTerm(user.rcsId)}
             >
               {user.name} ({user.rcsId})
             </li>
           ))}
-          {filteredSuggestions.length === 0 && <li className={adminSearchCSS.noResult}>No results found</li>}
+          {filteredSuggestions.length === 0 && <li className='p-3 text-gray-500 text-base text-center'>No results found</li>}
         </ul>
       )}
 
       {/* Display all users or filtered list */}
-      <div className={adminSearchCSS.resultsContainer}>
+      <div className='mt-4 text-left w-4/5'>
         <h4>User List</h4>
         <ul>
           {(searchTerm ? filteredSuggestions : users).map((user, index) => (
-            <li key={index} className={adminSearchCSS.userResult}>
+            <li key={index} className='flex items-center justify-evenly p-2 border-b border-gray-300'>
               <p>
               <strong>RCS ID:</strong> {user.rcsId} <br />
               <strong>Name:</strong> {user.name} <br />
               <strong>Email:</strong> {user.email}</p>
 
               {/* Dropdown for setting rank */}
-              <label className={adminSearchCSS.roleControl}>
+              <label className='text-right mr-1'>
                 <strong>Role Level: </strong>
                 <select
-                  className={`${adminSearchCSS.rankDropdown} ${isDark ? adminSearchCSS.DarkRankDropdown : ''}`}
+                  className={`${isDark ? 'bg-[rgb(90,89,94)]' : ''}`}
                   value={user.role}
                   onChange={(e) => handleRankChange(user.rcsId, Number(e.target.value))}
                 >
@@ -117,7 +117,7 @@ const AdminSearch = () => {
 
               {/* Ban button with toggle functionality */}
               <button
-                className={user.role === 0 ? adminSearchCSS.unbanButton : adminSearchCSS.banButton}
+                className={user.role === 0 ? 'bg-[#4CAF50] text-white py-2 px-[6px] rounded cursor-pointer' : 'bg-[#f44336] text-white py-2 px-[16px] rounded cursor-pointer'}
                 onClick={() => handleBan(user.rcsId)}
               >
                 {user.role === 0 ? 'Unban' : 'Ban'}
@@ -130,7 +130,7 @@ const AdminSearch = () => {
       {/* Save button */}
       {changesMade && (
         <button
-          className={adminSearchCSS.saveButton}
+          className='bg-[#029905] text-white py-3 px-6 text-base border-none rounded cursor-pointer mt-4'
           onClick={handleSave}
         >
           Save Changes
