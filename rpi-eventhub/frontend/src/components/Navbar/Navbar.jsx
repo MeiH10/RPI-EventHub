@@ -67,6 +67,17 @@ const Navbar = () => {
           <NavLink onClick={() => setShowLogin(true)} className={`px-3 py-2 bg-red-600 hover:bg-red-800 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm`}>{isLoggedIn ? 'Manage Events' : 'Login'}</NavLink> 
           <NavLink onClick={isLoggedIn ? handleLogout : () => setShowSignup(true)} className={`px-3 py-2 bg-red-600 hover:bg-red-800 rounded-md mr-5 duration-150 text-white font-normal hover:font-bold hover:shadow-sm`}>{isLoggedIn ? "Sign Out" : "Signup"}</NavLink> 
         </div>
+        <div className={styles.navIcon} onClick={handleClick}>
+          {click ? (
+            <span className={styles.icon}>
+              <HamburgerMenuClose />
+            </span>
+          ) : (
+            <span className={styles.icon}>
+              <HamburgerMenuOpen />
+            </span>
+          )}
+        </div>
         <CreateEventModal show={showCreate} setShow={setShowCreate} />
         <LoginModal show={showLogin} setShow={setShowLogin} />
         <SignupModal show={showSignup} setShow={setShowSignup} />
