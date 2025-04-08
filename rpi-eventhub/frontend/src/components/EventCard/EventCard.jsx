@@ -123,6 +123,7 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
 
   return (
     <div key={event._id} style={{ transition: 'border-width 0.25s ease, border-color 0.25s ease' }} className={`duration-500 ${styles.eventWrapper} ${selected && 'border-8 border-indigo-400'}`}>
+      <Link to={`/events/${event._id}`} className={styles.overlayLink}>
       <div className={styles.imageContainer}>
         <img
           src={event.image || 'https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg'}
@@ -130,11 +131,12 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
           alt={event.title}
         />
         <div className={styles.overlay}>
-          <Link to={`/events/${event._id}`} className={styles.overlayLink}>
-            <span>Open</span>
-          </Link>
+        
+          <span>Open</span>
+    
         </div>
       </div>
+      </Link>
       <div className={styles.eventPosterDetails}>
       <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" className='absolute right-4 mt-4 h-5 w-5' onChange={onSelect} checked={selected} />
         <p>Posted by {event.poster}</p>
@@ -145,10 +147,12 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
         </button>
       )}
       <div className={styles.eventDetails}>
+      <Link to={`/events/${event._id}`}>
         <h2>{event.title}</h2>
         <p>{event.description}</p>
         <p><strong>Date & Time:</strong> {`${eventTime} on ${eventDate}`}</p>
         <p><strong>Location:</strong> {event.location || "Location not specified"}</p>
+        </Link>
         <div className={styles.tags}>
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
