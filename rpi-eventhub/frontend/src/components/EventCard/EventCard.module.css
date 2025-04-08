@@ -90,6 +90,10 @@
     padding: 16px;
     text-align: center;
   }
+  .clubDetails {
+    padding: 0px;
+    text-align: center;
+  }
   
   .eventDetails h2 {
     margin: 0 0 8px;
