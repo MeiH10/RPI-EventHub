@@ -60,7 +60,7 @@ const Navbar = () => {
           <div onClick={() => navigate("/about-us")} className="p-2 rounded-md mr-5 duration-150 hover:bg-red-500 hover:text-white hover:font-bold hover:shadow-sm cursor-pointer">About</div>
           <div onClick={() => navigate("/calendar")} className="p-2 rounded-md mr-5 duration-150 hover:bg-red-500 hover:text-white hover:font-bold hover:shadow-sm cursor-pointer">Calendar</div>
         </div>
-        <div>
+        <div className="hidden lg:block">
           <NavLink onClick={() => setShowCreate(true)} className={"px-3 py-2 bg-red-600 hover:bg-red-800 rounded-md mr-5 duration-150 text-white text-md font-normal hover:font-bold hover:shadow-sm"}>
             Create Event
           </NavLink> 
