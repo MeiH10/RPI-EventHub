@@ -18,7 +18,7 @@ const OFFICER = 3;
 const ADMIN = 4;
 
 
-const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit, onTagClick }) => {
+const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit, onTagClick, selectedTags = [] }) => {
   const {isLoggedIn} = useAuth();
   
   const { username, role } = useAuth();
@@ -108,14 +108,12 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
     }
   };
   const handleTagClick = (tag) => {
-    // Log tag click to GA
     ReactGA.event({
       category: 'Filter',
       action: 'Tag Selected',
       label: tag
     });
     
-    // Call the onTagClick prop if provided
     if (onTagClick) {
       onTagClick(tag);
     }
@@ -152,10 +150,9 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
         <div className={styles.tags}>
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
-              // <span key={tag} className={styles.tag}>{tag}</span>
               <span 
                 key={tag} 
-                className={styles.tag}
+                className={`${styles.tag} ${selectedTags.includes(tag) ? styles.active : ''}`}
                 onClick={() => handleTagClick(tag)}
                 style={{ cursor: 'pointer' }}
               >

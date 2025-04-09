@@ -40,20 +40,10 @@ function AllEvents() {
     });
 
     const handleTagClick = (tag) => {
-        // This creates the same behavior as FilterBar's handleTagChange function
         const updatedTags = selectedTags.includes(tag)
             ? selectedTags.filter(t => t !== tag)
             : [...selectedTags, tag];
-        
-        // Update selected tags
-        setSelectedTags(updatedTags);
-        
-        // Show toast message
-        if (selectedTags.includes(tag)) {
-            toast.info(`Removed filter: ${tag}`);
-        } else {
-            toast.success(`Added filter: ${tag}`);
-        }
+        setSelectedTags(updatedTags);        
     };
 
 
@@ -325,6 +315,7 @@ function AllEvents() {
                                     events={sortEvents(filteredEvents, sortMethod, sortOrder)}
                                     selectedEventIds={selectedEventIds}
                                     onSelect={() => handleSelect(event._id)}
+                                    selectedTags={filters.tags}
                                  />
                             ))}
                             
@@ -357,6 +348,7 @@ function AllEvents() {
                                             showEditButton={manageMode && event.creator === username}
                                             onEdit={() => handleEditEvent(event._id)}
                                             onTagClick={handleTagClick}
+                                            selectedTags={filters.tags}
                                         />
                                     ))}
                                 </Masonry>
