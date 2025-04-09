@@ -90,9 +90,12 @@ const Navbar = () => {
           <div className={styles.navRight}>
 
             <ul className={styles.navMenu2}>
-              <li className={styles.navItem}>
-                <CreateEventModal />
-              </li>
+              {isLoggedIn && role >= VERIFIED && (
+                <li className={styles.navItem}>
+                  <CreateEventModal />
+                </li>
+              )}
+              
               {isLoggedIn && (
                 <li className={styles.navItem}>
                   <button

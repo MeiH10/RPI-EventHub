@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
         setRole(null);
         setUsername('');
+        setManageMode(false);
     };
 
     useEffect(() => {
