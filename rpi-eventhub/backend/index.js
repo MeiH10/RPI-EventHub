@@ -15,7 +15,15 @@ const {authenticate, authenticateAndVerify} = require('./useful_script/userAuthe
 
 // ---------------------------- CONTROllER IMPORTS ----------------------------
 //#region CONTROLLER IMPORTS
-const {fetchAllUsernames, verifyUserEmail, login, signUp} = require('./controller/userController');
+const {
+    fetchAllUsernames,
+    verifyUserEmail,
+    login,
+    signUp,
+    resetUserPassword,
+    userExists,
+    sendCodeEmail,
+} = require('./controller/userController');
 const {
   removeEvent,
   getProxyImage,
@@ -34,6 +42,8 @@ const { getLogContent } = require('./controller/logController');
 // ---------------------------- EXPRESS SETTINGS ----------------------------
 //#region EXPRESS
 const express = require('express');
+const {sendEmail} = require("./services/emailService");
+const {sendCode} = require("./services/userService");
 const app = express();
 const corsOptions = {
   origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
@@ -70,10 +80,15 @@ app.post('/signup', signUp);
 app.post('/verify-email', verifyUserEmail);
 app.post('/login', login);
 app.get('/usernames', fetchAllUsernames);
+app.post('/reset-password', resetUserPassword);
+app.post('/check-user-exists', userExists);
 //#endregion
 
 //#region OTHER ROUTES
 app.get('/verify-token', authenticate, verifyToken);
+// This route is for resend verification email, need format: {email, typeofCode}
+// The typeofCode is either "signup","reset"
+app.post('/send-code', sendCodeEmail)
 app.use('/assets', express.static(path.join(__dirname, './assets')));
 //#endregion
 
