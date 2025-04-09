@@ -16,6 +16,7 @@ import AllEvents from "../../pages/Events/AllEventPage/AllEvents";
 import SearchResults from '../../pages/SearchResults/SearchResults'; // Adjust path if needed
 import EventDetails from '../../pages/EventDetails/EventDetails';
 import Calendar from '../../pages/Calendar/Calendar';
+import AdminPage from '../../pages/AdminPage/AdminPage';
 import TermsOfService from '../../pages/TermsOfService/TermsOfService';
 import Login from '../../pages/Login/Login';
 import Signup from "../../pages/Login/SignUp";
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
   {
     path: "/forget-password",
     element: <ForgetPassWord />,
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />
   }
 ]);
 

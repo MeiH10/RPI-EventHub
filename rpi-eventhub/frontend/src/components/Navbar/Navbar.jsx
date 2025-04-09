@@ -85,6 +85,14 @@ const Navbar = () => {
                   Calendar
                 </NavLink>
               </li>
+              {(role === ADMIN) && (
+                <li className={isDark ? styles.darkNavItem : styles.navItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : ''}`}>
+                    Admin
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
           <div className={styles.navRight}>
@@ -189,6 +197,14 @@ const Navbar = () => {
                 Calendar
               </NavLink>
             </li>
+            {(role === ADMIN) && (
+                <li className={styles.drawerItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")}`}>
+                    Admin
+                  </NavLink>
+                </li>
+            )}
             {isLoggedIn && role >= VERIFIED && (
               <li className={styles.drawerItem}>
                 <CreateEventModal />
