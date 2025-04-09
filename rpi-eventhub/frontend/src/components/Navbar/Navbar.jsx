@@ -9,7 +9,6 @@ import SignupModal from "../SignupModal/SignupModal";
 import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
-import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
@@ -99,16 +98,12 @@ const Navbar = () => {
           <div className={styles.navRight}>
 
             <ul className={styles.navMenu2}>
-              {isLoggedIn && role >= VERIFIED ? (
+              {isLoggedIn && role >= VERIFIED && (
                 <li className={styles.navItem}>
                   <CreateEventModal />
                 </li>
-              ) : isLoggedIn ? (
-                <li className={styles.navItem}>
-                  <VerifyModal />
-                </li>
-              ) : null}
-
+              )}
+              
               {isLoggedIn && (
                 <li className={styles.navItem}>
                   <button
@@ -130,20 +125,28 @@ const Navbar = () => {
                   </button>
                 </div>
               ) : (
-                <>
-                  <li className={styles.navItem}>
-                    <LoginModal />
-                  </li>
-                  <li className={styles.navItem}>
-                    <SignupModal />
-                  </li>
-                </>
+                <div className="flex gap-4 m-2">
+                  <NavLink to={'/login'} >
+                    <button
+                        className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                    >
+                      {'Log In'}
+                    </button>
+                  </NavLink>
+                  <NavLink to={'/signup'}>
+                    <button
+                        className={`btn ${manageMode ? 'btn-warning' : 'btn-primary'}`}
+                    >
+                      {'Sign Up'}
+                    </button>
+                  </NavLink>
+                </div>
               )}
-
-              <li className={styles.navItem}>
-                <DarkModeToggle />
-              </li>
-            </ul>          </div>
+                <li className={styles.navItem}>
+                  <DarkModeToggle />
+                </li>
+            </ul>
+          </div>
           <div className={styles.navIcon} onClick={handleClick}>
             {click ? (
               <span className={styles.icon}>
@@ -215,17 +218,25 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!(role >= VERIFIED) && <VerifyModal />}
+                {/*{!(role >= VERIFIED) && <VerifyModal />}*/}
               </div>
             ) : (
-              <>
-                <li className={styles.drawerItem}>
-                  <LoginModal />
-                </li>
-                <li className={styles.drawerItem}>
-                  <SignupModal />
-                </li>
-              </>
+                <div className="flex gap-4 m-2">
+                <NavLink to={'/login'} >
+                  <button
+                      className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                  >
+                    {'Sign Up'}
+                  </button>
+                </NavLink>
+                <NavLink to={'/signup'}>
+                  <button
+                      className={`btn ${manageMode ? 'btn-warning' : 'btn-primary'}`}
+                  >
+                    {'Sign In'}
+                  </button>
+                </NavLink>
+              </div>
             )}
 
             <li className={styles.navItem}>

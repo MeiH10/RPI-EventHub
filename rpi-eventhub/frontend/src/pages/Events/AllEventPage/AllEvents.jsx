@@ -40,20 +40,10 @@ function AllEvents() {
     });
 
     const handleTagClick = (tag) => {
-        // This creates the same behavior as FilterBar's handleTagChange function
         const updatedTags = selectedTags.includes(tag)
             ? selectedTags.filter(t => t !== tag)
             : [...selectedTags, tag];
-        
-        // Update selected tags
-        setSelectedTags(updatedTags);
-        
-        // Show toast message
-        if (selectedTags.includes(tag)) {
-            toast.info(`Removed filter: ${tag}`);
-        } else {
-            toast.success(`Added filter: ${tag}`);
-        }
+        setSelectedTags(updatedTags);        
     };
 
 
@@ -283,18 +273,18 @@ function AllEvents() {
         <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
             <Navbar />
             <ToastContainer 
-            position="top-right"
-            style={{ top: '70px' }}
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-            transition: Bounce
+                position="top-right"
+                style={{ top: '70px' }}
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                transition: Bounce
             />  
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
@@ -325,6 +315,7 @@ function AllEvents() {
                                     events={sortEvents(filteredEvents, sortMethod, sortOrder)}
                                     selectedEventIds={selectedEventIds}
                                     onSelect={() => handleSelect(event._id)}
+                                    selectedTags={filters.tags}
                                  />
                             ))}
                             
@@ -357,6 +348,7 @@ function AllEvents() {
                                             showEditButton={manageMode && event.creator === username}
                                             onEdit={() => handleEditEvent(event._id)}
                                             onTagClick={handleTagClick}
+                                            selectedTags={filters.tags}
                                         />
                                     ))}
                                 </Masonry>

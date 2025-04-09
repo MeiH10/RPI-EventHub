@@ -11,6 +11,9 @@ export const AuthProvider = ({ children }) => {
     const [username, setUsername] = useState('');
     const [manageMode, setManageMode] = useState(false);
 
+    /**
+     * @param token { userId: user._id, email: user.email, role: user.role, username: user.username },
+     */
     const login = (token) => {
         localStorage.setItem('token', token);
         const decodedToken = jwtDecode(token);
@@ -25,6 +28,7 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
         setRole(null);
         setUsername('');
+        setManageMode(false);
     };
 
     useEffect(() => {
