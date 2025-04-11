@@ -75,7 +75,8 @@ const signUpUser = async (username, email, password) => {
     });
     await user.save();
 
-    await sendCode(email, verificationCode)
+    // The code here is the 6-digit code
+    await sendCode(email, code)
 
     return {
         message: "Please check your email for the verification code.",
