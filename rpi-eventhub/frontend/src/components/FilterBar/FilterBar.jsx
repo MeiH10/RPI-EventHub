@@ -115,7 +115,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
             {/* Main filter sidebar - using relative positioning to stay in place */}
             <div className="w-[270px] bg-[#AB2328] text-white rounded-lg p-4 relative mt-[150px] font-['Afacad'] font-normal">
                 {/* View toggle (List/Grid) in white box */}
-                <div className="bg-white rounded-lg p-4 mb-4 h-[90px]">
+                <div className="bg-white rounded-lg p-4 mb-4 h-[90px] flex flex-col justify-center">
                     <div className="flex items-center mb-2" onClick={() => handleViewChange('list')}>
                         <div className={`w-6 h-6 rounded-full mr-3 ${isListView ? 'bg-[#AB2328]' : 'border-2 border-[#AB2328]'} flex items-center justify-center`}>
                             {isListView && <div className="w-2.5 h-2.5 rounded-full bg-white"></div>}
@@ -134,9 +134,9 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                 <div className="h-[3px] bg-white w-full my-4"></div>
                 
                 {/* Sort By and Order in white box */}
-                <div className="bg-white rounded-lg p-4 mb-4">
-                    <p className="text-black text-[20px] mb-2 font-['Afacad'] font-normal">Sort By:</p>
-                    <div className="relative mb-4">
+                <div className="bg-white rounded-lg pt-2 px-4 pb-3 mb-4">
+                    <p className="text-black text-[20px] mb-1 font-['Afacad'] font-normal">Sort By:</p>
+                    <div className="relative mb-2">
                         <select 
                             className="w-full appearance-none bg-[#AB2328] text-white py-2 px-4 rounded-lg cursor-pointer text-[20px] font-['Afacad'] font-normal"
                             value={sortMethod}
@@ -147,11 +147,13 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                             <option value="title">Title</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-                            ▼
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="8" viewBox="0 0 15 14" fill="none">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M7.5 14L-9.57835e-07 2.29651L1.47 1.80713e-06 7.5 9.48073L13.5283 1.80713e-06 15 2.29651L7.5 14" fill="white"/>
+                            </svg>
                         </div>
                     </div>
                     
-                    <p className="text-black text-[20px] mb-2 font-['Afacad'] font-normal">Order:</p>
+                    <p className="text-black text-[20px] mb-1 font-['Afacad'] font-normal">Order:</p>
                     <div className="relative">
                         <select 
                             className="w-full appearance-none bg-[#AB2328] text-white py-2 px-4 rounded-lg cursor-pointer text-[20px] font-['Afacad'] font-normal"
@@ -162,19 +164,21 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                             <option value="asc">Ascending</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-                            ▼
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="8" viewBox="0 0 15 14" fill="none">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M7.5 14L-9.57835e-07 2.29651L1.47 1.80713e-06 7.5 9.48073L13.5283 1.80713e-06 15 2.29651L7.5 14" fill="white"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
                 
                 {/* White separator line */}
-                <div className="h-[3px] bg-white w-full my-4"></div>
+                <div className="h-[3px] bg-white w-full my-2"></div>
                 
                 {/* Filtered Results */}
-                <p className="text-white text-[20px] mb-4 font-['Afacad'] font-normal">Filtered Results: {filteredCount}</p>
+                <p className="text-white text-[20px] mb-0 font-['Afacad'] font-normal">Filtered Results: {filteredCount}</p>
                 
                 {/* White separator line */}
-                <div className="h-[3px] bg-white w-full my-4"></div>
+                <div className="h-[3px] bg-white w-full my-2 mb-4"></div>
 
                 {/* Time Section - With Checkboxes */}
                 <div className="mb-6">
@@ -185,12 +189,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleTimeChange('past')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedTime.includes('past') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedTime.includes('past') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Past</span>
                     </div>
@@ -200,12 +202,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleTimeChange('upcoming')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedTime.includes('upcoming') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedTime.includes('upcoming') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Upcoming</span>
                     </div>
@@ -215,12 +215,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleTimeChange('today')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedTime.includes('today') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedTime.includes('today') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Today</span>
                     </div>
@@ -238,12 +236,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handlePostedByChange('student')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedPostedBy.includes('student') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedPostedBy.includes('student') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Student</span>
                     </div>
@@ -253,12 +249,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handlePostedByChange('rpi')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedPostedBy.includes('rpi') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedPostedBy.includes('rpi') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">RPI</span>
                     </div>
@@ -276,12 +270,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleEventTypeChange('club')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedEventTypes.includes('club') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedEventTypes.includes('club') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Club Event</span>
                     </div>
@@ -291,12 +283,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleEventTypeChange('sports')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedEventTypes.includes('sports') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedEventTypes.includes('sports') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Sports</span>
                     </div>
@@ -306,12 +296,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleEventTypeChange('greek')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedEventTypes.includes('greek') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedEventTypes.includes('greek') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Greek Life</span>
                     </div>
@@ -321,12 +309,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleEventTypeChange('food')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedEventTypes.includes('food') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedEventTypes.includes('food') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Free Food</span>
                     </div>
@@ -336,12 +322,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         onClick={() => handleEventTypeChange('creative')}
                     >
                         <div className="relative w-6 h-6 mr-3">
-                            <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                            {selectedEventTypes.includes('creative') && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                </div>
-                            )}
+                            <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-[15px] h-[15px] rounded-full ${selectedEventTypes.includes('creative') ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                            </div>
                         </div>
                         <span className="text-white text-[20px] font-['Afacad'] font-normal">Creative</span>
                     </div>
@@ -362,12 +346,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 onClick={() => handleTagChange(tag)}
                             >
                                 <div className="relative w-6 h-6 mr-3">
-                                    <div className="w-6 h-6 rounded-full border-2 border-white"></div>
-                                    {selectedTags.includes(tag) && (
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <div className="w-4 h-2 border-b-2 border-l-2 border-white transform rotate-[-45deg] translate-y-[-25%]"></div>
-                                        </div>
-                                    )}
+                                    <div className="w-6 h-6 rounded-full border-2 border-white bg-white"></div>
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className={`w-[15px] h-[15px] rounded-full ${selectedTags.includes(tag) ? 'bg-[#D5181F]' : 'bg-gray-500'}`}></div>
+                                    </div>
                                 </div>
                                 <span className="text-white text-[20px] font-['Afacad'] font-normal">{tag}</span>
                             </div>
