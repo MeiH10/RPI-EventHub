@@ -98,7 +98,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                     </div>
                 )}
             </div>
-            <span className="text-white text-lg">{label}</span>
+            <span className="text-white text-[20px] font-['Afacad'] font-normal">{label}</span>
         </div>
     );
 
@@ -106,36 +106,39 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
         <>
             {/* Mobile toggle button */}
             <button 
-                className="hidden md:hidden fixed top-14 right-3 z-50 p-3 bg-[#AB2328] text-white rounded-lg"
+                className="hidden md:hidden fixed top-14 right-3 z-50 p-3 bg-[#AB2328] text-white rounded-lg text-[20px] font-['Afacad'] font-normal"
                 onClick={toggleDrawer}
             >
                 ☰
             </button>
             
             {/* Main filter sidebar - using relative positioning to stay in place */}
-            <div className="w-[270px] bg-[#AB2328] text-white rounded-lg p-4 relative mt-[150px]">
-                {/* View toggle (List/Grid) */}
-                <div className="bg-white rounded p-4 mb-4">
+            <div className="w-[270px] bg-[#AB2328] text-white rounded-lg p-4 relative mt-[150px] font-['Afacad'] font-normal">
+                {/* View toggle (List/Grid) in white box */}
+                <div className="bg-white rounded-lg p-4 mb-4 h-[90px]">
                     <div className="flex items-center mb-2" onClick={() => handleViewChange('list')}>
                         <div className={`w-6 h-6 rounded-full mr-3 ${isListView ? 'bg-[#AB2328]' : 'border-2 border-[#AB2328]'} flex items-center justify-center`}>
                             {isListView && <div className="w-2.5 h-2.5 rounded-full bg-white"></div>}
                         </div>
-                        <span className="text-black text-lg">List View</span>
+                        <span className="text-black text-[20px] font-['Afacad'] font-normal">List View</span>
                     </div>
                     <div className="flex items-center" onClick={() => handleViewChange('grid')}>
                         <div className={`w-6 h-6 rounded-full mr-3 ${!isListView ? 'bg-[#AB2328]' : 'border-2 border-[#AB2328]'} flex items-center justify-center`}>
                             {!isListView && <div className="w-2.5 h-2.5 rounded-full bg-white"></div>}
                         </div>
-                        <span className="text-black text-lg">Grid View</span>
+                        <span className="text-black text-[20px] font-['Afacad'] font-normal">Grid View</span>
                     </div>
                 </div>
                 
-                {/* Sort By */}
-                <div className="mb-2">
-                    <p className="text-white text-lg mb-1">Sort By:</p>
-                    <div className="relative">
+                {/* White separator line */}
+                <div className="h-[3px] bg-white w-full my-4"></div>
+                
+                {/* Sort By and Order in white box */}
+                <div className="bg-white rounded-lg p-4 mb-4">
+                    <p className="text-black text-[20px] mb-2 font-['Afacad'] font-normal">Sort By:</p>
+                    <div className="relative mb-4">
                         <select 
-                            className="w-full appearance-none bg-[#AB2328] border border-white text-white py-2 px-4 rounded cursor-pointer"
+                            className="w-full appearance-none bg-[#AB2328] text-white py-2 px-4 rounded-lg cursor-pointer text-[20px] font-['Afacad'] font-normal"
                             value={sortMethod}
                             onChange={(e) => setSortMethod(e.target.value)}
                         >
@@ -147,14 +150,11 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                             ▼
                         </div>
                     </div>
-                </div>
-                
-                {/* Order */}
-                <div className="mb-6">
-                    <p className="text-white text-lg mb-1">Order:</p>
+                    
+                    <p className="text-black text-[20px] mb-2 font-['Afacad'] font-normal">Order:</p>
                     <div className="relative">
                         <select 
-                            className="w-full appearance-none bg-[#AB2328] border border-white text-white py-2 px-4 rounded cursor-pointer"
+                            className="w-full appearance-none bg-[#AB2328] text-white py-2 px-4 rounded-lg cursor-pointer text-[20px] font-['Afacad'] font-normal"
                             value={sortOrder}
                             onChange={(e) => setSortOrder(e.target.value)}
                         >
@@ -167,15 +167,18 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                     </div>
                 </div>
                 
+                {/* White separator line */}
+                <div className="h-[3px] bg-white w-full my-4"></div>
+                
                 {/* Filtered Results */}
-                <p className="text-white text-lg mb-4">Filtered Results: {filteredCount}</p>
+                <p className="text-white text-[20px] mb-4 font-['Afacad'] font-normal">Filtered Results: {filteredCount}</p>
                 
                 {/* White separator line */}
-                <div className="h-px bg-white w-full my-4"></div>
-                
+                <div className="h-[3px] bg-white w-full my-4"></div>
+
                 {/* Time Section - With Checkboxes */}
                 <div className="mb-6">
-                    <p className="text-white text-2xl mb-3">By Time</p>
+                    <p className="text-white text-[20px] mb-3 font-['Afacad'] font-normal">By Time</p>
                     
                     <div 
                         className="flex items-center mb-2 cursor-pointer" 
@@ -189,7 +192,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Past</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Past</span>
                     </div>
                     
                     <div 
@@ -204,7 +207,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Upcoming</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Upcoming</span>
                     </div>
                     
                     <div 
@@ -219,16 +222,16 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Today</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Today</span>
                     </div>
                 </div>
                 
                 {/* White separator line */}
-                <div className="h-px bg-white w-full my-4"></div>
+                <div className="h-[3px] bg-white w-full my-4"></div>
                 
                 {/* Posted by Section - With Checkboxes */}
                 <div className="mb-6">
-                    <p className="text-white text-2xl mb-3">Posted by</p>
+                    <p className="text-white text-[20px] mb-3 font-['Afacad'] font-normal">Posted by</p>
                     
                     <div 
                         className="flex items-center mb-2 cursor-pointer" 
@@ -242,7 +245,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Student</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Student</span>
                     </div>
                     
                     <div 
@@ -257,16 +260,16 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">RPI</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">RPI</span>
                     </div>
                 </div>
                 
                 {/* White separator line */}
-                <div className="h-px bg-white w-full my-4"></div>
+                <div className="h-[3px] bg-white w-full my-4"></div>
                 
                 {/* Event Type Section - With Checkboxes */}
                 <div className="mb-6">
-                    <p className="text-white text-2xl mb-3">Type</p>
+                    <p className="text-white text-[20px] mb-3 font-['Afacad'] font-normal">Type</p>
                     
                     <div 
                         className="flex items-center mb-2 cursor-pointer" 
@@ -280,7 +283,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Club Event</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Club Event</span>
                     </div>
                     
                     <div 
@@ -295,7 +298,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Sports</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Sports</span>
                     </div>
                     
                     <div 
@@ -310,7 +313,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Greek Life</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Greek Life</span>
                     </div>
                     
                     <div 
@@ -325,7 +328,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Free Food</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Free Food</span>
                     </div>
                     
                     <div 
@@ -340,18 +343,18 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 </div>
                             )}
                         </div>
-                        <span className="text-white text-lg">Creative</span>
+                        <span className="text-white text-[20px] font-['Afacad'] font-normal">Creative</span>
                     </div>
                 </div>
                 
                 {/* White separator line */}
-                <div className="h-px bg-white w-full my-4"></div>
+                <div className="h-[3px] bg-white w-full my-4"></div>
                 
                 {/* By Tags */}
                 <div className="mb-6">
-                    <p className="text-white text-2xl mb-3">By Tags</p>
+                    <p className="text-white text-[20px] mb-3 font-['Afacad'] font-normal">By Tags</p>
                     
-                    <div className="max-h-[240px] overflow-y-auto pr-1">
+                    <div className="max-h-[600px] overflow-y-auto pr-1">
                         {tags.sort().map((tag) => (
                             <div 
                                 key={tag} 
@@ -366,19 +369,16 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                         </div>
                                     )}
                                 </div>
-                                <span className="text-white text-lg">{tag}</span>
+                                <span className="text-white text-[20px] font-['Afacad'] font-normal">{tag}</span>
                             </div>
                         ))}
                     </div>
-                </div>
-                
-                {/* White separator line */}
-                <div className="h-px bg-white w-full my-4"></div>
-                
+                </div> 
+
                 {/* Clear All Button */}
                 <button 
                     onClick={clearAll} 
-                    className="w-full bg-white text-[#AB2328] py-3 rounded text-xl font-medium"
+                    className="w-full bg-white text-[#AB2328] py-3 rounded text-[20px] font-medium font-['Afacad']"
                 >
                     Clear All
                 </button>
@@ -387,13 +387,13 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                 {showICS && (
                     <div className="mt-4">
                         <button 
-                            className="w-full bg-white text-[#AB2328] py-2 rounded mb-2"
+                            className="w-full bg-white text-[#AB2328] py-2 rounded mb-2 text-[20px] font-['Afacad'] font-normal"
                             onClick={onDownloadICS}
                         >
                             Download ICS
                         </button>
                         <button
-                            className="w-full bg-white text-[#AB2328] py-2 rounded"
+                            className="w-full bg-white text-[#AB2328] py-2 rounded text-[20px] font-['Afacad'] font-normal"
                             onClick={onUnselectAll}
                         >
                             Unselect All
