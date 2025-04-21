@@ -3,45 +3,58 @@ import adminSearchCSS from './AdminSearch.module.css';
 import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
+import config from "../../config";
+import axios from "axios";
 
 // Mock data list of users
 const mockRcsIds = [
-  { rcsId: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu', role: 2 },
-  { rcsId: 'harim', name: 'Hari M', email: 'harim@rpi.edu', role: 2 },
-  { rcsId: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu', role: 1 },
-  { rcsId: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu', role: 3 },
-  { rcsId: 'lastf', name: 'Last F', email: 'lastf@rpi.edu', role: 0 },
+  { username: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu', role: 2 },
+  { username: 'harim', name: 'Hari M', email: 'harim@rpi.edu', role: 2 },
+  { username: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu', role: 1 },
+  { username: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu', role: 3 },
+  { username: 'lastf', name: 'Last F', email: 'lastf@rpi.edu', role: 0 },
 ];
+
+var data;
+
+try {
+  const response = await axios.get(`${config.apiUrl}/usernames`);
+  console.log(response);
+
+  data = response.data;
+} catch {
+  console.log("Error fetching usernames");
+}
 
 const AdminSearch = () => {
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
 
-  const [users, setUsers] = useState(mockRcsIds);
+  const [users, setUsers] = useState(data);
   const [searchTerm, setSearchTerm] = useState('');
   const [changesMade, setChangesMade] = useState(false); // Track if changes have been made
 
   // Filter users for autocomplete suggestions based on search term
   const filteredSuggestions = users.filter(user =>
-    user.rcsId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Function to handle rank change
-  const handleRankChange = (rcsId, newRole) => {
+  const handleRankChange = (username, newRole) => {
     setUsers(prevUsers =>
       prevUsers.map(user =>
-        user.rcsId === rcsId ? { ...user, role: newRole } : user
+        user.username === username ? { ...user, role: newRole } : user
       )
     );
     setChangesMade(true); // Mark changes as made
   };
 
   // Function to handle banning/unbanning a user
-  const handleBan = (rcsId) => {
+  const handleBan = (username) => {
     setUsers(prevUsers =>
       prevUsers.map(user => {
-        if (user.rcsId === rcsId) {
+        if (user.username === username) {
           // Toggle between 0 (banned) and previous role based on current role
           if (user.role === 0) {
             return { ...user, role: user.role === 1 ? 1 : 2 }; // If unbanned, set to 1 (unverified) or 2 (verified)
@@ -79,9 +92,9 @@ const AdminSearch = () => {
             <li
               key={index}
               className='p-3 cursor-pointer text-base border-b border-gray-200'
-              onClick={() => setSearchTerm(user.rcsId)}
+              onClick={() => setSearchTerm(user.username)}
             >
-              {user.name} ({user.rcsId})
+              {user.name} ({user.username})
             </li>
           ))}
           {filteredSuggestions.length === 0 && <li className='p-3 text-gray-500 text-base text-center'>No results found</li>}
@@ -95,7 +108,7 @@ const AdminSearch = () => {
           {(searchTerm ? filteredSuggestions : users).map((user, index) => (
             <li key={index} className='flex items-center justify-evenly p-2 border-b border-gray-300'>
               <p>
-              <strong>RCS ID:</strong> {user.rcsId} <br />
+              <strong>RCS ID:</strong> {user.username} <br />
               <strong>Name:</strong> {user.name} <br />
               <strong>Email:</strong> {user.email}</p>
 
@@ -105,7 +118,7 @@ const AdminSearch = () => {
                 <select
                   className={`${isDark ? 'bg-[rgb(90,89,94)]' : ''}`}
                   value={user.role}
-                  onChange={(e) => handleRankChange(user.rcsId, Number(e.target.value))}
+                  onChange={(e) => handleRankChange(user.username, Number(e.target.value))}
                 >
                   {[0, 1, 2, 3, 4].map(rank => (
                     <option key={rank} value={rank}>
@@ -118,7 +131,7 @@ const AdminSearch = () => {
               {/* Ban button with toggle functionality */}
               <button
                 className={user.role === 0 ? 'bg-[#4CAF50] text-white py-2 px-[6px] rounded cursor-pointer' : 'bg-[#f44336] text-white py-2 px-[16px] rounded cursor-pointer'}
-                onClick={() => handleBan(user.rcsId)}
+                onClick={() => handleBan(user.username)}
               >
                 {user.role === 0 ? 'Unban' : 'Ban'}
               </button>

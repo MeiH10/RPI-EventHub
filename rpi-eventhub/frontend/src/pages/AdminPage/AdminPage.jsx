@@ -7,6 +7,8 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useAuth } from "../../context/AuthContext";
 import { useColorScheme } from '../../hooks/useColorScheme';
 import AdminSearch from '../../components/AdminSearch/AdminSearch'; // Import the search component
+import config from "../../config";
+import axios from "axios";
 
 const BANNED = 0;
 const UNVERIFIED = 1;
@@ -30,8 +32,8 @@ function AdminPage() {
     async function fetchAdminStats() {
       try {
         // Replace with actual API call for admin stats
-        const response = await fetch('/api/admin/stats');
-        const data = await response.json();
+        const response = await axios.get(`${config.apiUrl}/usernames`);
+        const data = response.data;
         setAdminStats(data);
         setIsLoading(false);
       } catch (err) {
