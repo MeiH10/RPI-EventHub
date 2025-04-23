@@ -3,12 +3,6 @@ const User = require('../models/User');
 require('dotenv').config({ path: '../.env' });
 import { USER_ROLES, isAdmin, isVerified } from './userRolesCheck';
 
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
-
 async function migrateUsers() {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
@@ -38,9 +32,9 @@ async function migrateUsers() {
         continue;
       }
 
-      let newRole = UNVERIFIED;
+      let newRole = USER_ROLES.UNVERIFIED; // Default role
       if (rawUser.emailVerified === true) {
-        newRole = VERIFIED;
+        newRole = USER_ROLES.VERIFIED;
       }
       
       const updateResult = await mongoose.connection.db

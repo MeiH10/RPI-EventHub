@@ -4,13 +4,6 @@ require('dotenv').config();
 const jwtSecret = process.env.JWT_SECRET;
 import { USER_ROLES, isAdmin, isVerified, isBanned, isUnverified } from './userRolesCheck';
 
-
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
-
 const authenticate = async (req, res, next) => {
     try {
         if (!req.header('Authorization') || !req.header('Authorization').startsWith('Bearer ')) {

@@ -8,13 +8,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const jwtSecret = process.env.JWT_SECRET;
 import { USER_ROLES, isAdmin, isVerified } from '../useful_script/userRolesCheck';
 
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
-
-
 /**
  * Sign up a new user
  * @param username
@@ -42,7 +35,7 @@ const signUpUser = async (username, email, password) => {
         username,
         email,
         password,
-        role: UNVERIFIED,
+        role: USER_ROLES.UNVERIFIED,
         verificationCode,
     });
     await user.save();
@@ -91,7 +84,7 @@ const verifyEmail = async (email, verificationCode) => {
 
     // If the verification code matches, update the user's emailVerified status
     if (user.verificationCode === verificationCode) {
-        user.role = VERIFIED;
+        user.role = USER_ROLES.VERIFIED;
         user.verificationCode = '';
         await user.save();
 
