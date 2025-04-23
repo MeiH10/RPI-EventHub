@@ -102,21 +102,49 @@
     color: var(--muted-text-color);
   }
   
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-  }
-  
-  .tag {
-    background: var(--tag-bg-color);
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 0.875em;
-    color: var(--tag-text-color);
-  }
-  
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;  
+  margin-top: 10px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;  
+  border-radius: 16px; 
+  background-color: #f3f4f6;
+  color: #333;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tag:hover {
+  transform: scale(1.07);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tag.active {
+  background-color: #6366f1; 
+  color: white;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+}
+
+
+.tag.active:hover {
+  background-color: #4f46e5; 
+}
+
+
+[data-theme='dark'] .tag.active {
+  background-color: #818cf8; 
+  color: #111827;
+}
+
+
   .deleteButton {
     background: var(--delete-button-bg-color);
     color: var(--delete-button-text-color);

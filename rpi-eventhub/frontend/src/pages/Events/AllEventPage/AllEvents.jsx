@@ -30,6 +30,7 @@ function AllEvents() {
     const { isDark } = useColorScheme();
     const [selectedEventIds, setSelectedEventIds] = useState([]);
     const { isLoggedIn, username, manageMode } = useAuth();
+    const [selectedTags, setSelectedTags] = useState([]);
     const [filters, setFilters] = useState({
         tags: [],
         time: ['upcoming', 'today'],
@@ -37,6 +38,15 @@ function AllEvents() {
         sortMethod: 'likes',
         sortOrder: 'desc'
     });
+
+    const handleTagClick = (tag) => {
+        const updatedTags = selectedTags.includes(tag)
+            ? selectedTags.filter(t => t !== tag)
+            : [...selectedTags, tag];
+        setSelectedTags(updatedTags);        
+    };
+
+
 
     const generateICS = () => {
         // Filter events by selected event IDs
@@ -127,6 +137,7 @@ function AllEvents() {
 
     const handleFilterChange = useCallback((newFilters) => {
         setFilters(newFilters);
+        setSelectedTags(newFilters.tags);
     }, []);
 
     useEffect(() => {
@@ -153,6 +164,15 @@ function AllEvents() {
 
         handleFilterChange(defaultFilters);
     }, [events, handleFilterChange]);
+
+    useEffect(() => {
+        // Update the filters object when selectedTags changes
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            tags: selectedTags
+        }));
+    }, [selectedTags]);
+
 
     useEffect(() => {
         let filtered = events;
@@ -253,18 +273,18 @@ function AllEvents() {
         <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
             <Navbar />
             <ToastContainer 
-            position="top-right"
-            style={{ top: '70px' }}
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-            transition: Bounce
+                position="top-right"
+                style={{ top: '70px' }}
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                transition: Bounce
             />  
             <div className="container-fluid"
                  style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
@@ -281,6 +301,7 @@ function AllEvents() {
                         showICS={selectedEventIds.length > 0}
                         onUnselectAll={() => setSelectedEventIds([])}
                         onDownloadICS={generateICS}
+                        selectedTags={selectedTags}
                     />
                 </div>
                 {
@@ -294,6 +315,7 @@ function AllEvents() {
                                     events={sortEvents(filteredEvents, sortMethod, sortOrder)}
                                     selectedEventIds={selectedEventIds}
                                     onSelect={() => handleSelect(event._id)}
+                                    selectedTags={filters.tags}
                                  />
                             ))}
                             
@@ -325,6 +347,8 @@ function AllEvents() {
                                             onSelect={() => handleSelect(event._id)}
                                             showEditButton={manageMode && event.creator === username}
                                             onEdit={() => handleEditEvent(event._id)}
+                                            onTagClick={handleTagClick}
+                                            selectedTags={filters.tags}
                                         />
                                     ))}
                                 </Masonry>

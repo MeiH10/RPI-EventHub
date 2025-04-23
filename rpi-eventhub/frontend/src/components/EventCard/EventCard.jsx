@@ -11,11 +11,17 @@ import ReactGA from "react-ga4";
 
 const timeZone = 'America/New_York';
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
-const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit }) => {
+
+const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit, onTagClick, selectedTags = [] }) => {
   const {isLoggedIn} = useAuth();
   
-  const { username } = useAuth();
+  const { username, role } = useAuth();
   const { deleteEvent } = useEvents();
 
   const [liked, setLiked] = useState(isLiked)
@@ -53,8 +59,8 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
     return dateTime.toFormat('h:mm a');
   };
 
-  const canSeeDeleteButton = (user_name) => {
-    return user_name === 'admin' || user_name === event.poster;
+  const canSeeDeleteButton = (user_name, role) => {
+    return role === ADMIN || user_name === event.poster;
   };
 
   const eventDate = event.startDateTime
@@ -101,11 +107,23 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
       toast.error("An unexpected error occurred.");
     }
   };
+  const handleTagClick = (tag) => {
+    ReactGA.event({
+      category: 'Filter',
+      action: 'Tag Selected',
+      label: tag
+    });
+    
+    if (onTagClick) {
+      onTagClick(tag);
+    }
+  };
+
   return (
     <div key={event._id} style={{ transition: 'border-width 0.25s ease, border-color 0.25s ease' }} className={`duration-500 ${styles.eventWrapper} ${selected && 'border-8 border-indigo-400'}`}>
       <div className={styles.imageContainer}>
         <img
-          src={event.image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
+          src={event.image || 'https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg'}
           loading="lazy"
           alt={event.title}
         />
@@ -119,7 +137,7 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
       <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" className='absolute right-4 mt-4 h-5 w-5' onChange={onSelect} checked={selected} />
         <p>Posted by {event.poster}</p>
       </div>
-      {canSeeDeleteButton(username) && (
+      {canSeeDeleteButton(username, role) && (
         <button onClick={handleDelete} className={styles.deleteButton}>
           Delete
         </button>
@@ -132,7 +150,14 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit 
         <div className={styles.tags}>
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
-              <span key={tag} className={styles.tag}>{tag}</span>
+              <span 
+                key={tag} 
+                className={`${styles.tag} ${selectedTags.includes(tag) ? styles.active : ''}`}
+                onClick={() => handleTagClick(tag)}
+                style={{ cursor: 'pointer' }}
+              >
+                {tag}
+              </span>
             ))
           ) : (
             <span className={styles.tag}>No tags available</span>

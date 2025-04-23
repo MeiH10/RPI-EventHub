@@ -5,7 +5,8 @@ const {
     getEventLikes,
     getUserLikedEvents,
     toggleEventLike,
-    proxyImage
+    proxyImage,
+    updateEvent
 } = require('../services/eventService');
 
 const Event = require('../models/Event');
@@ -77,7 +78,6 @@ const createNewEvent = async (req, res) => {
  */
 const getAllEvents = async (req, res) => {
     try {
-
         // make sure that the Event model here is the Event schema from Mongoose, not the JS one.
         const events = await Event.find();
         res.status(200).json(events);
@@ -181,6 +181,40 @@ const getProxyImage = async (req, res) => {
     }
 };
 
+
+/**
+ * This function is used to update an event
+ * app.post('/events-update/:id')
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+const updateEvents = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp} = req.body;
+        const file = req.file;
+
+        const eventData = {
+            title,
+            description,
+            poster: poster || 'admin',
+            startDateTime,
+            endDateTime,
+            location,
+            tags,
+            club,
+            rsvp,
+        };
+
+        const event = await updateEvent(id, eventData, file);
+        res.status(200).json(event);
+    } catch (error) {
+        console.error('Error updating event:', error);
+        res.status(400).json({message: 'Error updating event', error: error.message});
+    }
+}
+
 module.exports = {
     createNewEvent,
     getRPIEvents,
@@ -189,5 +223,6 @@ module.exports = {
     fetchUserLikedEvents,
     handleEventLike,
     removeEvent,
-    getProxyImage
+    getProxyImage,
+    updateEvents
 };

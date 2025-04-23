@@ -4,7 +4,7 @@ const json = {
     board_game: ["chess", "uno", "monopoly", "scrabble", "catan", "risk", "pandemic", "clue", "codenames", "ticket to ride", "pictionary", "carcassonne"],
     food: ["pizza", "pasta", "burger", "sushi", "bbq", "wings", "lobster", "seafood", "brunch", "dinner", "lunch", "breakfast", "dessert", "buffet", "food", "snacks", "beverages", "cocktails"],
     social: ["social", "gathering", "performance", "party", "festival", "hangout", "friends", "community", "celebration", "meetup", "collaboration", "trivia", "rush", "networking"],
-    competitive: ["tournament", "competition", "competitor", "match", "league", "championship", "contest", "race", "qualifier", "elimination", "showdown", "battle"],
+    // competitive: ["tournament", "competition", "competitor", "match", "league", "championship", "contest", "race", "qualifier", "elimination", "showdown", "battle"],
     competition: ["tournament", "competition", "competitor", "match", "league", "championship", "contest", "race", "qualifier", "elimination", "showdown", "battle"],
     movie: ["action", "thriller", "drama", "comedy", "sci-fi", "romance", "animated", "documentary", "horror", "classic", "superhero", "indie", "blockbuster", "biopic", "musical", "film", "movie", "showing", "now showing", "screening", "premiere"],
     anime: ["anime", "naruto", "demon slayer", "jujutsu kaisen", "attack on titan", "one piece", "my hero academia", "bleach", "dragon ball", "fullmetal alchemist"],

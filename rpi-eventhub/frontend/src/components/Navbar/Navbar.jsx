@@ -9,14 +9,18 @@ import SignupModal from "../SignupModal/SignupModal";
 import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
-import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, emailVerified, logout, manageMode, setManageMode } = useAuth();
+  const { isLoggedIn, role, logout, manageMode, setManageMode } = useAuth();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
@@ -29,7 +33,7 @@ const Navbar = () => {
       handleClick();
     }
   };
-  
+
   const getNavLinkClass = (path) => {
     return location.pathname === path
       ? `${styles.navLinks} ${styles.active}`
@@ -42,7 +46,7 @@ const Navbar = () => {
 
   return (
     <>
-       <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ''}`}>
+      <nav className={`${styles.navbar} ${isDark ? styles.darkNavbar : ''}`}>
         <div className={styles.navContainer}>
           <div className={styles.navLeft}>
             <NavLink to="/" className={styles.navLogo}>
@@ -81,13 +85,25 @@ const Navbar = () => {
                   Calendar
                 </NavLink>
               </li>
+              {(role === ADMIN) && (
+                <li className={isDark ? styles.darkNavItem : styles.navItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : ''}`}>
+                    Admin
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
           <div className={styles.navRight}>
+
             <ul className={styles.navMenu2}>
-              <li className={styles.navItem}>
-                <CreateEventModal />
-              </li>
+              {isLoggedIn && role >= VERIFIED && (
+                <li className={styles.navItem}>
+                  <CreateEventModal />
+                </li>
+              )}
+              
               {isLoggedIn && (
                 <li className={styles.navItem}>
                   <button
@@ -98,6 +114,7 @@ const Navbar = () => {
                   </button>
                 </li>
               )}
+
               {isLoggedIn ? (
                 <div>
                   <button
@@ -106,18 +123,24 @@ const Navbar = () => {
                   >
                     Sign Out
                   </button>
-                  {!emailVerified && <VerifyModal />}
                 </div>
               ) : (
-                <>
-                  <li className={styles.navItem}>
-                    <LoginModal />
-                  </li>
-                  <li className={styles.navItem}>
-                    <SignupModal />
-                  </li>
-
-                </>
+                <div className="flex gap-4 m-2">
+                  <NavLink to={'/login'} >
+                    <button
+                        className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                    >
+                      {'Log In'}
+                    </button>
+                  </NavLink>
+                  <NavLink to={'/signup'}>
+                    <button
+                        className={`btn ${manageMode ? 'btn-warning' : 'btn-primary'}`}
+                    >
+                      {'Sign Up'}
+                    </button>
+                  </NavLink>
+                </div>
               )}
                 <li className={styles.navItem}>
                   <DarkModeToggle />
@@ -174,9 +197,19 @@ const Navbar = () => {
                 Calendar
               </NavLink>
             </li>
-            <li className={styles.drawerItem}>
-              <CreateEventModal />
-            </li>
+            {(role === ADMIN) && (
+                <li className={styles.drawerItem}>
+                  <NavLink to="/admin" 
+                  className={`${getNavLinkClass("/admin")}`}>
+                    Admin
+                  </NavLink>
+                </li>
+            )}
+            {isLoggedIn && role >= VERIFIED && (
+              <li className={styles.drawerItem}>
+                <CreateEventModal />
+              </li>
+            )}
             {isLoggedIn ? (
               <div className={styles.drawerItem}>
                 <button
@@ -185,22 +218,30 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!emailVerified && <VerifyModal />}
+                {/*{!(role >= VERIFIED) && <VerifyModal />}*/}
               </div>
             ) : (
-              <>
-                <li className={styles.drawerItem}>
-                  <LoginModal />
-                </li>
-                <li className={styles.drawerItem}>
-                  <SignupModal />
-                </li>
-              </>
+                <div className="flex gap-4 m-2">
+                <NavLink to={'/login'} >
+                  <button
+                      className={`btn ${manageMode ? 'btn-warning' : 'btn-secondary'}`}
+                  >
+                    {'Sign Up'}
+                  </button>
+                </NavLink>
+                <NavLink to={'/signup'}>
+                  <button
+                      className={`btn ${manageMode ? 'btn-warning' : 'btn-primary'}`}
+                  >
+                    {'Sign In'}
+                  </button>
+                </NavLink>
+              </div>
             )}
 
-                <li className={styles.navItem}>
-                  <DarkModeToggle />
-                </li>
+            <li className={styles.navItem}>
+              <DarkModeToggle />
+            </li>
           </ul>
         </div>
       </nav>
