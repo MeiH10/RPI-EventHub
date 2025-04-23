@@ -81,7 +81,7 @@ const AdminSearch = () => {
       <input
         className={`${isDark ? 'w-4/5 p-3 text-[1.2rem] border border-gray-300 bg-[rgb(90,89,94)] rounded-md mb-4' : 'w-4/5 p-3 text-xl border border-gray-300 rounded-md mb-4'}`}
         type="text"
-        placeholder="Enter RCS ID, First Name, or Last Name"
+        placeholder="Enter Username"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
