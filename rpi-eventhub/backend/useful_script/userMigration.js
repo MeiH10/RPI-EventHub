@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 require('dotenv').config({ path: '../.env' });
-import { USER_ROLES, isAdmin, isVerified } from 'userRolesCheck';
+import { USER_ROLES, isAdmin, isVerified } from './userRolesCheck';
 
 const BANNED = 0;
 const UNVERIFIED = 1;

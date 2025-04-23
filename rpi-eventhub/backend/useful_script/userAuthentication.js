@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 require('dotenv').config();
 const jwtSecret = process.env.JWT_SECRET;
-import { USER_ROLES, isAdmin, isVerified } from 'userRolesCheck';
+import { USER_ROLES, isAdmin, isVerified, isBanned, isUnverified } from './userRolesCheck';
 
 
 const BANNED = 0;
@@ -47,9 +47,9 @@ const authenticateAndVerify = async (req, res, next) => {
             throw new Error('User not found');
         }
 
-        if (user.role === UNVERIFIED) {
+        if (isUnverified(user.role)) {
             return res.status(403).json({ message: 'Please verify your email to perform this action.' });
-        } else if (user.role === BANNED) {
+        } else if (isBanned(user.role)) {
             return res.status(403).json({ message: 'Your account has been banned. If you believe this is a mistake, please reach out to site admin.' });
         }
 
