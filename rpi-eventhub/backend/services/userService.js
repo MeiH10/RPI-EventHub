@@ -204,7 +204,7 @@ const loginUser = async (email, password) => {
  */
 const getAllUsernames = async () => {
     try {
-        const users = await User.find({}, 'username');
+        const users = await User.find({}, {username: 1, email: 1, role: 1, _id: 0});
         return users;
     } catch (error) {
         throw new Error('Error fetching users: ' + error.message);
