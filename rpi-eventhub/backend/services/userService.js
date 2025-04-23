@@ -28,6 +28,13 @@ const signUpUser = async (username, email, password) => {
         throw new Error("Email must end with @rpi.edu");
     }
 
+    if (typeof email != "string") {
+        throw new Error("Invalid email/password");
+    }
+    if (typeof password != "string") {
+        throw new Error("Invalid email/password");
+    }
+
     // Generate verification code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes
@@ -93,6 +100,10 @@ const signUpUser = async (username, email, password) => {
  */
 const verifyEmail = async (email, verificationCode) => {
 
+    if (typeof email != "string") {
+        throw new Error("Invalid email/password");
+    }
+
     // Find the user by email
     const user = await User.findOne({ email });
 
@@ -156,10 +167,10 @@ const verifyEmail = async (email, verificationCode) => {
 const loginUser = async (email, password) => {
 
     if (typeof email != "string") {
-        throw new Error("Invalid email");
+        throw new Error("Invalid email/password");
     }
     if (typeof password != "string") {
-        throw new Error("Invalid password");
+        throw new Error("Invalid email/password");
     }
 
     // Find the user by email
@@ -285,6 +296,14 @@ const deleteUser = async (email) => {
  */
 const resetPassword = async (email, newPassword, verificationCode) => {
     // Find the user by email
+
+    if (typeof email != "string") {
+        throw new Error("Invalid email/password");
+    }
+    if (typeof newPassword != "string") {
+        throw new Error("Invalid email/password");
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
         throw new Error("Email does not exist" + email);
