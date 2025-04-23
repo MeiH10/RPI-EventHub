@@ -7,6 +7,7 @@ import config from "../../config";
 import axios from "axios";
 
 // Mock data list of users
+/* 
 const mockRcsIds = [
   { username: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu', role: 2 },
   { username: 'harim', name: 'Hari M', email: 'harim@rpi.edu', role: 2 },
@@ -14,7 +15,7 @@ const mockRcsIds = [
   { username: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu', role: 3 },
   { username: 'lastf', name: 'Last F', email: 'lastf@rpi.edu', role: 0 },
 ];
-
+*/
 var data;
 
 try {
@@ -37,7 +38,7 @@ const AdminSearch = () => {
   // Filter users for autocomplete suggestions based on search term
   const filteredSuggestions = users.filter(user =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Function to handle rank change
@@ -102,14 +103,16 @@ const AdminSearch = () => {
       )}
 
       {/* Display all users or filtered list */}
-      <div className='mt-4 text-left w-4/5'>
-        <h4>User List</h4>
+      <div>
+        <h4 className='mr-[480px]'>User List</h4>
+      </div>
+      <div className='mt-4 text-left w-4/5 min-h-[30rem] max-h-[30rem] border overflow-y-auto p-2 rounded-md'>
         <ul>
           {(searchTerm ? filteredSuggestions : users).map((user, index) => (
             <li key={index} className='flex items-center justify-evenly p-2 border-b border-gray-300'>
               <p>
-              <strong>RCS ID:</strong> {user.username} <br />
-              <strong>Name:</strong> {user.name} <br />
+              <strong>Username:</strong> {user.username} <br />
+              <strong>RCS ID:</strong> {user.email?.split('@')[0]} <br />
               <strong>Email:</strong> {user.email}</p>
 
               {/* Dropdown for setting rank */}
