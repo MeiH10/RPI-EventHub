@@ -42,6 +42,38 @@
   object-position: center;
 }
 
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.imageContainer:hover .overlay {
+  opacity: 1;
+}
+
+.overlayLink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.overlayLink span {
+  color: white;
+}
+
 .captionAbove {
   width: 100%;
   max-width: 500px;
@@ -104,12 +136,12 @@
 /* Media queries for responsive design */
 @media screen and (max-width: 767px) {
   .mainImage {
-    height: auto;
-    min-height: 600;
+    width: 95%; /* More screen coverage on mobile */
+    max-width: none;
   }
 
   .imgContainer {
-    height: 300px; /* test this doesnt mess up mobile page*/
+    aspect-ratio: 1/1; /* test this doesnt mess up mobile page*/
   }
 
   .captionAbove {

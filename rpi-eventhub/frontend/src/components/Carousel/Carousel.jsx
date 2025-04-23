@@ -5,6 +5,7 @@ import axios from "axios";
 import { Skeleton } from "@mui/material";
 import config from "../../config";
 import { DateTime } from "luxon";
+import { Link } from 'react-router-dom';
 
 const placeholderImage =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
@@ -47,6 +48,7 @@ const ImageCarousel = () => {
             endTime: event.endDateTime ? formatTimeAsEST(event.endDateTime) : "Unavailable",
             originalDate: event.startDateTime || event.date,
             likes: event.likes || 0,
+            id: event._id || 'undefined',
           }))
 
           .filter( a => new Date(a.originalDate) - new Date > 0)
@@ -113,7 +115,9 @@ const ImageCarousel = () => {
                   {events[activeIndex].caption}
                 </div>
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     goToPrev();
                     resetTimer();
                   }}
@@ -125,10 +129,13 @@ const ImageCarousel = () => {
                   <img
                     src={events[activeIndex].src}
                     alt={`Slide ${activeIndex}`}
-                  />
+                    />
+                    <Link to={`/events/${events[activeIndex]?.id}`} className={styles.overlayLink}aria-label={`View ${events[activeIndex].caption}`}/>  
                 </div>
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     goToNext();
                     resetTimer();
                   }}
