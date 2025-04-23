@@ -12,13 +12,6 @@ import ReactGA from "react-ga4";
 
 const timeZone = 'America/New_York';
 
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
-
-
 const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit, onTagClick }) => {
   const {isLoggedIn} = useAuth();
   
@@ -61,7 +54,7 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
   };
 
   const canSeeDeleteButton = (user_name, role) => {
-    return role === ADMIN || user_name === event.poster;
+    return Admin(role) || user_name === event.poster;
   };
 
   const eventDate = event.startDateTime

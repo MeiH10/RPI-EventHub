@@ -5,12 +5,7 @@ import axios from 'axios';
 
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from '../../context/AuthContext';
-
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
+import { Admin } from '../../RoleGuard'
 
 const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   const { username, role } = useAuth();
@@ -37,7 +32,7 @@ const EventPoster = ({ id, title, posterSrc, description, author, tags }) => {
   }, [id]);
 
   const canSeeDeleteButton = (user_name, role) => {
-    return role === ADMIN || user_name === author;
+    return Admin(role) || user_name === author;
   };
 
   const handleLike = useCallback(async () => {
