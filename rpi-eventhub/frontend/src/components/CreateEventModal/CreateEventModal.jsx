@@ -4,13 +4,12 @@ import axios from 'axios';
 import { useEvents } from '../../context/EventsContext';
 import { useAuth } from "../../context/AuthContext";
 import config from '../../config';
-import { VerifiedOnly, AdminOnly } from '../../RoleGuard';
+import { Unverified, NotBanned, Unverified } from '../../RoleGuard';
 
 import styles from './CreateEventModal.module.css'; // Import the CSS module
 import { useColorScheme } from '../../hooks/useColorScheme'; // Assuming you have this hook
 import { DateTime } from 'luxon';
 import * as pdfjsLib from "pdfjs-dist";
-import { isBanned, isUnverified } from '../../../../backend/useful_script/userRolesCheck';
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 
 ///////////////////File Upload////////////////////
@@ -211,13 +210,13 @@ function CreateEventModal() {
     console.log("isLoggedIn: ", isLoggedIn);
     console.log("role: ", role);
 
-    if (!isLoggedIn || isUnverified(role)) {
+    if (!isLoggedIn || Unverified(role)) {
       setError('Only verified users can create an event. Please login or get verified.');
       setIsSubmitting(false);
       return;
     }
 
-    if (isLoggedIn && isBanned(role)) {
+    if (isLoggedIn && NotBanned(role)) {
       setError('You are banned from creating events. Please contact our admins for more information.');
       setIsSubmitting(false);
       return;

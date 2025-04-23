@@ -1,5 +1,6 @@
 import React from 'react'
-import { useAuth } from './AuthContext'
+import { useAuth } from './context/AuthContext'
+import { isUnverified } from '../../backend/useful_script/userRolesCheck'
 
 const USER_ROLES = Object.freeze({
   BANNED:      0,
@@ -25,9 +26,10 @@ export const RoleGuard = ({ check, fallback = null, children }) => {
 }
 
 export const NotBanned       = props => <RoleGuard check={isNotBanned} {...props} />
-export const VerifiedOnly    = props => <RoleGuard check={isVerified} {...props} />
-export const OfficerOnly     = props => <RoleGuard check={isOfficer} {...props} />
-export const AdminOnly       = props => <RoleGuard check={isAdmin} {...props} />
+export const Verified    = props => <RoleGuard check={isVerified} {...props} />
+export const Unverified    = props => <RoleGuard check={isUnverified} {...props} />
+export const Officer     = props => <RoleGuard check={isOfficer} {...props} />
+export const Admin       = props => <RoleGuard check={isAdmin} {...props} />
 export const AtLeastVerified = props => <RoleGuard check={atLeastVerified} {...props} />
 export const AtLeastOfficer  = props => <RoleGuard check={atLeastOfficer} {...props} />
 export const AtLeastAdmin    = props => <RoleGuard check={atLeastAdmin} {...props} />
