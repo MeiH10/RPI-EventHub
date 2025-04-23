@@ -358,6 +358,14 @@ const verifyEmailExists = async (email) => {
     }
     // Check if the email is in the correct format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Flagged as Denial of Service if the input email is too long.
+    // Added as a precautionary measure.
+    // See: https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS
+    if(email.length > 1000) {
+        throw new Error("Email is not in the correct format");
+    }
+
     if (!emailRegex.test(email)) {
         throw new Error("Email is not in the correct format");
     }
