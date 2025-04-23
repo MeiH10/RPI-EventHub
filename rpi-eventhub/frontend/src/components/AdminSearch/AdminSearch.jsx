@@ -104,7 +104,7 @@ const AdminSearch = () => {
 
       {/* Display all users or filtered list */}
       <div>
-        <h4 className='mr-[480px]'>User List</h4>
+        <h4 className='text-left'>User List</h4>
       </div>
       <div className='mt-4 text-left w-4/5 min-h-[30rem] max-h-[30rem] border overflow-y-auto p-2 rounded-md'>
         <ul>
