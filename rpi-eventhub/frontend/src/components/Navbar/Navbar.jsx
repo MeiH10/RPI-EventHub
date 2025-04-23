@@ -12,12 +12,7 @@ import { useLocation } from "react-router-dom";
 import VerifyModal from "../VerifyModal/VerifyModal";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
-
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
+import { AtLeastVerified } from "../../RoleGuard";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
@@ -91,7 +86,7 @@ const Navbar = () => {
           <div className={styles.navRight}>
 
             <ul className={styles.navMenu2}>
-              {isLoggedIn && role >= VERIFIED ? (
+              {isLoggedIn && AtLeastVerified(role) ? (
                 <li className={styles.navItem}>
                   <CreateEventModal />
                 </li>
@@ -186,7 +181,7 @@ const Navbar = () => {
                 Calendar
               </NavLink>
             </li>
-            {isLoggedIn && role >= VERIFIED && (
+            {isLoggedIn && AtLeastVerified(role) && (
               <li className={styles.drawerItem}>
                 <CreateEventModal />
               </li>
@@ -199,7 +194,7 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-                {!(role >= VERIFIED) && <VerifyModal />}
+                {!(AtLeastVerified(role)) && <VerifyModal />}
               </div>
             ) : (
               <>

@@ -14,12 +14,7 @@ import config from "../../config";
 import ShareButtons from "./ShareButtons";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 import OpencvQr from "opencv-qr";
-
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
+import {Admin} from "../../RoleGuard";
 
 const timeZone = 'America/New_York';
 
@@ -129,8 +124,8 @@ const EventDetails = () => {
     // Check if the user is the owner of the event
     useEffect(() => {
         if (event && username) {
-            setIsEditing((manageMode && event.poster === username) || role === ADMIN);
-            setIsOwner(event.poster === username || role === ADMIN);
+            setIsEditing((manageMode && event.poster === username) || Admin(role));
+            setIsOwner(event.poster === username || Admin(role));
         }
     }, [manageMode, event, username, role]);
 

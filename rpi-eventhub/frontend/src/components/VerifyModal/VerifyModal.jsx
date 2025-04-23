@@ -4,12 +4,8 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import {jwtDecode} from 'jwt-decode';
 import config from '../../config';
+import { LessThanVerified } from '../../RoleGuard';
 
-const BANNED = 0;
-const UNVERIFIED = 1;
-const VERIFIED = 2;
-const OFFICER = 3;
-const ADMIN = 4;
 
 function VerifyModal() {
   const [show, setShow] = useState(false);
@@ -66,7 +62,7 @@ function VerifyModal() {
 
   return (
     <>
-      {isLoggedIn && role < VERIFIED && (
+      {isLoggedIn && LessThanVerified(role) && (
         <Button variant="warning" onClick={handleShow}>
           Verify Email
         </Button>

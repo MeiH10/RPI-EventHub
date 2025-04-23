@@ -18,6 +18,7 @@ const isAdmin         = r => r === USER_ROLES.ADMIN
 const atLeastVerified = r => r >= USER_ROLES.VERIFIED
 const atLeastOfficer  = r => r >= USER_ROLES.OFFICER
 const atLeastAdmin    = r => r >= USER_ROLES.ADMIN
+const isLessThanVerified = r => r < USER_ROLES.VERIFIED
 
 export const RoleGuard = ({ check, fallback = null, children }) => {
   const { role } = useAuth()
@@ -33,3 +34,4 @@ export const Admin       = props => <RoleGuard check={isAdmin} {...props} />
 export const AtLeastVerified = props => <RoleGuard check={atLeastVerified} {...props} />
 export const AtLeastOfficer  = props => <RoleGuard check={atLeastOfficer} {...props} />
 export const AtLeastAdmin    = props => <RoleGuard check={atLeastAdmin} {...props} />
+export const LessThanVerified = props => <RoleGuard check={isLessThanVerified} {...props} />
