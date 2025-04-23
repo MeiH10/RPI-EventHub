@@ -14,6 +14,8 @@ import config from "../../config";
 import ShareButtons from "./ShareButtons";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 import OpencvQr from "opencv-qr";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 const timeZone = 'America/New_York';
@@ -76,6 +78,8 @@ const EventDetails = () => {
         file: '',
         rsvp: ''
     });
+    const [loading, setLoading] = useState(true);
+
 
     const suggestedTags = [
         'fun', 'games', 'board games', 'food', 'social', 'competition',
@@ -107,10 +111,15 @@ const EventDetails = () => {
     // This hook should always be at the top of the function
     useEffect(() => {
         if (events.length === 0) {
-            fetchEvents();
+            setLoading(true);
+            fetchEvents().finally(() => {
+                setLoading(false);
+            });
+        } else {
+            setLoading(false);
         }
     }, [events, fetchEvents]);
-
+    
     // The event found by the eventId
     const event = events.find(event => event._id === eventId);
 
@@ -204,9 +213,19 @@ const EventDetails = () => {
     }
     //#endregion changed event update
 
+    if (loading) {
+        return (
+            <div className="p-6 max-w-5xl mx-auto">
+                <Skeleton height={400} className="mb-6" />
+                <Skeleton count={5} height={20} className="mb-2" />
+            </div>
+        );
+    }
+    
     if (!event) {
         return <p>Event not found.</p>;
     }
+    
 
     //#region Format the date and time for the event
     const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
