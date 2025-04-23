@@ -19,6 +19,22 @@
     padding: 20px;
 }
 
+.deleteButton {
+    background: red;
+    color: white;
+    border: none;
+    padding: 15px 80px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 0px;
+    transition: background 0.3s ease;
+    margin: 10px;
+  }
+  
+  .deleteButton:hover {
+    background: rgb(239, 103, 103);
+  }
+
 .eventPoster {
     flex: 1;
     margin-right: 20px;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer';
@@ -17,6 +17,12 @@ import OpencvQr from "opencv-qr";
 
 
 const timeZone = 'America/New_York';
+
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
 
 const formatTime = (utcDateString) => {
     if (!utcDateString) return 'Unavailable';
@@ -44,6 +50,8 @@ const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isOwner, setIsOwner] = useState(false);
     const { manageMode, username } = useAuth();
+    const { user_name, role } = useAuth();
+    const { deleteEvent } = useEvents();
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [error, setError] = useState('');
@@ -120,6 +128,18 @@ const EventDetails = () => {
             decodeQRFromUrl(event.image);
         }
     }, [event?.image]);
+
+      const handleDelete = useCallback(async () => {
+        try {
+          await deleteEvent(eventId);
+        } catch (error) {
+          console.error('Failed to delete event:', error);
+        }
+      }, [eventId, deleteEvent]);
+
+      const canSeeDeleteButton = (user_name, role) => {
+        return role === ADMIN || user_name === event.poster || false; /* true for testing only! */
+      };
 
     // Check if the user is the owner of the event
     useEffect(() => {
@@ -590,6 +610,13 @@ const EventDetails = () => {
                         </div>
                     )
                 }
+                
+                {canSeeDeleteButton(user_name, role) && (
+                <button onClick={handleDelete} className={styles.deleteButton}>
+                    Delete
+                </button>
+                )}
+                
             </div>
             <Footer/>
         </div>
