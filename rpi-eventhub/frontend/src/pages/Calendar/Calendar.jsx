@@ -32,7 +32,6 @@ const CalendarPage = () => {
     const [showFlyers, setShowFlyers] = useState(true);
     /* Use these States to keep track of filter */
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
     /* Themes */
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
@@ -183,33 +182,32 @@ const CalendarPage = () => {
 
                             <div className="text-center">
                                  <div className="flex justify-center items-center">
-                                    <button onClick={() => setIsFilterOpen(!isFilterOpen)}className={styles.drawerToggleBtn}></button>
 
-                                    {/* Filter Drawer*/}
-                                    <div className={`${styles.sidebar} ${isFilterOpen ? styles.open : ''}`}>
-                                        <div className={styles.filterSection}>
-                                        <h3 className={styles.filterBarTags}>Posted by</h3>
-                                        <div className={styles.checkboxWrapper}>
-                                            <input
-                                            type="checkbox"
-                                            id="student"
-                                            value="student"
-                                            checked={selectedPostedBy.includes("student")}
-                                            onChange={() => handlePostedByChange("student")}
-                                            />
-                                            <label htmlFor="student" className={styles.filterBarTags}>Student</label>
-                                        </div>
-                                        <div className={styles.checkboxWrapper}>
-                                            <input
-                                            type="checkbox"
-                                            id="rpi"
-                                            value="rpi"
-                                            checked={selectedPostedBy.includes("rpi")}
-                                            onChange={() => handlePostedByChange("rpi")}
-                                            />
-                                            <label htmlFor="rpi" className={styles.filterBarTags}>RPI</label>
-                                        </div>
-                                    </div>  
+                                    {/* Filter Box*/}
+                                
+                                    <div className={styles.filterSection}>
+                                    <h3 className={styles.filterBarTags}>Posted by</h3>
+                                    <div className={styles.checkboxWrapper}>
+                                        <input
+                                        type="checkbox"
+                                        id="student"
+                                        value="student"
+                                        checked={selectedPostedBy.includes("student")}
+                                        onChange={() => handlePostedByChange("student")}
+                                        />
+                                        <label htmlFor="student" className={styles.filterBarTags}>Student</label>
+                                    </div>
+                                    <div className={styles.checkboxWrapper}>
+                                        <input
+                                        type="checkbox"
+                                        id="rpi"
+                                        value="rpi"
+                                        checked={selectedPostedBy.includes("rpi")}
+                                        onChange={() => handlePostedByChange("rpi")}
+                                        />
+                                        <label htmlFor="rpi" className={styles.filterBarTags}>RPI</label>
+                                    </div>
+                                     
                                 </div>
                             </div>
                         </div>
