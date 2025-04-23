@@ -102,9 +102,8 @@ const CalendarPage = () => {
         const filteredEvents = events.filter((event) => {
             const eventDate = new Date(event.startDateTime || event.date);
             eventDate.setHours(0, 0, 0, 0);
-            const posterMatches = selectedPostedBy.includes(
-                 "student" // currently default to student but find way to filter correctly between the events
-              );
+            const isRPIEvent = event.poster === "RPI";
+            const posterMatches = selectedPostedBy.includes(isRPIEvent ? "rpi" : "student");
             return (
                 eventDate.getDay() === day &&
                 eventDate >= firstDayOfWeek &&
