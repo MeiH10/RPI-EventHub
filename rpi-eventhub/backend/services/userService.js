@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const jwtSecret = process.env.JWT_SECRET;
+import { USER_ROLES, isAdmin, isVerified } from '../useful_script/userRolesCheck';
 
 const BANNED = 0;
 const UNVERIFIED = 1;

@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 require('dotenv').config();
 const jwtSecret = process.env.JWT_SECRET;
+import { USER_ROLES, isAdmin, isVerified } from 'userRolesCheck';
+
 
 const BANNED = 0;
 const UNVERIFIED = 1;
