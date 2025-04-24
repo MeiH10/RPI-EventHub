@@ -80,163 +80,6 @@ const EventDetails = () => {
     });
     const [loading, setLoading] = useState(true);
 
-
-    const suggestedTags = [
-        'fun', 'games', 'board games', 'food', 'social', 'competition',
-        'movie', 'anime', 'academic', 'professional', 'career', 'relax',
-        'outdoor', 'workshop', 'fundraiser', 'art', 'music', 'networking',
-        'sports', 'creative', 'tech', 'wellness', 'coding', 'other'
-    ];
-
-
-    const handleAddTag = (tag) => {
-        setTags(prevTags => {
-            let newTags;
-            if (prevTags.includes(tag)) {
-                newTags = prevTags.filter(t => t !== tag);
-            } else if (prevTags.length < 10) {
-                newTags = [...prevTags, tag];
-            } else {
-                newTags = prevTags;
-            }
-            setFormData(prevState => ({
-                ...prevState,
-                tags: newTags
-            }));
-            return newTags;
-        });
-
-    };
-
-    // This hook should always be at the top of the function
-    useEffect(() => {
-        if (events.length === 0) {
-            setLoading(true);
-            fetchEvents().finally(() => {
-                setLoading(false);
-            });
-        } else {
-            setLoading(false);
-        }
-    }, [events, fetchEvents]);
-
-    // The event found by the eventId
-    const event = events.find(event => event._id === eventId);
-
-
-    useEffect(() => {
-        if (event?.image) {
-            decodeQRFromUrl(event.image);
-        }
-    }, [event?.image]);
-
-    // Check if the user is the owner of the event
-    useEffect(() => {
-        if (event && username) {
-            setIsEditing(manageMode && event.poster === username);
-            setIsOwner(event.poster === username);
-        }
-    }, [manageMode, event, username]);
-
-
-    // Set the form data to the event data
-    useEffect(() => {
-        if (event) {
-            setFormData({
-                title: event.title || '',
-                description: event.description || '',
-                poster: event.poster || '',
-                club: event.club || '',
-                startDateTime: '',
-                endDateTime: '',
-                location: event.location || '',
-                tags: event.tags || '',
-                file: '',
-                rsvp: event.rsvp || ''
-            });
-            setTags(event.tags || []);
-        }
-    }, [event]);
-
-    // Handle form data changes, update the form data (Update Event/Manage Event)
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-
-    //#region Update/Manage event
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
-
-
-        const submittedFormData = new FormData();
-        submittedFormData.append('title', formData.title);
-        submittedFormData.append('description', formData.description);
-        submittedFormData.append('poster', formData.poster);
-        submittedFormData.append('club', formData.club);
-        submittedFormData.append('startDateTime', formData.startDateTime || event.startDateTime);
-        submittedFormData.append('endDateTime', formData.endDateTime || event.endDateTime);
-        submittedFormData.append('location', formData.location);
-        tags.forEach(tag => {
-            submittedFormData.append('tags[]', tag);
-        });
-        submittedFormData.append('rsvp', formData.rsvp);
-
-        if (file !== null) {
-            submittedFormData.append('file', file);
-        }
-
-        try {
-            const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, submittedFormData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            console.log('Event updated successfully:', response.data);
-        } catch (error) {
-            console.error('Failed to update event:', error);
-        }
-
-    };
-
-    function handleImageFileChange(e) {
-        toggleImage();
-        // Notice this function will also handle PDF file, no worries.
-        handleFileChange(e, setPreview, setFile, setError);
-    }
-
-    function toggleImage() {
-        setShowOriginalImage((prevState) => !prevState);
-    }
-    //#endregion changed event update
-
-    if (loading) {
-        return (
-            <div className="p-6 max-w-5xl mx-auto">
-                <Skeleton height={400} className="mb-6" />
-                <Skeleton count={5} height={20} className="mb-2" />
-            </div>
-        );
-    }
-
-    if (!event) {
-        return <p>Event not found.</p>;
-    }
-
-
-    //#region Format the date and time for the event
-    const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
-    const eventEndDateTime = event.endDateTime ? formatDateAsEST(event.endDateTime) : (event.endDate ? formatDateAsEST(event.endDate) : null);
-    const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
-    const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
-    //#endregion
-
-    const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
-
-    //#region--------------------QR code to Link--------------------
     // Convert url to ImageData
     const loadImageData = async (url) => {
         return new Promise((resolve, reject) => {
@@ -316,6 +159,165 @@ const EventDetails = () => {
         }
     };
 
+    // Get the favicon from the url
+    const getFavicon = (url) => {
+        //Extract the domain from the url
+        const domain = url.split('/')[2];
+        return `https://www.google.com/s2/favicons?sz=32&domain_url=${domain}`;
+    };
+
+    const suggestedTags = [
+        'fun', 'games', 'board games', 'food', 'social', 'competition',
+        'movie', 'anime', 'academic', 'professional', 'career', 'relax',
+        'outdoor', 'workshop', 'fundraiser', 'art', 'music', 'networking',
+        'sports', 'creative', 'tech', 'wellness', 'coding', 'other'
+    ];
+
+
+    const handleAddTag = (tag) => {
+        setTags(prevTags => {
+            let newTags;
+            if (prevTags.includes(tag)) {
+                newTags = prevTags.filter(t => t !== tag);
+            } else if (prevTags.length < 10) {
+                newTags = [...prevTags, tag];
+            } else {
+                newTags = prevTags;
+            }
+            setFormData(prevState => ({
+                ...prevState,
+                tags: newTags
+            }));
+            return newTags;
+        });
+    };
+
+    // This hook should always be at the top of the function
+    useEffect(() => {
+        if (events.length === 0) {
+            setLoading(true);
+            fetchEvents().finally(() => {
+                setLoading(false);
+            });
+        } else {
+            setLoading(false);
+        }
+    }, [events, fetchEvents]);
+
+    // The event found by the eventId
+    const event = events.find(event => event._id === eventId);
+
+    useEffect(() => {
+        if (event?.image) {
+            decodeQRFromUrl(event.image);
+        }
+    }, [event?.image]);
+
+    // Check if the user is the owner of the event
+    useEffect(() => {
+        if (event && username) {
+            setIsEditing(manageMode && event.poster === username);
+            setIsOwner(event.poster === username);
+        }
+    }, [manageMode, event, username]);
+
+
+    // Set the form data to the event data
+    useEffect(() => {
+        if (event) {
+            setFormData({
+                title: event.title || '',
+                description: event.description || '',
+                poster: event.poster || '',
+                club: event.club || '',
+                startDateTime: '',
+                endDateTime: '',
+                location: event.location || '',
+                tags: event.tags || '',
+                file: '',
+                rsvp: event.rsvp || ''
+            });
+            setTags(event.tags || []);
+        }
+    }, [event]);
+
+    // Handle form data changes, update the form data (Update Event/Manage Event)
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    //#region Update/Manage event
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+
+
+        const submittedFormData = new FormData();
+        submittedFormData.append('title', formData.title);
+        submittedFormData.append('description', formData.description);
+        submittedFormData.append('poster', formData.poster);
+        submittedFormData.append('club', formData.club);
+        submittedFormData.append('startDateTime', formData.startDateTime || event.startDateTime);
+        submittedFormData.append('endDateTime', formData.endDateTime || event.endDateTime);
+        submittedFormData.append('location', formData.location);
+        tags.forEach(tag => {
+            submittedFormData.append('tags[]', tag);
+        });
+        submittedFormData.append('rsvp', formData.rsvp);
+
+        if (file !== null) {
+            submittedFormData.append('file', file);
+        }
+
+        try {
+            const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, submittedFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log('Event updated successfully:', response.data);
+        } catch (error) {
+            console.error('Failed to update event:', error);
+        }
+    };
+
+    function handleImageFileChange(e) {
+        toggleImage();
+        // Notice this function will also handle PDF file, no worries.
+        handleFileChange(e, setPreview, setFile, setError);
+    }
+
+    function toggleImage() {
+        setShowOriginalImage((prevState) => !prevState);
+    }
+    //#endregion changed event update
+
+    if (loading) {
+        return (
+            <div className="p-6 max-w-5xl mx-auto">
+                <Skeleton height={400} className="mb-6" />
+                <Skeleton count={5} height={20} className="mb-2" />
+            </div>
+        );
+    }
+
+    if (!event) {
+        return <p>Event not found.</p>;
+    }
+
+
+    //#region Format the date and time for the event
+    const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
+    const eventEndDateTime = event.endDateTime ? formatDateAsEST(event.endDateTime) : (event.endDate ? formatDateAsEST(event.endDate) : null);
+    const eventStartTime = event.startDateTime ? formatTime(event.startDateTime) : formatTime(event.time);
+    const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
+    //#endregion
+
+    const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
+
     // Overlay for QR code
     const QRMaskOverlay = ({ qrCodes, onSelect }) => {
         return (
@@ -340,14 +342,6 @@ const EventDetails = () => {
             </div>
         );
     };
-
-    // Get the favicon from the url
-    const getFavicon = (url) => {
-        //Extract the domain from the url
-        const domain = url.split('/')[2];
-        return `https://www.google.com/s2/favicons?sz=32&domain_url=${domain}`;
-    }
-    //#endregion
 
     return (
         <div className='outterContainer'>
