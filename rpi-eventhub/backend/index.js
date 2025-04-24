@@ -8,21 +8,22 @@ const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const { verifyToken } = require('./controller/userAuthController');
-const {upload} = require('./useful_script/uploadUtils');
-const {authenticate, authenticateAndVerify} = require('./useful_script/userAuthentication');
+const { upload } = require('./useful_script/uploadUtils');
+const { authenticate, authenticateAndVerify, authorizeAdmin } = require('./useful_script/userAuthentication');
 //#endregion
 
 
 // ---------------------------- CONTROllER IMPORTS ----------------------------
 //#region CONTROLLER IMPORTS
 const {
-    fetchAllUsernames,
-    verifyUserEmail,
-    login,
-    signUp,
-    resetUserPassword,
-    userExists,
-    sendCodeEmail,
+  fetchAllUsernames,
+  verifyUserEmail,
+  login,
+  signUp,
+  resetUserPassword,
+  userExists,
+  sendCodeEmail,
+  updateUsers
 } = require('./controller/userController');
 const {
   removeEvent,
@@ -42,8 +43,8 @@ const { getLogContent } = require('./controller/logController');
 // ---------------------------- EXPRESS SETTINGS ----------------------------
 //#region EXPRESS
 const express = require('express');
-const {sendEmail} = require("./services/emailService");
-const {sendCode} = require("./services/userService");
+const { sendEmail } = require("./services/emailService");
+const { sendCode } = require("./services/userService");
 const app = express();
 const corsOptions = {
   origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
@@ -79,9 +80,10 @@ app.get('/logs/:date', getLogContent);
 app.post('/signup', signUp);
 app.post('/verify-email', verifyUserEmail);
 app.post('/login', login);
-app.get('/usernames', fetchAllUsernames);
+app.get('/usernames', authenticate, authorizeAdmin, fetchAllUsernames);
 app.post('/reset-password', resetUserPassword);
 app.post('/check-user-exists', userExists);
+app.post('/update-users', authenticate, authorizeAdmin, updateUsers);
 //#endregion
 
 //#region OTHER ROUTES

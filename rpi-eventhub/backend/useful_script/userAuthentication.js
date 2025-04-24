@@ -58,4 +58,14 @@ const authenticateAndVerify = async (req, res, next) => {
     }
 };
 
-module.exports = { authenticate, authenticateAndVerify };
+const authorizeAdmin = (req, res, next) => {
+    const ADMIN = 4;
+
+    if (!req.user || req.user.role !== ADMIN) {
+        return res.status(403).json({ message: 'Access denied. Admin privileges required.' });
+    }
+
+    next();
+};
+
+module.exports = { authenticate, authenticateAndVerify, authorizeAdmin };

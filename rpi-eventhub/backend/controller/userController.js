@@ -35,9 +35,9 @@ const verifyUserEmail = async (req, res) => {
         res.status(200).json(result);
     } catch (error) {
         console.error("Error during email verification:", error.message);
-        res.status(500).json({ 
-            message: "Invalid verification code or email address.", 
-            error: error.message 
+        res.status(500).json({
+            message: "Invalid verification code or email address.",
+            error: error.message
         });
     }
 };
@@ -132,6 +132,71 @@ const sendCodeEmail = async (req, res) => {
     }
 }
 
+/**
+ * Update user roles by admin
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+const updateUsers = async (req, res) => {
+    try {
+        const { users } = req.body;
+
+        if (!Array.isArray(users)) {
+            return res.status(400).json({ message: 'Invalid request format. Users must be an array.' });
+        }
+
+        // successful and failed updates
+        const results = {
+            success: [],
+            failed: []
+        };
+
+        for (const userUpdate of users) {
+            try {
+                // find user by username
+                const user = await User.findOne({ username: userUpdate.username });
+
+                if (!user) {
+                    results.failed.push({
+                        username: userUpdate.username,
+                        reason: 'User not found'
+                    });
+                    continue;
+                }
+
+                // update user role
+                user.role = userUpdate.role;
+                await user.save();
+
+                logger.info(`User ${userUpdate.username} role updated to ${userUpdate.role} by admin ${req.user.username}---${new Date()}`);
+
+                results.success.push({
+                    username: userUpdate.username,
+                    newRole: userUpdate.role
+                });
+            } catch (error) {
+                results.failed.push({
+                    username: userUpdate.username,
+                    reason: error.message
+                });
+            }
+        }
+
+        res.status(200).json({
+            message: 'User updates processed',
+            results
+        });
+    } catch (error) {
+        console.error('Error updating users:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+
+
+
+
 module.exports = {
     signUp,
     verifyUserEmail,
@@ -139,5 +204,6 @@ module.exports = {
     fetchAllUsernames,
     userExists,
     resetUserPassword,
-    sendCodeEmail
+    sendCodeEmail,
+    updateUsers
 };
