@@ -119,7 +119,7 @@ const EventDetails = () => {
             setLoading(false);
         }
     }, [events, fetchEvents]);
-    
+
     // The event found by the eventId
     const event = events.find(event => event._id === eventId);
 
@@ -221,11 +221,11 @@ const EventDetails = () => {
             </div>
         );
     }
-    
+
     if (!event) {
         return <p>Event not found.</p>;
     }
-    
+
 
     //#region Format the date and time for the event
     const eventStartDateTime = event.startDateTime ? formatDateAsEST(event.startDateTime) : formatDateAsEST(event.date);
@@ -236,7 +236,7 @@ const EventDetails = () => {
 
     const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
 
-//#region--------------------QR code to Link--------------------
+    //#region--------------------QR code to Link--------------------
     // Convert url to ImageData
     const loadImageData = async (url) => {
         return new Promise((resolve, reject) => {
@@ -347,7 +347,7 @@ const EventDetails = () => {
         const domain = url.split('/')[2];
         return `https://www.google.com/s2/favicons?sz=32&domain_url=${domain}`;
     }
-//#endregion
+    //#endregion
 
     return (
         <div className='outterContainer'>
@@ -568,14 +568,14 @@ const EventDetails = () => {
                                     <div
                                         className="my-2 max-w-[max-content] flex items-center space-x-2 bg-gray-50 p-2 rounded-md border border-gray-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                             strokeWidth={1.5} stroke="currentColor" className="size-5 text-gray-500">
+                                            strokeWidth={1.5} stroke="currentColor" className="size-5 text-gray-500">
                                             <path strokeLinecap="round" strokeLinejoin="round"
-                                                  d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/>
+                                                d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
                                             <path strokeLinecap="round" strokeLinejoin="round"
-                                                  d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"/>
+                                                d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z" />
                                         </svg>
                                         <a href={QRCodeLink} target="_blank" rel="noopener noreferrer"
-                                           className="inline-flex items-center space-x-1 hover:underline text-blue-500">
+                                            className="inline-flex items-center space-x-1 hover:underline text-blue-500">
                                             {QRCodeLinkIcon && (
                                                 <div
                                                     className="relative inline-flex items-center space-x-1 p-1 bg-white rounded">
@@ -610,7 +610,7 @@ const EventDetails = () => {
                     )
                 }
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };
