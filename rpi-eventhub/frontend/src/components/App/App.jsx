@@ -22,62 +22,32 @@ import Login from '../../pages/Login/Login';
 import Signup from "../../pages/Login/SignUp";
 import Footer from "../Footer/Footer";
 import ForgetPassWord from "../../pages/Login/ForgetPassWord";
+import NotFound from '../../pages/NotFound';
+
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/about-us",
-    element: <AboutUs />,
-  },
-  {
-    path: "/playground",
-    element: <Playground />,
-  },
-  {
-    path: "/experimental",
-    element: <Experimental />,
-  },
-  {
-    path: "/search",
-    element: <SearchResults />,
-  },
-  
-  {
-    path: "/all-events",
-    element: <AllEvents />,
-  },
-  {
-    path: "/events/:eventId", // Dynamic route for event details
-    element: <EventDetails />,
-  },
-  {
-    path: "/calendar",
-    element: <Calendar />,
-  },
-  {
-    path: "/terms-of-service",
-    element: <TermsOfService />
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/forget-password",
-    element: <ForgetPassWord />,
-  },
-  {
-    path: "/admin",
-    element: <AdminPage />
+    errorElement: <NotFound />, 
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/about-us", element: <AboutUs /> },
+      { path: "/playground", element: <Playground /> },
+      { path: "/experimental", element: <Experimental /> },
+      { path: "/search", element: <SearchResults /> },
+      { path: "/all-events", element: <AllEvents /> },
+      { path: "/events/:eventId", element: <EventDetails /> },
+      { path: "/calendar", element: <Calendar /> },
+      { path: "/terms-of-service", element: <TermsOfService /> },
+      { path: "/login", element: <Login /> },
+      { path: "/signup", element: <Signup /> },
+      { path: "/forget-password", element: <ForgetPassWord /> },
+      { path: "/admin", element: <AdminPage /> },
+      { path: "*", element: <NotFound /> } 
+    ]
   }
 ]);
+
 
 function App() {
   ReactGA.initialize('G-YTNJC09YQ1')
