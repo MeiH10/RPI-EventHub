@@ -1,80 +1,132 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import adminSearchCSS from './AdminSearch.module.css';
-import { DarkModeToggle } from "../DarkMode/DarkMode";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
+import { useAuth } from '../../context/AuthContext';
 import config from "../../config";
 import axios from "axios";
-
-// Mock data list of users
-/* 
-const mockRcsIds = [
-  { username: 'caravl', name: 'Leema Caravan', email: 'caravl@rpi.edu', role: 2 },
-  { username: 'harim', name: 'Hari M', email: 'harim@rpi.edu', role: 2 },
-  { username: 'eoinob', name: 'Eoin O’Brien', email: 'eoinob@rpi.edu', role: 1 },
-  { username: 'fakel', name: 'Fake L', email: 'fakel@rpi.edu', role: 3 },
-  { username: 'lastf', name: 'Last F', email: 'lastf@rpi.edu', role: 0 },
-];
-*/
-var data;
-
-try {
-  const response = await axios.get(`${config.apiUrl}/usernames`);
-  console.log(response);
-
-  data = response.data;
-} catch {
-  console.log("Error fetching usernames");
-}
 
 const AdminSearch = () => {
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
+  const { isLoggedIn } = useAuth();
 
-  const [users, setUsers] = useState(data);
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [changesMade, setChangesMade] = useState(false); // Track if changes have been made
+  const [changesMade, setChangesMade] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  // Filter users for autocomplete suggestions based on search term
+  // fetch users data
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          setError('You must be logged in to access this feature');
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get(`${config.apiUrl}/usernames`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+
+        if (error.response && error.response.status === 403) {
+          setError('You do not have permission to access user data');
+        } else {
+          setError('Failed to load user data. Please try again later.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [isLoggedIn]);
+
+  // filter users for autocomplete suggestions
   const filteredSuggestions = users.filter(user =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Function to handle rank change
+  // handle rank change
   const handleRankChange = (username, newRole) => {
     setUsers(prevUsers =>
       prevUsers.map(user =>
         user.username === username ? { ...user, role: newRole } : user
       )
     );
-    setChangesMade(true); // Mark changes as made
+    setChangesMade(true);
   };
 
-  // Function to handle banning/unbanning a user
+  // handle banning/unbanning a user
   const handleBan = (username) => {
     setUsers(prevUsers =>
       prevUsers.map(user => {
         if (user.username === username) {
-          // Toggle between 0 (banned) and previous role based on current role
           if (user.role === 0) {
-            return { ...user, role: user.role === 1 ? 1 : 2 }; // If unbanned, set to 1 (unverified) or 2 (verified)
+            return { ...user, role: user.role === 1 ? 1 : 2 };
           } else {
-            return { ...user, role: 0 }; // Set to 0 (banned)
+            return { ...user, role: 0 };
           }
         }
         return user;
       })
     );
-    setChangesMade(true); // Mark changes as made
+    setChangesMade(true);
   };
 
-  // Function to save changes (could involve an API call in a real app)
-  const handleSave = () => {
-    console.log('Changes saved:', users);
-    setChangesMade(false); // Reset changes made flag
-    alert('Changes have been saved.');
+  const handleSave = async () => {
+    setError('');
+
+    try {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        setError('You must be logged in to save changes');
+        return;
+      }
+
+      await axios.post(`${config.apiUrl}/update-users`, {
+        users: users
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      setChangesMade(false);
+      alert('Changes have been saved.');
+    } catch (error) {
+      console.error('Error saving changes:', error);
+
+      if (error.response && error.response.status === 403) {
+        setError('You do not have permission to update user data');
+      } else {
+        setError('Failed to save changes. Please try again later.');
+      }
+    }
   };
+
+  if (loading) {
+    return <div className="text-center p-4">Loading user data...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center p-4 text-red-500">{error}</div>;
+  }
 
   return (
     <div className={`${isDark ? 'flex flex-col items-center p-4' : 'flex flex-col items-center p-4'}`}>
@@ -86,7 +138,6 @@ const AdminSearch = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      {/* Dropdown for autocomplete results placed directly below the input field */}
       {searchTerm && (
         <ul className='absolute top-full left-0 w-full max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded-md shadow-md z-10 mt-2 p-0'>
           {filteredSuggestions.map((user, index) => (
@@ -102,7 +153,7 @@ const AdminSearch = () => {
         </ul>
       )}
 
-      {/* Display all users or filtered list */}
+      {/* display users */}
       <div>
         <h4 className='text-left'>User List</h4>
       </div>
@@ -111,9 +162,9 @@ const AdminSearch = () => {
           {(searchTerm ? filteredSuggestions : users).map((user, index) => (
             <li key={index} className='flex items-center justify-evenly p-2 border-b border-gray-300'>
               <p>
-              <strong>Username:</strong> {user.username} <br />
-              <strong>RCS ID:</strong> {user.email?.split('@')[0]} <br />
-              <strong>Email:</strong> {user.email}</p>
+                <strong>Username:</strong> {user.username} <br />
+                <strong>RCS ID:</strong> {user.email?.split('@')[0]} <br />
+                <strong>Email:</strong> {user.email}</p>
 
               {/* Dropdown for setting rank */}
               <label className='text-right mr-1'>
@@ -131,7 +182,7 @@ const AdminSearch = () => {
                 </select>
               </label>
 
-              {/* Ban button with toggle functionality */}
+              {/* ban button */}
               <button
                 className={user.role === 0 ? 'bg-[#4CAF50] text-white py-2 px-[6px] rounded cursor-pointer' : 'bg-[#f44336] text-white py-2 px-[16px] rounded cursor-pointer'}
                 onClick={() => handleBan(user.username)}
@@ -143,7 +194,6 @@ const AdminSearch = () => {
         </ul>
       </div>
 
-      {/* Save button */}
       {changesMade && (
         <button
           className='bg-[#029905] text-white py-3 px-6 text-base border-none rounded cursor-pointer mt-4'
