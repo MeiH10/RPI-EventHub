@@ -7,6 +7,14 @@
   src: url('./assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Afacad';  
+  src: url('./assets/fonts/Afacad/Afacad[wght].ttf') format('truetype'),
+       url('./assets/fonts/Afacad/Afacad-Italic[wght].ttf') format('truetype');
+  font-weight: normal; /* Or specify the weight if needed */
+  font-style: normal;
+}
+
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
