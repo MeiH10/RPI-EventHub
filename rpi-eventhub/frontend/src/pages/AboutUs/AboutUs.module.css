@@ -48,11 +48,28 @@
         transform: scale(1);
     }
 }
-
+.boldTitle{
+    color: darkred;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 75px;
+    padding-left: 25px;
+    padding-bottom: 25px;
+}
 .aboutUsText, .feedbackSection {
     text-align: left;
-    margin-top: 20px;
-    width: 100%;
+    font-size:  30px;
+
+    padding-left: 75px;
+    width: 90%;
+}
+
+
+.missionStatment{
+    font-family: sans-serif;
+    font-size: 30px;
+    text-decoration: underline;
+    text-underline-offset: 10px;
 }
 
 .bridgeImage {
@@ -65,7 +82,7 @@
 }
 
 .hr {
-    margin: 20px 0;
+    margin: 0;
     width: 100%;
     border: 0;
     border-top: 1px solid #ffffff;
@@ -78,6 +95,9 @@
     align-items: center;
     padding: 20px;
     margin: auto;
+}
+.tightRowSpacing{
+    margin-top: -20px;
 }
 
 a {
@@ -113,8 +133,16 @@ a:active {
     font-weight: bold;
 }
 
-.title h1, .aboutUsText h4, .feedbackTitle {
+.title h1, .aboutUsText h4 {
     font-weight: bold;
+}
+
+.feedbackTitle{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    text-decoration: underline;
+    text-underline-offset: 10px;
 }
 
 .missionContainer {
@@ -122,6 +150,10 @@ a:active {
 
     margin-top: 50px;
 }
+.link{
+    text-decoration: underline;
+}
+
 
 @media (max-width: 767px) {
     .row {
