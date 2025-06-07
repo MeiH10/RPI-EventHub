@@ -35,9 +35,11 @@ function AboutUs() {
         
         <div className="row bg-white">
           <div className={`col-12 col-lg-7 px-5 ${styles.missionContainer}`}>
-            <h4 className={styles.boldTitle}>About us...</h4>
-            <div className={styles.aboutUsText}>
-              <h4 className={styles.missionStatment}>
+            <h1 className="text-[75px] font-bold text-[darkred] pl-[25px] pb-[25px] font-sans">
+              About us...
+            </h1>
+            <div className="text-left text-[30px] pl-[75px] w-[100%]">
+              <h4 className="font-sans text-[30px] underline underline-offset-[10px] font-bold pb-[10px]">
                 Mission Statement
               </h4>
               <div className={styles.missionText}>
@@ -46,14 +48,16 @@ function AboutUs() {
             </div>
           </div>
           <div className="col-12 col-lg-5 p-5 d-flex justify-content-center align-items-center">
-            <img src={RPIBridgePhoto} className={styles.bridgeImage} alt="RPI Bridge" />
+            <img src={RPIBridgePhoto} className="mt-[30px] w-[80%] h-auto rounded-[10px]" alt="RPI Bridge" />
           </div>
         </div>
 
-        <div className={`row bg-white ${styles.tightRowSpacing}`}>
+        <div className="row bg-white pb-[20px]">
           <div className={`col-12 col-lg-7 px-5 ${styles.missionContainer}`}>
-            <div className={styles.feedbackSection}>
-              <h4 className={styles.feedbackTitle}>Feedback!</h4>
+            <div className="text-left text-[30px] pl-[75px] w-[90%]">
+              <h4 className="font-sans font-bold text-[30px] underline decoration-black underline-offset-[10px] pb-[10px]">
+                Feedback!
+              </h4>
               <div>
                 We appreciate any feedback on your experience with our site. Please take a minute to fill out our&nbsp;
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSclGZl30lj1o3Etb6q9oU8Q9G8zHrTUk4HC7LLNJhZfYxFiFQ/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer" className={styles.link}>feedback form</a>.
@@ -66,25 +70,24 @@ function AboutUs() {
             </div>
           </div>
           <div className="col-12 col-lg-5 p-5 d-flex justify-content-center align-items-center">
-            <img src={RPIBridgePhoto} className={styles.bridgeImage} alt="RPI Bridge" />
+            <img src={RPIBridgePhoto} className="mt-[30px] w-[80%] h-auto rounded-[10px]" alt="RPI Bridge" />
           </div>
-          
         </div>
 
-        <hr className={styles.hr} />
-        <div className={styles.developers}>
+        <hr className="m-0 w-full border-0 border-t border-t-white border-b border-b-[#2d0505]" />
+        <div className="text-center mt-10 text-[24px]">
           <h4 className={styles.title}>Developers</h4>
-          <div className="row">
+          <div className="flex flex-wrap justify-around flex-col md:flex-row">
             {isLoading ? (
               Array.from(new Array(5)).map((_, index) => (
-                <div className={`col-4 ${styles.column}`} key={index}>
+                <div className="w-1/3 flex flex-col items-center p-5 m-auto" key={index}>
                   <Skeleton variant="circular" width={150} height={150} />
                   <Skeleton variant="text" width={150} />
                 </div>
               ))
             ) : (
               contributors.map(contributor => (
-                <div className={`col-4 ${styles.column}`} key={contributor.login}>
+                <div className="w-1/3 flex flex-col items-center p-5 m-auto" key={contributor.login}>
                   <img src={contributor.avatar_url} className={styles.profilePic} alt="Profile" />
                   <h6 className={styles.devText}>{contributor.login}</h6>
                 </div>
@@ -92,7 +95,7 @@ function AboutUs() {
             )}
           </div>
         </div>
-        <hr className={styles.hr} />
+        <hr className="m-0 w-full border-0 border-t border-t-white border-b border-b-[#2d0505]" />
         
       </div>
       <Footer />
