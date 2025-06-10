@@ -2,24 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-a {
-    text-decoration: none; 
-    color: blue;
-} 
-a:visited { 
-    color: darkblue;
-} 
-a:hover { 
-    color: darkblue;
-} 
-a:active { 
-    color: black;
-}
-
-.devText {
-    margin-top: 10px;
-}
-
 .profilePic {
     border-radius: 50%;
     width: 150px;
@@ -39,11 +21,7 @@ a:active {
     font-weight: bold;
 }
 
-.missionContainer {
-    padding: 0;
 
-    margin-top: 50px;
-}
 .link{
     text-decoration: underline;
 }

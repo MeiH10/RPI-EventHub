@@ -17,7 +17,7 @@
     rgba(255, 101, 101, 0.8),
     rgb(255 0 0 / 0%) 70.71%
   ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
-  linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
+  linear-gradient(336deg, purple, rgb(0 0 255 / 0%) 70.71%);
 }
 
 [data-theme='dark'] {
@@ -38,7 +38,7 @@ html, body {
   font-family: "Georgia", "Arial", sans-serif !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
-  background: var(--gradient-bg) !important;
+  background: #F4F1EA !important;
   color: var(--text-color); /* Default text color is black */
   display: flex !important;
   flex-direction: column !important;
