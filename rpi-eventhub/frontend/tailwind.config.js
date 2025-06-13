@@ -4,6 +4,9 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        afacad: ['Afacad', 'sans-serif'],
+      },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
