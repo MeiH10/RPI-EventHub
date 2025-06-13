@@ -2,31 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.profilePic {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-}
-
-.footer {
-    margin-top: auto;
-}
-
-.title {
-    font-weight: bold;
-}
-
-.title h1, .aboutUsText h4 {
-    font-weight: bold;
-}
-
-
-.link{
-    text-decoration: underline;
-}
-
-
 @media (max-width: 767px) {
     .row {
         flex-direction: column;
