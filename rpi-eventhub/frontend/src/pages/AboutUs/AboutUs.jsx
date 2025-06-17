@@ -32,18 +32,18 @@ function AboutUs() {
   }, []);
 
   return (
-    <div className={`outterContainer ${isDark ? 'text-white bg-[#120451]' : '#F4F1EA'}`} data-theme={theme}>
+    <div className={`outterContainer ${isDark ? 'text-white bg-[#383838]' : '#F4F1EA'}`} data-theme={theme}>
       <Navbar />
       <div className="container-fluid containerFluid">
 
-        <h1 className="col-12 col-lg-7 text-[75px] font-bold text-[#AB2328] pl-[50px] pt-[30px] font-afacad">
+        <h1 className={`col-12 col-lg-7 text-[75px] font-bold pl-[50px] pt-[30px] font-afacad tracking-wide ${isDark ? 'text-white' : 'text-[#AB2328]'}`}>
               About us...
         </h1>
         
         <div className="row flex items-stretch">
           <div className="col-12 col-lg-7 mt-[50px] p-0 flex-col justify-start">
-            <div className="text-left text-[30px] pl-[125px] w-[90%] pt-[20px]">
-              <h4 className="font-afacad text-[30px] underline underline-offset-[10px] font-semibold pb-[10px]">
+            <div className="text-left text-[30px] pl-[125px] w-[80%] pt-[20px] tracking-wide">
+              <h4 className={`font-afacad text-[32px] underline underline-offset-[10px] decoration-[1px] font-semibold pb-[10px] ${isDark ? 'decoration-[#AB2328]' : 'decoration-black'}`}>
                 Mission Statement
               </h4>
               <div className="text-[25px] font-afacad">
@@ -52,15 +52,15 @@ function AboutUs() {
             </div>
           </div>
           <div className="col-12 col-lg-5 d-flex justify-content-start align-items-end h-full">
-            <img src={group1} className="h-[381px] w-auto object-contain ml-[-25px] mt-[-90px] z-10" alt="RPI Bridge" />
+            <img src={group1} className="h-[375px] w-auto object-contain ml-[-50px] mt-[-90px] z-10" alt="RPI Bridge" />
           </div>
         </div>
 
 
         <div className="row flex items-stretch">
           <div className="col-12 col-lg-7 mt-[50px] p-0 flex-col justify-start">
-            <div className="text-left text-[30px] pl-[125px] w-[100%] pt-[20px]">
-              <h4 className="font-afacad font-semibold text-[30px] underline decoration-black underline-offset-[10px] pb-[10px]">
+            <div className="text-left text-[30px] pl-[125px] w-[100%] pt-[20px] tracking-wide">
+              <h4 className={`font-afacad font-semibold text-[32px] underline underline-offset-[10px] decoration-[1px] pb-[10px] ${isDark ? 'decoration-[#AB2328]' : 'decoration-black'}`}>
                 Feedback!
               </h4>
               <div className='text-[25px] font-afacad'>
@@ -75,7 +75,7 @@ function AboutUs() {
             </div>
           </div>
           <div className="col-12 col-lg-5 flex justify-center items-center h-full">
-            <img src={group2} className="h-full w-auto object-contain mt-[-50px] ml-[125px] z-0" alt="RPI Bridge" />
+            <img src={group2} className="h-[375px] w-auto object-contain mt-[-75px] ml-[125px] z-0" alt="RPI Bridge" />
           </div>
         </div>
       
@@ -83,8 +83,8 @@ function AboutUs() {
 
         <hr className="m-0 w-full border-0 border-t border-t-white border-b border-b-[#2d0505]" />
         <div className="text-center mt-10 text-[24px]">
-          <h4 className="font-bold">Our Developers</h4>
-          <div className="flex flex-wrap justify-around flex-col md:flex-row">
+          <h4 className="font-bold text-[35px] font-afacad tracking-wide">Our Developers</h4>
+          <div className="flex flex-wrap justify-around flex-col md:flex-row w-[80%] mx-auto">
             {isLoading ? (
               Array.from(new Array(5)).map((_, index) => (
                 <div className="w-1/4 flex flex-col items-center p-5 m-auto" key={index}>
@@ -95,7 +95,7 @@ function AboutUs() {
             ) : (
               contributors.map(contributor => (
                 <div className="w-1/4 flex flex-col items-center p-5 m-auto" key={contributor.login}>
-                  <img src={contributor.avatar_url} className="rounded-full w-[150px] h-[150px] object-cover" alt="Profile" />
+                  <img src={contributor.avatar_url} className="rounded-full w-[200px] h-[200px] object-cover" alt="Profile" />
                   <h6 className="mt-[10px]">{contributor.login}</h6>
                 </div>
               ))
