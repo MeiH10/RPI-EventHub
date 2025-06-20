@@ -41,7 +41,7 @@ function AboutUs() {
         </h1>
         
         <div className="row flex items-stretch">
-          <div className="col-12 col-lg-7 mt-[50px] p-0 flex-col justify-start">
+          <div className="col-12 col-lg-7 mt-[50px] p-0 flex flex-col justify-start">
             <div className="text-left text-[30px] pl-[125px] w-[80%] pt-[20px] tracking-wide">
               <h4 className={`font-afacad text-[32px] underline underline-offset-[10px] decoration-[1px] font-semibold pb-[10px] ${isDark ? 'decoration-[#AB2328]' : 'decoration-black'}`}>
                 Mission Statement
@@ -51,8 +51,17 @@ function AboutUs() {
               </div>
             </div>
           </div>
-          <div className="col-12 col-lg-5 d-flex justify-content-start align-items-end h-full">
-            <img src={group1} className="h-[375px] w-auto object-contain ml-[-50px] mt-[-90px] z-10" alt="RPI Bridge" />
+          <div className="col-12 col-lg-5 flex justify-start items-end h-full relative">
+            <img
+              src={group1}
+              alt="RPI Bridge"
+              className="
+                h-[375px] w-auto object-contain z-10
+                mt-[25px]
+                mx-auto
+                lg:absolute lg:bottom-[-300px] lg:left-[-50px]
+              "
+            />
           </div>
         </div>
 
@@ -74,8 +83,16 @@ function AboutUs() {
               </div>
             </div>
           </div>
-          <div className="col-12 col-lg-5 flex justify-center items-center h-full">
-            <img src={group2} className="h-[375px] w-auto object-contain mt-[-75px] ml-[125px] z-0" alt="RPI Bridge" />
+          <div className="col-12 col-lg-5 flex justify-start items-end h-full relative">
+            <img 
+            src={group2} 
+            className="
+                h-[375px] w-auto object-contain z-0
+                mt-[25px]
+                mx-auto
+                lg:absolute lg:bottom-[-320px] lg:left-[200px]
+              "
+            alt="RPI Bridge" />
           </div>
         </div>
       
