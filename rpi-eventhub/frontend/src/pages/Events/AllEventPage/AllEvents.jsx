@@ -260,9 +260,9 @@ function AllEvents() {
         700: 1
     };
 
-    const changeView = () => {
-        setIsListView(!isListView);
-    }
+    // const changeView = () => {
+    //     setIsListView(isListView);
+    // }
 
     const handleEditEvent = async (eventId) => {
         // Implement your edit logic here
@@ -297,7 +297,9 @@ function AllEvents() {
                         setSortMethod={setSortMethod}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
-                        changeView={changeView}
+                        //changeView={changeView}
+                        isListView={isListView}
+                        setIsListView={setIsListView}
                         showICS={selectedEventIds.length > 0}
                         onUnselectAll={() => setSelectedEventIds([])}
                         onDownloadICS={generateICS}
