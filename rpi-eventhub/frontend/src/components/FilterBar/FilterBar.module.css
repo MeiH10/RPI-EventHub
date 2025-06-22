@@ -27,6 +27,54 @@
   --separator-bg-color: #fff;
 }
 
+.viewToggleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 4px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.viewToggleButton {
+  padding: 8px 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+  transition: all 0.3s ease;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viewToggleButton.active {
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode adjustments (optional, based on your useColorScheme hook) */
+.dark .viewToggleContainer {
+    background-color: #2a2a2a;
+}
+
+.dark .viewToggleButton {
+    color: #ccc;
+}
+
+.dark .viewToggleButton.active {
+    background-color: #444;
+    color: #fff;
+}
+
 .sidebar {
   width: 300px;
   padding: 20px;
