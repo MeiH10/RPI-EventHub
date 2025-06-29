@@ -104,24 +104,24 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                 {/* --- NEW VIEW TOGGLE SWITCH --- */}
                 <div className={`${styles.viewToggleContainer} ${isDark ? styles.dark : ''}`}>
                     <button
-                        className={`${styles.viewToggleButton} ${!isListView ? styles.active : ''}`}
-                        onClick={() => setIsListView(false)}
-                        aria-pressed={!isListView}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
-                        </svg>
-                        Grid
-                    </button>
-                    <button
                         className={`${styles.viewToggleButton} ${isListView ? styles.active : ''}`}
                         onClick={() => setIsListView(true)}
                         aria-pressed={isListView}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                        </svg>
-                        List
+                        <div className={styles['viewToggleButtonIndicator']}>
+                            <div className={styles['viewToggleButtonIndicatorInner']}></div>
+                        </div>
+                        List View
+                    </button>
+                    <button
+                        className={`${styles.viewToggleButton} ${!isListView ? styles.active : ''}`}
+                        onClick={() => setIsListView(false)}
+                        aria-pressed={!isListView}
+                    >
+                        <div className={styles['viewToggleButtonIndicator']}>
+                            <div className={styles['viewToggleButtonIndicatorInner']}></div>
+                        </div>
+                        Grid View
                     </button>
                 </div>
                 {/* --- END OF VIEW TOGGLE SWITCH --- */}
