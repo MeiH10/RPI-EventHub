@@ -30,8 +30,10 @@ const Home = () => {
         </div>
 
         <div>
-          <h1 className='text-4xl'>About the Website</h1>
-          <h1 className='text-lg md:text-2xl mt-3'>A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.</h1>
+          <h2 className="text-4xl font-semibold">About the Website</h2>
+          <p className="text-lg md:text-2xl mt-3">
+            A comprehensive platform for RPI students and staff to effortlessly create...
+          </p>
         </div>
       </div>
 
