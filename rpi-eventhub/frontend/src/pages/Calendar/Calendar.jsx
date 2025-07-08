@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import axios from "axios";
-import config from "../../config";
 import { Link } from "react-router-dom";
 import html2canvas from "html2canvas";
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction'; // for selectable
+import axios from "axios";
 import { DateTime } from 'luxon';
+import config from "../../config";
 
 const timeZone = 'America/New_York';
 
@@ -181,97 +185,23 @@ const CalendarPage = () => {
                     </div>
 
                     <div ref={calendarRef} className={`w-full p-4 border-2 ${isDark ? 'bg-gray-800 border-gray-600' : 'bg-white border-black'}`}>
-                        <div className="flex flex-wrap justify-center gap-2 mb-4">
-                            <button 
-                                onClick={() => handleWeekChange(-1)}
-                                className="bg-[#C2405E] hover:bg-[#b33754] text-white px-4 py-2 rounded text-sm whitespace-nowrap"
-                            >
-                                Previous Week
-                            </button>
-                            <button 
-                                onClick={goToToday}
-                                className="bg-[#C2405E] hover:bg-[#b33754] text-white px-4 py-2 rounded text-sm"
-                            >
-                                Today
-                            </button>
-                            <button 
-                                onClick={() => handleWeekChange(1)}
-                                className="bg-[#C2405E] hover:bg-[#b33754] text-white px-4 py-2 rounded text-sm whitespace-nowrap"
-                            >
-                                Next Week
-                            </button>
-                        </div>
-
-                        <h2 className={`text-lg md:text-2xl font-bold mb-4 text-center ${isDark ? 'text-white' : 'text-black'}`}>
-                            Week of {weekRange.start} - {weekRange.end}
-                        </h2>
-
-                        <div className="md:hidden flex justify-between mb-2">
-                            <button 
-                                onClick={() => handleMobileScroll('prev')}
-                                disabled={mobileStartIndex === 0}
-                                className={`px-2 py-1 text-sm ${mobileStartIndex === 0 ? 'text-gray-400' : isDark ? 'text-white' : 'text-black'}`}
-                            >
-                                ←
-                            </button>
-                            <button 
-                                onClick={() => handleMobileScroll('next')}
-                                disabled={mobileStartIndex >= 4}
-                                className={`px-2 py-1 text-sm ${mobileStartIndex >= 4 ? 'text-gray-400' : isDark ? 'text-white' : 'text-black'}`}
-                            >
-                                →
-                            </button>
-                        </div>
-
-                        <div className={`grid grid-cols-3 md:grid-cols-7 gap-[1px] ${isDark ? 'bg-gray-600' : 'bg-black'}`}>
-                            {[0, 1, 2, 3, 4, 5, 6].map((day) => (
-                                <div 
-                                    key={day}
-                                    className={`${isDark ? 'bg-gray-700' : 'bg-white'} ${day < mobileStartIndex || day >= mobileStartIndex + 3 ? 'md:block hidden' : 'block'}`}
-                                >
-                                    <h3 className={`text-xs md:text-sm font-bold p-2 border-b ${isDark ? 'border-gray-600 text-white' : 'border-black text-black'} text-center truncate`}>
-                                        {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]}
-                                    </h3>
-                                    <div className="min-h-[100px] p-1 space-y-1">
-                                        {filterEventsByDay(
-                                            day,
-                                            parseDateAsEST(weekRange.start),
-                                            parseDateAsEST(weekRange.end)
-                                        ).length > 0 ? (
-                                            filterEventsByDay(
-                                                day,
-                                                parseDateAsEST(weekRange.start),
-                                                parseDateAsEST(weekRange.end)
-                                            ).map((event) => (
-                                                <Link to={`/events/${event._id}`} key={event._id} className="block">
-                                                    <div className={`p-1 border ${isDark ? 'border-gray-600 hover:bg-gray-600' : 'border-black hover:bg-gray-50'}`}>
-                                                        <div className="space-y-1">
-                                                            <h4 className={`text-[10px] md:text-xs font-bold truncate ${isDark ? 'text-white' : 'text-black'}`}>
-                                                                {event.title}
-                                                            </h4>
-                                                            <p className={`text-[10px] md:text-xs ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                                                                {formatTime(event.startDateTime)}
-                                                            </p>
-                                                        </div>
-                                                        {showFlyers && event.image && (
-                                                            <img
-                                                                src={`${config.apiUrl}/proxy/image/${event._id}`}
-                                                                alt={event.title}
-                                                                className="w-full h-auto mt-1"
-                                                                loading="lazy"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                </Link>
-                                            ))
-                                        ) : (
-                                            <p className={`text-xs text-center pt-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                                                No events
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
+                        <div className="calendar-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                        <FullCalendar
+                            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+                            initialView="dayGridMonth"
+                            headerToolbar={{
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                            }}
+                            events={events}
+                            eventClick={(info) => {
+                            info.jsEvent.preventDefault(); // prevent browser navigation
+                            window.location.href = info.event.url; // go to event detail page
+                            }}
+                            timeZone='UTC'
+                            height="auto"
+                        />
                         </div>
                     </div>
                 </div>
