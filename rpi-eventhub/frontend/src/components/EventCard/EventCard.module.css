@@ -28,6 +28,7 @@
   
   .eventWrapper {
     background: var(--background-color);
+    border: 2px solid rgba(171, 35, 40, 1);
     border-radius: 6px;
     box-shadow: 0 4px 12px var(--box-shadow-color);
     overflow: hidden;
@@ -114,9 +115,9 @@
   font-size: 13px;
   font-weight: 600;
   padding: 6px 14px;  
-  border-radius: 16px; 
-  background-color: #f3f4f6;
-  color: #333;
+  border-radius: 6px; 
+  background-color: rgba(214, 0, 28, 1);
+  color: white;
   text-transform: capitalize;
   transition: all 0.3s ease;
   white-space: nowrap;
