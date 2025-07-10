@@ -1,5 +1,5 @@
 :root {
-  --sidebar-bg-color: rgba(0, 0, 0, 0.8);
+  --sidebar-bg-color: rgba(171, 35, 40, 1);
   --border-color: #000;
   --label-color: #000000;
   --tags-label-color: #F7F9F9;
@@ -104,7 +104,7 @@
   width: 300px;
   padding: 20px;
   background-color: var(--sidebar-bg-color);
-  border: 2px solid var(--border-color); 
+  /* border: 2px solid var(--border-color);  */
   border-radius: 10px; 
   margin-top: 150px; 
   box-sizing: border-box;
@@ -119,8 +119,6 @@
   overflow-x: hidden;
   scrollbar-width: thin;
 }
-
-
 
 .filterSection {
   margin-bottom: 20px;
@@ -142,7 +140,7 @@
 }
 
 .separator {
-  height: 1px;
+  height: 2px;
   background: var(--separator-bg-color); 
   margin: 20px 0; 
 }
@@ -346,20 +344,29 @@ label {
   margin: 0;
 }
 
+.sortOptionWrapper {
+  border: 1px solid whtie;
+  border-radius: 10px;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  background-color: #f0f0f0;;
+}
+
 .sortContainer label {
-  color: var(--tags-label-color);
+  color:#000000;
   margin: 0;
   font-size: 1.3rem;
 }
 
 .sortContainer select {
-  margin-right: 20px;
+  margin-top: 5px;
   margin-bottom: 10px;
   border-radius: 10px;
   padding: 5px;
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(171, 35, 40, 0.88);
   z-index: 1;
   color: var(--tags-label-color);
+  width: 100%;
 }
 
 /* Change button style */
