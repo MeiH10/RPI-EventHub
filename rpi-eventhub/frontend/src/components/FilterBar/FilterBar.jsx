@@ -126,26 +126,33 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                 </div>
                 {/* --- END OF VIEW TOGGLE SWITCH --- */}
                 
+                <div className={styles.separator}></div>
+
                 <div className={styles.sortContainer}>
-                    <label htmlFor="sortMethod">Sort by</label>
-                    <select
-                        id="sortMethod"
-                        value={sortMethod}
-                        onChange={(e) => setSortMethod(e.target.value)}
-                    >
-                        <option value="date" className="text-black dark:text-white">Date</option>
-                        <option value="likes" className="text-black dark:text-white">Likes</option>
-                        <option value="title" className="text-black dark:text-white">Title</option>
-                    </select>
-                    <label htmlFor="sortOrder">Order</label>
-                    <select
-                        id="sortOrder"
-                        value={sortOrder}
-                        onChange={(e) => setSortOrder(e.target.value)}
-                    >
-                        <option value="asc" className="text-black dark:text-white">Ascending</option>
-                        <option value="desc" className="text-black dark:text-white">Descending</option>
-                    </select>
+                    <div className={styles.sortOptionWrapper}>
+                        <label htmlFor="sortMethod">Sort by:</label>
+                        <br></br>
+                        <select
+                            id="sortMethod"
+                            value={sortMethod}
+                            onChange={(e) => setSortMethod(e.target.value)}
+                        >
+                            <option value="date" className="text-black dark:text-white">Date</option>
+                            <option value="likes" className="text-black dark:text-white">Likes</option>
+                            <option value="title" className="text-black dark:text-white">Title</option>
+                        </select>
+                        <br></br>
+                        <label htmlFor="sortOrder">Order:</label>
+                        <br></br>
+                        <select
+                            id="sortOrder"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        >
+                            <option value="asc" className="text-black dark:text-white">Ascending</option>
+                            <option value="desc" className="text-black dark:text-white">Descending</option>
+                        </select>
+                    </div>
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
@@ -154,7 +161,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                 <div className={styles.separator}></div>
 
                 <div className={styles.filterSection}>
-                    <h3 className={styles.filterBarTags}>By Time</h3>
+                    <h3 className={styles.filterBarTags}>Time:</h3>
                     {['past', 'upcoming', 'today'].map((time) => (
                         <div key={time} className={styles.checkboxWrapper}>
                             <input
@@ -171,7 +178,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
 
                     <div className={styles.separator}></div>
 
-                    <h3 className={styles.filterBarTags}>Posted by</h3>
+                    <h3 className={styles.filterBarTags}>Author:</h3>
                     <div className={styles.checkboxWrapper}>
                         <input
                             type="checkbox"
@@ -194,7 +201,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                     </div>
 
                     <div className={styles.separator}></div>
-                    <h3 className={styles.filterBarTags}>By Tags</h3>
+                    <h3 className={styles.filterBarTags}>Tags:</h3>
                     {tags.sort().map((tag) => (
                         <div key={tag} className={styles.checkboxWrapper}>
                             <input
