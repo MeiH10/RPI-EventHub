@@ -159,15 +159,16 @@
   appearance: none;
   /* create a custom checkbox */
   min-width: 20px;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  position: relative;
-  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border: 3px solid white;
+  background-color: rgba(181, 167, 167, 1);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 3px 0;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 /* create a custom checkbox by add a fake element*/
