@@ -211,7 +211,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 checked={selectedTags.includes(tag)}
                                 onChange={() => handleTagChange(tag)}
                             />
-                            <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
+                            <label className={styles.filterBarTags} htmlFor={tag}>{tag.charAt(0).toUpperCase()+tag.slice(1)}</label>
                         </div>
                     ))}
                 </div>
