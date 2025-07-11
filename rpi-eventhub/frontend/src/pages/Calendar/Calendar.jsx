@@ -72,46 +72,43 @@ const CalendarPage = () => {
             const response = await axios.get(`${config.apiUrl}/events`);
             const dbEvents = response.data;
 
-            const formattedEvents = dbEvents.flatMap(event => {
-                const formatted = [];
+            const formattedEvents = dbEvents.map(event => {
+            const startUTC = DateTime.fromISO(event.startDateTime, { zone: 'utc' }).setZone(timeZone);
+            const endUTC = event.endDateTime 
+                ? DateTime.fromISO(event.endDateTime, { zone: 'utc' }).setZone(timeZone)
+                : null;
 
-                // Always show the start day
-                formatted.push({
-                    id: `${event._id}-start`,
-                    title: event.title,
-                    start: event.startDateTime,
-                    url: `/events/${event._id}`,
-                    extendedProps: {
-                        description: event.description,
-                        image: event.image,
-                        isStart: true,
-                        isEnd: false,
-                    }
-                });
+            // Check if start and end are on the same day
+            const sameDay = endUTC && startUTC.hasSame(endUTC, 'day');
 
-                const startDate = new Date(event.startDateTime);
-                const endDate = new Date(event.endDateTime);
-
-                // If end date is valid and different from start date, show it too
-                if (
-                    event.endDateTime &&
-                    startDate.toDateString() !== endDate.toDateString()
-                ) {
-                    formatted.push({
-                        id: `${event._id}-end`,
-                        title: event.title,
-                        start: event.endDateTime,
-                        url: `/events/${event._id}`,
-                        extendedProps: {
-                            description: event.description,
-                            image: event.image,
-                            isStart: false,
-                            isEnd: true,
-                        }
-                    });
+            if (sameDay) {
+                // Show as full block spanning start to end time
+                return {
+                id: event._id,
+                title: event.title,
+                start: startUTC.toISO(),
+                end: endUTC.toISO(),
+                allDay: false,
+                url: `/events/${event._id}`,
+                extendedProps: {
+                    description: event.description,
+                    image: event.image,
                 }
-
-                return formatted;
+                };
+            } else {
+                // Just show start day event only
+                return {
+                id: event._id,
+                title: event.title,
+                start: startUTC.toISO(),
+                allDay: false,
+                url: `/events/${event._id}`,
+                extendedProps: {
+                    description: event.description,
+                    image: event.image,
+                }
+                };
+            }
             });
 
             setEvents(formattedEvents);
@@ -120,22 +117,6 @@ const CalendarPage = () => {
         }
     };
 
-
-
-    const handleWeekChange = (offset) => {
-        const newStartDate = new Date(currentStartDate);
-        newStartDate.setDate(currentStartDate.getDate() + offset * 7);
-        setCurrentStartDate(newStartDate);
-        setMobileStartIndex(0);
-        getWeekRange(newStartDate);
-    };
-
-    const goToToday = () => {
-        const today = new Date();
-        setCurrentStartDate(today);
-        setMobileStartIndex(0);
-        getWeekRange(today);
-    };
 
     const filterEventsByDay = (day, firstDayOfWeek, lastDayOfWeek) => {
         const filteredEvents = events.filter((event) => {
@@ -246,7 +227,6 @@ const CalendarPage = () => {
                             info.jsEvent.preventDefault(); // prevent browser navigation
                             window.location.href = info.event.url; // go to event detail page
                             }}
-                            timeZone='UTC'
                             height="auto"
                         />
                         </div>
