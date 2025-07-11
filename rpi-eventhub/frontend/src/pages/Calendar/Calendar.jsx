@@ -70,11 +70,57 @@ const CalendarPage = () => {
     const fetchEvents = async () => {
         try {
             const response = await axios.get(`${config.apiUrl}/events`);
-            setEvents(response.data);
+            const dbEvents = response.data;
+
+            const formattedEvents = dbEvents.flatMap(event => {
+                const formatted = [];
+
+                // Always show the start day
+                formatted.push({
+                    id: `${event._id}-start`,
+                    title: event.title,
+                    start: event.startDateTime,
+                    url: `/events/${event._id}`,
+                    extendedProps: {
+                        description: event.description,
+                        image: event.image,
+                        isStart: true,
+                        isEnd: false,
+                    }
+                });
+
+                const startDate = new Date(event.startDateTime);
+                const endDate = new Date(event.endDateTime);
+
+                // If end date is valid and different from start date, show it too
+                if (
+                    event.endDateTime &&
+                    startDate.toDateString() !== endDate.toDateString()
+                ) {
+                    formatted.push({
+                        id: `${event._id}-end`,
+                        title: event.title,
+                        start: event.endDateTime,
+                        url: `/events/${event._id}`,
+                        extendedProps: {
+                            description: event.description,
+                            image: event.image,
+                            isStart: false,
+                            isEnd: true,
+                        }
+                    });
+                }
+
+                return formatted;
+            });
+
+            setEvents(formattedEvents);
         } catch (error) {
             console.error("Failed to fetch events:", error);
         }
     };
+
+
 
     const handleWeekChange = (offset) => {
         const newStartDate = new Date(currentStartDate);
@@ -187,6 +233,7 @@ const CalendarPage = () => {
                     <div ref={calendarRef} className={`w-full p-4 border-2 ${isDark ? 'bg-gray-800 border-gray-600' : 'bg-white border-black'}`}>
                         <div className="calendar-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
                         <FullCalendar
+                            timeZone='America/New_York'
                             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
                             initialView="dayGridMonth"
                             headerToolbar={{
