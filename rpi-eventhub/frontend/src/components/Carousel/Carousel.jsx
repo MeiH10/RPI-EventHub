@@ -97,6 +97,13 @@ const ImageCarousel = () => {
       className="carousel"
       onMouseEnter={pauseAutoplay} // pause carousel when on hover
       onMouseLeave={resetTimer}
+      style={{ 
+        backgroundColor: '#AB2328', 
+        width: '600px',       
+        height: '700px', 
+        maxWidth: '90vw',  
+        maxHeight: '90vh', 
+      }}
     >
       <div className={styles.carousel}>
         <div className={styles.mainImage}>
