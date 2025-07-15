@@ -162,61 +162,64 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
 
                 <div className={styles.filterSection}>
                     <h3 className={styles.filterBarTags}>Time:</h3>
-                    {['past', 'upcoming', 'today'].map((time) => (
-                        <div key={time} className={styles.checkboxWrapper}>
-                            <input
-                                type="checkbox"
-                                id={time}
-                                value={time}
-                                checked={selectedTime.includes(time)}
-                                onChange={() => handleTimeChange(time)}
-                            />
-                            <label className={styles.filterBarTags}
-                                htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
-                        </div>
-                    ))}
+                    <div className={`${styles.toggleGroupContainer} ${isDark ? styles.dark : ''}`}>
+                        {['past', 'upcoming', 'today'].map((time) => (
+                            <button
+                                key={time}
+                                className={`${styles.filterButton} ${styles.blue} ${selectedTime.includes(time) ? styles.active : ''}`}
+                                onClick={() => handleTimeChange(time)}
+                            >
+                                <div className={styles.filterButtonIndicator}>
+                                    <div className={styles.filterButtonIndicatorInner}></div>
+                                </div>
+                                {time.charAt(0).toUpperCase() + time.slice(1)}
+                            </button>
+                        ))}
+                    </div>
 
                     <div className={styles.separator}></div>
 
                     <h3 className={styles.filterBarTags}>Author:</h3>
-                    <div className={styles.checkboxWrapper}>
-                        <input
-                            type="checkbox"
-                            id="student"
-                            value="student"
-                            checked={selectedPostedBy.includes("student")}
-                            onChange={() => handlePostedByChange("student")}
-                        />
-                        <label htmlFor="student" className={styles.filterBarTags}>Student</label>
-                    </div>
-                    <div className={styles.checkboxWrapper}>
-                        <input
-                            type="checkbox"
-                            id="rpi"
-                            value="rpi"
-                            checked={selectedPostedBy.includes("rpi")}
-                            onChange={() => handlePostedByChange("rpi")}
-                        />
-                        <label htmlFor="rpi" className={styles.filterBarTags}>RPI</label>
+                    <div className={`${styles.toggleGroupContainer} ${isDark ? styles.dark : ''}`}>
+                        <button
+                            className={`${styles.filterButton} ${styles.green} ${selectedPostedBy.includes("student") ? styles.active : ''}`}
+                            onClick={() => handlePostedByChange("student")}
+                        >
+                             <div className={styles.filterButtonIndicator}>
+                                <div className={styles.filterButtonIndicatorInner}></div>
+                            </div>
+                            Student
+                        </button>
+                        <button
+                            className={`${styles.filterButton} ${styles.green} ${selectedPostedBy.includes("rpi") ? styles.active : ''}`}
+                            onClick={() => handlePostedByChange("rpi")}
+                        >
+                             <div className={styles.filterButtonIndicator}>
+                                <div className={styles.filterButtonIndicatorInner}></div>
+                            </div>
+                            RPI
+                        </button>
                     </div>
 
                     <div className={styles.separator}></div>
                     <h3 className={styles.filterBarTags}>Tags:</h3>
-                    {tags.sort().map((tag) => (
-                        <div key={tag} className={styles.checkboxWrapper}>
-                            <input
-                                type="checkbox"
-                                id={tag}
-                                value={tag}
-                                checked={selectedTags.includes(tag)}
-                                onChange={() => handleTagChange(tag)}
-                            />
-                            <label className={styles.filterBarTags} htmlFor={tag}>{tag.charAt(0).toUpperCase()+tag.slice(1)}</label>
-                        </div>
-                    ))}
+                    <div className={`${styles.toggleGroupContainer} ${isDark ? styles.dark : ''}`}>
+                        {tags.sort().map((tag) => (
+                            <button
+                                key={tag}
+                                className={`${styles.filterButton} ${styles.orange} ${selectedTags.includes(tag) ? styles.active : ''}`}
+                                onClick={() => handleTagChange(tag)}
+                            >
+                                 <div className={styles.filterButtonIndicator}>
+                                    <div className={styles.filterButtonIndicatorInner}></div>
+                                </div>
+                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <div className={styles.separator}></div>
-                <button onClick={clearAll} className={styles.clearButton}>Clear All</button>
+                <button onClick={clearAll} className={styles.clearButton}>Clear All Filters</button>
             </div>
         </>
     );
