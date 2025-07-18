@@ -7,43 +7,21 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction'; // for selectable
+import interactionPlugin from '@fullcalendar/interaction';
 import axios from "axios";
 import { DateTime } from 'luxon';
 import config from "../../config";
 
 const timeZone = 'America/New_York';
 
-const formatTime = (utcDateString) => {
-    if (!utcDateString) return 'Unavailable';
-    const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
-    return dateTime.toFormat('h:mm a');
-};
-
-const formatDateAsEST = (utcDateString) => {
-    if (!utcDateString) return 'Unavailable';
-    const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
-    return dateTime.toFormat('MMMM dd, yyyy');
-};
-
 const CalendarPage = () => {
     const [weekRange, setWeekRange] = useState({ start: "", end: "" });
     const [events, setEvents] = useState([]);
     const [currentStartDate, setCurrentStartDate] = useState(new Date());
-    const [mobileStartIndex, setMobileStartIndex] = useState(0);
     const [showFlyers, setShowFlyers] = useState(true);
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const calendarRef = useRef(null);
-
-    const parseDateAsEST = (utcDate) => {
-        const date = new Date(utcDate);
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth();
-        const day = date.getUTCDate();
-        return new Date(year, month, day);
-    };
 
     const getWeekRange = (startDate) => {
         const today = startDate || new Date();
@@ -78,11 +56,9 @@ const CalendarPage = () => {
                 ? DateTime.fromISO(event.endDateTime, { zone: 'utc' }).setZone(timeZone)
                 : null;
 
-            // Check if start and end are on the same day
             const sameDay = endUTC && startUTC.hasSame(endUTC, 'day');
 
             if (sameDay) {
-                // Show as full block spanning start to end time
                 return {
                 id: event._id,
                 title: event.title,
@@ -96,7 +72,6 @@ const CalendarPage = () => {
                 }
                 };
             } else {
-                // Just show start day event only
                 return {
                 id: event._id,
                 title: event.title,
@@ -117,33 +92,6 @@ const CalendarPage = () => {
         }
     };
 
-
-    const filterEventsByDay = (day, firstDayOfWeek, lastDayOfWeek) => {
-        const filteredEvents = events.filter((event) => {
-            const eventDate = new Date(event.startDateTime || event.date);
-            eventDate.setHours(0, 0, 0, 0);
-            return (
-                eventDate.getDay() === day &&
-                eventDate >= firstDayOfWeek &&
-                eventDate <= lastDayOfWeek
-            );
-        });
-
-        return filteredEvents.sort((event1, event2) => {
-            const time1 = new Date(event1.startDateTime).getTime();
-            const time2 = new Date(event2.startDateTime).getTime();
-            return time1 - time2;
-        });
-    };
-
-    const handleMobileScroll = (direction) => {
-        if (direction === 'next' && mobileStartIndex < 4) {
-            setMobileStartIndex(prev => prev + 3);
-        } else if (direction === 'prev' && mobileStartIndex > 0) {
-            setMobileStartIndex(prev => prev - 3);
-        }
-    };
-
     const loadAllImages = () => {
         const images = calendarRef.current.querySelectorAll("img");
         return Promise.all(
@@ -161,7 +109,6 @@ const CalendarPage = () => {
     const captureCalendarScreenshot = async () => {
         await loadAllImages();
         if (calendarRef.current) {
-            // Remove the truncate class to prevent text cropping
             const titles = calendarRef.current.querySelectorAll('.truncate');
             titles.forEach(title => title.classList.remove('truncate'));
 
@@ -172,7 +119,6 @@ const CalendarPage = () => {
                 link.download = `calendar-${weekRange.start}-to-${weekRange.end}.png`;
                 link.click();
 
-                // Add the truncate class back after capturing the screenshot
                 titles.forEach(title => title.classList.add('truncate'));
             });
         }
@@ -215,17 +161,17 @@ const CalendarPage = () => {
                         <div className="calendar-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
                         <FullCalendar
                             timeZone='America/New_York'
-                            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
-                            initialView="dayGridMonth"
+                            plugins={[ dayGridPlugin, interactionPlugin ]}
+                            initialView="dayGridWeek"
                             headerToolbar={{
                             left: 'prev,next today',
                             center: 'title',
-                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                            right: 'dayGridMonth,dayGridWeek,dayGridDay'
                             }}
                             events={events}
                             eventClick={(info) => {
-                            info.jsEvent.preventDefault(); // prevent browser navigation
-                            window.location.href = info.event.url; // go to event detail page
+                            info.jsEvent.preventDefault();
+                            window.location.href = info.event.url;
                             }}
                             height="auto"
                         />
