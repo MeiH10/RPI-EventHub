@@ -96,7 +96,7 @@ const CalendarPage = () => {
         const { image } = eventInfo.event.extendedProps;
         return (
             <div style={{
-                width: '180px',
+                width: '240px',
                 display: 'flex',    
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -108,7 +108,6 @@ const CalendarPage = () => {
                 wordBreak: 'break-word',
                 textAlign: 'center',
                 border: '1px solid #888',
-                borderRadius: '6px',
                 background: isDark ? '#222' : '#fff',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
                 padding: '5px',
@@ -119,18 +118,16 @@ const CalendarPage = () => {
                         src={image}
                         alt={eventInfo.event.title}
                         style={{
-                            max_width: '140px',
                             objectFit: 'cover',
-                            marginBottom: '2px',
-                            borderRadius: '4px',
+                            marginBottom: '5px',
                             display: 'block',
                             marginLeft: 'auto',
                             marginRight: 'auto'
                         }}
                     />
                 )}
-                <span style={{ fontSize: '0.7em' }}>{eventInfo.event.title}</span>
-                <b style={{ fontSize: '0.7em' }}>{eventInfo.timeText}</b>
+                <span style={{ fontSize: '1em' }}>{eventInfo.event.title}</span>
+                <b style={{ fontSize: '1em' }}>{eventInfo.timeText}</b>
             </div>
         );
     };
@@ -173,19 +170,15 @@ const CalendarPage = () => {
     }, [currentStartDate]);
 
     return (
-        <div className={`min-h-screen flex flex-col ${isDark ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400'}`}>
+        <div className={`min-h-screen flex flex-col ${isDark ? 'bg-gray-900 text-white' : 'bg-[#F4F1EA]'}`}>
             <NavBar />
             <div className="flex-1 pt-20 px-2 md:px-4">
-                <div className="max-w-[1400px] mx-auto">
-                    <div className="text-center mb-4 space-y-2">
-                        <button 
-                            onClick={captureCalendarScreenshot}
-                            className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded transition-colors"
-                        >
-                            Save Calendar as Image
-                        </button>
-                        <div className="flex items-center justify-center gap-2 mt-2">
-                            <label className="inline-flex items-center cursor-pointer">
+
+                <div className="max-w-[1900px] mx-auto">
+                    <h1 className="text-[100px] font-bold text-center mt-[20px] mb-[-10px]">Calendar</h1>
+                    <div className="text-center mb-2 space-y-2">
+                        <div className="flex items-center justify-between w-full">
+                            <label className="inline-flex items-center cursor-pointer max-w-[130px]">
                                 <input
                                     type="checkbox"
                                     checked={showFlyers}
@@ -197,30 +190,38 @@ const CalendarPage = () => {
                                     Show Flyers
                                 </span>
                             </label>
+
+                            <button 
+                                onClick={captureCalendarScreenshot}
+                                className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded transition-colors"
+                            >
+                                Save Calendar as Image
+                            </button>
+
                         </div>
                     </div>
 
-                    <div ref={calendarRef} className={`w-full p-4 border-2 ${isDark ? 'bg-gray-800 border-gray-600' : 'bg-white border-black'}`}>
-                    <div className="calendar-container" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                        <FullCalendar
-                            timeZone='America/New_York'
-                            plugins={[ dayGridPlugin, interactionPlugin ]}
-                            initialView="dayGridWeek"
-                            headerToolbar={{
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'dayGridMonth,dayGridWeek,dayGridDay'
-                            }}
-                            events={events}
-                            eventClick={(info) => {
-                                info.jsEvent.preventDefault();
-                                window.location.href = info.event.url;
-                            }}
-                            height="auto"
-                            contentHeight="auto"
-                            aspectRatio={2.2}
-                            eventContent={renderEventContent}
-                        />
+                    <div ref={calendarRef} className={`w-full p-4 border-2 mb-[20px] ${isDark ? 'bg-gray-800 border-gray-600' : 'bg-white border-black'}`}>
+                        <div className="calendar-container" style={{ maxWidth: '1900px', margin: '0 auto' }}>
+                            <FullCalendar
+                                timeZone='America/New_York'
+                                plugins={[ dayGridPlugin, interactionPlugin ]}
+                                initialView="dayGridWeek"
+                                headerToolbar={{
+                                    left: 'prev,next today',
+                                    center: 'title',
+                                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                                }}
+                                events={events}
+                                eventClick={(info) => {
+                                    info.jsEvent.preventDefault();
+                                    window.location.href = info.event.url;
+                                }}
+                                height="auto"
+                                contentHeight="auto"
+                                aspectRatio={2.2}
+                                eventContent={renderEventContent}
+                            />
                         </div>
                     </div>
                 </div>
