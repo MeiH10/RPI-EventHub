@@ -6,6 +6,10 @@ import Navbar from '../../components/Navbar/Navbar';
 import { useColorScheme } from '../../hooks/useColorScheme';
 import { ThemeContext } from '@emotion/react';
 
+
+
+
+
 const Home = () => {
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme(); 
@@ -21,10 +25,10 @@ const Home = () => {
       <div className='flex flex-col justify-between h-full w-full p-10 md:p-14 lg:p-16 space-y-12'>
           <div className="flex flex-col text-center md:text-left space-y-2">
             <div className="pl-10 pt-8 space-y-2 text-left">
-              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold text-[#AB2328] font-afacad">
+              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold text-[#AB2328] font-Afacad">
                 All RPI Events,
               </h1>
-              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold text-[#AB2328] font-afacad">
+              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold text-[#AB2328] font-Afacad">
                 in one place...
               </h1>
             </div>
@@ -39,11 +43,12 @@ const Home = () => {
         </div>
 
         <div>
-          <h2 className="text-4xl font-semibold">RPI EventHub</h2>
-          <p className="text-lg md:text-2xl mt-3">
-            A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected univeristy community.
+          <h2 className="text-4xl font-semibold font-Afacad">RPI EventHub</h2>
+          <p className="text-lg md:text-2xl mt-3 font-Afacad">
+            A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
           </p>
         </div>
+
       </div>
 
       <div className='hidden md:flex justify-center items-center h-full w-full py-2'>

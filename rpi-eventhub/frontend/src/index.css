@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* styles.css */
 @font-face {
   font-family: "Italiana";
@@ -9,24 +10,12 @@
 
 @font-face {
   font-family: 'Afacad';
-  src: url('../assets/fonts/Afacad/Afacad-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/Afacad/Afacad-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Afacad';
-  src: url('../assets/fonts/Afacad/Afacad-Regular.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-}
 
-@font-face {
-  font-family: 'Afacad';
-  src: url('../assets/fonts/Afacad/Afacad-Regular.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
 
 
 :root {
@@ -57,7 +46,6 @@
 
 html, body {
   margin: 0 !important;
-  font-family: "Georgia", "Arial", sans-serif !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   background: var(--gradient-bg) !important;
