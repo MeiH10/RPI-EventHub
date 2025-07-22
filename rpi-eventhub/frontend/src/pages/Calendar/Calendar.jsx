@@ -92,6 +92,49 @@ const CalendarPage = () => {
         }
     };
 
+    const renderEventContent = (eventInfo) => {
+        const { image } = eventInfo.event.extendedProps;
+        return (
+            <div style={{
+                width: '180px',
+                display: 'flex',    
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'normal',
+                wordBreak: 'break-word',
+                textAlign: 'center',
+                border: '1px solid #888',
+                borderRadius: '6px',
+                background: isDark ? '#222' : '#fff',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                padding: '5px',
+                marginBottom: '0px'
+            }}>
+                {showFlyers && image && (
+                    <img
+                        src={image}
+                        alt={eventInfo.event.title}
+                        style={{
+                            max_width: '140px',
+                            objectFit: 'cover',
+                            marginBottom: '2px',
+                            borderRadius: '4px',
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
+                        }}
+                    />
+                )}
+                <span style={{ fontSize: '0.7em' }}>{eventInfo.event.title}</span>
+                <b style={{ fontSize: '0.7em' }}>{eventInfo.timeText}</b>
+            </div>
+        );
+    };
+
     const loadAllImages = () => {
         const images = calendarRef.current.querySelectorAll("img");
         return Promise.all(
@@ -158,22 +201,25 @@ const CalendarPage = () => {
                     </div>
 
                     <div ref={calendarRef} className={`w-full p-4 border-2 ${isDark ? 'bg-gray-800 border-gray-600' : 'bg-white border-black'}`}>
-                        <div className="calendar-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                    <div className="calendar-container" style={{ maxWidth: '1400px', margin: '0 auto' }}>
                         <FullCalendar
                             timeZone='America/New_York'
                             plugins={[ dayGridPlugin, interactionPlugin ]}
                             initialView="dayGridWeek"
                             headerToolbar={{
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'dayGridMonth,dayGridWeek,dayGridDay'
                             }}
                             events={events}
                             eventClick={(info) => {
-                            info.jsEvent.preventDefault();
-                            window.location.href = info.event.url;
+                                info.jsEvent.preventDefault();
+                                window.location.href = info.event.url;
                             }}
                             height="auto"
+                            contentHeight="auto"
+                            aspectRatio={2.2}
+                            eventContent={renderEventContent}
                         />
                         </div>
                     </div>
