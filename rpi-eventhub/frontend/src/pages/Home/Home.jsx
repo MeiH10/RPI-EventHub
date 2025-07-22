@@ -25,10 +25,10 @@ const Home = () => {
       <div className='flex flex-col justify-between h-full w-full p-10 md:p-14 lg:p-16 space-y-12'>
           <div className="flex flex-col text-center md:text-left space-y-2">
             <div className="pl-10 pt-8 space-y-2 text-left">
-              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold text-[#AB2328] font-Afacad">
+              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold font-Afacad text-[#AB2328] dark:text-white">
                 All RPI Events,
               </h1>
-              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold text-[#AB2328] font-Afacad">
+              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold font-Afacad text-[#AB2328] dark:text-white">
                 in one place...
               </h1>
             </div>

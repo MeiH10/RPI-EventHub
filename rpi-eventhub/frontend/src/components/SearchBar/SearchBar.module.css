@@ -1,8 +1,4 @@
-@font-face {
-    font-family: "Good Times Rg";
-    src: url('../../assets/fonts/GoodTimes/GoodTimesRg-Regular.ttf') format('truetype');
-  }
-  
+
 .searchBarContainer {
   display: flex;
   flex-direction: row;
@@ -18,26 +14,29 @@
   flex: 1;
   height: 2.5rem;
   padding: 0 1rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5f0e2;
   border-radius: 0.375rem;
   background-color: white;
-  color: #1a202c;
+  color: #2c1a1c;
+  font-family: 'Afacad', sans-serif; 
 }
 
 .darkInput {
   background-color: white;
   color: #1a202c;
+  font-family: 'Afacad', sans-serif;
 }
 
 .searchButton {
   padding: 0.5rem 1rem;
-  background-color: #ef4444;
+  background-color: #AB2328;
   color: white;
   font-weight: 600;
   border-radius: 0.375rem;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-family: 'Afacad', sans-serif; 
 }
 
 .searchButton:hover {
