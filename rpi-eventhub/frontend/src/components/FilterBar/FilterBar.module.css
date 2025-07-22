@@ -154,7 +154,7 @@
 }
 
 .sidebar {
-  width: 300px;
+  width: 20vw;
   padding: 20px;
   background-color: var(--sidebar-bg-color);
   /* border: 2px solid var(--border-color);  */
@@ -165,7 +165,7 @@
   position: static;
   top: 10%;
   bottom: 5%;
-  max-height: 70%;
+  /*max-height: 70%; */
   z-index: 1000;
   font-family: "Hevletica Neue", sans-serif;
   overflow-y: auto;
