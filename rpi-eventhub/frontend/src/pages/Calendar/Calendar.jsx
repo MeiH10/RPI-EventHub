@@ -51,39 +51,39 @@ const CalendarPage = () => {
             const dbEvents = response.data;
 
             const formattedEvents = dbEvents.map(event => {
-            const startUTC = DateTime.fromISO(event.startDateTime, { zone: 'utc' }).setZone(timeZone);
-            const endUTC = event.endDateTime 
-                ? DateTime.fromISO(event.endDateTime, { zone: 'utc' }).setZone(timeZone)
-                : null;
+                const startUTC = DateTime.fromISO(event.startDateTime, { zone: 'utc' }).setZone(timeZone);
+                const endUTC = event.endDateTime 
+                    ? DateTime.fromISO(event.endDateTime, { zone: 'utc' }).setZone(timeZone)
+                    : null;
 
-            const sameDay = endUTC && startUTC.hasSame(endUTC, 'day');
+                const sameDay = endUTC && startUTC.hasSame(endUTC, 'day');
 
-            if (sameDay) {
-                return {
-                id: event._id,
-                title: event.title,
-                start: startUTC.toISO(),
-                end: endUTC.toISO(),
-                allDay: false,
-                url: `/events/${event._id}`,
-                extendedProps: {
-                    description: event.description,
-                    image: event.image,
+                if (sameDay) {
+                    return {
+                        id: event._id,
+                        title: event.title,
+                        start: startUTC.toISO(),
+                        end: endUTC.toISO(),
+                        allDay: false,
+                        url: `/events/${event._id}`,
+                        extendedProps: {
+                            description: event.description,
+                            image: event.image,
+                        }
+                    };
+                } else {
+                    return {
+                        id: event._id,
+                        title: event.title,
+                        start: startUTC.toISO(),
+                        allDay: false,
+                        url: `/events/${event._id}`,
+                        extendedProps: {
+                            description: event.description,
+                            image: event.image,
+                        }
+                    };
                 }
-                };
-            } else {
-                return {
-                id: event._id,
-                title: event.title,
-                start: startUTC.toISO(),
-                allDay: false,
-                url: `/events/${event._id}`,
-                extendedProps: {
-                    description: event.description,
-                    image: event.image,
-                }
-                };
-            }
             });
 
             setEvents(formattedEvents);
@@ -96,7 +96,7 @@ const CalendarPage = () => {
         const { image } = eventInfo.event.extendedProps;
         return (
             <div style={{
-                width: '240px',
+                width: '250px',
                 display: 'flex',    
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -107,28 +107,29 @@ const CalendarPage = () => {
                 whiteSpace: 'normal',
                 wordBreak: 'break-word',
                 textAlign: 'center',
-                border: '1px solid #888',
+                border: '2px solid black',
                 background: isDark ? '#222' : '#fff',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
                 padding: '5px',
                 marginBottom: '0px'
             }}>
-                {showFlyers && image && (
-                    <img
-                        src={image}
-                        alt={eventInfo.event.title}
-                        style={{
-                            objectFit: 'cover',
-                            marginBottom: '5px',
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto'
-                        }}
-                    />
-                )}
-                <span style={{ fontSize: '1em' }}>{eventInfo.event.title}</span>
-                <b style={{ fontSize: '1em' }}>{eventInfo.timeText}</b>
-            </div>
+                
+            {showFlyers && image && (
+                <img
+                    src={image}
+                    alt={eventInfo.event.title}
+                    style={{
+                        objectFit: 'cover',
+                        marginBottom: '5px',
+                        display: 'block',
+                        marginLeft: 'auto',
+                        marginRight: 'auto'
+                    }}
+                />
+            )}
+            <span style={{ fontSize: '16px' }}>{eventInfo.event.title}</span>
+            <b style={{ fontSize: '16px' }}>{eventInfo.timeText}</b>
+        </div>
         );
     };
 
@@ -175,7 +176,7 @@ const CalendarPage = () => {
             <div className="flex-1 pt-20 px-2 md:px-4">
 
                 <div className="max-w-[1900px] mx-auto">
-                    <h1 className="text-[100px] font-bold text-center mt-[20px] mb-[-10px]">Calendar</h1>
+                    <h1 className="text-[100px] font-bold text-center mt-[20px] tracking-wide font-sans text-[#D6001C]">Calendar</h1>
                     <div className="text-center mb-2 space-y-2">
                         <div className="flex items-center justify-between w-full">
                             <label className="inline-flex items-center cursor-pointer max-w-[130px]">
@@ -193,7 +194,7 @@ const CalendarPage = () => {
 
                             <button 
                                 onClick={captureCalendarScreenshot}
-                                className="bg-[#E8495F] hover:bg-[#d13b50] text-white px-4 py-2 rounded transition-colors"
+                                className="bg-[#AB2328] hover:bg-[#d13b50] text-white px-4 py-2 rounded transition-colors"
                             >
                                 Save Calendar as Image
                             </button>
@@ -201,7 +202,7 @@ const CalendarPage = () => {
                         </div>
                     </div>
 
-                    <div ref={calendarRef} className={`w-full p-4 border-2 mb-[20px] ${isDark ? 'bg-gray-800 border-gray-600' : 'bg-white border-black'}`}>
+                    <div ref={calendarRef} className={`w-full p-4 mb-[20px] border-[5px] border-[#AB2328]  ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
                         <div className="calendar-container" style={{ maxWidth: '1900px', margin: '0 auto' }}>
                             <FullCalendar
                                 timeZone='America/New_York'
@@ -212,6 +213,7 @@ const CalendarPage = () => {
                                     center: 'title',
                                     right: 'dayGridMonth,dayGridWeek,dayGridDay'
                                 }}
+                                dayHeaderFormat={{ weekday: 'long', month: 'numeric', day: 'numeric' }}
                                 events={events}
                                 eventClick={(info) => {
                                     info.jsEvent.preventDefault();
