@@ -4,11 +4,6 @@
 
 /* styles.css */
 @font-face {
-  font-family: "Italiana";
-  src: url('./assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
-}
-
-@font-face {
   font-family: 'Afacad';
   src: url('../assets/fonts/Afacad/Afacad-Regular.ttf') format('truetype');
   font-weight: 400;
