@@ -22,7 +22,7 @@
 }
 
 [data-theme='dark'] {
-  --sidebar-bg-color: rgba(119, 119, 119, 0.47);
+  --sidebar-bg-color: rgba(85,85,85,255);
   --border-color: rgba(98, 98, 98, 1);
   --label-color: rgba(39, 39, 39, 1)fff;
   --tags-label-color: rgba(39, 39, 39, 1);
