@@ -96,39 +96,66 @@ const CalendarPage = () => {
         const { image } = eventInfo.event.extendedProps;
         return (
             <div style={{
-                width: '250px',
+                width: '244px',
                 display: 'flex',    
                 flexDirection: 'column',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'center',
                 margin: '0 auto',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'normal',
                 wordBreak: 'break-word',
-                textAlign: 'center',
+                textAlign: 'left',
                 border: '2px solid black',
                 background: isDark ? '#222' : '#fff',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                boxShadow: '0 0 8px rgba(0,0,0,0.30)',
                 padding: '5px',
-                marginBottom: '0px'
+                marginBottom: '0px',
+                backgroundColor: isDark ? '#AB2328' : 'white',
             }}>
-                
+
+            <span
+                style={{
+                    fontSize: '16px',
+                    color: isDark ? '#fff' : '#000',
+                    fontWeight: 'bold',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    width: '100%',
+                    display: 'block'
+                }}
+                >
+                {eventInfo.event.title}
+            </span>
+            <b
+            style={{
+                fontSize: '16px',
+                color: isDark ? '#fff' : '#000',
+                fontWeight: 'normal',
+                textAlign: 'left',
+                width: '100%',
+                display: 'block'
+            }}
+            >
+            {eventInfo.timeText}
+            </b>
+
+
             {showFlyers && image && (
                 <img
                     src={image}
                     alt={eventInfo.event.title}
                     style={{
                         objectFit: 'cover',
-                        marginBottom: '5px',
+                        marginTop: '5px',
                         display: 'block',
                         marginLeft: 'auto',
                         marginRight: 'auto'
                     }}
                 />
             )}
-            <span style={{ fontSize: '16px' }}>{eventInfo.event.title}</span>
-            <b style={{ fontSize: '16px' }}>{eventInfo.timeText}</b>
         </div>
         );
     };
@@ -171,7 +198,7 @@ const CalendarPage = () => {
     }, [currentStartDate]);
 
     return (
-        <div className={`min-h-screen flex flex-col ${isDark ? 'bg-gray-900 text-white' : 'bg-[#F4F1EA]'}`}>
+        <div className={`min-h-screen flex flex-col ${isDark ? 'bg-[#383838]' : 'bg-[#F4F1EA]'}`}>
             <NavBar />
             <div className="flex-1 pt-20 px-2 md:px-4">
 
@@ -202,12 +229,17 @@ const CalendarPage = () => {
                         </div>
                     </div>
 
-                    <div ref={calendarRef} className={`w-full p-4 mb-[20px] border-[5px] border-[#AB2328]  ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
-                        <div className="calendar-container" style={{ maxWidth: '1900px', margin: '0 auto' }}>
+                    <div ref={calendarRef} className={`w-full p-4 mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'}`}>
+                        <div className="calendar-container pt-[15px] pb-[20px]" style={{ maxWidth: '1800px', margin: '0 auto' }}>
                             <FullCalendar
                                 timeZone='America/New_York'
                                 plugins={[ dayGridPlugin, interactionPlugin ]}
                                 initialView="dayGridWeek"
+                                eventTimeFormat={{
+                                    hour: 'numeric',
+                                    minute: '2-digit',
+                                    meridiem: 'short'
+                                }}
                                 headerToolbar={{
                                     left: 'prev,next today',
                                     center: 'title',
