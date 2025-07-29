@@ -20,7 +20,7 @@
 .myMasonryGrid {
     display: flex;
     margin-left: -15px;
-    width: auto;
+    width: 80%;
 }
 
 .myMasonryGridColumn {
