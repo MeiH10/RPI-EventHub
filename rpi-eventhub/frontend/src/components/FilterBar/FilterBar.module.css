@@ -8,8 +8,8 @@
   --checkbox-border-color: rgba(119, 119, 119, 1);
   --checkbox-checked-bg-color: #fff;
   --checkbox-checked-color: #000;
-  --clear-button-bg-color: rgba(0, 0, 0, 0.8);
-  --clear-button-text-color: #fff;
+  --clear-button-bg-color: white;
+  --clear-button-text-color: black;
   --clear-button-hover-bg-color: #555;
   --separator-bg-color: #ffffff;
   --view-toggle-bg-color: #f0f0f0;
@@ -30,8 +30,8 @@
   --checkbox-border-color: rgba(119, 119, 119, 1);
   --checkbox-checked-bg-color: #444;
   --checkbox-checked-color: #fff;
-  --clear-button-bg-color: #fff;
-  --clear-button-text-color: #000;
+  --clear-button-bg-color: rgba(171, 35, 40, 1);
+  --clear-button-text-color: black;
   --clear-button-hover-bg-color: #aaa;
   --separator-bg-color: rgba(39, 39, 39, 1);
   --view-toggle-bg-color: rgba(171, 35, 40, 1);
@@ -271,8 +271,8 @@ label {
 .clearButton {
   margin-top: 20px;
   padding: 10px 20px; 
-  background-color: white; 
-  color: black; 
+  background-color: var(--clear-button-bg-color); 
+  color: var(--clear-button-text-color); 
   border: none; 
   border-radius: 4px; 
   cursor: pointer; 
@@ -286,7 +286,7 @@ label {
 .drawerToggleBtn {
   display: none;
   padding: 15px;
-  background-color: var(--clear-button-bg-color); 
+  background-color: var(-button-bg-color); 
   color: var(--clear-button-text-color); 
   border: none; 
   cursor: pointer;

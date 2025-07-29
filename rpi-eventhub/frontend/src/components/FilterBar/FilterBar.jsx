@@ -93,10 +93,10 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                         <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 bg-white rounded-sm flex justify-center items-center' onClick={onDownloadICS}>
                             <p className='text-md text-black m-0'>Download ICS</p>
                         </div>
-                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-red-500 rounded-sm flex justify-center items-center'
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-[rgba(214,0,28,1)] dark:bg-[rgba(171,35,40,1)] rounded-sm flex justify-center items-center'
                             onClick={onUnselectAll}
                         >
-                            <p className='text-md m-0'>Unselect All</p>
+                            <p className='text-md text-white m-0'>Unselect All</p>
                         </div>
                     </div>
                 )}
