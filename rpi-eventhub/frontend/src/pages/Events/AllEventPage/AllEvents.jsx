@@ -270,7 +270,7 @@ function AllEvents() {
     };
 
     return (
-        <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
+        <div className={`${styles.allEvents} ${isDark ? 'bg-[rgba(56,56,56,255)] text-white' : 'bg-[rgba(245,241,234,255)] text-black'}`} data-theme={theme}>
             <Navbar />
             <ToastContainer 
                 position="top-right"
