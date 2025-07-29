@@ -147,7 +147,7 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
         <p>{event.description}</p>
         <p><strong>Date & Time:</strong> {`${eventTime} on ${eventDate}`}</p>
         <p><strong>Location:</strong> {event.location || "Location not specified"}</p>
-        <div className={styles.tags}>
+        <div className={styles['tag-container']}>
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
               <span 
