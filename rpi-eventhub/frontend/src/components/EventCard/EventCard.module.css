@@ -41,6 +41,9 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     position: relative; 
     cursor: pointer; 
+    width: 370px;
+    min-height: 200px; 
+    box-sizing: border-box;
   }
   
   .eventWrapper:hover {
@@ -52,6 +55,7 @@
     position: relative;
     width: 100%;
     height: auto;
+    flex-shrink: 0;
   }
   
   .imageContainer img {
@@ -92,6 +96,12 @@
   .eventDetails {
     padding: 16px;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .eventDetails h2 {
