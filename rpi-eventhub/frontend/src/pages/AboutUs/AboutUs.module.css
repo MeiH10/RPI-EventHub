@@ -178,3 +178,14 @@ a:active {
         width: 33.33%;
     }
 }
+
+a {
+  color: inherit !important;
+  text-decoration: underline;
+}
+a:visited {
+  color: inherit !important;
+}
+a:active {
+  color: inherit !important;
+}
