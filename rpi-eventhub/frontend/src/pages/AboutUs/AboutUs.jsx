@@ -112,7 +112,13 @@ function AboutUs() {
             ) : (
               contributors.map(contributor => (
                 <div className="w-1/4 flex flex-col items-center p-5 m-auto" key={contributor.login}>
-                  <img src={contributor.avatar_url} className="rounded-full w-[200px] h-[200px] object-cover" alt="Profile" />
+                  <div className="w-[80%] h-80%] rounded-full overflow-hidden flex items-center justify-center bg-gray-200">
+                    <img
+                      src={contributor.avatar_url}
+                      className="w-full h-full object-cover"
+                      alt="Profile"
+                    />
+                  </div>
                   <h6 className="mt-[10px]">{contributor.login}</h6>
                 </div>
               ))
