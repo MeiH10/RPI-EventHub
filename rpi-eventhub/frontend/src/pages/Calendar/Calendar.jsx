@@ -109,9 +109,10 @@ const CalendarPage = () => {
                 textAlign: 'left',
                 border: '2px solid black',
                 background: isDark ? '#222' : '#fff',
-                boxShadow: '0 0 8px rgba(0,0,0,0.30)',
-                padding: '5px',
-                marginBottom: '0px',
+                paddingLeft: '4px',
+                paddingRight: '4px',
+                marginBottom: '1px',
+                marginTop: '1px',
                 backgroundColor: isDark ? '#AB2328' : 'white',
             }}>
 
