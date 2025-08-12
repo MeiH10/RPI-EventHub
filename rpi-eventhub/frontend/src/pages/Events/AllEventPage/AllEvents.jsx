@@ -260,9 +260,9 @@ function AllEvents() {
         700: 1
     };
 
-    const changeView = () => {
-        setIsListView(!isListView);
-    }
+    // const changeView = () => {
+    //     setIsListView(isListView);
+    // }
 
     const handleEditEvent = async (eventId) => {
         // Implement your edit logic here
@@ -270,7 +270,7 @@ function AllEvents() {
     };
 
     return (
-        <div className={`${styles.allEvents} ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
+        <div className={`${styles.allEvents} ${isDark ? 'bg-[rgba(56,56,56,255)] text-white' : 'bg-[rgba(245,241,234,255)] text-black'}`} data-theme={theme}>
             <Navbar />
             <ToastContainer 
                 position="top-right"
@@ -297,7 +297,9 @@ function AllEvents() {
                         setSortMethod={setSortMethod}
                         onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
-                        changeView={changeView}
+                        //changeView={changeView}
+                        isListView={isListView}
+                        setIsListView={setIsListView}
                         showICS={selectedEventIds.length > 0}
                         onUnselectAll={() => setSelectedEventIds([])}
                         onDownloadICS={generateICS}

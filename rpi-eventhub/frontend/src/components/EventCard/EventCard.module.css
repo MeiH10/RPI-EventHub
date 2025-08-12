@@ -1,26 +1,28 @@
 :root {
     --background-color: #ffffff;
+    --border-color: rgba(171, 35, 40, 1);
     --box-shadow-color: rgba(0, 0, 0, 0.1);
     --hover-box-shadow-color: rgba(0, 0, 0, 0.2);
     --overlay-bg-color: rgba(0, 0, 0, 0.5);
     --text-color: #333;
     --muted-text-color: #555;
-    --tag-bg-color: #f1f1f1;
-    --tag-text-color: #333;
+    --tag-bg-color: rgba(214, 0, 28, 1);
+    --tag-text-color: rgba(255, 255, 255, 1);
     --delete-button-bg-color: red;
     --delete-button-hover-bg-color: darkred;
     --delete-button-text-color: white;
   }
   
   [data-theme='dark'] {
-    --background-color: #777;
-    --box-shadow-color: rgba(47, 46, 46, 0.3);
+    --background-color: rgba(171, 35, 40, 1);
+    --border-color: rgba(39, 39, 39, 1);
+    --box-shadow-color: rgba(39, 39, 39, 1);
     --hover-box-shadow-color: rgba(23, 22, 22, 0.5);
-    --overlay-bg-color: rgba(255, 255, 255, 0.3);
+    --overlay-bg-color: rgba(39, 39, 39, 1);
     --text-color: #ffffff;
-    --muted-text-color: #aaaaaa;
-    --tag-bg-color: #888;
-    --tag-text-color: #ffffff;
+    --muted-text-color: #ffffff;
+    --tag-bg-color: rgba(56, 56, 56, 1);
+    --tag-text-color: rgba(214, 0, 28, 1);
     --delete-button-bg-color: darkred;
     --delete-button-hover-bg-color: red;
     --delete-button-text-color: white;
@@ -28,6 +30,7 @@
   
   .eventWrapper {
     background: var(--background-color);
+    border: 2px solid var(--border-color);
     border-radius: 6px;
     box-shadow: 0 4px 12px var(--box-shadow-color);
     overflow: hidden;
@@ -38,6 +41,9 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     position: relative; 
     cursor: pointer; 
+    width: 370px;
+    min-height: 200px; 
+    box-sizing: border-box;
   }
   
   .eventWrapper:hover {
@@ -49,6 +55,7 @@
     position: relative;
     width: 100%;
     height: auto;
+    flex-shrink: 0;
   }
   
   .imageContainer img {
@@ -89,6 +96,12 @@
   .eventDetails {
     padding: 16px;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .eventDetails h2 {
@@ -105,6 +118,7 @@
 .tag-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;  
   margin-top: 10px;
 }
@@ -114,9 +128,9 @@
   font-size: 13px;
   font-weight: 600;
   padding: 6px 14px;  
-  border-radius: 16px; 
-  background-color: #f3f4f6;
-  color: #333;
+  border-radius: 6px; 
+  background-color: var(--tag-bg-color);
+  color: var(--tag-text-color);
   text-transform: capitalize;
   transition: all 0.3s ease;
   white-space: nowrap;
