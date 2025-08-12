@@ -354,5 +354,5 @@ const verifyEmailExists = async (email) => {
     };
 }
 
-
+ 
 module.exports = { signUpUser , verifyEmail, loginUser, getAllUsernames, resetPassword, verifyEmailExists, sendCode};
