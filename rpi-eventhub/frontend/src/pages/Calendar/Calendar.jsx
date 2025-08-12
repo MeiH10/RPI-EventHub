@@ -150,10 +150,10 @@ const CalendarPage = () => {
                     alt={eventInfo.event.title}
                     style={{
                         objectFit: 'cover',
-                        marginTop: '5px',
                         display: 'block',
                         marginLeft: 'auto',
-                        marginRight: 'auto'
+                        marginRight: 'auto',
+                        marginBottom: '5px'
                     }}
                 />
             )}
