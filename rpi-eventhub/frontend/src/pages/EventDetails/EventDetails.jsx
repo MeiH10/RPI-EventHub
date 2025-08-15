@@ -343,7 +343,7 @@ const EventDetails = () => {
     };
 
     return (
-        <div className='outterContainer'>
+        <div className='outterContainer' style={{ backgroundColor: '#F4F1EA', fontFamily: 'Afacad, sans-serif' }}>
             <Navbar />
             <div className="eventsDisplayContainer containerFluid container-fluid">
 
