@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import styles from "./Carousel.module.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import { Skeleton } from "@mui/material";
@@ -9,20 +8,18 @@ import { DateTime } from "luxon";
 const placeholderImage =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
 
-const timeZone = 'America/New_York';
+const timeZone = "America/New_York";
 
 const formatDateAsEST = (utcDateString) => {
   if (!utcDateString) return "Date not specified";
-
-  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
-  return dateTime.toFormat('MMMM dd, yyyy');
+  const dateTime = DateTime.fromISO(utcDateString, { zone: "utc" }).setZone(timeZone);
+  return dateTime.toFormat("MMMM dd, yyyy");
 };
 
 const formatTimeAsEST = (utcDateString) => {
-  if (!utcDateString) return 'Time not specified';
-
-  const dateTime = DateTime.fromISO(utcDateString, { zone: 'utc' }).setZone(timeZone);
-  return dateTime.toFormat('h:mm a');
+  if (!utcDateString) return "Time not specified";
+  const dateTime = DateTime.fromISO(utcDateString, { zone: "utc" }).setZone(timeZone);
+  return dateTime.toFormat("h:mm a");
 };
 
 const ImageCarousel = () => {
@@ -35,7 +32,6 @@ const ImageCarousel = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${config.apiUrl}/events`);
-  
         const sortedEvents = response.data
           .map((event) => ({
             src: event.image || placeholderImage,
@@ -48,32 +44,25 @@ const ImageCarousel = () => {
             originalDate: event.startDateTime || event.date,
             likes: event.likes || 0,
           }))
-
-          .filter( a => new Date(a.originalDate) - new Date > 0)
+          .filter((a) => new Date(a.originalDate) - new Date() > 0)
           .sort((a, b) => b.likes - a.likes)
-
           .slice(0, 5);
-  
+
         setEvents(sortedEvents);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch events:", error);
       }
     };
-  
     fetchEvents();
   }, []);
-  
+
   const goToNext = useCallback(() => {
-    setActiveIndex((current) =>
-      current === events.length - 1 ? 0 : current + 1
-    );
+    setActiveIndex((current) => (current === events.length - 1 ? 0 : current + 1));
   }, [events.length]);
 
   const goToPrev = useCallback(() => {
-    setActiveIndex((current) =>
-      current === 0 ? events.length - 1 : current - 1
-    );
+    setActiveIndex((current) => (current === 0 ? events.length - 1 : current - 1));
   }, [events.length]);
 
   const resetTimer = useCallback(() => {
@@ -95,18 +84,18 @@ const ImageCarousel = () => {
   return (
     <div
       className="carousel"
-      onMouseEnter={pauseAutoplay} // pause carousel when on hover
+      onMouseEnter={pauseAutoplay}
       onMouseLeave={resetTimer}
-      style={{ 
-        backgroundColor: '#AB2328', 
-        width: '600px',       
-        height: '700px', 
-        maxWidth: '90vw',  
-        maxHeight: '90vh', 
+      style={{
+        backgroundColor: "#AB2328",
+        width: "600px",
+        height: "700px",
+        maxWidth: "90vw",
+        maxHeight: "90vh",
       }}
     >
-      <div className={styles.carousel}>
-        <div className={styles.mainImage}>
+      <div className="relative w-full flex flex-col items-center">
+        <div className="relative flex flex-col justify-center items-center w-4/5 max-w-[500px] h-[600px] mx-auto">
           {isLoading ? (
             <div>
               <Skeleton variant="rectangular" width={420} height={580} />
@@ -115,8 +104,8 @@ const ImageCarousel = () => {
             </div>
           ) : (
             events.length > 0 && (
-              <div className={styles.carouselCard}>
-                <div className={styles.captionAbove}>
+              <div className="flex flex-col justify-center items-center w-full h-full">
+                <div className="w-full max-w-[500px] text-white text-[1.5em] text-center bg-black/50 p-2 px-5 mb-2 rounded-lg">
                   {events[activeIndex].caption}
                 </div>
                 <button
@@ -124,14 +113,15 @@ const ImageCarousel = () => {
                     goToPrev();
                     resetTimer();
                   }}
-                  className={styles.prevButton}
+                  className="absolute top-1/2 -left-14 transform -translate-y-1/2 cursor-pointer z-10 p-2 text-[50px] text-red-600 bg-transparent border-none hover:scale-110 transition-transform duration-200"
                 >
                   <i className="bi bi-chevron-left"></i>
                 </button>
-                <div className={styles.imgContainer}>
+                <div className="w-full h-full flex justify-center items-center overflow-hidden bg-black/50">
                   <img
                     src={events[activeIndex].src}
                     alt={`Slide ${activeIndex}`}
+                    className="max-w-full max-h-full object-cover"
                   />
                 </div>
                 <button
@@ -139,11 +129,11 @@ const ImageCarousel = () => {
                     goToNext();
                     resetTimer();
                   }}
-                  className={styles.nextButton}
+                  className="absolute top-1/2 -right-14 transform -translate-y-1/2 cursor-pointer z-10 p-2 text-[50px] text-red-600 bg-transparent border-none hover:scale-110 transition-transform duration-200"
                 >
                   <i className="bi bi-chevron-right"></i>
                 </button>
-                <div className={styles.captionBelow}>
+                <div className="w-full max-w-[500px] text-white text-[1em] text-center bg-black/50 p-2 px-5 mt-2 rounded-lg font-sans">
                   {`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
                 </div>
               </div>
