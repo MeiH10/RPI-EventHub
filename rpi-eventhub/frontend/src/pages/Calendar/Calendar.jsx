@@ -11,6 +11,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import axios from "axios";
 import { DateTime } from 'luxon';
 import config from "../../config";
+import listPlugin from '@fullcalendar/list';
 
 const timeZone = 'America/New_York';
 
@@ -22,6 +23,21 @@ const CalendarPage = () => {
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const calendarRef = useRef(null);
+
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            // Sets isMobile to true if screen width is less than 768px
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        // Add listener for screen resize
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup listener on component unmount
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const getWeekRange = (startDate) => {
         const today = startDate || new Date();
@@ -96,7 +112,7 @@ const CalendarPage = () => {
         const { image } = eventInfo.event.extendedProps;
         return (
             <div style={{
-                width: '244px',
+                width: '100%',
                 display: 'flex',    
                 flexDirection: 'column',
                 alignItems: 'flex-start',
@@ -115,53 +131,53 @@ const CalendarPage = () => {
                 marginTop: '1px',
                 backgroundColor: isDark ? '#AB2328' : 'white',
             }}>
-
-            <span
-                style={{
-                    fontSize: '16px',
-                    color: isDark ? '#fff' : '#000',
-                    fontWeight: 'bold',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    width: '100%',
-                    display: 'block'
-                }}
-                >
-                {eventInfo.event.title}
-            </span>
-            <b
-            style={{
-                fontSize: '16px',
-                color: isDark ? '#fff' : '#000',
-                fontWeight: 'normal',
-                textAlign: 'left',
-                width: '100%',
-                display: 'block'
-            }}
-            >
-            {eventInfo.timeText}
-            </b>
-
-
-            {showFlyers && image && (
-                <img
-                    src={image}
-                    alt={eventInfo.event.title}
+                <span
                     style={{
-                        objectFit: 'cover',
-                        marginTop: '5px',
-                        display: 'block',
-                        marginLeft: 'auto',
-                        marginRight: 'auto'
+                        fontSize: '16px',
+                        color: isDark ? '#fff' : '#000',
+                        fontWeight: 'bold',
+                        whiteSpace: 'normal', 
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        width: '100%',
+                        display: 'block'
                     }}
-                />
-            )}
-        </div>
+                >
+                    {eventInfo.event.title}
+                </span>
+                <b
+                    style={{
+                        fontSize: '16px',
+                        color: isDark ? '#fff' : '#000',
+                        fontWeight: 'normal',
+                        textAlign: 'left',
+                        width: '100%',
+                        display: 'block'
+                    }}
+                >
+                    {eventInfo.timeText}
+                </b>
+                {showFlyers && image && (
+                    <img
+                        src={image}
+                        alt={eventInfo.event.title}
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                            objectFit: 'cover',
+                            marginTop: '5px',
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
+                        }}
+                    />
+                )}
+            </div>
         );
     };
 
     const loadAllImages = () => {
+        if (!calendarRef.current) return Promise.resolve();
         const images = calendarRef.current.querySelectorAll("img");
         return Promise.all(
             Array.from(images).map((img) => {
@@ -202,9 +218,8 @@ const CalendarPage = () => {
         <div className={`min-h-screen flex flex-col ${isDark ? 'bg-[#383838]' : 'bg-[#F4F1EA]'}`}>
             <NavBar />
             <div className="flex-1 pt-20 px-2 md:px-4">
-
                 <div className="max-w-[1900px] mx-auto">
-                    <h1 className="text-[100px] font-bold text-center mt-[20px] tracking-wide font-sans text-[#D6001C]">Calendar</h1>
+                    <h1 className="text-6xl md:text-[100px] font-bold text-center mt-[20px] tracking-wide font-sans text-[#D6001C]">Calendar</h1>
                     <div className="text-center mb-2 space-y-2">
                         <div className="flex items-center justify-between w-full">
                             <label className="inline-flex items-center cursor-pointer max-w-[130px]">
@@ -226,7 +241,6 @@ const CalendarPage = () => {
                             >
                                 Save Calendar as Image
                             </button>
-
                         </div>
                     </div>
 
@@ -234,23 +248,30 @@ const CalendarPage = () => {
                         <div className="calendar-container pt-[15px] pb-[20px]" style={{ maxWidth: '1800px', margin: '0 auto' }}>
                             <FullCalendar
                                 timeZone='America/New_York'
-                                plugins={[ dayGridPlugin, interactionPlugin ]}
-                                initialView="dayGridWeek"
-                                eventTimeFormat={{
-                                    hour: 'numeric',
-                                    minute: '2-digit',
-                                    meridiem: 'short'
-                                }}
-                                headerToolbar={{
+                                plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
+
+                                // DYNAMIC VIEW: Changes based on the isMobile state
+                                initialView={isMobile ? 'listWeek' : 'dayGridWeek'}
+
+                                // DYNAMIC HEADER: Uses a different layout based on the isMobile state
+                                headerToolbar={isMobile ? {
+                                    // Mobile Header Layout
+                                    left: 'title',
+                                    center: '',
+                                    right: 'prev,next today'
+                                } : {
+                                    // Desktop Header Layout
                                     left: 'prev,next today',
                                     center: 'title',
-                                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                                    right: 'dayGridMonth,dayGridWeek,listWeek'
                                 }}
-                                dayHeaderFormat={{ weekday: 'long', month: 'numeric', day: 'numeric' }}
+                                
                                 events={events}
                                 eventClick={(info) => {
                                     info.jsEvent.preventDefault();
-                                    window.location.href = info.event.url;
+                                    if (info.event.url) {
+                                        window.location.href = info.event.url;
+                                    }
                                 }}
                                 height="auto"
                                 contentHeight="auto"
