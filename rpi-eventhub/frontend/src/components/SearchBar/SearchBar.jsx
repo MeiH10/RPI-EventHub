@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchBarCSS from './SearchBar.module.css';
 import { useEvents } from '../../context/EventsContext';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
-
 import cosineSimilarity from 'cosine-similarity';
+
 const SearchBar = () => {
   const navigate = useNavigate();
   const { events, fetchEvents } = useEvents();
@@ -35,7 +34,7 @@ const SearchBar = () => {
         });
         return vector;
       };
-      const vectorA = textToVector(searchWords.join(' '));
+
       const eventWordsArray = eventText.split(' ');
       let maxSimilarity = 0;
       searchWords.forEach(searchWord => {
@@ -43,18 +42,16 @@ const SearchBar = () => {
         eventWordsArray.forEach(word => {
           const vectorB = textToVector(word);
           const similarity = cosineSimilarity(vectorSearchWord, vectorB);
-          
           if (similarity > maxSimilarity) {
-            
             maxSimilarity = similarity;
           }
         });
       });
+
       return maxSimilarity > 0.78 && eventDate >= currentDate;
     });
 
-    const sorted = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));;
-
+    const sorted = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
     navigate('/search', { state: { results: sorted } });
   };
 
@@ -69,17 +66,27 @@ const SearchBar = () => {
   };
 
   return (
-    <div className={`${SearchBarCSS.searchBarContainer} flex flex-col md:flex-row w-full min-w-40 sm:min-w-96 justify-center items-center gap-2 p-2`}>
+    <div
+      className={`
+        flex flex-col md:flex-row items-center gap-2 w-full max-w-[600px] mx-auto p-2
+      `}
+    >
       <input
         type="text"
-        className={`${SearchBarCSS.searchInput} bg-white rounded shadow w-full p-2`}
+        className={`
+          flex-1 h-10 px-4 border border-[#e5f0e2] rounded-md bg-white text-[#2c1a1c]
+          font-[Afacad] 
+        `}
         placeholder="Search for an event!"
         onChange={handleSearchInputChange}
         onKeyDown={handleKeyPress}
-        style={{ color: isDark ? 'black' : 'inherit' }}
+        style={{ color: isDark ? 'black' : undefined }}
       />
       <button
-        className={`${SearchBarCSS.searchButton} bg-red-500 text-white font-bold py-2 px-4 rounded shadow-sm whitespace-nowrap`}
+        className={`
+          px-4 py-2 bg-[#AB2328] text-white font-semibold rounded-md border-0 cursor-pointer 
+          transition-colors duration-200 font-[Afacad] hover:bg-red-600
+        `}
         onClick={handleSearchClick}
       >
         Search
