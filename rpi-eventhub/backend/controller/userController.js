@@ -10,6 +10,14 @@ const {
 
 const User = require('../models/User');
 
+//enums
+const AccessLevel = {
+    BANNED: 0,
+    UNVERIFIED: 1,
+    VERIFIED: 2,
+    OFFICER: 3,
+    ADMIN: 4
+}//created Enums for user roles but not sure what BANNED,OFFICER, and ADMIN will be used for in the future. so will leave it here for now.
 
 const BANNED = 0;
 const UNVERIFIED = 1;
@@ -17,6 +25,14 @@ const VERIFIED = 2;
 const OFFICER = 3;
 const ADMIN = 4;
 
+/**
+ * This function is serving to reset the user password
+ * @param req email, password, username
+ * @param res
+ * @returns {Promise<void>} calls signUpUser service function and returns the result
+ * if there is an error, it will return a 500 status code with a message "
+ * Errors: Non RPI email, username or email already exist."
+ */
 const signUp = async (req, res) => {
     try {
         const { username, email, password } = req.body;
