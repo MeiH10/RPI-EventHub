@@ -111,14 +111,14 @@ const CalendarPage = () => {
                 background: isDark ? '#222' : '#fff',
                 paddingLeft: '4px',
                 paddingRight: '4px',
-                marginBottom: '1px',
-                marginTop: '1px',
+                marginBottom: '4px',
+                marginTop: '4px',
                 backgroundColor: isDark ? '#AB2328' : 'white',
             }}>
 
             <span
                 style={{
-                    fontSize: '16px',
+                    fontSize: '120%',
                     color: isDark ? '#fff' : '#000',
                     fontWeight: 'bold',
                     whiteSpace: 'nowrap',
@@ -132,7 +132,7 @@ const CalendarPage = () => {
             </span>
             <b
             style={{
-                fontSize: '16px',
+                fontSize: '120%',
                 color: isDark ? '#fff' : '#000',
                 fontWeight: 'normal',
                 textAlign: 'left',
@@ -204,7 +204,7 @@ const CalendarPage = () => {
             <div className="flex-1 pt-20 px-2 md:px-4">
 
                 <div className="max-w-[1900px] mx-auto">
-                    <h1 className="text-[100px] font-bold text-center mt-[20px] tracking-wide font-sans text-[#D6001C]">Calendar</h1>
+                    <h1 className="text-[75px] md:text-[85px] lg:text-[100px] font-bold text-center mt-[-25px] md:mt-[20px] lg:mt-[30px] tracking-wide font-sans text-[#D6001C]">Calendar</h1>
                     <div className="text-center mb-2 space-y-2">
                         <div className="flex items-center justify-between w-full">
                             <label className="inline-flex items-center cursor-pointer max-w-[130px]">
@@ -231,7 +231,8 @@ const CalendarPage = () => {
                     </div>
 
                     <div ref={calendarRef} className={`w-full p-4 mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'}`}>
-                        <div className="calendar-container pt-[15px] pb-[20px]" style={{ maxWidth: '1800px', margin: '0 auto' }}>
+                        <div className="overflow-x-auto w-full pt-[15px] pb-[20px]">
+                            <div className="min-w-[900px]">
                             <FullCalendar
                                 timeZone='America/New_York'
                                 plugins={[ dayGridPlugin, interactionPlugin ]}
@@ -246,7 +247,7 @@ const CalendarPage = () => {
                                     center: 'title',
                                     right: 'dayGridMonth,dayGridWeek,dayGridDay'
                                 }}
-                                dayHeaderFormat={{ weekday: 'long', month: 'numeric', day: 'numeric' }}
+                                dayHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric' }}
                                 events={events}
                                 eventClick={(info) => {
                                     info.jsEvent.preventDefault();
@@ -257,6 +258,7 @@ const CalendarPage = () => {
                                 aspectRatio={2.2}
                                 eventContent={renderEventContent}
                             />
+                            </div>
                         </div>
                     </div>
                 </div>
