@@ -1,3 +1,5 @@
+// Object containing tags and words that are commonly associated with those tags,
+// used as an easy way to automatically add tags to event posts.
 const json = {
     fun: ["trivia", "games", "karaoke", "arcade", "party", "parties", "fun", "enjoyment", "entertainment"],
     games: ["chess", "uno", "monopoly", "scrabble", "catan", "risk", "pandemic", "clue", "codenames", "ticket to ride", "pictionary", "carcassonne"],
@@ -24,6 +26,14 @@ const json = {
     coding: ["coding", "programming", "software development", "web development", "app development", "javascript", "python", "java", "c++", "html", "css", "react", "node.js", "full-stack", "backend", "frontend", "development"]
 }
 
+/**
+ * This function lowercases all the words in a post, lowercases them, and then
+ * returns a tag.
+ * 
+ * @param {String} title The title string of a post
+ * @param {String} description The description content of a post
+ * @returns {Set} The set of tags that can be associated with this title and description
+ */
 function giveTags(title, description) {
     var tags = [];
     
@@ -51,7 +61,7 @@ function giveTags(title, description) {
     
     return new Set(tags);
   }
-  
+
 module.exports = {
     giveTags,
 };

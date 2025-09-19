@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Event = require('../models/Event');
 require('dotenv').config({ path: '../.env' });
 
+/**
+ * A utility used to delete all events posted by a single user.
+ * @param {string} username the username of the user to delete from. 
+ * If the function errors, the console prints out an error.
+ */
 const deleteEventsByUser = async (username) => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, { 
