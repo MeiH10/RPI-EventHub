@@ -238,27 +238,32 @@ const CalendarPage = () => {
 
                     <div ref={calendarRef} className={`w-full p-4 mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'} ${isSmall ? 'overflow-x-auto' : ''}`}>
                         <div className="w-full pt-[15px] pb-[20px]">
-                            <div className={isSmall ? '' : 'min-w-[900px]'}>
+                            <div className={isSmall ? '' : 'min-w-[768px]'}>
                             <FullCalendar
                                 timeZone='America/New_York'
                                 plugins={[ dayGridPlugin, interactionPlugin ]}
 
                                 views={{
                                     threeDay: {
-                                    type: 'dayGrid',
-                                    duration: { days: 3 },
-                                    buttonText: 'day'
+                                        type: 'dayGrid',
+                                        duration: { days: 3 },
+                                        buttonText: 'Days'
                                     }
                                 }}
 
                                 initialView={isSmall ? 'threeDay' : 'dayGridWeek'}
+                                buttonText={{ month: 'Months', week: 'Weeks' }}
 
                                 eventTimeFormat={{
                                     hour: 'numeric',
                                     minute: '2-digit',
                                     meridiem: 'short'
                                 }}
-                                headerToolbar={{
+                                headerToolbar={isSmall ? {
+                                    left: 'prev,next',
+                                    center: 'title',
+                                    right: 'today'
+                                } : {
                                     left: 'prev,next today',
                                     center: 'title',
                                     right: 'dayGridMonth,dayGridWeek,threeDay'
