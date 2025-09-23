@@ -9,7 +9,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const { verifyToken } = require('./controller/userAuthController');
 const { upload } = require('./useful_script/uploadUtils');
-const { authenticate, authenticateAndVerify, authorizeAdmin } = require('./useful_script/userAuthentication');
+const { authenticate, authenticateAndVerify, authorizeOfficer, authorizeAdmin } = require('./useful_script/userAuthentication');
 //#endregion
 
 
@@ -62,14 +62,14 @@ app.use(express.urlencoded({ extended: true }));
 // ---------------------------- ROUTES ----------------------------
 //#region EVENT ROUTES
 app.get('/rpi-events', getRPIEvents);
-app.post('/events', upload, authenticateAndVerify, createNewEvent);
+app.post('/events', upload, authenticate, authorizeOfficer, createNewEvent);
 app.get('/events', getAllEvents);
-app.delete('/events/:id', authenticateAndVerify, removeEvent);
+app.delete('/events/:id', authenticate, authorizeOfficer, removeEvent);
 app.get('/proxy/image/:eventId', getProxyImage);
 app.get('/events/:id/like', fetchEventLikes);
 app.get('/events/like/status', authenticate, fetchUserLikedEvents);
 app.post('/events/:id/like', authenticateAndVerify, handleEventLike);
-app.post('/events-update/:id', upload, authenticateAndVerify, updateEvents);
+app.post('/events-update/:id', upload, authenticate, authorizeOfficer, updateEvents);
 //#endregion
 
 //#region LOG ROUTES
