@@ -22,6 +22,12 @@ const CalendarPage = () => {
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const calendarRef = useRef(null);
+    const [isSmall, setIsSmall] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+    useEffect(() => {
+        const onResize = () => setIsSmall(window.innerWidth < 768);
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, []);
 
     const getWeekRange = (startDate) => {
         const today = startDate || new Date();
@@ -96,7 +102,7 @@ const CalendarPage = () => {
         const { image } = eventInfo.event.extendedProps;
         return (
             <div style={{
-                width: '244px',
+                width: isSmall ? '100%' : '244px',
                 display: 'flex',    
                 flexDirection: 'column',
                 alignItems: 'flex-start',
@@ -230,13 +236,23 @@ const CalendarPage = () => {
                         </div>
                     </div>
 
-                    <div ref={calendarRef} className={`w-full p-4 mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'}`}>
-                        <div className="overflow-x-auto w-full pt-[15px] pb-[20px]">
-                            <div className="min-w-[900px]">
+                    <div ref={calendarRef} className={`w-full p-4 mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'} ${isSmall ? 'overflow-x-auto' : ''}`}>
+                        <div className="w-full pt-[15px] pb-[20px]">
+                            <div className={isSmall ? '' : 'min-w-[900px]'}>
                             <FullCalendar
                                 timeZone='America/New_York'
                                 plugins={[ dayGridPlugin, interactionPlugin ]}
-                                initialView="dayGridWeek"
+
+                                views={{
+                                    threeDay: {
+                                    type: 'dayGrid',
+                                    duration: { days: 3 },
+                                    buttonText: 'day'
+                                    }
+                                }}
+
+                                initialView={isSmall ? 'threeDay' : 'dayGridWeek'}
+
                                 eventTimeFormat={{
                                     hour: 'numeric',
                                     minute: '2-digit',
@@ -245,7 +261,7 @@ const CalendarPage = () => {
                                 headerToolbar={{
                                     left: 'prev,next today',
                                     center: 'title',
-                                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                                    right: 'dayGridMonth,dayGridWeek,threeDay'
                                 }}
                                 dayHeaderFormat={{ weekday: 'short', month: 'numeric', day: 'numeric' }}
                                 events={events}
