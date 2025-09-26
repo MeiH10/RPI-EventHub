@@ -189,24 +189,11 @@ footer {
 
 /* Make scrollable calendar parts transparent to avoid white strip artifacts */
 /* The white strip in DevTools appeared to come from the .fc-scroller / table inside the scrollgrid. */
-.fc .fc-scroller,
-.fc .fc-scrollgrid,
-.fc .fc-scrollgrid .fc-scrollgrid-section,
-.fc .fc-scrollgrid table,
-.fc .fc-scrollgrid td,
-.fc .fc-scrollgrid th,
-.fc .fc-daygrid,
-.fc .fc-daygrid-body,
-.fc .fc-daygrid-day,
-.fc .fc-daygrid-day-frame {
+
+.fc .fc-scrollgrid th
+{
   background: transparent !important;
   background-color: transparent !important;
-}
-
-/* remove any stray box backgrounds on scroller harness or inner wrappers */
-.fc .fc-scroller-harness,
-.fc .fc-scroller-harness > div {
-  background: transparent !important;
 }
 
 

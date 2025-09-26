@@ -22,6 +22,7 @@ const CalendarPage = () => {
     const { theme } = useContext(ThemeContext);
     const { isDark } = useColorScheme();
     const calendarRef = useRef(null);
+    const fcRef = useRef(null);
     const [isSmall, setIsSmall] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
     useEffect(() => {
         const onResize = () => setIsSmall(window.innerWidth < 768);
@@ -236,10 +237,12 @@ const CalendarPage = () => {
                         </div>
                     </div>
 
+
                     <div ref={calendarRef} className={`w-full p-4 mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'} ${isSmall ? 'overflow-x-auto' : ''}`}>
                         <div className="w-full pt-[15px] pb-[20px]">
                             <div className={isSmall ? '' : 'min-w-[768px]'}>
                             <FullCalendar
+                                ref={fcRef}
                                 timeZone='America/New_York'
                                 plugins={[ dayGridPlugin, interactionPlugin ]}
 
@@ -252,7 +255,22 @@ const CalendarPage = () => {
                                 }}
 
                                 initialView={isSmall ? 'threeDay' : 'dayGridWeek'}
-                                buttonText={{ month: 'Months', week: 'Weeks' }}
+                                buttonText={{ month: 'Months', week: 'Weeks', day: 'Day', today: 'Today' }}
+                                customButtons={{
+                                    dayToday: {
+                                        text: 'Today',
+                                        click: () => {
+                                            try {
+                                                if (fcRef && fcRef.current && typeof fcRef.current.getApi === 'function') {
+                                                    const api = fcRef.current.getApi();
+                                                    api.today();
+                                                    api.changeView('dayGridDay');
+                                                }
+                                            } catch (e) {
+                                            }
+                                        }
+                                    }
+                                }}
 
                                 eventTimeFormat={{
                                     hour: 'numeric',
@@ -262,7 +280,7 @@ const CalendarPage = () => {
                                 headerToolbar={isSmall ? {
                                     left: 'prev,next',
                                     center: 'title',
-                                    right: 'today'
+                                    right: 'threeDay,dayToday'
                                 } : {
                                     left: 'prev,next today',
                                     center: 'title',
