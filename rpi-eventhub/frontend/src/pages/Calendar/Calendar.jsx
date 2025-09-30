@@ -23,7 +23,7 @@ const CalendarPage = () => {
     const { isDark } = useColorScheme();
     const calendarRef = useRef(null);
     const fcRef = useRef(null);
-    const [isSmall, setIsSmall] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+    const [isSmall, setIsSmall] = useState(typeof window !== 'undefined' ? window.innerWidth <= 820 : false);
     useEffect(() => {
         const onResize = () => setIsSmall(window.innerWidth < 768);
         window.addEventListener('resize', onResize);
@@ -103,7 +103,7 @@ const CalendarPage = () => {
         const { image } = eventInfo.event.extendedProps;
         return (
             <div style={{
-                width: isSmall ? '100%' : '244px',
+                width: isSmall ? '97.5%' : '97.5%',
                 display: 'flex',    
                 flexDirection: 'column',
                 alignItems: 'flex-start',
@@ -125,7 +125,7 @@ const CalendarPage = () => {
 
             <span
                 style={{
-                    fontSize: '120%',
+                    fontSize: '125%',
                     color: isDark ? '#fff' : '#000',
                     fontWeight: 'bold',
                     whiteSpace: 'nowrap',
@@ -238,8 +238,8 @@ const CalendarPage = () => {
                     </div>
 
 
-                    <div ref={calendarRef} className={`w-full p-4 mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'} ${isSmall ? 'overflow-x-auto' : ''}`}>
-                        <div className="w-full pt-[15px] pb-[20px]">
+                    <div ref={calendarRef} className={`w-full ${isSmall ? 'px-2 pb-2 pt-4' : 'p-4'} mb-[45px] border-[5px] border-[#AB2328] ${isDark ? 'bg-[#777777]' : 'bg-white'} ${isSmall ? 'overflow-x-auto' : ''}`}>
+                        <div className="w-full">    
                             <div className={isSmall ? '' : 'min-w-[768px]'}>
                             <FullCalendar
                                 ref={fcRef}
@@ -251,11 +251,18 @@ const CalendarPage = () => {
                                         type: 'dayGrid',
                                         duration: { days: 3 },
                                         buttonText: 'Days'
+                                    },
+                                    dayGridDay: {
+                                        type: 'dayGrid',
+                                        buttonText: 'Day',
+                                        titleFormat: { month: 'short', day: 'numeric', year: 'numeric' }
                                     }
                                 }}
 
                                 initialView={isSmall ? 'threeDay' : 'dayGridWeek'}
+
                                 buttonText={{ month: 'Months', week: 'Weeks', day: 'Day', today: 'Today' }}
+
                                 customButtons={{
                                     dayToday: {
                                         text: 'Today',

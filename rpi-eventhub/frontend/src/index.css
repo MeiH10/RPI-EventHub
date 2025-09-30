@@ -102,7 +102,7 @@ code {
 }
 
 .small-text {
-  font-size: 18px !important; /* Set the desired font size */
+  font-size: 18px !important;
 }
 
 footer {
@@ -135,8 +135,7 @@ footer {
 
 /* FullCalendar title */
 .fc .fc-toolbar-title {
-  /* Fluid font-size: min 1.25rem (~20px), preferred scales with viewport, max 3.75rem (~60px) */
-  font-size: clamp(1.25rem, 6vw, 3.75rem) !important;
+  font-size: clamp(1.2rem, 5vw, 3rem) !important;
   color: black !important;
   font-family: sans-serif !important;
   font-weight: bold !important;
@@ -178,17 +177,20 @@ footer {
   font-family: sans-serif;
   font-weight: bold;
   text-align: center;
-
 }
+
+.fc .fc-col-header-cell .fc-col-header-cell-cushion {
+  font-size: clamp(1.1rem, 3.2vw, 1.9rem) !important; 
+  font-weight: 700 !important;
+  line-height: 1.05 !important;
+}
+
 [data-theme='dark'] .fc-theme-standard .fc-col-header-cell {
   background: #777777 !important;
 }
 [data-theme='dark'] .fc-theme-standard .fc-col-header-cell .fc-col-header-cell-cushion {
   color: white !important;
 }
-
-/* Make scrollable calendar parts transparent to avoid white strip artifacts */
-/* The white strip in DevTools appeared to come from the .fc-scroller / table inside the scrollgrid. */
 
 .fc .fc-scrollgrid th
 {
