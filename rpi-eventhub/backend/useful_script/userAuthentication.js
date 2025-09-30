@@ -59,7 +59,7 @@ const authenticateAndVerify = async (req, res, next) => {
 };
 
 const authorizeOfficer = (req, res, next) => {
-    if (!req.user || req.user.role !== OFFICER) {
+    if (!req.user || req.user.role < OFFICER) {
         return res.status(403).json({ message: 'Access denied. Officer privileges required.' });
     }
 
