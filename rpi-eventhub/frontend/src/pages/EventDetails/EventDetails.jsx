@@ -273,9 +273,11 @@ const EventDetails = () => {
         }
 
         try {
+            const token = localStorage.getItem('token');
             const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, submittedFormData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             console.log('Event updated successfully:', response.data);
