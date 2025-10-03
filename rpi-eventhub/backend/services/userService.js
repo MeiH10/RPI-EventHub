@@ -21,6 +21,8 @@ const ADMIN = 4;
  * @param email
  * @param password
  * @returns {Promise<{message: string, email: string}>}
+ * @modifies User collection
+ * @throws {Error} if email is not rpi.edu, already in use, or username is already taken
  */
 const signUpUser = async (username, email, password) => {
     // Check if email is end with @rpi.edu
@@ -52,6 +54,7 @@ const signUpUser = async (username, email, password) => {
 
             // This message will show up in the frontend by toast.
             return {
+                //?: change the message to "A new verification code has been sent to your email."
                 message: "Your code has resend, please check your email for the verification code.",
             };
         }
@@ -86,10 +89,12 @@ const signUpUser = async (username, email, password) => {
 
 
 /**
- * This function verifies the email of the user
+ * verifies the email of the user
  * @param email
- * @param verificationCode the verification code here has only number phrase
+ * @param verificationCode The 6-digit numeric code sent to the user's email.
+ * @modifies user
  * @returns {Promise<{message: string, token: (*)}>}
+ * @throws {Error} user not found, code-type mismatch, code expired, code mismatch
  */
 const verifyEmail = async (email, verificationCode) => {
 
@@ -98,6 +103,7 @@ const verifyEmail = async (email, verificationCode) => {
 
     // If user not found, throw an error
     if (!user) {
+        //? only checks user? why does it mention verification code?
         throw new Error("Invalid email or verification code.");
     }
 
@@ -151,7 +157,9 @@ const verifyEmail = async (email, verificationCode) => {
  * This function logs in the user
  * @param email
  * @param password
+ * @modifies none
  * @returns {Promise<{role: *, message: string, userId: *, token: (*)}>}
+ * @throws {Error} invalid email, invalid password, email does not exist, password incorrect, user banned, user unverified
  */
 const loginUser = async (email, password) => {
 
@@ -201,6 +209,10 @@ const loginUser = async (email, password) => {
 
 /**
  * This function fetches all usernames
+ * @param email
+ * @modifies none
+ * @returns {Promise<*[]>}
+ * @throws {Error} if error occurs while fetching users
  */
 const getAllUsernames = async () => {
     try {
@@ -215,9 +227,13 @@ const getAllUsernames = async () => {
  * This function is serving to send a new verification code to the user
  * @param email the email of the user
  * @param code the verification code
+ * @modifies none
+ * @returns {Promise<{message: string, email: string}>} 
+ * @throws {Error} if failed to send email
+ *? doesnt throw error but console logs error
  */
 const sendCode = async ( email, code ) => {
-    await sendEmail({
+    await sendEmail({ 
         to: email,
         subject: 'Action Required: Verify Your RPI EventHub Account',
         text: `Dear RPI EventHub User,
@@ -253,6 +269,8 @@ Official Website: https://rpieventhub.com`
  * This function will be used to delete the user by just email
  * @param email
  * @returns {Promise<{message: string, deletedUser: {username: string, email: string}}>}
+ * @modifies logger, user
+ * @throws {Error} if user not found or failed to delete user
  */
 const deleteUser = async (email) => {
     try {
@@ -282,6 +300,9 @@ const deleteUser = async (email) => {
  * @param email
  * @param newPassword
  * @param verificationCode
+ * @modifies logger, user
+ * @throws {Error} if email does not exist, verification code type mismatch, verification code expired, verification code mismatch
+ * @returns {Promise<{message: string, userId: *, role: *}>}
  */
 const resetPassword = async (email, newPassword, verificationCode) => {
     // Find the user by email
@@ -325,7 +346,9 @@ const resetPassword = async (email, newPassword, verificationCode) => {
  * This function will verify if the email exists
  * @param email
  * @requires email the user's email is end with @rpi.edu
+ * @modifies none
  * @returns {Promise<{message: string, role: *}>}
+ * @throws {Error} if email does not exist, is not verified, is not in the correct format, or is not in the correct domain
  */
 const verifyEmailExists = async (email) => {
     // Find the user by email

@@ -14,9 +14,11 @@ const Event = require('../models/Event');
 
 /**
  * Get RPI events app.get('/rpi-events')
- * @param req
- * @param res
- * @returns {Promise<void>}
+ * @param req request
+ * @param res response
+ * @returns {Promise<void>} none
+ * @throws {Error} if error occurs while fetching events
+ * @modifies none
  */
 const getRPIEvents = async (req, res) => {
     //hardcoded values for now
@@ -37,9 +39,11 @@ const getRPIEvents = async (req, res) => {
 
 /**
  * Create a new event app.post('/events')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies Event
+ * @throws {Error} if error occurs while creating event, either event already exsists or other error
  */
 const createNewEvent = async (req, res) => {
     try {
@@ -72,9 +76,11 @@ const createNewEvent = async (req, res) => {
 
 /**
  * Get all events app.get('/events')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies none
+ * @throws {Error} if error occurs while fetching events
  */
 const getAllEvents = async (req, res) => {
     try {
@@ -89,9 +95,11 @@ const getAllEvents = async (req, res) => {
 /**
  * This function is used to fetch the likes for a specific event
  * app.get('/events/:id/like')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies none
+ * @throws {Error} if error occurs while fetching like count
  */
 const fetchEventLikes = async (req, res) => {
     try {
@@ -108,9 +116,11 @@ const fetchEventLikes = async (req, res) => {
 /**
  * This function is used to fetch the events liked by a specific user
  * app.get('/events/like/status')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies res
+ * @throws {Error} if error occurs while fetching liked events
  */
 const fetchUserLikedEvents = async (req, res) => {
     try {
@@ -126,9 +136,11 @@ const fetchUserLikedEvents = async (req, res) => {
 /**
  * This function is used to like/unlike an event
  * app.post('/events/:id/like')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies res
+ * @throws {Error} if error occurs while liking/unliking event
  */
 const handleEventLike = async (req, res) => {
     try {
@@ -147,9 +159,11 @@ const handleEventLike = async (req, res) => {
 /**
  * This function is used to delete an event
  * app.delete('/events/:id')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies res
+ * @throws {Error} if error occurs while deleting event
  */
 const removeEvent = async (req, res) => {
     try {
@@ -165,9 +179,11 @@ const removeEvent = async (req, res) => {
 /**
  * This function is used to get the image of an event
  * app.get('/proxy/image/:eventId')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies res
+ * @throws {Error} if error occurs while fetching image
  */
 const getProxyImage = async (req, res) => {
     try {
@@ -185,9 +201,11 @@ const getProxyImage = async (req, res) => {
 /**
  * This function is used to update an event
  * app.post('/events-update/:id')
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  * @returns {Promise<void>}
+ * @modifies Event, res
+ * @throws {Error} if error occurs while updating event
  */
 const updateEvents = async (req, res) => {
     try {

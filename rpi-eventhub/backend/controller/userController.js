@@ -31,7 +31,8 @@ const ADMIN = 4;
  * @param res
  * @returns {Promise<void>} calls signUpUser service function and returns the result
  * if there is an error, it will return a 500 status code with a message "
- * Errors: Non RPI email, username or email already exist."
+ * @modifies user collection
+ * @throws: Non RPI email, username or email already exist."
  */
 const signUp = async (req, res) => {
     try {
@@ -42,6 +43,8 @@ const signUp = async (req, res) => {
         res.status(500).json({ message: "Error creating user. It's possible that username or email address already exist.", error: error.message });
     }
 };
+
+
 
 
 const verifyUserEmail = async (req, res) => {

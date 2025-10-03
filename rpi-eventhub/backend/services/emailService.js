@@ -16,6 +16,16 @@ const mailer = nodemailer.createTransport({
 });
 
 
+
+/**
+ * Sends an email using nodemailer.
+ * @param {object} options - The email options.
+ * @param {string} options.to - The recipient's email address.
+ * @param {string} options.subject - The subject of the email.
+ * @param {string} options.text - The plain text body of the email.
+ * @returns {Promise<void>}
+ * @throws {Error} If sending the email fails.
+ */
 const sendEmail = async ({ to, subject, text }) => {
   const mailOptions = {
     from: process.env.EMAIL_FROM, // Your email address or one authorized by SendGrid

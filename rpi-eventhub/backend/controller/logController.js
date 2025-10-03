@@ -5,6 +5,8 @@ const { readLogFile } = require('../services/eventsLogService');
  * @param req
  * @param res
  * @returns {Promise<void>}
+ * @modifies none
+ * @throws {Error} if error occurs while reading log file
  */
 const getLogContent = async (req, res) => {
     const { date } = req.params;
