@@ -14,6 +14,13 @@ function AboutUs() {
   const [isLoading, setIsLoading] = useState(true);
   const { theme } = useContext(ThemeContext);
   const { isDark } = useColorScheme();
+  const [isSmall, setIsSmall] = useState(typeof window !== 'undefined' ? window.innerWidth <= 1750 : false);
+  useEffect(() => {
+      const onResize = () => setIsSmall(window.innerWidth <= 1750);
+      window.addEventListener('resize', onResize);
+      return () => window.removeEventListener('resize', onResize);
+  }, []);
+  
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     
@@ -42,7 +49,7 @@ function AboutUs() {
         
         <div className="row flex items-stretch">
           <div className="col-12 col-lg-7 mt-[50px] p-0 flex flex-col justify-start">
-            <div className="text-left text-[30px] pl-[125px] w-[80%] pt-[20px] tracking-wide">
+            <div className={`text-left text-[30px] ${isSmall ? 'pl-[40px] w-[95%]' : 'pl-[125px] w-[80%]'} pt-[20px] tracking-wide`}>
               <h4 className={`font-afacad text-[32px] underline underline-offset-[10px] decoration-[1px] font-semibold pb-[10px] ${isDark ? 'decoration-[#AB2328]' : 'decoration-black'}`}>
                 Mission Statement
               </h4>
@@ -55,12 +62,12 @@ function AboutUs() {
             <img
               src={group1}
               alt="RPI Bridge"
-              className="
+              className={`
                 h-[375px] w-auto object-contain z-10
                 mt-[25px]
                 mx-auto
-                lg:absolute lg:bottom-[-300px] lg:left-[-50px]
-              "
+                ${isSmall ? '' : 'lg:absolute lg:bottom-[-300px] lg:left-[-50px]'}
+              `}
             />
           </div>
         </div>
@@ -68,7 +75,7 @@ function AboutUs() {
 
         <div className="row flex items-stretch">
           <div className="col-12 col-lg-7 mt-[50px] p-0 flex-col justify-start">
-            <div className="text-left text-[30px] pl-[125px] w-[100%] pt-[20px] tracking-wide">
+            <div className={`text-left text-[30px] ${isSmall ? 'pl-[40px] w-[95%]' : 'pl-[125px] w-[100%]'} pt-[20px] tracking-wide`}>
               <h4 className={`font-afacad font-semibold text-[32px] underline underline-offset-[10px] decoration-[1px] pb-[10px] ${isDark ? 'decoration-[#AB2328]' : 'decoration-black'}`}>
                 Feedback!
               </h4>
@@ -86,12 +93,12 @@ function AboutUs() {
           <div className="col-12 col-lg-5 flex justify-start items-end h-full relative">
             <img 
             src={group2} 
-            className="
+            className={`
                 h-[375px] w-auto object-contain z-0
                 mt-[25px]
                 mx-auto
-                lg:absolute lg:bottom-[-320px] lg:left-[200px]
-              "
+                ${isSmall ? '' : 'lg:absolute lg:bottom-[-320px] lg:left-[200px]'}
+              `}
             alt="RPI Bridge" />
           </div>
         </div>
@@ -101,25 +108,25 @@ function AboutUs() {
         <hr className="m-0 w-full border-0 border-t border-t-white border-b border-b-[#2d0505]" />
         <div className="text-center mt-10 text-[24px]">
           <h4 className="font-bold text-[35px] font-afacad tracking-wide">Our Developers</h4>
-          <div className="flex flex-wrap justify-around flex-col md:flex-row w-[80%] mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 w-full md:w-[90%] mx-auto justify-items-center">
             {isLoading ? (
-              Array.from(new Array(5)).map((_, index) => (
-                <div className="w-1/4 flex flex-col items-center p-5 m-auto" key={index}>
-                  <Skeleton variant="circular" width={150} height={150} />
-                  <Skeleton variant="text" width={150} />
+              Array.from(new Array(8)).map((_, index) => (
+                <div className="w-full flex flex-col items-center p-3" key={index}>
+                  <Skeleton variant="circular" width={80} height={80} />
+                  <Skeleton variant="text" width={80} />
                 </div>
               ))
             ) : (
               contributors.map(contributor => (
-                <div className="w-1/4 flex flex-col items-center p-5 m-auto" key={contributor.login}>
-                  <div className="w-[80%] h-80%] rounded-full overflow-hidden flex items-center justify-center bg-gray-200">
+                <div className="w-full flex flex-col items-center p-3" key={contributor.login}>
+                  <div className="w-36 h-36 rounded-full overflow-hidden flex items-center justify-center bg-gray-200">
                     <img
                       src={contributor.avatar_url}
                       className="w-full h-full object-cover"
                       alt="Profile"
                     />
                   </div>
-                  <h6 className="mt-[10px]">{contributor.login}</h6>
+                  <h6 className="mt-[8px] text-sm md:text-base">{contributor.login}</h6>
                 </div>
               ))
             )}
