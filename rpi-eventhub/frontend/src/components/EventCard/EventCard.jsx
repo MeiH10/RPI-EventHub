@@ -143,7 +143,9 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
         </button>
       )}
       <div className={styles.eventDetails}>
-        <h2>{event.title}</h2>
+        <Link to={`/events/${event._id}`} className={styles.eventTitleLink}>
+          <h2>{event.title}</h2>
+        </Link>
         <p>{event.description}</p>
         <p><strong>Date & Time:</strong> {`${eventTime} on ${eventDate}`}</p>
         <p><strong>Location:</strong> {event.location || "Location not specified"}</p>

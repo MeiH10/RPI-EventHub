@@ -114,6 +114,14 @@
     margin: 0 0 16px;
     color: var(--muted-text-color);
   }
+  .eventTitleLink {
+    text-decoration: none;
+    color: inherit;
+  }
+  .eventTitleLink:hover {
+    text-decoration: underline;
+    color: inherit;
+  }
   
 .tag-container {
   display: flex;
