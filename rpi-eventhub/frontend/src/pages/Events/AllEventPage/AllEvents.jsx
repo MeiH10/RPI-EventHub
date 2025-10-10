@@ -31,13 +31,17 @@ function AllEvents() {
     const [selectedEventIds, setSelectedEventIds] = useState([]);
     const { isLoggedIn, username, manageMode } = useAuth();
     const [selectedTags, setSelectedTags] = useState([]);
+    const [availableClubs, setAvailableClubs] = useState([]);
+    const [selectedClubs, setSelectedClubs] = useState([]);
     const [filters, setFilters] = useState({
         tags: [],
+        clubs: [],
         time: ['upcoming', 'today'],
         postedBy: ['student', 'rpi'],
         sortMethod: 'likes',
         sortOrder: 'desc'
     });
+
 
     const handleTagClick = (tag) => {
         const updatedTags = selectedTags.includes(tag)
@@ -188,6 +192,12 @@ function AllEvents() {
                 filters.tags.every(tag => event.tags?.includes(tag))
             );
         }
+        //*apply club filters
+        if (filters.clubs.length > 0) {
+            filtered = filtered.filter(event =>
+                filters.clubs.includes(event.club)
+            );
+        }
 
         // Apply "Posted by" filter
         if (filters.postedBy && filters.postedBy.length > 0) {
@@ -237,6 +247,19 @@ function AllEvents() {
         }
         setFilteredEvents(filtered);
     }, [events, manageMode, isLoggedIn, username, filters]);
+
+
+    useEffect(() => { //* GET CLUBS
+        setFilteredEvents(events);
+        const filteredEvents = events.filter(event => new Date(event.startDateTime) >= new Date());
+        const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
+        setAvailableTags(tags);
+        
+        const clubs = [...new Set(filteredEvents.map(event => event.club).filter(Boolean))]; //*get club
+        setAvailableClubs(clubs);
+
+    }, [events]);
+
 
     const sortEvents = (events, sortMethod, sortOrder) => {
         const sortedEvents = [...events];
