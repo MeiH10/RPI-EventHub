@@ -62,18 +62,18 @@ app.use(express.urlencoded({ extended: true }));
 // ---------------------------- ROUTES ----------------------------
 //#region EVENT ROUTES
 app.get('/rpi-events', getRPIEvents);
-app.post('/events', upload, authenticate, authorizeOfficer, createNewEvent);
+app.post('/events', upload, authenticateAndVerify, createNewEvent);
 app.get('/events', getAllEvents);
-app.delete('/events/:id', authenticate, authorizeOfficer, removeEvent);
+app.delete('/events/:id', authenticateAndVerify, removeEvent);
 app.get('/proxy/image/:eventId', getProxyImage);
 app.get('/events/:id/like', fetchEventLikes);
 app.get('/events/like/status', authenticate, fetchUserLikedEvents);
 app.post('/events/:id/like', authenticateAndVerify, handleEventLike);
-app.post('/events-update/:id', upload, authenticate, authorizeOfficer, updateEvents);
+app.post('/events-update/:id', upload, authenticateAndVerify, updateEvents);
 //#endregion
 
 //#region LOG ROUTES
-app.get('/logs/:date', getLogContent);
+app.get('/logs/:date', authenticate, authorizeAdmin, getLogContent);
 //#endregion
 
 //#region USER ROUTES
