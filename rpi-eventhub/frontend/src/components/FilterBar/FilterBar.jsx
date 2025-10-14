@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
-function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, isListView, setIsListView, showICS, onUnselectAll, onDownloadICS, selectedTags: externalSelectedTags }) {
+function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, isListView, setIsListView, showICS, onUnselectAll, onDownloadICS, selectedTags: externalSelectedTags,clubs, selectedClubs: externalSelectedClubs }) {
     const [selectedTags, setSelectedTags] = useState(externalSelectedTags || []);
+    const [selectedClubs, setSelectedClubs] = useState(externalSelectedClubs ||[]);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     //const [isListView, setIsListView] = useState(false);
@@ -26,6 +27,11 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
         );
     };
+    const handleClubChange = (club) => {
+        setSelectedClubs((prev) =>
+            prev.includes(club) ? prev.filter((c) => c !== club) : [...prev, club]
+        );
+    }
 
     const handleTimeChange = (time) => {
         setSelectedTime((prev) =>
@@ -216,6 +222,29 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                                 {tag.charAt(0).toUpperCase() + tag.slice(1)}
                             </button>
                         ))}
+                    
+                    
+                    
+                    </div>
+
+                    <div className={styles.separator}></div>
+                    <h3 className={styles.filterBarTags}>Clubs:</h3>
+                    <div className={`${styles.toggleGroupContainer} ${isDark ? styles.dark : ''}`}>
+                        {clubs.sort().map((club) => (
+                            <button
+                                key={club}
+                                className={`${styles.filterButton} ${styles.orange} ${selectedClubs.includes(club) ? styles.active : ''}`}
+                                onClick={() => handleclubChange(club)}
+                            >
+                                 <div className={styles.filterButtonIndicator}>
+                                    <div className={styles.filterButtonIndicatorInner}></div>
+                                </div>
+                                {club.charAt(0).toUpperCase() + club.slice(1)}
+                            </button>
+                        ))}
+                    
+                    
+                    
                     </div>
                 </div>
                 <div className={styles.separator}></div>

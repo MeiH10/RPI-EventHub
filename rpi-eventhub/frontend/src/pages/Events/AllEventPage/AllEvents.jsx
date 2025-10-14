@@ -160,6 +160,7 @@ function AllEvents() {
 
         const defaultFilters = {
             tags: [],
+            clubs: [],
             time: ['upcoming', 'today'],
             postedBy: ['student', 'rpi'],
             sortMethod: 'likes',
@@ -318,7 +319,7 @@ function AllEvents() {
                         setSortOrder={setSortOrder}
                         sortOrder={sortOrder}
                         setSortMethod={setSortMethod}
-                        onFilterChange={handleFilterChange}
+                        // onFilterChange={handleFilterChange}
                         filteredCount={filteredEvents.length}
                         //changeView={changeView}
                         isListView={isListView}
@@ -327,6 +328,9 @@ function AllEvents() {
                         onUnselectAll={() => setSelectedEventIds([])}
                         onDownloadICS={generateICS}
                         selectedTags={selectedTags}
+                        clubs={availableClubs}
+                        selectedClubs={filters.clubs}
+                        onFilterChange ={handleFilterChange}
                     />
                 </div>
                 {
