@@ -18,7 +18,7 @@ import { useColorScheme } from '../../../hooks/useColorScheme';
 import { useAuth } from '../../../context/AuthContext';
 
 function AllEvents() {
-    const { events, fetchEvents, deleteEvent } = useEvents();
+    const { events, fetchEvents } = useEvents();
     const [isLoading, setIsLoading] = useState(true);
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [availableTags, setAvailableTags] = useState([]);
