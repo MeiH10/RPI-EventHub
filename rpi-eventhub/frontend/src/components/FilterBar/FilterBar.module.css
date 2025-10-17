@@ -166,7 +166,7 @@
   background-color: var(--sidebar-bg-color);
   /* border: 2px solid var(--border-color);  */
   border-radius: 10px; 
-  margin-top: 150px; 
+  margin-top: 90px; 
   box-sizing: border-box;
   margin-bottom: auto;
   position: static;
@@ -325,6 +325,16 @@ label {
     right: 10px;
   }
 
+  .sidebar .drawerToggleBtn {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    z-index: 1100;
+    padding: 6px;
+    background: transparent;
+    display: block;
+  }
+
   .filterBarTags {
     font-size: 1em;
   }
@@ -377,6 +387,15 @@ label {
 
 .iconOpen .closeIcon {
   transform: scale(1);
+  opacity: 1;
+}
+
+.sidebar .iconWrapper .closeIcon {
+  transform: scale(0.75);
+}
+
+.sidebar.open .iconWrapper .closeIcon {
+  transform: scale(0.75);
   opacity: 1;
 }
 

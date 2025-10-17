@@ -286,8 +286,8 @@ function AllEvents() {
                 theme="colored"
                 transition: Bounce
             />  
-            <div className="container-fluid"
-                 style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
+          <div className="container-fluid"
+              style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row', paddingLeft: 12, paddingRight: 0 }}>
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}

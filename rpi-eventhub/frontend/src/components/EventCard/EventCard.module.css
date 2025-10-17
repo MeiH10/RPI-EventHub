@@ -41,7 +41,7 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     position: relative; 
     cursor: pointer; 
-    width: 370px;
+    width: 100%;
     min-height: 200px; 
     box-sizing: border-box;
   }
