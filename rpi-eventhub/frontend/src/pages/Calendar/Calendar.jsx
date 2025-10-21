@@ -25,7 +25,7 @@ const CalendarPage = () => {
     const fcRef = useRef(null);
     const [isSmall, setIsSmall] = useState(typeof window !== 'undefined' ? window.innerWidth <= 820 : false);
     useEffect(() => {
-        const onResize = () => setIsSmall(window.innerWidth < 768);
+        const onResize = () => setIsSmall(window.innerWidth <= 820);
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
     }, []);
