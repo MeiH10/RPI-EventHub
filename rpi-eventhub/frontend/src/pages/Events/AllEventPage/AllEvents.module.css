@@ -12,6 +12,7 @@
     width: 100%;
     max-width: 1400px; /* change this if you want a wider/narrower content column */
     margin: 90px auto 100px; /* center horizontally */
+
     box-sizing: border-box;
     min-height: 100vh;
 }
@@ -40,7 +41,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
     /* Tablet: 2 columns */
     .myMasonryGrid {
         gap: 20px;
@@ -53,12 +54,15 @@
 @media (max-width: 700px) {
     /* Mobile: 1 column */
     .myMasonryGrid {
+        margin-top: 14px;
         gap: 16px;
     }
     .myMasonryGridColumn {
         flex: 0 0 100%;
     }
     .myMasonryGridColumn > div {
+        width: 92%;
+
         margin-bottom: 18px;
     }
 }
