@@ -37,7 +37,6 @@ const {
   updateEvents,
 } = require('./controller/eventController');
 const { getLogContent } = require('./controller/logController');
-const{ calendarRoutes }= require('./routes/calendar');
 //#endregion
 
 
@@ -93,12 +92,6 @@ app.get('/verify-token', authenticate, verifyToken);
 // The typeofCode is either "signup","reset"
 app.post('/send-code', sendCodeEmail)
 app.use('/assets', express.static(path.join(__dirname, './assets')));
-app.use(calendarRoutes);
-app.use(express.static(path.join(__dirname, './assets')));
-app.use(express.static(path.join(__dirname, './frontend/dist')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './frontend/dist/index.html'));
-});
 //#endregion
 
 require('./archiveOldEventsCron');
