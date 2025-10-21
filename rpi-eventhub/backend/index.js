@@ -36,6 +36,9 @@ const {
   getAllEvents,
   updateEvents,
 } = require('./controller/eventController');
+const {
+  getRSSFeed,
+} = require('./controller/rssController');
 const { getLogContent } = require('./controller/logController');
 //#endregion
 
@@ -92,6 +95,7 @@ app.get('/verify-token', authenticate, verifyToken);
 // The typeofCode is either "signup","reset"
 app.post('/send-code', sendCodeEmail)
 app.use('/assets', express.static(path.join(__dirname, './assets')));
+app.get('/rss/v1', getRSSFeed);
 //#endregion
 
 require('./archiveOldEventsCron');
