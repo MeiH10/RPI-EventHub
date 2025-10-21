@@ -8,28 +8,32 @@
 }
 
 .eventsDisplayContainer {
+    /* constrain the events area so cards don't stretch too wide */
     width: 100%;
-    margin-bottom: 100px;
-    padding-left: 2%;
+    max-width: 1400px; /* change this if you want a wider/narrower content column */
+    margin: 90px auto 100px; /* center horizontally */
+
     box-sizing: border-box;
-    margin-top: 10%;
     min-height: 100vh;
 }
 
 /* Masonry grid styles */
 .myMasonryGrid {
     display: flex;
-    margin-left: -15px;
-    width: auto;
+    gap: 24px; /* horizontal gutter between columns */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .myMasonryGridColumn {
-    padding-left: 15px;
-    background-clip: padding-box;
+    /* Desktop: 3 columns - subtract total gap (2 * 24px) then divide by 3 */
+    flex: 0 0 calc((100% - 48px) / 3);
+    box-sizing: border-box;
 }
 
 .myMasonryGridColumn > div {
-    margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 24px; /* vertical gap between cards */
 }
 
 .skeletonWrapper {
@@ -37,12 +41,37 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 1100px) {
+@media (max-width: 1400px) {
+    /* Tablet: 2 columns */
     .myMasonryGrid {
-        margin-left: 0;
+        gap: 20px;
     }
     .myMasonryGridColumn {
-        padding-left: 0;
+        flex: 0 0 calc((100% - 20px) / 2);
+    }
+}
+
+@media (max-width: 700px) {
+    /* Mobile: 1 column */
+    .myMasonryGrid {
+        margin-top: 14px;
+        gap: 16px;
+    }
+    .myMasonryGridColumn {
+        flex: 0 0 100%;
+    }
+    .myMasonryGridColumn > div {
+        width: 92%;
+
+        margin-bottom: 18px;
+    }
+}
+
+/* smaller screens should have a bit of side padding so content doesn't touch edges */
+@media (max-width: 900px) {
+    .eventsDisplayContainer {
+        margin: 55px 16px 50px;
+        max-width: none;
     }
 }
 
@@ -50,7 +79,6 @@
     .filterContainer {
         display: flex;
         flex-direction: column;
-        /* justify-content: space-between; */
         align-items: stretch;
         width: 100%;
         box-sizing: border-box;

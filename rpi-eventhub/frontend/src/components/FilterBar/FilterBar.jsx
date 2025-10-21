@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 import { useColorScheme } from '../../hooks/useColorScheme';
 
-function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, changeView, showICS, onUnselectAll, onDownloadICS, selectedTags: externalSelectedTags }) {
+function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, onFilterChange, filteredCount, isListView, setIsListView, showICS, onUnselectAll, onDownloadICS, selectedTags: externalSelectedTags }) {
     const [selectedTags, setSelectedTags] = useState(externalSelectedTags || []);
     const [selectedTime, setSelectedTime] = useState(['upcoming', 'today']);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [isListView, setIsListView] = useState(false);
+    //const [isListView, setIsListView] = useState(false);
     const [selectedPostedBy, setSelectedPostedBy] = useState(["student", "rpi"]);
     const { isDark } = useColorScheme();
 
@@ -64,78 +64,113 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
         setIsDrawerOpen((prev) => !prev);
     };
 
-    const handleViewChange = () => {
-        setIsListView((prev) => {
-            const newValue = !prev;
-            changeView(newValue);
-            return newValue;
-        });
+    const handleViewChange = (isList) => {
+        if (isListView != isList) {
+            setIsListView(isList);
+            //changeView(isList);
+        }
     };
 
     return (
         <>
-            <button className={styles.drawerToggleBtn} onClick={toggleDrawer}>
-                <div className={`${styles.iconWrapper} ${isDrawerOpen ? styles.iconOpen : ''}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                         className={styles.filterIcon} viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                        <path
-                            d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                         className={styles.closeIcon} viewBox="0 0 16 16">
-                        <path d="M2 2 L14 14 M14 2 L2 14" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                </div>
-            </button>
-            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ``}`}>
+            {/* Show a compact toggle when the drawer is closed so the button remains visible */}
+            {!isDrawerOpen && (
+                <button className={styles.drawerToggleBtn} onClick={toggleDrawer} aria-expanded={isDrawerOpen}>
+                    <div className={`${styles.iconWrapper} ${isDrawerOpen ? styles.iconOpen : ''}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            className={styles.filterIcon} viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path
+                                d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            className={styles.closeIcon} viewBox="0 0 16 16">
+                            <path d="M2 2 L14 14 M14 2 L2 14" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                    </div>
+                </button>
+            )}
+
+            <div className={`${styles.sidebar} ${isDrawerOpen ? styles.open : ''}`}>
+                <button className={styles.drawerToggleBtn} onClick={toggleDrawer}>
+                    <div className={`${styles.iconWrapper} ${isDrawerOpen ? styles.iconOpen : ''}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            className={styles.filterIcon} viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path
+                                d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            className={styles.closeIcon} viewBox="0 0 16 16">
+                            <path d="M2 2 L14 14 M14 2 L2 14" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                    </div>
+                </button>
                 {showICS && (
                     <div>
                         <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 bg-white rounded-sm flex justify-center items-center' onClick={onDownloadICS}>
                             <p className='text-md text-black m-0'>Download ICS</p>
                         </div>
-                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-red-500 rounded-sm flex justify-center items-center'
+                        <div className='hover:shadow cursor-pointer duration-100 px-3 py-2 my-2 bg-[rgba(214,0,28,1)] dark:bg-[rgba(171,35,40,1)] rounded-sm flex justify-center items-center'
                             onClick={onUnselectAll}
                         >
-                            <p className='text-md m-0'>Unselect All</p>
+                            <p className='text-md text-white m-0'>Unselect All</p>
                         </div>
                     </div>
                 )}
-                <div className={styles.changeButton} onClick={handleViewChange}>
-                    {isListView ?
-                        <div>
-                            <i className="bi bi-columns-gap">
-                            </i>
-                            <span>Grid View </span>
+
+                {/* --- NEW VIEW TOGGLE SWITCH --- */}
+                <div className={`${styles.viewToggleContainer} ${isDark ? styles.dark : ''}`}>
+                    <button
+                        className={`${styles.viewToggleButton} ${isListView ? styles.active : ''}`}
+                        onClick={() => setIsListView(true)}
+                        aria-pressed={isListView}
+                    >
+                        <div className={styles['viewToggleButtonIndicator']}>
+                            <div className={styles['viewToggleButtonIndicatorInner']}></div>
                         </div>
-                        :
-                        <div>
-                            <i className="bi bi-list-nested">
-                            </i>
-                            <span>List View </span>
+                        List View
+                    </button>
+                    <button
+                        className={`${styles.viewToggleButton} ${!isListView ? styles.active : ''}`}
+                        onClick={() => setIsListView(false)}
+                        aria-pressed={!isListView}
+                    >
+                        <div className={styles['viewToggleButtonIndicator']}>
+                            <div className={styles['viewToggleButtonIndicatorInner']}></div>
                         </div>
-                    }
+                        Grid View
+                    </button>
                 </div>
+                {/* --- END OF VIEW TOGGLE SWITCH --- */}
+                
+                <div className={styles.separator}></div>
+
                 <div className={styles.sortContainer}>
-                    <label htmlFor="sortMethod">Sort by</label>
-                    <select
-                        id="sortMethod"
-                        value={sortMethod}
-                        onChange={(e) => setSortMethod(e.target.value)}
-                    >
-                        <option value="date" className="text-black dark:text-white">Date</option>
-                        <option value="likes" className="text-black dark:text-white">Likes</option>
-                        <option value="title" className="text-black dark:text-white">Title</option>
-                    </select>
-                    <label htmlFor="sortOrder">Order</label>
-                    <select
-                        id="sortOrder"
-                        value={sortOrder}
-                        onChange={(e) => setSortOrder(e.target.value)}
-                    >
-                        <option value="asc" className="text-black dark:text-white">Ascending</option>
-                        <option value="desc" className="text-black dark:text-white">Descending</option>
-                    </select>
+                    <div className={styles.sortOptionWrapper}>
+                        <label htmlFor="sortMethod">Sort by:</label>
+                        <br></br>
+                        <select
+                            id="sortMethod"
+                            value={sortMethod}
+                            onChange={(e) => setSortMethod(e.target.value)}
+                        >
+                            <option value="date" className="text-black dark:text-white">Date</option>
+                            <option value="likes" className="text-black dark:text-white">Likes</option>
+                            <option value="title" className="text-black dark:text-white">Title</option>
+                        </select>
+                        <br></br>
+                        <label htmlFor="sortOrder">Order:</label>
+                        <br></br>
+                        <select
+                            id="sortOrder"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        >
+                            <option value="asc" className="text-black dark:text-white">Ascending</option>
+                            <option value="desc" className="text-black dark:text-white">Descending</option>
+                        </select>
+                    </div>
                 </div>
                 <div className={styles.separator}></div>
                 <div className={styles.filterSection}>
@@ -144,65 +179,65 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                 <div className={styles.separator}></div>
 
                 <div className={styles.filterSection}>
-                    <h3 className={styles.filterBarTags}>By Time</h3>
-                    {['past', 'upcoming', 'today'].map((time) => (
-                        <div key={time} className={styles.checkboxWrapper}>
-                            <input
-                                type="checkbox"
-                                id={time}
-                                value={time}
-                                checked={selectedTime.includes(time)}
-                                onChange={() => handleTimeChange(time)}
-                            />
-                            <label className={styles.filterBarTags}
-                                   htmlFor={time}>{time.charAt(0).toUpperCase() + time.slice(1)}</label>
-                        </div>
-                    ))}
+                    <h3 className={styles.filterBarTags}>Time:</h3>
+                    <div className={`${styles.toggleGroupContainer} ${isDark ? styles.dark : ''}`}>
+                        {['past', 'upcoming', 'today'].map((time) => (
+                            <button
+                                key={time}
+                                className={`${styles.filterButton} ${styles.blue} ${selectedTime.includes(time) ? styles.active : ''}`}
+                                onClick={() => handleTimeChange(time)}
+                            >
+                                <div className={styles.filterButtonIndicator}>
+                                    <div className={styles.filterButtonIndicatorInner}></div>
+                                </div>
+                                {time.charAt(0).toUpperCase() + time.slice(1)}
+                            </button>
+                        ))}
+                    </div>
 
                     <div className={styles.separator}></div>
 
-                    <h3 className={styles.filterBarTags}>Posted by</h3>
-                    <div className={styles.checkboxWrapper}>
-                   
-                </div>
-            <div className={styles.checkboxWrapper}>
-                <input
-                    type="checkbox"
-                    id="student"
-                    value="student"
-                    checked={selectedPostedBy.includes("student")}
-                    onChange={() => handlePostedByChange("student")}
-                />
-                <label htmlFor="student" className={styles.filterBarTags}>Student</label>
-            </div>
-            <div className={styles.checkboxWrapper}>
-                <input
-                    type="checkbox"
-                    id="rpi"
-                    value="rpi"
-                    checked={selectedPostedBy.includes("rpi")}
-                    onChange={() => handlePostedByChange("rpi")}
-                />
-                <label htmlFor="rpi" className={styles.filterBarTags}>RPI</label>
-            </div>
+                    <h3 className={styles.filterBarTags}>Author:</h3>
+                    <div className={`${styles.toggleGroupContainer} ${isDark ? styles.dark : ''}`}>
+                        <button
+                            className={`${styles.filterButton} ${styles.green} ${selectedPostedBy.includes("student") ? styles.active : ''}`}
+                            onClick={() => handlePostedByChange("student")}
+                        >
+                             <div className={styles.filterButtonIndicator}>
+                                <div className={styles.filterButtonIndicatorInner}></div>
+                            </div>
+                            Student
+                        </button>
+                        <button
+                            className={`${styles.filterButton} ${styles.green} ${selectedPostedBy.includes("rpi") ? styles.active : ''}`}
+                            onClick={() => handlePostedByChange("rpi")}
+                        >
+                             <div className={styles.filterButtonIndicator}>
+                                <div className={styles.filterButtonIndicatorInner}></div>
+                            </div>
+                            RPI
+                        </button>
+                    </div>
 
-                <div className={styles.separator}></div>
-                    <h3 className={styles.filterBarTags}>By Tags</h3>
-                    {tags.sort().map((tag) => (
-                        <div key={tag} className={styles.checkboxWrapper}>
-                            <input
-                                type="checkbox"
-                                id={tag}
-                                value={tag}
-                                checked={selectedTags.includes(tag)}
-                                onChange={() => handleTagChange(tag)}
-                            />
-                            <label htmlFor={tag} className={styles.filterBarTags}>{tag}</label>
-                        </div>
-                    ))}
+                    <div className={styles.separator}></div>
+                    <h3 className={styles.filterBarTags}>Tags:</h3>
+                    <div className={`${styles.toggleGroupContainer} ${isDark ? styles.dark : ''}`}>
+                        {tags.sort().map((tag) => (
+                            <button
+                                key={tag}
+                                className={`${styles.filterButton} ${styles.orange} ${selectedTags.includes(tag) ? styles.active : ''}`}
+                                onClick={() => handleTagChange(tag)}
+                            >
+                                 <div className={styles.filterButtonIndicator}>
+                                    <div className={styles.filterButtonIndicatorInner}></div>
+                                </div>
+                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <div className={styles.separator}></div>
-                <button onClick={clearAll} className={styles.clearButton}>Clear All</button>
+                <button onClick={clearAll} className={styles.clearButton}>Clear All Filters</button>
             </div>
         </>
     );
