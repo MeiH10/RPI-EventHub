@@ -48,6 +48,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
     const clearAll = () => {
         setSelectedTags([]);
         setSelectedTime([]);
+        setSelectedClubs([]);
     };
 
     useEffect(() => {
@@ -234,7 +235,7 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
                             <button
                                 key={club}
                                 className={`${styles.filterButton} ${styles.orange} ${selectedClubs.includes(club) ? styles.active : ''}`}
-                                onClick={() => handleclubChange(club)}
+                                onClick={() => handleClubChange(club)}
                             >
                                  <div className={styles.filterButtonIndicator}>
                                     <div className={styles.filterButtonIndicatorInner}></div>

@@ -49,7 +49,12 @@ function AllEvents() {
             : [...selectedTags, tag];
         setSelectedTags(updatedTags);        
     };
-
+    const handleClubClick = (club) => {
+        const updatedClubs = selectedClubs.includes(club)
+            ? selectedClubs.filter(c => c !== club)
+            : [...selectedClubs, club];
+        setSelectedClubs(updatedClubs);        
+    }
 
 
     const generateICS = () => {
@@ -142,6 +147,7 @@ function AllEvents() {
     const handleFilterChange = useCallback((newFilters) => {
         setFilters(newFilters);
         setSelectedTags(newFilters.tags);
+        setSelectedClubs(newFilters.clubs);
     }, []);
 
     useEffect(() => {
@@ -174,9 +180,17 @@ function AllEvents() {
         // Update the filters object when selectedTags changes
         setFilters(prevFilters => ({
             ...prevFilters,
-            tags: selectedTags
+            tags: selectedTags,
         }));
     }, [selectedTags]);
+
+    // useEffect(() => {
+    //     // Update the filters object when selectedClubs changes
+    //     setFilters(prevFilters => ({
+    //         ...prevFilters,
+    //         clubs: selectedClubs,
+    //     }));
+    // }, [selectedClubs]);
 
 
     useEffect(() => {
@@ -256,7 +270,7 @@ function AllEvents() {
         const tags = [...new Set(filteredEvents.flatMap(event => event.tags || []))];
         setAvailableTags(tags);
         
-        const clubs = [...new Set(filteredEvents.map(event => event.club).filter(Boolean))]; //*get club
+        const clubs = [...new Set(filteredEvents.flatMap(event => event.club || []))]; //*get club
         setAvailableClubs(clubs);
 
     }, [events]);
@@ -315,6 +329,7 @@ function AllEvents() {
                 <div className={styles.filterContainer}>
                     <FilterBar
                         tags={availableTags}
+                        clubs={availableClubs}
                         sortMethod={sortMethod}
                         setSortOrder={setSortOrder}
                         sortOrder={sortOrder}
@@ -328,8 +343,7 @@ function AllEvents() {
                         onUnselectAll={() => setSelectedEventIds([])}
                         onDownloadICS={generateICS}
                         selectedTags={selectedTags}
-                        clubs={availableClubs}
-                        selectedClubs={filters.clubs}
+                        selectedClubs={selectedClubs}
                         onFilterChange ={handleFilterChange}
                     />
                 </div>
@@ -345,6 +359,7 @@ function AllEvents() {
                                     selectedEventIds={selectedEventIds}
                                     onSelect={() => handleSelect(event._id)}
                                     selectedTags={filters.tags}
+                                    selectedClubs={filters.clubs}
                                  />
                             ))}
                             
@@ -377,7 +392,9 @@ function AllEvents() {
                                             showEditButton={manageMode && event.creator === username}
                                             onEdit={() => handleEditEvent(event._id)}
                                             onTagClick={handleTagClick}
+                                            onClubClick={handleClubClick}
                                             selectedTags={filters.tags}
+                                            selectedClubs={filters.clubs}
                                         />
                                     ))}
                                 </Masonry>
