@@ -26,7 +26,8 @@ export const EventsProvider = ({ children }) => {
 
     const deleteEvent = useCallback(async (id) => {
         try {
-            await axios.delete(`${config.apiUrl}/events/${id}`);
+            const token = localStorage.getItem('token');
+            await axios.delete(`${config.apiUrl}/events/${id}`, {headers: {Authorization: `Bearer ${token}`}});
             setEvents((prevEvents) => prevEvents.filter(event => event._id !== id));
         } catch (error) {
             console.error('Failed to delete event:', error);
@@ -35,7 +36,8 @@ export const EventsProvider = ({ children }) => {
 
     const updateEvent = useCallback(async (id, updatedEvent) => {
         try {
-            const response = await axios.post(`${config.apiUrl}/events-update/${id}`, updatedEvent);
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`${config.apiUrl}/events-update/${id}`, updatedEvent, {headers: {Authorization: `Bearer ${token}`}});
             // setEvents((prevEvents) => prevEvents.map(event => event._id === id ? response.data : event));
         } catch (error) {
             console.error('Failed to update event:', error);

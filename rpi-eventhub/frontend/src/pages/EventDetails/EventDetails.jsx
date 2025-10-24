@@ -42,10 +42,16 @@ const cvQR = new OpencvQr({
     sw: `${config.apiUrl}/assets/Models/sr.caffemodel`,
 });
 
+const BANNED = 0;
+const UNVERIFIED = 1;
+const VERIFIED = 2;
+const OFFICER = 3;
+const ADMIN = 4;
+
 const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isOwner, setIsOwner] = useState(false);
-    const { manageMode, username } = useAuth();
+    const { manageMode, username, role } = useAuth();
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [error, setError] = useState('');
@@ -69,7 +75,6 @@ const EventDetails = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        poster: '',
         club: '',
         startDateTime: '',
         endDateTime: '',
@@ -216,8 +221,8 @@ const EventDetails = () => {
     // Check if the user is the owner of the event
     useEffect(() => {
         if (event && username) {
-            setIsEditing(manageMode && event.poster === username);
-            setIsOwner(event.poster === username);
+            setIsEditing(manageMode && (event.poster === username || role === ADMIN));
+            setIsOwner(event.poster === username || role === ADMIN);
         }
     }, [manageMode, event, username]);
 
@@ -228,7 +233,6 @@ const EventDetails = () => {
             setFormData({
                 title: event.title || '',
                 description: event.description || '',
-                poster: event.poster || '',
                 club: event.club || '',
                 startDateTime: '',
                 endDateTime: '',
@@ -258,7 +262,6 @@ const EventDetails = () => {
         const submittedFormData = new FormData();
         submittedFormData.append('title', formData.title);
         submittedFormData.append('description', formData.description);
-        submittedFormData.append('poster', formData.poster);
         submittedFormData.append('club', formData.club);
         submittedFormData.append('startDateTime', formData.startDateTime || event.startDateTime);
         submittedFormData.append('endDateTime', formData.endDateTime || event.endDateTime);
@@ -273,9 +276,11 @@ const EventDetails = () => {
         }
 
         try {
+            const token = localStorage.getItem('token');
             const response = await axios.post(`${config.apiUrl}/events-update/${eventId}`, submittedFormData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
                 }
             });
             console.log('Event updated successfully:', response.data);
