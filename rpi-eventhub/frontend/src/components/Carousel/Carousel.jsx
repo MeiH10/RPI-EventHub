@@ -88,13 +88,15 @@ const ImageCarousel = () => {
       onMouseLeave={resetTimer}
       style={{
         backgroundColor: "#AB2328",
-        width: "600px",
-        height: "700px",
-        maxWidth: "90vw",
-        maxHeight: "90vh",
+        width: "100%",
+        maxWidth: "100%",
+        maxHeight: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
       }}
     >
-      <div className="relative w-full flex flex-col items-center">
         <div className="relative flex flex-col justify-center items-center w-4/5 max-w-[500px] h-[600px] mx-auto">
           {isLoading ? (
             <div>
@@ -140,7 +142,6 @@ const ImageCarousel = () => {
             )
           )}
         </div>
-      </div>
     </div>
   );
 };

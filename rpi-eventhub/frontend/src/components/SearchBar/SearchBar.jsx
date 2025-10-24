@@ -5,7 +5,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { useColorScheme } from '../../hooks/useColorScheme';
 import cosineSimilarity from 'cosine-similarity';
 
-const SearchBar = () => {
+const SearchBar = ({ align = 'center', className = '' }) => {
   const navigate = useNavigate();
   const { events, fetchEvents } = useEvents();
   const [searchTerm, setSearchTerm] = useState('');
@@ -67,9 +67,9 @@ const SearchBar = () => {
 
   return (
     <div
-      className={`
-        flex flex-col md:flex-row items-center gap-2 w-full max-w-[600px] mx-auto p-2
-      `}
+      className={`flex flex-col md:flex-row items-center gap-2 w-full max-w-[600px] p-2 ${
+        align === 'left' ? 'self-start' : 'mx-auto'
+      } ${className}`}
     >
       <input
         type="text"
