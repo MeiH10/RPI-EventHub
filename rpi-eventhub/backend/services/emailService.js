@@ -16,19 +16,33 @@ const mailer = nodemailer.createTransport({
 });
 
 
-const sendEmail = async ({ to, subject, text }) => {
-  const mailOptions = {
-    from: process.env.EMAIL_FROM, // Your email address or one authorized by SendGrid
-    to,
-    subject,
-    text,
-  };
+const sendEmail = async (toOrOptions, subject, text) => {
+  let mailOptions;
+  
+  if (typeof toOrOptions === 'object' && toOrOptions !== null) {
+    mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: toOrOptions.to,
+      subject: toOrOptions.subject,
+      text: toOrOptions.text,
+    };
+  } else {
+    mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: toOrOptions,
+      subject: subject,
+      text: text,
+    };
+  }
 
   try {
     await mailer.sendMail(mailOptions);
-    console.log('Email sent successfully');
+    console.log('Email sent successfully to:', mailOptions.to);
+    logger.info(`Email sent successfully to: ${mailOptions.to}`);
   } catch (error) {
     console.error('Failed to send email', error);
+    logger.error(`Failed to send email to ${mailOptions.to}: ${error.message}`);
+    throw error;
   }
 };
 
