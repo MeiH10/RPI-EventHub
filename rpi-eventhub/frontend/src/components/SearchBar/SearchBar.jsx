@@ -67,15 +67,15 @@ const SearchBar = ({ align = 'center', className = '' }) => {
 
   return (
     <div
-      className={`flex flex-col md:flex-row items-center gap-2 w-full max-w-[600px] p-2 ${
+      className={`flex flex-col md:flex-row items-center gap-2 w-full max-w-[800px] p-2 ${
         align === 'left' ? 'self-start' : 'mx-auto'
       } ${className}`}
     >
       <input
         type="text"
         className={`
-          flex-1 h-10 px-4 border border-[#e5f0e2] rounded-md bg-white text-[#2c1a1c]
-          font-[Afacad] 
+          flex-1 h-18 px-4 border border-[#e5f0e2] rounded-md bg-white placeholder:text-[#AB2328]
+          font-[Afacad] text-[200%]
         `}
         placeholder="Search for an event!"
         onChange={handleSearchInputChange}

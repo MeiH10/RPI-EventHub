@@ -97,7 +97,7 @@ const ImageCarousel = () => {
         height: "100%",
       }}
     >
-        <div className="relative flex flex-col justify-center items-center w-4/5 max-w-[500px] h-[600px] mx-auto">
+        <div className="relative flex flex-col justify-center items-center w-4/5 mx-auto">
           {isLoading ? (
             <div>
               <Skeleton variant="rectangular" width={420} height={580} />
@@ -107,7 +107,7 @@ const ImageCarousel = () => {
           ) : (
             events.length > 0 && (
               <div className="flex flex-col justify-center items-center w-full h-full">
-                <div className="w-full max-w-[500px] text-white text-[1.5em] text-center bg-black/50 p-2 px-5 mb-2 rounded-lg">
+                <div className="w-full max-w-[750px] text-white text-[250%] text-center p-2 px-5 mb-2 rounded-lg whitespace-nowrap overflow-hidden text-ellipsis" title={events[activeIndex].caption}>
                   {events[activeIndex].caption}
                 </div>
                 <button
@@ -119,7 +119,7 @@ const ImageCarousel = () => {
                 >
                   <i className="bi bi-chevron-left"></i>
                 </button>
-                <div className="w-full h-full flex justify-center items-center overflow-hidden bg-black/50">
+                <div className="w-[80%] h-full flex justify-center items-center overflow-hidden">
                   <img
                     src={events[activeIndex].src}
                     alt={`Slide ${activeIndex}`}
@@ -135,7 +135,10 @@ const ImageCarousel = () => {
                 >
                   <i className="bi bi-chevron-right"></i>
                 </button>
-                <div className="w-full max-w-[500px] text-white text-[1em] text-center bg-black/50 p-2 px-5 mt-2 rounded-lg font-sans">
+                <div
+                  className="w-full max-w-[750px] text-white text-[1em] text-center p-2 px-5 mt-2 rounded-lg font-sans whitespace-nowrap overflow-hidden text-ellipsis"
+                  title={`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
+                >
                   {`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
                 </div>
               </div>

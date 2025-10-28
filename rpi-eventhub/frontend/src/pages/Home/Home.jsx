@@ -22,22 +22,21 @@ const Home = () => {
       <Navbar />
 
       <div className="flex flex-col lg:flex-row items-center w-full justify-between gap-10 mt-[70px] min-h-[calc(100vh-110px)]">
-        <div className="flex flex-col items-start justify-center w-[120%] p-10 md:p-14 lg:p-16 space-y-6 md:space-y-8">
-          <div className="flex flex-col text-left space-y-2">
-            <div className="pt-8 space-y-2">
-              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold font-Afacad text-[#AB2328] dark:text-white">
+        <div className="flex flex-col items-start justify-center w-[120%] pl-10 md:pl-14 lg:pl-16 space-y-6 md:space-y-8">
+          <div className="flex flex-col text-left">
+              <h1 className="text-[600%] font-bold font-Afacad text-[#AB2328] dark:text-white">
                 All RPI Events,
               </h1>
-              <h1 className="text-5xl md:text-6xl lg:text-[75px] font-bold font-Afacad text-[#AB2328] dark:text-white">
+              <h1 className="text-[600%] font-bold font-Afacad text-[#AB2328] dark:text-white">
                 in one place...
               </h1>
-            </div>
           </div>
+
           <SearchBar align="left" />
 
-          <div className="text-left">
-            <h2 className="text-4xl font-semibold font-Afacad">RPI EventHub</h2>
-            <p className="text-lg md:text-2xl mt-3 font-Afacad">
+          <div className="text-left w-[95%]">
+            <h2 className="text-[350%] font-semibold font-Afacad">RPI EventHub</h2>
+            <p className="text-[200%] font-Afacad">
               A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
             </p>
           </div>
