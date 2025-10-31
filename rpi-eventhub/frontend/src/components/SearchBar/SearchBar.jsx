@@ -75,7 +75,7 @@ const SearchBar = ({ align = 'center', className = '' }) => {
         type="text"
         className={`
           flex-1 h-18 px-4 border border-[#e5f0e2] rounded-md bg-white placeholder:text-[#AB2328]
-          font-[Afacad] text-[200%]
+          font-[Afacad] text-[200%] tracking-wide
         `}
         placeholder="Search for an event!"
         onChange={handleSearchInputChange}
@@ -84,8 +84,8 @@ const SearchBar = ({ align = 'center', className = '' }) => {
       />
       <button
         className={`
-          px-4 py-2 bg-[#AB2328] text-white font-semibold rounded-md border-0 cursor-pointer 
-          transition-colors duration-200 font-[Afacad] hover:bg-red-600
+          px-2 py-1 bg-[#AB2328] text-white font-semibold rounded-md border-0 cursor-pointer 
+          transition-colors duration-200 font-[Afacad] hover:bg-red-600 text-[150%] tracking-wide
         `}
         onClick={handleSearchClick}
       >

@@ -4,6 +4,8 @@ import axios from "axios";
 import { Skeleton } from "@mui/material";
 import config from "../../config";
 import { DateTime } from "luxon";
+import { useColorScheme } from '../../hooks/useColorScheme';
+
 
 const placeholderImage =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
@@ -27,6 +29,8 @@ const ImageCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const intervalRef = useRef(null);
+  const { isDark } = useColorScheme();
+  
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -104,10 +108,10 @@ const ImageCarousel = () => {
               <Skeleton variant="text" width={300} />
               <Skeleton variant="text" width={200} />
             </div>
-          ) : (
+          ) : ( 
             events.length > 0 && (
               <div className="flex flex-col justify-center items-center w-full h-full">
-                <div className="w-full max-w-[750px] text-white text-[250%] text-center p-2 px-5 mb-2 rounded-lg whitespace-nowrap overflow-hidden text-ellipsis" title={events[activeIndex].caption}>
+                <div className={`w-full max-w-[750px] ${isDark ? 'text-[#272727]' : 'text-[#FFFFFF]'} text-[275%] font-bold text-center p-2 px-5 mb-2 rounded-lg whitespace-nowrap overflow-hidden text-ellipsis`}   title={events[activeIndex].caption}>
                   {events[activeIndex].caption}
                 </div>
                 <button
@@ -115,7 +119,7 @@ const ImageCarousel = () => {
                     goToPrev();
                     resetTimer();
                   }}
-                  className="absolute top-1/2 -left-14 transform -translate-y-1/2 cursor-pointer z-10 p-2 text-[50px] text-red-600 bg-transparent border-none hover:scale-110 transition-transform duration-200"
+                  className={`absolute top-1/2 -left-14 transform -translate-y-1/2 cursor-pointer z-10 p-4 text-[56px] font-bold ${isDark ? 'text-[#272727]' : 'text-[#FFFFFF]'}  bg-transparent border-none hover:scale-110 transition-transform duration-200`}
                 >
                   <i className="bi bi-chevron-left"></i>
                 </button>
@@ -131,12 +135,12 @@ const ImageCarousel = () => {
                     goToNext();
                     resetTimer();
                   }}
-                  className="absolute top-1/2 -right-14 transform -translate-y-1/2 cursor-pointer z-10 p-2 text-[50px] text-red-600 bg-transparent border-none hover:scale-110 transition-transform duration-200"
+                  className={`absolute top-1/2 -right-14 transform -translate-y-1/2 cursor-pointer z-10 p-4 text-[56px] font-bold ${isDark ? 'text-[#272727]' : 'text-[#FFFFFF]'}  bg-transparent border-none hover:scale-110 transition-transform duration-200`}
                 >
                   <i className="bi bi-chevron-right"></i>
                 </button>
                 <div
-                  className="w-full max-w-[750px] text-white text-[1em] text-center p-2 px-5 mt-2 rounded-lg font-sans whitespace-nowrap overflow-hidden text-ellipsis"
+                  className={`w-full max-w-[750px] ${isDark ? 'text-[#272727]' : 'text-[#FFFFFF]'}  text-[1.1em] font-bold text-center p-2 px-5 mt-2 rounded-lg font-sans whitespace-nowrap overflow-hidden text-ellipsis`}
                   title={`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
                 >
                   {`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
