@@ -146,8 +146,8 @@ function AllEvents() {
 
     const handleFilterChange = useCallback((newFilters) => {
         setFilters(newFilters);
-        setSelectedTags(newFilters.tags);
-        setSelectedClubs(newFilters.clubs);
+        setSelectedTags(newFilters.tags); //todo add || []
+        setSelectedClubs(newFilters.clubs); //todo add || []
     }, []);
 
     useEffect(() => {
@@ -184,13 +184,13 @@ function AllEvents() {
         }));
     }, [selectedTags]);
 
-    // useEffect(() => {
-    //     // Update the filters object when selectedClubs changes
-    //     setFilters(prevFilters => ({
-    //         ...prevFilters,
-    //         clubs: selectedClubs,
-    //     }));
-    // }, [selectedClubs]);
+    useEffect(() => {
+        // Update the filters object when selectedClubs changes
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            clubs: selectedClubs,
+        }));
+    }, [selectedClubs]);
 
 
     useEffect(() => {

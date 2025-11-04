@@ -21,6 +21,13 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
         }
     }, [externalSelectedTags]);
 
+    useEffect(() => {
+        if (externalSelectedClubs && JSON.stringify(externalSelectedClubs) !== JSON.stringify(selectedClubs)) {
+            setIsExternalUpdate(true);
+            setSelectedClubs(externalSelectedClubs);
+        }
+    }, [externalSelectedClubs]);
+
 
     const handleTagChange = (tag) => {
         setSelectedTags((prev) =>
@@ -59,12 +66,13 @@ function FilterBar({ tags, sortOrder, setSortOrder, sortMethod, setSortMethod, o
         
         onFilterChange({ 
             tags: selectedTags, 
+            clubs: selectedClubs,
             time: selectedTime, 
             postedBy: selectedPostedBy, 
             sortMethod, 
             sortOrder 
         });
-    }, [selectedTags, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange, isExternalUpdate]);
+    }, [selectedTags, selectedClubs, selectedTime, selectedPostedBy, sortMethod, sortOrder, onFilterChange, isExternalUpdate]);
 
 
     const toggleDrawer = () => {
