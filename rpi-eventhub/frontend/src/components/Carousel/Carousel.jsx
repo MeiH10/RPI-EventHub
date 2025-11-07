@@ -140,7 +140,7 @@ const ImageCarousel = () => {
                   <i className="bi bi-chevron-right"></i>
                 </button>
                 <div
-                  className={`w-full max-w-[750px] ${isDark ? 'text-[#272727]' : 'text-[#FFFFFF]'}  text-[1.1em] font-bold text-center p-2 px-5 mt-2 rounded-lg font-sans whitespace-nowrap overflow-hidden text-ellipsis`}
+                  className={`w-full max-w-[750px] ${isDark ? 'text-[#272727]' : 'text-[#FFFFFF]'}  text-[1.1em] font-bold text-center p-2 px-5 mt-2 rounded-lg font-[Afacad] whitespace-nowrap overflow-hidden text-ellipsis`}
                   title={`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}
                 >
                   {`${events[activeIndex].location} - ${events[activeIndex].date} @ ${events[activeIndex].time}`}

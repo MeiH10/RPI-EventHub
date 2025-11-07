@@ -50,8 +50,8 @@ const Home = () => {
       {/* Mobile view */}
       <div className="mt-[70px] flex flex-col gap-10 lg:hidden">
         <section className="px-5  pt-6  flex flex-col items-center">
-          <div className="flex flex-col pb-10 text-center">
-            <h1 align = "center" className="text-[300%] text-[#AB2328] font-bold">
+          <div className="flex flex-col pb-6 text-center font-Afacad">
+            <h1 align = "center" className="text-[300%] text-[#AB2328] dark:text-white font-bold pb-6">
               RPI Eventhub
             </h1>
             <h1 className="font-bold font-Afacad text-[#AB2328] dark:text-white tracking-wider text-4xl">
@@ -62,17 +62,17 @@ const Home = () => {
             </h1>
           </div>
 
-          <SearchBar align="center" className="w-[25%] !max-w-none" />
+          <SearchBar align="center" />
         </section>
 
         <section className="w-full">
           <ImageCarousel />
         </section>
 
-        <section className="px-5 pb-12 flex w-full justify-center">
-          <div className="w-full max-w-[760px] text-center">
-            <h2 className="font-semibold font-Afacad text-2xl sm:text-3xl md:text-[350%] mb-4">About the website...</h2>
-            <p className="font-Afacad tracking-wider text-lg sm:text-xl md:text-[200%]">
+        <section className="px-4 flex w-full justify-center">
+          <div className="w-full max-w-[760px] text-center font-Afacad">
+            <h2 className="font-bold font-Afacad text-[200%] mt-[-10px] mb-4 text-[#AB2328] dark:text-white">About the website...</h2>
+            <p className="font-Afacad tracking-wider text-lg">
               A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
             </p>
           </div>
