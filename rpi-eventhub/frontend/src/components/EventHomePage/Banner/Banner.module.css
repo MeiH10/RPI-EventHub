@@ -19,7 +19,7 @@
 .banner h1 {
     font-family: "Good Times Rg", sans-serif;
     margin-bottom: 30px;
-    color: white;
+    color: #ffffff;
     text-align: center;
 }
 
@@ -57,7 +57,7 @@
 .searchButton {
     background: #E20612;
     border-radius: 15px;
-    color: white;
+    color: #ffffff;
     padding: 10px 20px;
     border: none;
     cursor: pointer;

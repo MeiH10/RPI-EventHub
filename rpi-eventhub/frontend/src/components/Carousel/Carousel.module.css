@@ -80,7 +80,7 @@
   background-color: transparent;
   border: none;
   transition: transform 0.2s ease;
-  color: red;
+  color: #ff0000;
   outline: none;
 }
 

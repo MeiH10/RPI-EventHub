@@ -9,7 +9,7 @@
   width: 80%;
   padding: 0.75rem;
   font-size: 1.2rem;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 4px;
   margin-bottom: 1rem;
 }
@@ -18,7 +18,7 @@
   width: 80%;
   padding: 0.75rem;
   font-size: 1.2rem;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   background-color: rgb(90, 89, 94);
   border-radius: 4px;
   margin-bottom: 1rem;
@@ -35,7 +35,7 @@
 }
 
 .error {
-  color: red;
+  color: #ff0000;
   margin-top: 0.5rem;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .DarkRankDropdown {
-  background-color: rgb(90, 89, 94);
+  background-color: #5a595e;
 }
 
 .userResult {
@@ -54,12 +54,12 @@
   align-items: center;
   justify-content: space-evenly;
   padding: 0.5rem;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #cccccc;
 }
 
 .promoteButton {
   background-color: #4CAF50;
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -68,7 +68,7 @@
 
 .banButton {
   background-color: #f44336;
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -76,7 +76,7 @@
 }
 .saveButton {
   background-color: #029905;
-  color: white;
+  color: #ffffff;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border: none;
@@ -85,17 +85,10 @@
   margin-top: 1rem;
 }
 
-.banButton {
-  background-color: #f44336;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
 .unbanButton {
   background-color: #4CAF50;
-  color: white;
+  color: #ffffff;
   padding: 0.5rem 1rem;
   padding-left: 6px;
   padding-right: 6px;
@@ -111,8 +104,8 @@
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds shadow for dropdown effect */
   z-index: 10;
@@ -124,7 +117,7 @@
   padding: 0.75rem;
   cursor: pointer;
   font-size: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .dropdownItem:last-child {
@@ -137,7 +130,7 @@
 
 .noResult {
   padding: 0.75rem;
-  color: #888;
+  color: #888888;
   font-size: 1rem;
   text-align: center;
 }

@@ -50,7 +50,7 @@ const { sendEmail } = require("./services/emailService");
 const { sendCode } = require("./services/userService");
 const app = express();
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://rpieventhub.com', 'http://localhost:3000'],
+  origin: ['http://localhost:5173','http://localhost:5174', 'https://rpieventhub.com', 'http://localhost:3000'],
   optionsSuccessStatus: 200,
 };
 //#endregion

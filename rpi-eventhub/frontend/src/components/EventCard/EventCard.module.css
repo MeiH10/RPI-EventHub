@@ -143,8 +143,8 @@
 
 .tag.active {
   background-color: #6366f1; 
-  color: white;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.302);
 }
 
 
@@ -184,7 +184,7 @@
   .likeButton {
     background-color: #f0f0f0;
     border: none;
-    color: black;
+    color: #000000;
     padding: 3px 8px;
     font-size: 18px;
     cursor: pointer;
@@ -197,11 +197,11 @@
   }
   .likeButton.liked {
     background-color: #ff5757;
-    color: white;
+    color: #ffffff;
   }
   
   .likeButton:hover {
-    background-color: #ddd;
+    background-color: #dddddd;
   }
   .likeButton.liked:hover {
     background-color: #ff4141;
