@@ -9,6 +9,8 @@ const {
     updateEvent
 } = require('../services/eventService');
 
+const ADMIN = 4;
+
 const Event = require('../models/Event');
 
 
@@ -43,8 +45,9 @@ const getRPIEvents = async (req, res) => {
  */
 const createNewEvent = async (req, res) => {
     try {
-        const { title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
+        const { title, description, startDateTime, endDateTime, location, tags, club, rsvp } = req.body;
         const file = req.file;
+        const poster = req.user.username;
 
         const eventData = {
             title,
@@ -154,8 +157,13 @@ const handleEventLike = async (req, res) => {
 const removeEvent = async (req, res) => {
     try {
         const { id } = req.params;
-        const result = await deleteEvent(id);
-        res.status(200).json(result);
+        const event = await Event.findById(id);
+        if (event.poster == req.user.username || req.user.role === ADMIN) {
+            const result = await deleteEvent(id);
+            res.status(200).json(result);
+        } else {
+            res.status(403).json({message: 'You don\'t have permission for deleting this event'})
+        }
     } catch (error) {
         res.status(500).json({ message: 'Error deleting event', error: error.message });
     }
@@ -192,8 +200,9 @@ const getProxyImage = async (req, res) => {
 const updateEvents = async (req, res) => {
     try {
         const {id} = req.params;
-        const {title, description, poster, startDateTime, endDateTime, location, tags, club, rsvp} = req.body;
+        const {title, description, startDateTime, endDateTime, location, tags, club, rsvp} = req.body;
         const file = req.file;
+        const poster = req.user.username;
 
         const eventData = {
             title,

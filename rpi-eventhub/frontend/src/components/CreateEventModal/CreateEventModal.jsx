@@ -195,7 +195,7 @@ function CreateEventModal() {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('poster', username);
+    // formData.append('poster', username);
     formData.append('file', file); // Attach the file
     console.log(file);
     formData.append('startDateTime', startDateTimeUTC);

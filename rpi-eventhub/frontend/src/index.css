@@ -6,6 +6,26 @@
   font-family: "Italiana";
   src: url('./assets/fonts/Italiana/Italiana-Regular.ttf') format('truetype');
 }
+@font-face {
+  font-family: 'Afacad';
+  src: url('../assets/fonts/Afacad/Afacad-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Afacad';
+  src: url('../assets/fonts/Afacad/Afacad-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Afacad';
+  src: url('../assets/fonts/Afacad/Afacad-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
 
 :root {
   --bg-color: #ffffff;
@@ -17,7 +37,7 @@
     rgba(255, 101, 101, 0.8),
     rgb(255 0 0 / 0%) 70.71%
   ), linear-gradient(127deg, rgba(255, 248, 108, 0.8), rgb(0 255 0 / 0%) 70.71%),
-  linear-gradient(336deg, rgba(66, 66, 255, 0.8), rgb(0 0 255 / 0%) 70.71%);
+  linear-gradient(336deg, purple, rgb(0 0 255 / 0%) 70.71%);
 }
 
 [data-theme='dark'] {
@@ -38,7 +58,7 @@ html, body {
   font-family: "Georgia", "Arial", sans-serif !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
-  background: var(--gradient-bg) !important;
+  background: #F4F1EA !important;
   color: var(--text-color); /* Default text color is black */
   display: flex !important;
   flex-direction: column !important;
@@ -88,3 +108,81 @@ code {
 footer {
   margin-top: auto;
 }
+
+/* FullCalendar styles */
+/* FullCalendar buttons */
+.fc .fc-button,
+.fc .fc-button-primary {
+  background-color: #AB2328;
+  color: #fff;
+  border: none;
+  outline: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+.fc .fc-button:hover,
+.fc .fc-button-primary:hover,
+.fc .fc-button:active,
+.fc .fc-button-primary:active,
+.fc .fc-button.fc-button-active,
+.fc .fc-button-primary.fc-button-active {
+  background-color: #970F14 !important;
+  color: #fff !important;
+  outline: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* FullCalendar title */
+.fc .fc-toolbar-title {
+  font-size: 50px !important;
+  color: black !important;
+  font-family: sans-serif !important;
+  font-weight: bold !important;
+  text-align: center !important;
+}
+[data-theme='dark'] .fc .fc-toolbar-title{
+  color: white !important;
+}
+
+/* FullCalendar borders */
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid,
+.fc-theme-standard .fc-scrollgrid-sync-table,
+.fc-theme-standard .fc-col-header-cell,
+.fc-theme-standard .fc-daygrid-day {
+  border-color: #000 !important;
+  border-width: 4px;
+}
+
+.fc-scrollgrid{
+  border: none !important;
+}
+.fc-theme-standard td:last-child,
+.fc-theme-standard .fc-daygrid-day:last-child {
+  border-right: none !important;
+  border-bottom: none !important;
+}
+.fc-theme-standard th:last-child{
+  border-right: none !important;
+}
+
+/* FullCalendar days of the week */
+.fc-theme-standard .fc-col-header-cell .fc-col-header-cell-cushion {
+  color: black !important;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-align: center;
+
+}
+[data-theme='dark'] .fc-theme-standard .fc-col-header-cell {
+  background: #777777 !important;
+}
+[data-theme='dark'] .fc-theme-standard .fc-col-header-cell .fc-col-header-cell-cushion {
+  color: white !important;
+}
+

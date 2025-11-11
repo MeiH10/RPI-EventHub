@@ -9,7 +9,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const { verifyToken } = require('./controller/userAuthController');
 const { upload } = require('./useful_script/uploadUtils');
-const { authenticate, authenticateAndVerify, authorizeAdmin } = require('./useful_script/userAuthentication');
+const { authenticate, authenticateAndVerify, authorizeOfficer, authorizeAdmin } = require('./useful_script/userAuthentication');
 //#endregion
 
 
@@ -36,6 +36,9 @@ const {
   getAllEvents,
   updateEvents,
 } = require('./controller/eventController');
+const {
+  getRSSFeed,
+} = require('./controller/rssController');
 const { getLogContent } = require('./controller/logController');
 //#endregion
 
@@ -64,16 +67,16 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/rpi-events', getRPIEvents);
 app.post('/events', upload, authenticateAndVerify, createNewEvent);
 app.get('/events', getAllEvents);
-app.delete('/events/:id', removeEvent);
+app.delete('/events/:id', authenticateAndVerify, removeEvent);
 app.get('/proxy/image/:eventId', getProxyImage);
 app.get('/events/:id/like', fetchEventLikes);
 app.get('/events/like/status', authenticate, fetchUserLikedEvents);
 app.post('/events/:id/like', authenticateAndVerify, handleEventLike);
-app.post('/events-update/:id', upload, updateEvents);
+app.post('/events-update/:id', upload, authenticateAndVerify, updateEvents);
 //#endregion
 
 //#region LOG ROUTES
-app.get('/logs/:date', getLogContent);
+app.get('/logs/:date', authenticate, authorizeAdmin, getLogContent);
 //#endregion
 
 //#region USER ROUTES
@@ -92,6 +95,7 @@ app.get('/verify-token', authenticate, verifyToken);
 // The typeofCode is either "signup","reset"
 app.post('/send-code', sendCodeEmail)
 app.use('/assets', express.static(path.join(__dirname, './assets')));
+app.get('/rss/v1', getRSSFeed);
 //#endregion
 
 require('./archiveOldEventsCron');
