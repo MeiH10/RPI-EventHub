@@ -1,7 +1,13 @@
 # SMTP Connection Issue on Railway
 
-## Problem
-SMTP emails are failing in production on Railway with `ETIMEDOUT` errors while working fine locally.
+## ✅ RESOLVED: Switched to SendGrid
+
+**See `SENDGRID_SETUP.md` for setup instructions.**
+
+---
+
+## Original Problem
+SMTP emails were failing in production on Railway with `ETIMEDOUT` errors while working fine locally.
 
 ## Root Cause
 **Railway blocks outbound SMTP ports (465, 587, 2525) on free and hobby plans** for anti-spam reasons. This is a platform-level restriction.
