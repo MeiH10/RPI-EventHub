@@ -1,3 +1,4 @@
+@import "../../Master.css";
 
 .footer a.gitHubURL {
   text-decoration: none;
@@ -6,34 +7,28 @@
 
 
 .footer i {
-  color: white;
+  color: #ffffff;
 }
 
 .footer i:hover {
-  color: white;
-  color: blue;
+  color: #0000ff;
 }
 
 
 .footer a.gitHubURL:hover {
   text-decoration: none;
-  color: blue;
+  color: #0000ff;
 
 }
 
 
-.footerContainer { 
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; 
-}
 
 .pageContent {
   flex-grow: 1; 
 }
 
 .footer {
-  background: #e85635;
+  background: var(--primary-red);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,7 +41,7 @@
 }
 
 .footerText {
-  color: white;
+  color: var(--primary-white);
   font-family: 'Chakra Petch';
   font-size: 15px;
   margin: 0;
