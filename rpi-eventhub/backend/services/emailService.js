@@ -7,26 +7,20 @@ const {logger} = require('../services/eventsLogService');
 
 const mailer = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // Use STARTTLS
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_FROM,
     pass: process.env.SMTP_PASSWORD
   },
-  tls: {
-    ciphers: 'SSLv3',
-    rejectUnauthorized: false
-  },
+  // Add timeouts to fail faster and provide clearer error messages
   connectionTimeout: 10000, // 10 seconds
   greetingTimeout: 10000,
-  socketTimeout: 10000,
-  pool: true, // Use connection pooling
-  maxConnections: 5,
-  maxMessages: 10
+  socketTimeout: 10000
 });
 
 
-const sendEmail = async (toOrOptions, subject, text, retries = 3) => {
+const sendEmail = async (toOrOptions, subject, text) => {
   let mailOptions;
 
   if (typeof toOrOptions === 'object' && toOrOptions !== null) {
@@ -45,29 +39,29 @@ const sendEmail = async (toOrOptions, subject, text, retries = 3) => {
     };
   }
 
-  let lastError;
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      await mailer.sendMail(mailOptions);
-      console.log('Email sent successfully to:', mailOptions.to);
-      logger.info(`Email sent successfully to: ${mailOptions.to}`);
-      return; // Success, exit function
-    } catch (error) {
-      lastError = error;
-      console.error(`Failed to send email (attempt ${attempt}/${retries})`, error);
-      logger.error(`Failed to send email to ${mailOptions.to} (attempt ${attempt}/${retries}): ${error.message}`);
+  try {
+    await mailer.sendMail(mailOptions);
+    console.log('Email sent successfully to:', mailOptions.to);
+    logger.info(`Email sent successfully to: ${mailOptions.to}`);
+  } catch (error) {
+    console.error('Failed to send email', error);
+    logger.error(`Failed to send email to ${mailOptions.to}: ${error.message}`);
 
-      // If not the last attempt, wait before retrying
-      if (attempt < retries) {
-        const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000); // Exponential backoff, max 5s
-        console.log(`Retrying in ${delay}ms...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
+    // Detect Railway SMTP port blocking
+    if (error.code === 'ETIMEDOUT' && error.command === 'CONN') {
+      const detailedError = new Error(
+        'SMTP connection timeout - Railway blocks SMTP ports (465/587) on free/hobby plans. ' +
+        'Solutions: 1) Upgrade to Railway Pro/Enterprise, 2) Use Gmail API, ' +
+        '3) Switch to SendGrid/Postmark, or 4) Deploy on a different platform. ' +
+        'See SMTP_ISSUE_RAILWAY.md for details. Original error: ' + error.message
+      );
+      detailedError.code = error.code;
+      detailedError.originalError = error;
+      throw detailedError;
     }
-  }
 
-  // All retries failed
-  throw lastError;
+    throw error;
+  }
 };
 
 module.exports = { sendEmail };
