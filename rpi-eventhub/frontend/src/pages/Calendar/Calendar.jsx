@@ -211,7 +211,7 @@ const CalendarPage = () => {
             <div className="flex-1 pt-20 px-2 md:px-4">
 
                 <div className="max-w-[1900px] mx-auto">
-                    <h1 className="text-[75px] md:text-[85px] lg:text-[100px] font-bold text-center mt-[-25px] md:mt-[20px] lg:mt-[30px] tracking-wide font-sans text-[#D6001C]">Calendar</h1>
+                    <h1 className="text-[75px] md:text-[85px] lg:text-[100px] font-bold text-center mt-[0px] mb-[20px] md:mb-[0px] md:mt-[20px] lg:mt-[30px] tracking-wide font-sans text-[#D6001C]">Calendar</h1>
                     <div className="text-center mb-2 space-y-2">
                         <div className="flex items-center justify-between w-full">
                             <label className="inline-flex items-center cursor-pointer max-w-[130px]">
