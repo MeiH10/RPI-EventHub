@@ -56,6 +56,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
+    androidTestImplementation(libs.androidx.core)
+    implementation(libs.androidx.junit.ktx)
+    testImplementation(libs.androidx.junit.ktx)
 
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     debugImplementation("androidx.compose.ui:ui-tooling")
