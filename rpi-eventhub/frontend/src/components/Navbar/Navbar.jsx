@@ -56,7 +56,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/"
-                  className={`${getNavLinkClass("/")} ${isDark ? 'text-white' : ''}`}
+                   className={`${getNavLinkClass("/")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
                 >
                   Home
                 </NavLink>
@@ -64,7 +64,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/all-events"
-                  className={`${getNavLinkClass("/all-events")} ${isDark ? 'text-white' : ''}`}
+                   className={`${getNavLinkClass("/all-events")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
                 >
                   Events
                 </NavLink>
@@ -72,7 +72,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/about-us"
-                  className={`${getNavLinkClass("/about-us")} ${isDark ? 'text-white' : ''}`}
+                   className={`${getNavLinkClass("/about-us")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
                 >
                   About
                 </NavLink>
@@ -80,7 +80,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/calendar"
-                  className={`${getNavLinkClass("/calendar")} ${isDark ? 'text-white' : ''}`}
+                   className={`${getNavLinkClass("/calendar")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
                 >
                   Calendar
                 </NavLink>
@@ -88,7 +88,7 @@ const Navbar = () => {
               {(role === ADMIN) && (
                 <li className={isDark ? styles.darkNavItem : styles.navItem}>
                   <NavLink to="/admin" 
-                  className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : ''}`}>
+                   className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}>
                     Admin
                   </NavLink>
                 </li>

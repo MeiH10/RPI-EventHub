@@ -64,11 +64,16 @@
 }
 
 .navLinks {
-  /* color: #ff0000; */
+  color: #D6001C;
   text-decoration: none;
   padding: 0.5rem 1rem;
   border-bottom: 3px solid transparent;
   transition: border-color 0.3s;
+}
+
+/* Respect global theme attribute emitted by the dark mode toggle */
+:global([data-theme='dark']) .navLinks {
+  color: #ffffff;
 }
 
 .navItem {
@@ -91,7 +96,6 @@
 }
 
 .navItem .active {
-  color: #ff0000;
   border: 1px solid #ff0000;
 }
 .darkNavItem {
@@ -113,7 +117,6 @@
 }
 
 .darkNavItem .active {
-  color: #ffff00;
   border: 1px solid #ffff00;
 }
 .navIcon {
