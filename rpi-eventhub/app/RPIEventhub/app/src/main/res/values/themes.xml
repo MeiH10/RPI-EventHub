@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.RPIEventHub" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize base theme later here -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+</resources>
