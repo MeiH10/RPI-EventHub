@@ -20,8 +20,6 @@ const Home = () => {
       data-theme={theme}
     >
       <Navbar />
-
-
       <div className="hidden lg:flex flex-row items-center w-full justify-between gap-10 mt-[70px] lg:min-h-[calc(100vh-110px)]">
         <div className="flex flex-col items-start justify-center w-[120%] pl-20 ">
           <div className="flex flex-col text-left pb-24">
