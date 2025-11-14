@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer';
+import styles from './EventDetails.module.css';
 import { useEvents } from '../../context/EventsContext';
 import RsvpButton from '../../components/RSVPButton/RsvpButton';
 import { DateTime } from 'luxon';
@@ -343,9 +344,9 @@ const EventDetails = () => {
     };
 
     return (
-        <div className='outterContainer' style={{ backgroundColor: '#F4F1EA', fontFamily: 'Afacad, sans-serif' }}>
+        <div className='outterContainer'>
             <Navbar />
-            <div className="eventsDisplayContainer containerFluid container-fluid">
+            <div className={`${styles.eventsDisplayContainer} containerFluid container-fluid`}>
 
                 {isEditing && isOwner ?
                     /* Manage/Edit Event Part*/
@@ -400,7 +401,7 @@ const EventDetails = () => {
 
                                     <div className="col-span-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                                         <div className="col-span-2">
-                                            <label className="block font-medium mb-1 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Title:
                                             </label>
                                             <input
@@ -413,7 +414,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="col-span-2">
-                                            <label className="block font-medium mb-1 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Description:
                                             </label>
                                             <textarea
@@ -421,12 +422,12 @@ const EventDetails = () => {
                                                 value={formData.description}
                                                 onChange={handleChange}
                                                 rows="5"
-                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]"
+                                                className="form-label-text w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600"
                                             ></textarea>
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block font-medium mb-1 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Club/Organization:
                                             </label>
                                             <input
@@ -439,7 +440,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block font-medium mb-1 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Location:
                                             </label>
                                             <input
@@ -452,7 +453,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block font-medium mb-1 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 Start Date Time:
                                             </label>
                                             <input
@@ -467,7 +468,7 @@ const EventDetails = () => {
                                             </span>
                                         </div>
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block font-medium mb-1 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 End Date Time:
                                             </label>
                                             <input
@@ -483,7 +484,7 @@ const EventDetails = () => {
                                         </div>
 
                                         <div className="md:col-span-1 col-span-2">
-                                            <label className="block font-medium mb-1 text-[rgb(44,44,46)] dark:text-[rgb(229,229,234)]">
+                                            <label className="form-label-text block font-medium mb-1">
                                                 RSVP:
                                             </label>
                                             <input
@@ -511,18 +512,17 @@ const EventDetails = () => {
 
                     ) :
                     (
-                        <div className="flex flex-col items-center text-center p-2.5 md:flex-row md:flex-wrap md:justify-center md:p-5">
-                            <div className="md:flex-1 md:mr-5 mb-5 max-w-full min-[992px]:max-w-[600px]">
+                        <div className={styles.container}>
+                            <div className={styles.eventPoster}>
                                 <div className="relative max-w-full">
                                     <img
                                         ref={imageRef}
-                                        src={event.image || 'https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg'}
-                                        alt={event.title}
-                                        className="w-4/5 max-w-[300px] h-auto md:w-full md:max-w-none min-[992px]:max-w-[450px]"
+                                        src={event.image || 'https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg'} alt={event.title}
+                                        className="max-w-full h-auto"
                                         onLoad={(e) => {
                                             setImageSize({
-                                            width: e.target.offsetWidth,
-                                            height: e.target.offsetHeight
+                                                width: e.target.offsetWidth,
+                                                height: e.target.offsetHeight
                                             });
                                         }}
                                     />
@@ -538,16 +538,16 @@ const EventDetails = () => {
                                     )}
                                 </div>
                             </div>
-                            <div className="w-full md:flex-[2] md:ml-[30px] min-[992px]:ml-10 md:text-left">
-                                <h1 className="mb-5">{event.title}</h1>
-                                <p className="mb-2.5 text-left"><strong>About:</strong> {event.description}</p>
-                                <p className="mb-2.5 text-left"><strong>Club/Organization:</strong> {event.club}</p>
-                                <p className="mb-2.5 text-left"><strong>Start:</strong> {eventStartDateTime} @ {eventStartTime}</p>
+                            <div className={styles.eventInfo}>
+                                <h1>{event.title}</h1>
+                                <p><strong>About:</strong> {event.description}</p>
+                                <p><strong>Club/Organization:</strong> {event.club}</p>
+                                <p><strong>Start:</strong> {eventStartDateTime} @ {eventStartTime}</p>
                                 {eventEndDateTime &&
-                                    <p className="mb-2.5 text-left"><strong>End:</strong> {`${eventEndDateTime} @ ${eventEndTime}`}</p>}
-                                <p className="mb-2.5 text-left"><strong>Location:</strong> {event.location || 'Location Unavailable'}</p>
+                                    <p><strong>End:</strong> {`${eventEndDateTime} @ ${eventEndTime}`}</p>}
+                                <p><strong>Location:</strong> {event.location || 'Location Unavailable'}</p>
                                 {event.tags && event.tags.length > 0 && (
-                                    <p className="mb-2.5 text-left"><strong>Tags:</strong> {event.tags.join(', ')}</p>
+                                    <p><strong>Tags:</strong> {event.tags.join(', ')}</p>
                                 )}
                                 {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
                                 <canvas ref={qrcodeCanvasRef} style={{ display: 'none' }}></canvas>
