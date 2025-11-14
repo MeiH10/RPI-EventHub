@@ -15,19 +15,30 @@ const Home = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen h-full max-w-screen flex flex-col ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
-    <Navbar />
-    <div className='flex flex-col lg:flex-row h-full w-full justify-between mt-16'>
-      <div className='flex flex-col justify-between h-full w-full p-10 md:p-14 lg:p-16 space-y-12'>
-          <div className='flex md:flex-col justify-center'>
-            <h1 id="red" className='text-4xl text-center md:text-6xl block md:hidden'>All RPI Events, <br/> in One Place</h1>
-            <h1 id="red" className='text-4xl md:text-6xl hidden md:block'>All RPI Events,</h1>
-            <h1 id="red" className='text-4xl md:text-6xl hidden md:block'>in One Place</h1>
-        </div>
-        <SearchBar />
+    <div
+      className={`min-h-screen h-full max-w-screen flex flex-col ${isDark ? 'bg-[#383838] text-white' : 'bg-[#F4F1EA] text-black'}`}
+      data-theme={theme}
+    >
+      <Navbar />
+      <div className="hidden lg:flex flex-row items-center w-full justify-between gap-10 mt-[70px] lg:min-h-[calc(100vh-110px)]">
+        <div className="flex flex-col items-start justify-center w-[120%] pl-20 ">
+          <div className="flex flex-col text-left pb-24">
+              <h1 className="text-[550%] font-bold font-Afacad text-[#AB2328] dark:text-white tracking-wider">
+                All RPI Events,
+              </h1>
+              <h1 className="text-[550%] font-bold font-Afacad text-[#AB2328] dark:text-white tracking-wider">
+                in one place...
+              </h1>
+          </div>
 
-        <div className='flex justify-center items-center h-full w-full py-2 md:hidden'>
-          <ImageCarousel />
+          <SearchBar align="left" className="w-[75%] !max-w-none" />
+
+          <div className="text-left w-[95%] pt-24">
+            <h2 className="text-[350%] font-semibold font-Afacad">RPI EventHub</h2>
+            <p className="text-[200%] font-Afacad tracking-wider">
+              A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
+            </p>
+          </div>
         </div>
 
         <div>
