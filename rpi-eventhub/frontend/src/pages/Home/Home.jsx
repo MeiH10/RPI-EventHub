@@ -15,7 +15,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen h-full max-w-screen flex flex-col ${isDark ? 'bg-[#120451] text-white' : 'bg-gradient-to-r from-red-400 via-yellow-200 to-blue-400 text-black'}`} data-theme={theme}>
+    <div className={`min-h-screen h-full max-w-screen flex flex-col ${isDark ? 'bg-[#383838] text-white' : 'bg-[#F4f1ea] text-black'}`} data-theme={theme}>
     <Navbar />
     <div className='flex flex-col lg:flex-row h-full w-full justify-between mt-16'>
       <div className='flex flex-col justify-between h-full w-full p-10 md:p-14 lg:p-16 space-y-12'>

@@ -82,7 +82,7 @@
   height: 3px;
   width: 0;
   background: transparent;
-  transition: width 0.7s ease, background-color 0.5s ease;
+  transition: width 0.7s ease, --background-color 0.5s ease;
 }
 
 .navItem:hover:after {
@@ -109,12 +109,12 @@
 }
 .darkNavItem:hover:after {
   width: 100%;
-  background: #ffff00;
+  background: #d6001c;
 }
 
 .darkNavItem .active {
-  color: #ffff00;
-  border: 1px solid #ffff00;
+  color: #d6001c;
+  border: 1px solid #d6001c;
 }
 .navIcon {
   display: none;
