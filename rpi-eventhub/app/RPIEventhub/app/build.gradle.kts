@@ -60,6 +60,12 @@ dependencies {
     implementation(libs.androidx.junit.ktx)
     testImplementation(libs.androidx.junit.ktx)
 
+    // rss parser library
+    implementation("com.prof18.rssparser:rssparser:6.1.1")
+
+    // cache the api responses to the filesystem for eg.. offline use
+    implementation("com.mayakapps.kache:file-kache:2.1.1")
+
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     debugImplementation("androidx.compose.ui:ui-tooling")
 

@@ -14,6 +14,6 @@ val retrofit = Retrofit.Builder()
     .build()
 
 interface RSSFetcherService {
-    @GET("events")
+    @GET("rss/v1")
     suspend fun getEvents() : String
 }
