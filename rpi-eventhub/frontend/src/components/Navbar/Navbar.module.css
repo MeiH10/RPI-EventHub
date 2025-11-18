@@ -12,7 +12,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .darkNavbar {
-  background-color: rgb(61, 45, 45);
+  background-color: #272727; /* Updated dark mode navbar background */
 }
 .navContainer {
   display: flex;
@@ -64,16 +64,28 @@
 }
 
 .navLinks {
-  color: #D6001C;
+  color: #D6001C !important;
   text-decoration: none;
   padding: 0.5rem 1rem;
   border-bottom: 3px solid transparent;
   transition: border-color 0.3s;
+  font-weight: 600;
 }
 
-/* Respect global theme attribute emitted by the dark mode toggle */
+.navLinks:link,
+.navLinks:visited,
+.navLinks:hover,
+.navLinks:active {
+  color: #D6001C !important;
+}
 :global([data-theme='dark']) .navLinks {
-  color: #ffffff;
+  color: #FFFFFF !important;
+}
+:global([data-theme='dark']) .navLinks:link,
+:global([data-theme='dark']) .navLinks:visited,
+:global([data-theme='dark']) .navLinks:hover,
+:global([data-theme='dark']) .navLinks:active {
+  color: #FFFFFF !important;
 }
 
 .navItem {
@@ -101,7 +113,7 @@
 .darkNavItem {
   line-height: 40px;
   margin-right: 1rem;
-  color: white;
+  /* removed color so anchor .navLinks controls */
 }
 .darkNavItem:after {
   content: "";
@@ -117,7 +129,7 @@
 }
 
 .darkNavItem .active {
-  border: 1px solid #ffff00;
+  border: 1px solid #FFFFFF; /* White border for active link in dark mode */
 }
 .navIcon {
   display: none;
@@ -166,7 +178,6 @@
 .drawerItem .navLinks {
   width: 100%;
   padding: 10px;
-  color: white;
   text-decoration: none;
   font-size: 1.2rem;
 }

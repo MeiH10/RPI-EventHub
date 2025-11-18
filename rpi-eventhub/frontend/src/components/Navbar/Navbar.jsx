@@ -56,7 +56,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/"
-                   className={`${getNavLinkClass("/")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
+                  className={getNavLinkClass("/")}
                 >
                   Home
                 </NavLink>
@@ -64,7 +64,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/all-events"
-                   className={`${getNavLinkClass("/all-events")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
+                  className={getNavLinkClass("/all-events")}
                 >
                   Events
                 </NavLink>
@@ -72,7 +72,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/about-us"
-                   className={`${getNavLinkClass("/about-us")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
+                  className={getNavLinkClass("/about-us")}
                 >
                   About
                 </NavLink>
@@ -80,7 +80,7 @@ const Navbar = () => {
               <li className={isDark ? styles.darkNavItem : styles.navItem}>
                 <NavLink
                   to="/calendar"
-                   className={`${getNavLinkClass("/calendar")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}
+                  className={getNavLinkClass("/calendar")}
                 >
                   Calendar
                 </NavLink>
@@ -88,7 +88,7 @@ const Navbar = () => {
               {(role === ADMIN) && (
                 <li className={isDark ? styles.darkNavItem : styles.navItem}>
                   <NavLink to="/admin" 
-                   className={`${getNavLinkClass("/admin")} ${isDark ? 'text-white' : 'text-[#D6001C]'}`}>
+                  className={getNavLinkClass("/admin")}>
                     Admin
                   </NavLink>
                 </li>
@@ -200,7 +200,7 @@ const Navbar = () => {
             {(role === ADMIN) && (
                 <li className={styles.drawerItem}>
                   <NavLink to="/admin" 
-                  className={`${getNavLinkClass("/admin")}`}>
+                  className={getNavLinkClass("/admin")}>
                     Admin
                   </NavLink>
                 </li>

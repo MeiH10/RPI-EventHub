@@ -62,7 +62,7 @@
 }
 
 [data-theme='dark'] {
-  --bg-color: #333333;
+  --bg-color: #272727; /* Updated overall dark background */
   --text-color: #ffffff;
   --button-bg-color: #555555;
   --button-text-color: #ffffff;
