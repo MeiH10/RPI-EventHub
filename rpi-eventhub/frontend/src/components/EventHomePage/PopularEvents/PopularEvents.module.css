@@ -22,7 +22,7 @@
     display: block;
     width: 75%;
     height: 1px;
-    background-color: #000000;
+    background-color: var(--primary-black);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

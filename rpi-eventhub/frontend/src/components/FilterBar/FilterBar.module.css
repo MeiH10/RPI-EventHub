@@ -1,46 +1,46 @@
 :root {
-  --sidebar-bg-color: rgba(171, 35, 40, 1);
-  --border-color: #000;
-  --label-color: #000000;
-  --tags-label-color: #F7F9F9;
-  --tags-label-bg-color: rgba(229, 231, 233 , 0.5);
-  --checkbox-bg-color: #fff;
-  --checkbox-border-color: rgba(119, 119, 119, 1);
-  --checkbox-checked-bg-color: #fff;
-  --checkbox-checked-color: #000;
-  --clear-button-bg-color: white;
-  --clear-button-text-color: black;
-  --clear-button-hover-bg-color: #555;
-  --separator-bg-color: #ffffff;
-  --view-toggle-bg-color: #f0f0f0;
+  --sidebar-bg-color: var(--off-red);
+  --border-color: var(--primary-black);
+  --label-color: var(--primary-black);
+  --tags-label-color: var(--primary-white);
+  --tags-label-bg-color: rgba(229, 231, 233, 0.5);
+  --checkbox-bg-color: var(--primary-white) ;
+  --checkbox-border-color: var(--light-gray);
+  --checkbox-checked-bg-color: var(--primary-white);
+  --checkbox-checked-color: var(--primary-black);
+  --clear-button-bg-color: var(--primary-white);
+  --clear-button-text-color: var(--primary-black);
+  --clear-button-hover-bg-color: #555555;
+  --separator-bg-color: var(--primary-white);
+  --view-toggle-bg-color: var(--primary-white);
   --view-toggle-button-indicator: transparent;
-  --view-toggle-button-active: rgba(214, 0, 28, 1);
-  --sort-option-wrapper: rgba(255, 255, 255, 1);
+  --view-toggle-button-active: var(--primary-red);
+  --sort-option-wrapper: var(--primary-white);
   --sort-container-background: rgba(171, 35, 40, 0.88);
-  --filter-button-text-color: white;
-  --filter-button-border-color: rgba(255, 255, 255, 1);
+  --filter-button-text-color: var(--primary-white);
+  --filter-button-border-color: var(--primary-white);
 }
 
 [data-theme='dark'] {
-  --sidebar-bg-color: rgba(85,85,85,255);
-  --border-color: rgba(98, 98, 98, 1);
-  --label-color: rgba(39, 39, 39, 1);
-  --tags-label-color: rgba(39, 39, 39, 1);
-  --checkbox-bg-color: #333;
-  --checkbox-border-color: rgba(119, 119, 119, 1);
-  --checkbox-checked-bg-color: #444;
-  --checkbox-checked-color: #fff;
-  --clear-button-bg-color: rgba(171, 35, 40, 1);
-  --clear-button-text-color: black;
-  --clear-button-hover-bg-color: #aaa;
-  --separator-bg-color: rgba(39, 39, 39, 1);
-  --view-toggle-bg-color: rgba(171, 35, 40, 1);
-  --view-toggle-button-indicator: rgba(39, 39, 39, 1);
-  --view-toggle-button-active: rgba(214, 0, 28, 1);
-  --sort-option-wrapper: rgba(171, 35, 40, 1);
-  --sort-container-background: rgba(98, 98, 98, 1);
-  --filter-button-text-color: rgba(39, 39, 39, 1);
-  --filter-button-border-color: rgba(119, 119, 119, 1);
+  --sidebar-bg-color: #555555;
+  --border-color: var(--light-mid-gray);
+  --label-color: var(--off-black);
+  --tags-label-color: var(--off-black);
+  --checkbox-bg-color: #var(--off-black);
+  --checkbox-border-color: var(--light-gray);
+  --checkbox-checked-bg-color: var(--dark-gray);
+  --checkbox-checked-color: var(--primary-white);
+  --clear-button-bg-color: var(--off-red);
+  --clear-button-text-color: var(--primary-black);
+  --clear-button-hover-bg-color: var(--light-gray);
+  --separator-bg-color: var(--off-black);
+  --view-toggle-bg-color: var(--off-red);
+  --view-toggle-button-indicator: var(--off-black);
+  --view-toggle-button-active: var(--primary-red);
+  --sort-option-wrapper: var(--off-red);
+  --sort-container-background: var(--light-mid-gray);
+  --filter-button-text-color: var(--off-black);
+  --filter-button-border-color: var(--light-gray);
 }
 
 .viewToggleContainer {
@@ -63,7 +63,7 @@
   cursor: pointer;
   font-size: 20px;
   font-weight: 400;
-  color: #000000;
+  color: var(--primary-black);
   transition: all 0.3s ease;
   background-color: var(--view-toggle-bg-color);
   display: flex;
@@ -74,7 +74,7 @@
 .viewToggleButtonIndicator {
   width: 24px;
   height: 24px;
-  border: 4px solid #777777;
+  border: 4px solid var(--light-gray);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@
 }
 
 .viewToggleButton.active .viewToggleButtonIndicator{
-  border-color: #777777;
+  border-color: var(--light-gray);
 }
 
 .viewToggleButtonIndicatorInner {
@@ -110,7 +110,7 @@
 }
 
 .filterButton {
-  --active-color: #d6001c;
+  --active-color: var(--primary-red);
 
   padding: 4px 0;
   border: none;
@@ -149,15 +149,15 @@
 }
 
 .filterButton.active .filterButtonIndicatorInner {
-  background-color: #d6001c;
+  background-color: var(--primary-red);
 }
 
 .dark .viewToggleButton {
-    color: #000000;
+    color: var(--primary-black);
 }
 
 .dark .viewToggleButton.active {
-    color: #000000;
+    color: var(--primary-black);
 }
 
 .sidebar {
@@ -243,7 +243,7 @@
   /* change the border color */
   border: 2px solid transparent;
   border-width: 0 0 3px 3px;
-  border-color: #000000;
+  border-color: var(--primary-black);
   opacity: 0;
   transition: all 0.3s ease-in-out;
 }
@@ -408,7 +408,7 @@ label {
 }
 
 .sortOptionWrapper {
-  border: 1px solid #ffffff;
+  border: 1px solid var(--primary-white);
   border-radius: 10px;
   padding: 10px 15px;
   margin-bottom: 15px;
@@ -416,7 +416,7 @@ label {
 }
 
 .sortContainer label {
-  color:#000000;
+  color:var(--primary-black);
   margin: 0;
   font-size: 1.3rem;
 }
@@ -446,7 +446,7 @@ label {
 
 .changeButton:hover {
   background-color: var(--clear-button-hover-bg-color);
-  color: #ffffff;
+  color: var(--primary-white);
 }
 
 .changeButton i {

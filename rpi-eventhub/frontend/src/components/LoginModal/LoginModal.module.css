@@ -1,24 +1,24 @@
 :root {
-  --modal-bg-color: #fff;
-  --modal-border-color: #000;
-  --modal-title-color: #000;
-  --modal-text-color: #000;
-  --form-control-bg-color: #fff;
+  --modal-bg-color: var(--primary-white)
+  --modal-border-color: var(--primary-black);
+  --modal-title-color: var(--primary-black);
+  --modal-text-color: var(--primary-black);
+  --form-control-bg-color: var(--primary-white);
   --form-control-border-color: #ced4da;
-  --form-control-placeholder-color: #888; /* Placeholder color for light theme */
+  --form-control-placeholder-color: var(--light-gray); /* Placeholder color for light theme */
   --button-primary-bg-color: #007bff;
   --button-secondary-bg-color: #6c757d;
   --alert-danger-bg-color: #f8d7da;
 }
 
 [data-theme='dark'] {
-  --modal-bg-color: #333;
-  --modal-border-color: #fff;
-  --modal-title-color: #fff;
-  --modal-text-color: #fff;
-  --form-control-bg-color: #555;
-  --form-control-border-color: #666;
-  --form-control-placeholder-color: #ccc; /* Placeholder color for dark theme */
+  --modal-bg-color: #333333;
+  --modal-border-color: var(--primary-white);
+  --modal-title-color: var(--primary-white);
+  --modal-text-color: var(--primary-white);
+  --form-control-bg-color: #555555;
+  --form-control-border-color: #666666;
+  --form-control-placeholder-color: var(--primary-white); /* Placeholder color for dark theme */
   --button-primary-bg-color: #0056b3;
   --button-secondary-bg-color: #494949;
   --alert-danger-bg-color: #721c24;
@@ -62,7 +62,7 @@
 }
 
 .textDanger {
-  color: red !important;
+  color: var(--primary-red) !important;
 }
 
 .formControl {
@@ -91,12 +91,12 @@
 
 .buttonPrimary {
   background-color: var(--button-primary-bg-color) !important;
-  color: #fff !important;
+  color: var(--primary-white)!important;
 }
 
 .buttonSecondary {
   background-color: var(--button-secondary-bg-color) !important;
-  color: #fff !important;
+  color: var(--primary-white)!important;
 }
 
 .alert {

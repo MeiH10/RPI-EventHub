@@ -1,0 +1,699 @@
+
+src/Master.css
+  2:22  ✖  Expected "#FFFFFF" to be "#FFF"  color-hex-length
+  4:22  ✖  Expected "#000000" to be "#000"  color-hex-length
+  7:18  ✖  Expected "#777777" to be "#777"  color-hex-length
+
+src/index.css
+    1:1   ✖  Unexpected unknown at-rule "@tailwind"                                                                       at-rule-no-unknown
+    2:1   ✖  Unexpected unknown at-rule "@tailwind"                                                                       at-rule-no-unknown
+    3:1   ✖  Unexpected unknown at-rule "@tailwind"                                                                       at-rule-no-unknown
+    4:1   ✖  Expected empty line before comment                                                                           comment-empty-line-before
+    6:16  ✖  Unexpected quotes around "Italiana"                                                                          font-family-name-quotes
+    9:1   ✖  Expected empty line before at-rule                                                                           at-rule-empty-line-before
+   10:16  ✖  Unexpected quotes around "Afacad"                                                                            font-family-name-quotes
+   17:16  ✖  Unexpected quotes around "Afacad"                                                                            font-family-name-quotes
+   24:16  ✖  Unexpected quotes around "Afacad"                                                                            font-family-name-quotes
+   37:5   ✖  Expected "rgba" to be "rgb"                                                                                  color-function-alias-notation
+   37:5   ✖  Expected modern color-function notation                                                                      color-function-notation
+   37:25  ✖  Expected "0.8" to be "80%"                                                                                   alpha-value-notation
+   39:30  ✖  Expected "rgba" to be "rgb"                                                                                  color-function-alias-notation
+   39:30  ✖  Expected modern color-function notation                                                                      color-function-notation
+   39:50  ✖  Expected "0.8" to be "80%"                                                                                   alpha-value-notation
+   50:5   ✖  Expected "rgba" to be "rgb"                                                                                  color-function-alias-notation
+   52:30  ✖  Expected "rgba" to be "rgb"                                                                                  color-function-alias-notation
+   53:27  ✖  Expected "rgba" to be "rgb"                                                                                  color-function-alias-notation
+   58:16  ✖  Unexpected quotes around "Georgia"                                                                           font-family-name-quotes
+   58:27  ✖  Unexpected quotes around "Arial"                                                                             font-family-name-quotes
+   80:1   ✖  Expected class selector ".containerFluid" to be kebab-case                                                   selector-class-pattern
+   85:1   ✖  Expected class selector ".outterContainer" to be kebab-case                                                  selector-class-pattern
+   95:18  ✖  Unexpected unit                                                                                              length-zero-no-unit
+  113:1   ✖  Expected empty line before comment                                                                           comment-empty-line-before
+  123:1   ✖  Expected empty line before rule                                                                              rule-empty-line-before
+  144:1   ✖  Expected empty line before rule                                                                              rule-empty-line-before
+  159:1   ✖  Expected selector ".fc-scrollgrid" to come before selector ".fc-theme-standard .fc-scrollgrid", at line 149  no-descending-specificity
+  162:1   ✖  Expected empty line before rule                                                                              rule-empty-line-before
+  167:1   ✖  Expected empty line before rule                                                                              rule-empty-line-before
+  182:1   ✖  Expected empty line before rule                                                                              rule-empty-line-before
+  185:1   ✖  Expected empty line before rule                                                                              rule-empty-line-before
+
+src/components/App/App.css
+  1:1  ✖  Unexpected empty source  no-empty-source
+
+src/components/AdminSearch/AdminSearch.module.css
+    1:1   ✖  Expected class selector ".searchContainer" to be kebab-case   selector-class-pattern
+    8:1   ✖  Expected class selector ".searchInput" to be kebab-case       selector-class-pattern
+   17:1   ✖  Expected class selector ".DarkSearchInput" to be kebab-case   selector-class-pattern
+   22:21  ✖  Expected modern color-function notation                       color-function-notation
+   27:1   ✖  Expected class selector ".searchButton" to be kebab-case      selector-class-pattern
+   42:1   ✖  Expected class selector ".resultsContainer" to be kebab-case  selector-class-pattern
+   48:1   ✖  Expected class selector ".DarkRankDropdown" to be kebab-case  selector-class-pattern
+   52:1   ✖  Expected class selector ".userResult" to be kebab-case        selector-class-pattern
+   60:1   ✖  Expected class selector ".promoteButton" to be kebab-case     selector-class-pattern
+   69:1   ✖  Expected class selector ".banButton" to be kebab-case         selector-class-pattern
+   77:1   ✖  Expected empty line before rule                               rule-empty-line-before
+   77:1   ✖  Expected class selector ".saveButton" to be kebab-case        selector-class-pattern
+   89:1   ✖  Expected class selector ".unbanButton" to be kebab-case       selector-class-pattern
+  110:25  ✖  Expected "rgba" to be "rgb"                                   color-function-alias-notation
+  110:25  ✖  Expected modern color-function notation                       color-function-notation
+  110:39  ✖  Expected "0.1" to be "10%"                                    alpha-value-notation
+  116:1   ✖  Expected class selector ".dropdownItem" to be kebab-case      selector-class-pattern
+  123:1   ✖  Expected class selector ".dropdownItem" to be kebab-case      selector-class-pattern
+  127:1   ✖  Expected class selector ".dropdownItem" to be kebab-case      selector-class-pattern
+  131:1   ✖  Expected class selector ".noResult" to be kebab-case          selector-class-pattern
+  138:1   ✖  Expected class selector ".roleControl" to be kebab-case       selector-class-pattern
+
+src/components/Carousel/Carousel.module.css
+    9:1   ✖  Expected class selector ".mainImage" to be kebab-case                                    selector-class-pattern
+   21:1   ✖  Expected class selector ".carouselCard" to be kebab-case                                 selector-class-pattern
+   30:1   ✖  Expected class selector ".imgContainer" to be kebab-case                                 selector-class-pattern
+   37:21  ✖  Expected "rgba" to be "rgb"                                                              color-function-alias-notation
+   37:21  ✖  Expected modern color-function notation                                                  color-function-notation
+   37:35  ✖  Expected "0.5" to be "50%"                                                               alpha-value-notation
+   40:1   ✖  Expected class selector ".imgContainer" to be kebab-case                                 selector-class-pattern
+   46:1   ✖  Expected class selector ".captionAbove" to be kebab-case                                 selector-class-pattern
+   52:21  ✖  Expected "rgba" to be "rgb"                                                              color-function-alias-notation
+   52:21  ✖  Expected modern color-function notation                                                  color-function-notation
+   52:35  ✖  Expected "0.5" to be "50%"                                                               alpha-value-notation
+   58:1   ✖  Expected class selector ".captionBelow" to be kebab-case                                 selector-class-pattern
+   64:21  ✖  Expected "rgba" to be "rgb"                                                              color-function-alias-notation
+   64:21  ✖  Expected modern color-function notation                                                  color-function-notation
+   64:35  ✖  Expected "0.5" to be "50%"                                                               alpha-value-notation
+   67:16  ✖  Unexpected quotes around "Arial"                                                         font-family-name-quotes
+   71:1   ✖  Expected class selector ".nextButton" to be kebab-case                                   selector-class-pattern
+   72:1   ✖  Expected class selector ".prevButton" to be kebab-case                                   selector-class-pattern
+   87:1   ✖  Expected class selector ".nextButton" to be kebab-case                                   selector-class-pattern
+   88:1   ✖  Expected class selector ".prevButton" to be kebab-case                                   selector-class-pattern
+   92:1   ✖  Expected class selector ".nextButton" to be kebab-case                                   selector-class-pattern
+   93:1   ✖  Expected class selector ".prevButton" to be kebab-case                                   selector-class-pattern
+   97:1   ✖  Expected selector ".nextButton" to come before selector ".nextButton:hover", at line 87  no-descending-specificity
+   97:1   ✖  Expected class selector ".nextButton" to be kebab-case                                   selector-class-pattern
+  101:1   ✖  Expected selector ".prevButton" to come before selector ".prevButton:hover", at line 87  no-descending-specificity
+  101:1   ✖  Expected class selector ".prevButton" to be kebab-case                                   selector-class-pattern
+  106:19  ✖  Expected "context" media feature range notation                                          media-feature-range-notation
+  107:3   ✖  Expected class selector ".mainImage" to be kebab-case                                    selector-class-pattern
+  111:3   ✖  Expected class selector ".captionAbove" to be kebab-case                                 selector-class-pattern
+  116:3   ✖  Expected class selector ".captionBelow" to be kebab-case                                 selector-class-pattern
+
+src/components/DarkMode/DarkMode.module.css
+  25:3   ✖  Expected class selector ".checkedTrack" to be kebab-case        selector-class-pattern
+  29:3   ✖  Expected class selector ".trackIcon" to be kebab-case           selector-class-pattern
+  42:3   ✖  Expected class selector ".trackIconChecked" to be kebab-case    selector-class-pattern
+  46:3   ✖  Expected class selector ".trackIconUnchecked" to be kebab-case  selector-class-pattern
+  51:5   ✖  Unexpected duplicate "transition"                               declaration-block-no-duplicate-properties
+  64:3   ✖  Expected class selector ".checkedThumb" to be kebab-case        selector-class-pattern
+  69:3   ✖  Expected class selector ".focusThumb" to be kebab-case          selector-class-pattern
+  70:18  ✖  Unexpected unit                                                 length-zero-no-unit
+  70:22  ✖  Unexpected unit                                                 length-zero-no-unit
+  73:3   ✖  Expected class selector ".activeThumb" to be kebab-case         selector-class-pattern
+  74:18  ✖  Unexpected unit                                                 length-zero-no-unit
+  74:22  ✖  Unexpected unit                                                 length-zero-no-unit
+
+src/components/EventCard/EventCard.module.css
+    5:31  ✖  Expected "rgba" to be "rgb"                                 color-function-alias-notation
+    5:31  ✖  Expected modern color-function notation                     color-function-notation
+    5:45  ✖  Expected "0.2" to be "20%"                                  alpha-value-notation
+    6:25  ✖  Expected "rgba" to be "rgb"                                 color-function-alias-notation
+    6:25  ✖  Expected modern color-function notation                     color-function-notation
+    6:39  ✖  Expected "0.5" to be "50%"                                  alpha-value-notation
+   20:31  ✖  Expected "rgba" to be "rgb"                                 color-function-alias-notation
+   21:5   ✖  Unexpected duplicate "--hover-box-shadow-color"             declaration-block-no-duplicate-custom-properties
+   21:31  ✖  Expected "rgba" to be "rgb"                                 color-function-alias-notation
+   21:31  ✖  Expected modern color-function notation                     color-function-notation
+   21:48  ✖  Expected "0.5" to be "50%"                                  alpha-value-notation
+   32:3   ✖  Expected class selector ".eventWrapper" to be kebab-case    selector-class-pattern
+   50:3   ✖  Expected class selector ".eventWrapper" to be kebab-case    selector-class-pattern
+   52:5   ✖  Expected empty line before comment                          comment-empty-line-before
+   55:3   ✖  Expected class selector ".imageContainer" to be kebab-case  selector-class-pattern
+   62:3   ✖  Expected class selector ".imageContainer" to be kebab-case  selector-class-pattern
+   84:3   ✖  Expected class selector ".imageContainer" to be kebab-case  selector-class-pattern
+   88:3   ✖  Expected class selector ".overlayLink" to be kebab-case     selector-class-pattern
+   93:3   ✖  Expected class selector ".overlayLink" to be kebab-case     selector-class-pattern
+   97:3   ✖  Expected class selector ".eventDetails" to be kebab-case    selector-class-pattern
+  108:3   ✖  Expected class selector ".eventDetails" to be kebab-case    selector-class-pattern
+  114:3   ✖  Expected class selector ".eventDetails" to be kebab-case    selector-class-pattern
+  142:25  ✖  Expected "rgba" to be "rgb"                                 color-function-alias-notation
+  142:25  ✖  Expected modern color-function notation                     color-function-notation
+  142:39  ✖  Expected "0.2" to be "20%"                                  alpha-value-notation
+  150:25  ✖  Expected "rgba" to be "rgb"                                 color-function-alias-notation
+  150:25  ✖  Expected modern color-function notation                     color-function-notation
+  150:44  ✖  Expected "0.302" to be "30.2%"                              alpha-value-notation
+  165:3   ✖  Expected class selector ".deleteButton" to be kebab-case    selector-class-pattern
+  174:5   ✖  Unexpected shorthand "margin" after "margin-top"            declaration-block-no-shorthand-property-overrides
+  177:3   ✖  Expected class selector ".deleteButton" to be kebab-case    selector-class-pattern
+  180:3   ✖  Expected empty line before rule                             rule-empty-line-before
+  180:3   ✖  Expected class selector ".likeContainer" to be kebab-case   selector-class-pattern
+  187:3   ✖  Expected empty line before rule                             rule-empty-line-before
+  187:3   ✖  Expected class selector ".likeButton" to be kebab-case      selector-class-pattern
+  201:3   ✖  Expected empty line before rule                             rule-empty-line-before
+  201:3   ✖  Expected class selector ".likeButton" to be kebab-case      selector-class-pattern
+  206:3   ✖  Expected class selector ".likeButton" to be kebab-case      selector-class-pattern
+  207:23  ✖  Expected "#dddddd" to be "#ddd"                             color-hex-length
+  209:3   ✖  Expected empty line before rule                             rule-empty-line-before
+  209:3   ✖  Expected class selector ".likeButton" to be kebab-case      selector-class-pattern
+  212:3   ✖  Expected empty line before at-rule                          at-rule-empty-line-before
+  212:10  ✖  Expected "context" media feature range notation             media-feature-range-notation
+  213:5   ✖  Expected class selector ".likeButton" to be kebab-case      selector-class-pattern
+
+src/components/CreateEventModal/CreateEventModal.module.css
+   22:28  ✖  Expected "#444444" to be "#444"                                  color-hex-length
+   23:32  ✖  Expected "#666666" to be "#666"                                  color-hex-length
+   35:1   ✖  Expected class selector ".modalHeader" to be kebab-case          selector-class-pattern
+   44:1   ✖  Expected class selector ".modalTitle" to be kebab-case           selector-class-pattern
+   49:1   ✖  Expected class selector ".modalBody" to be kebab-case            selector-class-pattern
+   55:1   ✖  Expected class selector ".modalFooter" to be kebab-case          selector-class-pattern
+   61:1   ✖  Expected class selector ".formGroup" to be kebab-case            selector-class-pattern
+   65:1   ✖  Expected class selector ".formLabel" to be kebab-case            selector-class-pattern
+   71:1   ✖  Expected class selector ".textDanger" to be kebab-case           selector-class-pattern
+   75:1   ✖  Expected class selector ".formControl" to be kebab-case          selector-class-pattern
+   85:1   ✖  Expected class selector ".formControl" to be kebab-case          selector-class-pattern
+   89:1   ✖  Expected class selector ".formControlTextarea" to be kebab-case  selector-class-pattern
+  102:1   ✖  Expected class selector ".buttonPrimary" to be kebab-case        selector-class-pattern
+  107:1   ✖  Expected class selector ".buttonSecondary" to be kebab-case      selector-class-pattern
+  116:1   ✖  Expected class selector ".alertSuccess" to be kebab-case         selector-class-pattern
+  121:1   ✖  Expected class selector ".alertDanger" to be kebab-case          selector-class-pattern
+  126:1   ✖  Expected class selector ".suggestedTags" to be kebab-case        selector-class-pattern
+  130:1   ✖  Expected class selector ".suggestedTagButton" to be kebab-case   selector-class-pattern
+  138:1   ✖  Expected class selector ".suggestedTagButton" to be kebab-case   selector-class-pattern
+  143:1   ✖  Expected class selector ".fileDropArea" to be kebab-case         selector-class-pattern
+  155:1   ✖  Expected class selector ".fileFormLabel" to be kebab-case        selector-class-pattern
+  160:1   ✖  Expected class selector ".fileFormLabelButton" to be kebab-case  selector-class-pattern
+
+src/components/FilterBar/FilterBar.module.css
+    6:26  ✖  Expected "rgba" to be "rgb"                                                                   color-function-alias-notation
+    6:26  ✖  Expected modern color-function notation                                                       color-function-notation
+    6:46  ✖  Expected "0.5" to be "50%"                                                                    alpha-value-notation
+   13:34  ✖  Expected "#555555" to be "#555"                                                               color-hex-length
+   19:32  ✖  Expected "rgba" to be "rgb"                                                                   color-function-alias-notation
+   19:32  ✖  Expected modern color-function notation                                                       color-function-notation
+   19:50  ✖  Expected "0.88" to be "88%"                                                                   alpha-value-notation
+   25:23  ✖  Expected "#555555" to be "#555"                                                               color-hex-length
+   46:1   ✖  Expected class selector ".viewToggleContainer" to be kebab-case                               selector-class-pattern
+   49:16  ✖  Unexpected unknown value "left" for property "align-items"                                    declaration-property-value-no-unknown
+   59:1   ✖  Expected class selector ".viewToggleButton" to be kebab-case                                  selector-class-pattern
+   62:3   ✖  Unexpected duplicate "background-color"                                                       declaration-block-no-duplicate-properties
+   74:1   ✖  Expected class selector ".viewToggleButtonIndicator" to be kebab-case                         selector-class-pattern
+   86:1   ✖  Expected class selector ".viewToggleButton" to be kebab-case                                  selector-class-pattern
+   86:26  ✖  Expected class selector ".viewToggleButtonIndicator" to be kebab-case                         selector-class-pattern
+   90:1   ✖  Expected class selector ".viewToggleButtonIndicatorInner" to be kebab-case                    selector-class-pattern
+   98:1   ✖  Expected class selector ".viewToggleButton" to be kebab-case                                  selector-class-pattern
+   98:26  ✖  Expected class selector ".viewToggleButtonIndicatorInner" to be kebab-case                    selector-class-pattern
+  102:1   ✖  Expected class selector ".toggleGroupContainer" to be kebab-case                              selector-class-pattern
+  105:16  ✖  Unexpected unknown value "left" for property "align-items"                                    declaration-property-value-no-unknown
+  112:1   ✖  Expected class selector ".filterButton" to be kebab-case                                      selector-class-pattern
+  127:3   ✖  Expected "word-wrap" to be "overflow-wrap"                                                    property-no-deprecated
+  128:15  ✖  Unexpected deprecated keyword "break-word" for property "word-break"                          declaration-property-value-keyword-no-deprecated
+  131:1   ✖  Expected class selector ".filterButtonIndicator" to be kebab-case                             selector-class-pattern
+  143:1   ✖  Expected class selector ".filterButtonIndicatorInner" to be kebab-case                        selector-class-pattern
+  151:1   ✖  Expected class selector ".filterButton" to be kebab-case                                      selector-class-pattern
+  151:22  ✖  Expected class selector ".filterButtonIndicatorInner" to be kebab-case                        selector-class-pattern
+  155:7   ✖  Expected class selector ".viewToggleButton" to be kebab-case                                  selector-class-pattern
+  159:7   ✖  Expected class selector ".viewToggleButton" to be kebab-case                                  selector-class-pattern
+  167:3   ✖  Expected empty line before comment                                                            comment-empty-line-before
+  175:3   ✖  Expected empty line before comment                                                            comment-empty-line-before
+  175:5   ✖  Expected whitespace after "/*"                                                                comment-whitespace-inside
+  179:3   ✖  Expected shorthand property "overflow"                                                        declaration-block-no-redundant-longhand-properties
+  183:1   ✖  Expected class selector ".filterSection" to be kebab-case                                     selector-class-pattern
+  189:1   ✖  Expected class selector ".filterSection" to be kebab-case                                     selector-class-pattern
+  194:1   ✖  Expected class selector ".filterBarTags" to be kebab-case                                     selector-class-pattern
+  208:1   ✖  Expected class selector ".checkboxWrapper" to be kebab-case                                   selector-class-pattern
+  216:1   ✖  Expected class selector ".filterSection" to be kebab-case                                     selector-class-pattern
+  218:3   ✖  Unexpected vendor-prefixed property "-webkit-appearance"                                      property-no-vendor-prefix
+  220:3   ✖  Expected empty line before comment                                                            comment-empty-line-before
+  225:21  ✖  Expected "rgba" to be "rgb"                                                                   color-function-alias-notation
+  225:21  ✖  Expected modern color-function notation                                                       color-function-notation
+  225:41  ✖  Expected "1" to be "100%"                                                                     alpha-value-notation
+  234:49  ✖  Expected whitespace before "*/"                                                               comment-whitespace-inside
+  235:1   ✖  Expected class selector ".filterSection" to be kebab-case                                     selector-class-pattern
+  243:3   ✖  Expected empty line before comment                                                            comment-empty-line-before
+  251:1   ✖  Expected class selector ".filterSection" to be kebab-case                                     selector-class-pattern
+  252:11  ✖  Unexpected unknown value "px" for property "height"                                           declaration-property-value-no-unknown
+  264:3   ✖  Expected "word-wrap" to be "overflow-wrap"                                                    property-no-deprecated
+  265:15  ✖  Unexpected deprecated keyword "break-word" for property "word-break"                          declaration-property-value-keyword-no-deprecated
+  271:1   ✖  Expected class selector ".clearButton" to be kebab-case                                       selector-class-pattern
+  282:1   ✖  Expected class selector ".clearButton" to be kebab-case                                       selector-class-pattern
+  286:1   ✖  Expected class selector ".drawerToggleBtn" to be kebab-case                                   selector-class-pattern
+  304:8   ✖  Expected "context" media feature range notation                                               media-feature-range-notation
+  323:3   ✖  Expected class selector ".drawerToggleBtn" to be kebab-case                                   selector-class-pattern
+  328:3   ✖  Expected class selector ".filterBarTags" to be kebab-case                                     selector-class-pattern
+  332:3   ✖  Expected class selector ".checkboxWrapper" to be kebab-case                                   selector-class-pattern
+  342:3   ✖  Expected class selector ".sortContainer" to be kebab-case                                     selector-class-pattern
+  347:3   ✖  Expected class selector ".changeButton" to be kebab-case                                      selector-class-pattern
+  351:3   ✖  Expected class selector ".clearButton" to be kebab-case                                       selector-class-pattern
+  358:1   ✖  Expected class selector ".iconWrapper" to be kebab-case                                       selector-class-pattern
+  364:1   ✖  Expected class selector ".filterIcon" to be kebab-case                                        selector-class-pattern
+  364:14  ✖  Expected class selector ".closeIcon" to be kebab-case                                         selector-class-pattern
+  373:1   ✖  Expected class selector ".iconOpen" to be kebab-case                                          selector-class-pattern
+  373:11  ✖  Expected class selector ".filterIcon" to be kebab-case                                        selector-class-pattern
+  378:1   ✖  Expected class selector ".iconOpen" to be kebab-case                                          selector-class-pattern
+  378:11  ✖  Expected class selector ".closeIcon" to be kebab-case                                         selector-class-pattern
+  383:1   ✖  Expected selector ".filterIcon" to come before selector ".iconOpen .filterIcon", at line 373  no-descending-specificity
+  383:1   ✖  Expected class selector ".filterIcon" to be kebab-case                                        selector-class-pattern
+  388:1   ✖  Expected selector ".closeIcon" to come before selector ".iconOpen .closeIcon", at line 378    no-descending-specificity
+  388:1   ✖  Expected class selector ".closeIcon" to be kebab-case                                         selector-class-pattern
+  394:1   ✖  Expected class selector ".filterContainer" to be kebab-case                                   selector-class-pattern
+  403:1   ✖  Expected class selector ".sortContainer" to be kebab-case                                     selector-class-pattern
+  410:1   ✖  Expected class selector ".sortOptionWrapper" to be kebab-case                                 selector-class-pattern
+  418:1   ✖  Expected class selector ".sortContainer" to be kebab-case                                     selector-class-pattern
+  424:1   ✖  Expected class selector ".sortContainer" to be kebab-case                                     selector-class-pattern
+  436:1   ✖  Expected class selector ".changeButton" to be kebab-case                                      selector-class-pattern
+  437:12  ✖  Expected "10px 10px" to be "10px"                                                             shorthand-property-no-redundant-values
+  447:1   ✖  Expected class selector ".changeButton" to be kebab-case                                      selector-class-pattern
+  452:1   ✖  Expected class selector ".changeButton" to be kebab-case                                      selector-class-pattern
+  459:1   ✖  Expected class selector ".changeButton" to be kebab-case                                      selector-class-pattern
+
+src/components/Footer/Footer.module.css
+   1:9   ✖  Expected ""../../Master.css"" to be "url("../../Master.css")"  import-notation
+   3:10  ✖  Expected class selector ".gitHubURL" to be kebab-case          selector-class-pattern
+  14:10  ✖  Expected "#0000ff" to be "#00f"                                color-hex-length
+  18:10  ✖  Expected class selector ".gitHubURL" to be kebab-case          selector-class-pattern
+  20:10  ✖  Expected "#0000ff" to be "#00f"                                color-hex-length
+  26:1   ✖  Expected class selector ".pageContent" to be kebab-case        selector-class-pattern
+  43:1   ✖  Expected class selector ".footerText" to be kebab-case         selector-class-pattern
+  45:16  ✖  Unexpected missing generic font family                         font-family-no-missing-generic-family-keyword
+  49:1   ✖  Expected empty line before rule                                rule-empty-line-before
+  49:1   ✖  Expected class selector ".flexItem" to be kebab-case           selector-class-pattern
+
+src/components/EventPosterOnly/EventPoster.module.css
+   8:1   ✖  Expected class selector ".eventsDisplayContainer" to be kebab-case  selector-class-pattern
+  19:1   ✖  Expected class selector ".eventPosterContainer" to be kebab-case    selector-class-pattern
+  25:25  ✖  Expected "rgba" to be "rgb"                                         color-function-alias-notation
+  25:25  ✖  Expected modern color-function notation                             color-function-notation
+  25:39  ✖  Expected "0.1" to be "10%"                                          alpha-value-notation
+  28:1   ✖  Expected class selector ".eventPosterImg" to be kebab-case          selector-class-pattern
+  36:1   ✖  Expected class selector ".eventPosterDetails" to be kebab-case      selector-class-pattern
+  42:15  ✖  Expected "rgba" to be "rgb"                                         color-function-alias-notation
+  42:15  ✖  Expected modern color-function notation                             color-function-notation
+  42:29  ✖  Expected "0.5" to be "50%"                                          alpha-value-notation
+  54:1   ✖  Expected class selector ".eventPosterContainer" to be kebab-case    selector-class-pattern
+  54:29  ✖  Expected class selector ".eventPosterImg" to be kebab-case          selector-class-pattern
+  58:1   ✖  Expected class selector ".eventPosterContainer" to be kebab-case    selector-class-pattern
+  58:29  ✖  Expected class selector ".eventPosterDetails" to be kebab-case      selector-class-pattern
+  63:8   ✖  Expected "context" media feature range notation                     media-feature-range-notation
+  64:3   ✖  Expected class selector ".eventsDisplayContainer" to be kebab-case  selector-class-pattern
+  69:8   ✖  Expected "context" media feature range notation                     media-feature-range-notation
+  70:3   ✖  Expected class selector ".eventsDisplayContainer" to be kebab-case  selector-class-pattern
+  75:8   ✖  Expected "context" media feature range notation                     media-feature-range-notation
+  76:3   ✖  Expected class selector ".eventsDisplayContainer" to be kebab-case  selector-class-pattern
+  95:27  ✖  Expected "rgba" to be "rgb"                                         color-function-alias-notation
+  95:27  ✖  Expected modern color-function notation                             color-function-notation
+  95:41  ✖  Expected "0.2" to be "20%"                                          alpha-value-notation
+
+src/components/ImagePopUp/ImagePopUp.module.css
+   1:4   ✖  Expected class selector ".imagePopUp" to be kebab-case  selector-class-pattern
+   6:4   ✖  Expected class selector ".PopUpImage" to be kebab-case  selector-class-pattern
+  29:4   ✖  Expected class selector ".imagePopUp" to be kebab-case  selector-class-pattern
+  29:22  ✖  Expected class selector ".PopUpImage" to be kebab-case  selector-class-pattern
+  33:4   ✖  Expected class selector ".imagePopUp" to be kebab-case  selector-class-pattern
+
+src/components/LoginModal/LoginModal.module.css
+    3:3   ✖  Unexpected missing var function for "--modal-border-color"   custom-property-no-missing-var-function
+   15:21  ✖  Expected "#333333" to be "#333"                              color-hex-length
+   19:28  ✖  Expected "#555555" to be "#555"                              color-hex-length
+   20:32  ✖  Expected "#666666" to be "#666"                              color-hex-length
+   27:1   ✖  Expected class selector ".modalHeader" to be kebab-case      selector-class-pattern
+   35:1   ✖  Expected class selector ".modalTitle" to be kebab-case       selector-class-pattern
+   41:1   ✖  Expected class selector ".modalBody" to be kebab-case        selector-class-pattern
+   46:1   ✖  Expected class selector ".modalFooter" to be kebab-case      selector-class-pattern
+   51:1   ✖  Expected class selector ".formGroup" to be kebab-case        selector-class-pattern
+   55:1   ✖  Expected class selector ".formLabel" to be kebab-case        selector-class-pattern
+   64:1   ✖  Expected class selector ".textDanger" to be kebab-case       selector-class-pattern
+   68:1   ✖  Expected class selector ".formControl" to be kebab-case      selector-class-pattern
+   79:1   ✖  Expected class selector ".formControl" to be kebab-case      selector-class-pattern
+   92:1   ✖  Expected class selector ".buttonPrimary" to be kebab-case    selector-class-pattern
+   97:1   ✖  Expected class selector ".buttonSecondary" to be kebab-case  selector-class-pattern
+  106:1   ✖  Expected class selector ".alertDanger" to be kebab-case      selector-class-pattern
+  111:1   ✖  Expected class selector ".inputField" to be kebab-case       selector-class-pattern
+
+src/components/LoginButton/LoginButton.module.css
+   2:1   ✖  Expected class selector ".loginButton" to be kebab-case         selector-class-pattern
+  14:1   ✖  Expected class selector ".loginButton" to be kebab-case         selector-class-pattern
+  31:1   ✖  Expected class selector ".modalHeader" to be kebab-case         selector-class-pattern
+  39:1   ✖  Expected class selector ".modalHeader" to be kebab-case         selector-class-pattern
+  44:1   ✖  Expected class selector ".modalHeader" to be kebab-case         selector-class-pattern
+  53:1   ✖  Expected class selector ".modalBody" to be kebab-case           selector-class-pattern
+  57:1   ✖  Expected "#overlay" to have no more than 0 ID selectors         selector-max-id
+  63:5   ✖  Expected shorthand property "inset"                             declaration-block-no-redundant-longhand-properties
+  64:23  ✖  Expected "rgba" to be "rgb"                                     color-function-alias-notation
+  64:23  ✖  Expected modern color-function notation                         color-function-notation
+  64:37  ✖  Expected ".5" to be "50%"                                       alpha-value-notation
+  68:1   ✖  Expected "#overlay.active" to have no more than 0 ID selectors  selector-max-id
+
+src/components/Navbar/Navbar.module.css
+   11:21  ✖  Expected "rgba" to be "rgb"                               color-function-alias-notation
+   11:21  ✖  Expected modern color-function notation                   color-function-notation
+   11:41  ✖  Expected "0.9" to be "90%"                                alpha-value-notation
+   12:25  ✖  Expected "rgba" to be "rgb"                               color-function-alias-notation
+   12:25  ✖  Expected modern color-function notation                   color-function-notation
+   12:39  ✖  Expected "0.1" to be "10%"                                alpha-value-notation
+   14:1   ✖  Expected empty line before rule                           rule-empty-line-before
+   14:1   ✖  Expected class selector ".darkNavbar" to be kebab-case    selector-class-pattern
+   17:1   ✖  Expected empty line before rule                           rule-empty-line-before
+   17:1   ✖  Expected class selector ".navContainer" to be kebab-case  selector-class-pattern
+   26:1   ✖  Expected class selector ".navLeft" to be kebab-case       selector-class-pattern
+   32:1   ✖  Expected class selector ".navRight" to be kebab-case      selector-class-pattern
+   38:1   ✖  Expected class selector ".navLogo" to be kebab-case       selector-class-pattern
+   50:1   ✖  Expected class selector ".logoSvg" to be kebab-case       selector-class-pattern
+   57:1   ✖  Expected class selector ".navMenu" to be kebab-case       selector-class-pattern
+   58:1   ✖  Expected class selector ".navMenu2" to be kebab-case      selector-class-pattern
+   66:1   ✖  Expected class selector ".navLinks" to be kebab-case      selector-class-pattern
+   74:1   ✖  Expected class selector ".navItem" to be kebab-case       selector-class-pattern
+   79:1   ✖  Expected class selector ".navItem" to be kebab-case       selector-class-pattern
+   79:9   ✖  Expected double colon pseudo-element notation             selector-pseudo-element-colon-notation
+   88:1   ✖  Expected class selector ".navItem" to be kebab-case       selector-class-pattern
+   88:15  ✖  Expected double colon pseudo-element notation             selector-pseudo-element-colon-notation
+   93:1   ✖  Expected class selector ".navItem" to be kebab-case       selector-class-pattern
+   97:1   ✖  Expected empty line before rule                           rule-empty-line-before
+   97:1   ✖  Expected class selector ".darkNavItem" to be kebab-case   selector-class-pattern
+  102:1   ✖  Expected empty line before rule                           rule-empty-line-before
+  102:1   ✖  Expected class selector ".darkNavItem" to be kebab-case   selector-class-pattern
+  102:13  ✖  Expected double colon pseudo-element notation             selector-pseudo-element-colon-notation
+  110:1   ✖  Expected empty line before rule                           rule-empty-line-before
+  110:1   ✖  Expected class selector ".darkNavItem" to be kebab-case   selector-class-pattern
+  110:19  ✖  Expected double colon pseudo-element notation             selector-pseudo-element-colon-notation
+  115:1   ✖  Expected class selector ".darkNavItem" to be kebab-case   selector-class-pattern
+  119:1   ✖  Expected empty line before rule                           rule-empty-line-before
+  119:1   ✖  Expected class selector ".navIcon" to be kebab-case       selector-class-pattern
+  127:1   ✖  Expected class selector ".navIcon" to be kebab-case       selector-class-pattern
+  140:15  ✖  Expected "rgba" to be "rgb"                               color-function-alias-notation
+  140:15  ✖  Expected modern color-function notation                   color-function-notation
+  140:29  ✖  Expected "0.7" to be "70%"                                alpha-value-notation
+  143:25  ✖  Expected "rgba" to be "rgb"                               color-function-alias-notation
+  143:25  ✖  Expected modern color-function notation                   color-function-notation
+  143:39  ✖  Expected "0.2" to be "20%"                                alpha-value-notation
+  150:1   ✖  Expected class selector ".drawerMenu" to be kebab-case    selector-class-pattern
+  158:1   ✖  Expected class selector ".drawerItem" to be kebab-case    selector-class-pattern
+  163:1   ✖  Expected class selector ".drawerItem" to be kebab-case    selector-class-pattern
+  163:13  ✖  Expected class selector ".navLinks" to be kebab-case      selector-class-pattern
+  171:1   ✖  Expected class selector ".drawerItem" to be kebab-case    selector-class-pattern
+  171:13  ✖  Expected class selector ".navLinks" to be kebab-case      selector-class-pattern
+  172:15  ✖  Expected "rgba" to be "rgb"                               color-function-alias-notation
+  172:15  ✖  Expected modern color-function notation                   color-function-notation
+  172:35  ✖  Expected "0.2" to be "20%"                                alpha-value-notation
+  176:19  ✖  Expected "context" media feature range notation           media-feature-range-notation
+  181:3   ✖  Expected class selector ".navMenu" to be kebab-case       selector-class-pattern
+  182:3   ✖  Expected class selector ".navMenu2" to be kebab-case      selector-class-pattern
+  186:3   ✖  Expected class selector ".logoSvg" to be kebab-case       selector-class-pattern
+  191:3   ✖  Expected class selector ".navIcon" to be kebab-case       selector-class-pattern
+  196:3   ✖  Expected class selector ".navIcon" to be kebab-case       selector-class-pattern
+  206:3   ✖  Expected class selector ".navContainer" to be kebab-case  selector-class-pattern
+  212:3   ✖  Expected class selector ".navLogo" to be kebab-case       selector-class-pattern
+
+src/components/SignupModal/SignupModal.module.css
+   20:21  ✖  Expected "#333333" to be "#333"                              color-hex-length
+   24:28  ✖  Expected "#555555" to be "#555"                              color-hex-length
+   25:32  ✖  Expected "#666666" to be "#666"                              color-hex-length
+   37:1   ✖  Expected class selector ".modalHeader" to be kebab-case      selector-class-pattern
+   47:1   ✖  Expected class selector ".modalHeader" to be kebab-case      selector-class-pattern
+   51:1   ✖  Expected class selector ".modalContainer" to be kebab-case   selector-class-pattern
+   52:16  ✖  Unexpected quotes around "Hevletica"                         font-family-name-quotes
+   55:1   ✖  Expected class selector ".modalTitle" to be kebab-case       selector-class-pattern
+   60:1   ✖  Expected class selector ".modalBody" to be kebab-case        selector-class-pattern
+   66:1   ✖  Expected class selector ".modalFooter" to be kebab-case      selector-class-pattern
+   72:1   ✖  Expected class selector ".formGroup" to be kebab-case        selector-class-pattern
+   76:1   ✖  Expected class selector ".formLabel" to be kebab-case        selector-class-pattern
+   85:1   ✖  Expected class selector ".inputField" to be kebab-case       selector-class-pattern
+   92:1   ✖  Expected class selector ".textDanger" to be kebab-case       selector-class-pattern
+   96:1   ✖  Expected class selector ".formControl" to be kebab-case      selector-class-pattern
+  107:1   ✖  Expected class selector ".formControl" to be kebab-case      selector-class-pattern
+  120:1   ✖  Expected class selector ".buttonPrimary" to be kebab-case    selector-class-pattern
+  125:1   ✖  Expected class selector ".buttonSecondary" to be kebab-case  selector-class-pattern
+  134:1   ✖  Expected class selector ".alertSuccess" to be kebab-case     selector-class-pattern
+  139:1   ✖  Expected class selector ".alertDanger" to be kebab-case      selector-class-pattern
+  156:1   ✖  Expected class selector ".acceptText" to be kebab-case       selector-class-pattern
+  165:1   ✖  Expected class selector ".formGroup" to be kebab-case        selector-class-pattern
+  167:3   ✖  Unexpected vendor-prefixed property "-webkit-appearance"     property-no-vendor-prefix
+  169:3   ✖  Expected empty line before comment                           comment-empty-line-before
+  179:1   ✖  Expected class selector ".formGroup" to be kebab-case        selector-class-pattern
+  187:3   ✖  Expected empty line before comment                           comment-empty-line-before
+  193:1   ✖  Expected class selector ".formGroup" to be kebab-case        selector-class-pattern
+  204:1   ✖  Expected class selector ".formGroup" to be kebab-case        selector-class-pattern
+
+src/components/SearchBar/SearchBar.module.css
+   6:1  ✖  Expected class selector ".searchBarContainer" to be kebab-case  selector-class-pattern
+  17:1  ✖  Expected class selector ".searchInput" to be kebab-case         selector-class-pattern
+  27:1  ✖  Expected class selector ".darkInput" to be kebab-case           selector-class-pattern
+  32:1  ✖  Expected class selector ".searchButton" to be kebab-case        selector-class-pattern
+  43:1  ✖  Expected class selector ".searchButton" to be kebab-case        selector-class-pattern
+  47:8  ✖  Expected "context" media feature range notation                 media-feature-range-notation
+  48:3  ✖  Expected class selector ".searchBarContainer" to be kebab-case  selector-class-pattern
+  53:3  ✖  Expected class selector ".searchInput" to be kebab-case         selector-class-pattern
+  54:3  ✖  Expected class selector ".searchButton" to be kebab-case        selector-class-pattern
+
+src/pages/AboutUs/AboutUs.module.css
+    1:1   ✖  Expected class selector ".aboutUs" to be kebab-case                    selector-class-pattern
+   32:12  ✖  Expected keyframe name "fadeIn" to be kebab-case                       keyframes-name-pattern
+   36:5   ✖  Expected empty line before rule                                        rule-empty-line-before
+   41:12  ✖  Expected keyframe name "fadeInAndScale" to be kebab-case               keyframes-name-pattern
+   46:5   ✖  Expected empty line before rule                                        rule-empty-line-before
+   52:1   ✖  Expected class selector ".aboutUsText" to be kebab-case                selector-class-pattern
+   52:15  ✖  Expected class selector ".feedbackSection" to be kebab-case            selector-class-pattern
+   58:1   ✖  Expected class selector ".bridgeImage" to be kebab-case                selector-class-pattern
+   87:1   ✖  Expected empty line before rule                                        rule-empty-line-before
+   90:1   ✖  Expected empty line before rule                                        rule-empty-line-before
+   93:1   ✖  Expected empty line before rule                                        rule-empty-line-before
+   97:1   ✖  Expected class selector ".devText" to be kebab-case                    selector-class-pattern
+  101:1   ✖  Expected class selector ".profilePic" to be kebab-case                 selector-class-pattern
+  116:12  ✖  Expected class selector ".aboutUsText" to be kebab-case                selector-class-pattern
+  116:29  ✖  Expected class selector ".feedbackTitle" to be kebab-case              selector-class-pattern
+  120:1   ✖  Expected class selector ".missionContainer" to be kebab-case           selector-class-pattern
+  123:5   ✖  Unexpected empty line before declaration                               declaration-empty-line-before
+  126:8   ✖  Expected "context" media feature range notation                        media-feature-range-notation
+  136:5   ✖  Expected class selector ".aboutUsText" to be kebab-case                selector-class-pattern
+  136:19  ✖  Expected class selector ".feedbackSection" to be kebab-case            selector-class-pattern
+  141:5   ✖  Expected class selector ".bridgeImage" to be kebab-case                selector-class-pattern
+  160:5   ✖  Expected class selector ".profilePic" to be kebab-case                 selector-class-pattern
+  165:5   ✖  Expected class selector ".devText" to be kebab-case                    selector-class-pattern
+  170:8   ✖  Expected "context" media feature range notation                        media-feature-range-notation
+  170:31  ✖  Expected "context" media feature range notation                        media-feature-range-notation
+  176:8   ✖  Expected "context" media feature range notation                        media-feature-range-notation
+  182:1   ✖  Expected selector "a" to come before selector "a:visited", at line 87  no-descending-specificity
+  182:1   ✖  Unexpected duplicate selector "a", first used at line 83               no-duplicate-selectors
+  186:1   ✖  Unexpected duplicate selector "a:visited", first used at line 87       no-duplicate-selectors
+  186:1   ✖  Expected empty line before rule                                        rule-empty-line-before
+  189:1   ✖  Unexpected duplicate selector "a:active", first used at line 93        no-duplicate-selectors
+  189:1   ✖  Expected empty line before rule                                        rule-empty-line-before
+
+src/pages/Calendar/Calendar.module.css
+   10:25  ✖  Expected modern color-function notation                            color-function-notation
+   13:23  ✖  Expected "#333333" to be "#333"                                    color-hex-length
+   17:1   ✖  Expected class selector ".outterContainer" to be kebab-case        selector-class-pattern
+   20:26  ✖  Expected whitespace after "/*"                                     comment-whitespace-inside
+   23:17  ✖  Expected class selector ".containerFluid" to be kebab-case         selector-class-pattern
+   28:1   ✖  Expected class selector ".weeklyEvents" to be kebab-case           selector-class-pattern
+   38:5   ✖  Unexpected shorthand "margin" after "margin-top"                   declaration-block-no-shorthand-property-overrides
+   42:24  ✖  Expected "context" media feature range notation                    media-feature-range-notation
+   43:5   ✖  Expected class selector ".weeklyEvents" to be kebab-case           selector-class-pattern
+   48:1   ✖  Expected class selector ".weeklyEvents" to be kebab-case           selector-class-pattern
+   57:11  ✖  Unexpected unit                                                    length-zero-no-unit
+   64:21  ✖  Unexpected unit                                                    length-zero-no-unit
+   84:1   ✖  Expected class selector ".eventContainer" to be kebab-case         selector-class-pattern
+   92:1   ✖  Expected class selector ".eventImage" to be kebab-case             selector-class-pattern
+   97:1   ✖  Expected empty line before rule                                    rule-empty-line-before
+   97:1   ✖  Expected class selector ".noImagePlaceholder" to be kebab-case     selector-class-pattern
+  103:12  ✖  Expected "#333333" to be "#333"                                    color-hex-length
+  108:1   ✖  Expected empty line before rule                                    rule-empty-line-before
+  108:1   ✖  Expected class selector ".eventTitle" to be kebab-case             selector-class-pattern
+  109:18  ✖  Unexpected quotes around "Italiana"                                font-family-name-quotes
+  117:1   ✖  Expected class selector ".navigationButtons" to be kebab-case      selector-class-pattern
+  123:1   ✖  Expected class selector ".navigationButtons" to be kebab-case      selector-class-pattern
+  134:1   ✖  Expected class selector ".navigationButtons" to be kebab-case      selector-class-pattern
+  139:24  ✖  Expected "context" media feature range notation                    media-feature-range-notation
+  152:5   ✖  Expected class selector ".weeklyEvents" to be kebab-case           selector-class-pattern
+  158:5   ✖  Expected class selector ".weeklyEvents" to be kebab-case           selector-class-pattern
+  175:5   ✖  Expected class selector ".eventContainer" to be kebab-case         selector-class-pattern
+  180:5   ✖  Expected class selector ".eventImagePlaceholder" to be kebab-case  selector-class-pattern
+  190:16  ✖  Expected "#666666" to be "#666"                                    color-hex-length
+  194:5   ✖  Expected empty line before rule                                    rule-empty-line-before
+  194:5   ✖  Expected class selector ".eventImage" to be kebab-case             selector-class-pattern
+  198:5   ✖  Expected class selector ".eventTitle" to be kebab-case             selector-class-pattern
+  202:5   ✖  Expected class selector ".navigationButtons" to be kebab-case      selector-class-pattern
+
+src/pages/AdminPage/AdminPage.module.css
+   2:1  ✖  Expected class selector ".outterContainer" to be kebab-case          selector-class-pattern
+   6:1  ✖  Expected class selector ".boldTitle" to be kebab-case                selector-class-pattern
+  11:1  ✖  Expected class selector ".sectionTitle" to be kebab-case             selector-class-pattern
+  17:1  ✖  Expected class selector ".adminTool" to be kebab-case                selector-class-pattern
+  24:1  ✖  Expected class selector ".DarkAdminTool" to be kebab-case            selector-class-pattern
+  31:1  ✖  Expected class selector ".actionButton" to be kebab-case             selector-class-pattern
+  40:1  ✖  Expected class selector ".actionButton" to be kebab-case             selector-class-pattern
+  44:1  ✖  Expected class selector ".statsContainer" to be kebab-case           selector-class-pattern
+  55:1  ✖  Expected class selector ".searchContainer" to be kebab-case          selector-class-pattern
+  62:1  ✖  Expected class selector ".searchInput" to be kebab-case              selector-class-pattern
+  69:1  ✖  Expected class selector ".searchButton" to be kebab-case             selector-class-pattern
+  78:1  ✖  Expected class selector ".searchButton" to be kebab-case             selector-class-pattern
+  82:1  ✖  Expected class selector ".rankExplanationList" to be kebab-case      selector-class-pattern
+  87:1  ✖  Expected class selector ".DarkRankExplanationList" to be kebab-case  selector-class-pattern
+  93:1  ✖  Expected class selector ".rankExplanationItem" to be kebab-case      selector-class-pattern
+  98:1  ✖  Expected class selector ".DarkRankExplanationItem" to be kebab-case  selector-class-pattern
+
+src/pages/EventDetails/EventDetails.module.css
+   4:24  ✖  Expected modern color-function notation                  color-function-notation
+   8:24  ✖  Expected modern color-function notation                  color-function-notation
+  22:1   ✖  Expected class selector ".eventPoster" to be kebab-case  selector-class-pattern
+  28:1   ✖  Expected class selector ".eventPoster" to be kebab-case  selector-class-pattern
+  33:1   ✖  Expected class selector ".eventInfo" to be kebab-case    selector-class-pattern
+  38:1   ✖  Expected class selector ".eventInfo" to be kebab-case    selector-class-pattern
+  42:1   ✖  Expected class selector ".eventInfo" to be kebab-case    selector-class-pattern
+  46:8   ✖  Expected "context" media feature range notation          media-feature-range-notation
+  47:5   ✖  Expected class selector ".eventPoster" to be kebab-case  selector-class-pattern
+  51:5   ✖  Expected class selector ".eventPoster" to be kebab-case  selector-class-pattern
+  55:5   ✖  Expected class selector ".eventInfo" to be kebab-case    selector-class-pattern
+  60:8   ✖  Expected "context" media feature range notation          media-feature-range-notation
+  68:5   ✖  Expected class selector ".eventPoster" to be kebab-case  selector-class-pattern
+  74:5   ✖  Expected class selector ".eventPoster" to be kebab-case  selector-class-pattern
+  80:5   ✖  Expected class selector ".eventInfo" to be kebab-case    selector-class-pattern
+  85:5   ✖  Expected class selector ".eventInfo" to be kebab-case    selector-class-pattern
+
+src/pages/Experimental/Experimental.module.css
+   1:1   ✖  Expected class selector ".App" to be kebab-case          selector-class-pattern
+   5:3   ✖  Expected class selector ".AppLogo" to be kebab-case      selector-class-pattern
+  11:5   ✖  Expected class selector ".AppLogo" to be kebab-case      selector-class-pattern
+  16:3   ✖  Expected class selector ".AppHeader" to be kebab-case    selector-class-pattern
+  27:3   ✖  Expected class selector ".AppLink" to be kebab-case      selector-class-pattern
+  31:14  ✖  Expected keyframe name "App-logo-spin" to be kebab-case  keyframes-name-pattern
+  35:5   ✖  Expected empty line before rule                          rule-empty-line-before
+
+src/pages/Home/Home.module.css
+  1:1  ✖  Unexpected empty source  no-empty-source
+
+src/pages/Playground/Playground.module.css
+   1:1   ✖  Expected class selector ".App" to be kebab-case          selector-class-pattern
+   5:3   ✖  Expected class selector ".AppLogo" to be kebab-case      selector-class-pattern
+  11:5   ✖  Expected class selector ".AppLogo" to be kebab-case      selector-class-pattern
+  16:3   ✖  Expected class selector ".AppHeader" to be kebab-case    selector-class-pattern
+  27:3   ✖  Expected class selector ".AppLink" to be kebab-case      selector-class-pattern
+  31:14  ✖  Expected keyframe name "App-logo-spin" to be kebab-case  keyframes-name-pattern
+  35:5   ✖  Expected empty line before rule                          rule-empty-line-before
+
+src/pages/SearchResults/SearchResults.module.css
+    3:1   ✖  Expected class selector ".titleContainer" to be kebab-case          selector-class-pattern
+   10:10  ✖  Expected "#333333" to be "#333"                                     color-hex-length
+   23:21  ✖  Expected "#333333" to be "#333"                                     color-hex-length
+   26:1   ✖  Expected class selector ".eventsContainer" to be kebab-case         selector-class-pattern
+   33:1   ✖  Expected class selector ".eventCard" to be kebab-case               selector-class-pattern
+   35:21  ✖  Expected "#dddddd" to be "#ddd"                                     color-hex-length
+   37:25  ✖  Expected "rgba" to be "rgb"                                         color-function-alias-notation
+   37:25  ✖  Expected modern color-function notation                             color-function-notation
+   37:39  ✖  Expected "0.1" to be "10%"                                          alpha-value-notation
+   43:1   ✖  Expected class selector ".eventCard" to be kebab-case               selector-class-pattern
+   47:1   ✖  Expected class selector ".eventImage" to be kebab-case              selector-class-pattern
+   52:1   ✖  Expected class selector ".eventDetails" to be kebab-case            selector-class-pattern
+   56:1   ✖  Expected class selector ".eventTitle" to be kebab-case              selector-class-pattern
+   58:11  ✖  Expected "0 0 10px 0" to be "0 0 10px"                              shorthand-property-no-redundant-values
+   59:10  ✖  Expected "#333333" to be "#333"                                     color-hex-length
+   62:1   ✖  Expected class selector ".eventDescription" to be kebab-case        selector-class-pattern
+   64:10  ✖  Expected "#666666" to be "#666"                                     color-hex-length
+   67:1   ✖  Expected class selector ".noResults" to be kebab-case               selector-class-pattern
+   70:10  ✖  Expected "#666666" to be "#666"                                     color-hex-length
+   73:1   ✖  Expected class selector ".myMasonryGrid" to be kebab-case           selector-class-pattern
+   80:1   ✖  Expected class selector ".myMasonryGridColumn" to be kebab-case     selector-class-pattern
+   86:1   ✖  Expected class selector ".myMasonryGridColumn" to be kebab-case     selector-class-pattern
+   90:8   ✖  Expected "context" media feature range notation                     media-feature-range-notation
+   91:3   ✖  Expected class selector ".myMasonryGrid" to be kebab-case           selector-class-pattern
+   94:3   ✖  Expected empty line before rule                                     rule-empty-line-before
+   94:3   ✖  Expected class selector ".myMasonryGridColumn" to be kebab-case     selector-class-pattern
+   99:8   ✖  Expected "context" media feature range notation                     media-feature-range-notation
+  100:3   ✖  Expected class selector ".filterContainer" to be kebab-case         selector-class-pattern
+  104:3   ✖  Expected empty line before rule                                     rule-empty-line-before
+  104:3   ✖  Expected class selector ".filterSearch" to be kebab-case            selector-class-pattern
+  105:3   ✖  Expected class selector ".filterCategory" to be kebab-case          selector-class-pattern
+  109:3   ✖  Expected empty line before rule                                     rule-empty-line-before
+  109:3   ✖  Expected class selector ".eventsDisplayContainer" to be kebab-case  selector-class-pattern
+
+src/pages/TermsOfService/TermsOfService.module.css
+   6:23  ✖  Expected "rgba" to be "rgb"                                    color-function-alias-notation
+   6:23  ✖  Expected modern color-function notation                        color-function-notation
+   6:37  ✖  Expected "0.1" to be "10%"                                     alpha-value-notation
+  13:23  ✖  Expected "#3399ff" to be "#39f"                                color-hex-length
+  14:23  ✖  Expected "rgba" to be "rgb"                                    color-function-alias-notation
+  14:23  ✖  Expected modern color-function notation                        color-function-notation
+  14:43  ✖  Expected "0.1" to be "10%"                                     alpha-value-notation
+  17:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  28:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  29:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  30:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  34:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  39:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  43:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  48:1   ✖  Expected class selector ".termsContainer" to be kebab-case     selector-class-pattern
+  53:1   ✖  Expected class selector ".checkboxContainer" to be kebab-case  selector-class-pattern
+  59:1   ✖  Expected class selector ".checkboxContainer" to be kebab-case  selector-class-pattern
+  63:1   ✖  Expected class selector ".checkboxContainer" to be kebab-case  selector-class-pattern
+
+src/components/EventHomePage/PopularEvents/PopularEvents.module.css
+   3:18  ✖  Unexpected quotes around "Italiana"                          font-family-name-quotes
+   7:1   ✖  Expected class selector ".popularEvents" to be kebab-case    selector-class-pattern
+  13:18  ✖  Unexpected quotes around "Italiana"                          font-family-name-quotes
+  33:1   ✖  Expected class selector ".eventsContainer" to be kebab-case  selector-class-pattern
+  40:3   ✖  Expected whitespace after "/*"                               comment-whitespace-inside
+  40:21  ✖  Expected whitespace before "*/"                              comment-whitespace-inside
+  41:1   ✖  Expected empty line before comment                           comment-empty-line-before
+  41:22  ✖  Expected whitespace before "*/"                              comment-whitespace-inside
+  42:1   ✖  Expected empty line before comment                           comment-empty-line-before
+  42:22  ✖  Expected whitespace before "*/"                              comment-whitespace-inside
+  43:1   ✖  Expected empty line before comment                           comment-empty-line-before
+  43:3   ✖  Expected whitespace after "/*"                               comment-whitespace-inside
+  43:3   ✖  Expected whitespace before "*/"                              comment-whitespace-inside
+
+src/components/EventHomePage/Banner/Banner.module.css
+  34:1   ✖  Expected class selector ".searchBarContainer" to be kebab-case  selector-class-pattern
+  35:17  ✖  Expected "rgba" to be "rgb"                                     color-function-alias-notation
+  35:17  ✖  Expected modern color-function notation                         color-function-notation
+  35:37  ✖  Expected "0.75" to be "75%"                                     alpha-value-notation
+  36:32  ✖  Expected "rgba" to be "rgb"                                     color-function-alias-notation
+  36:32  ✖  Expected modern color-function notation                         color-function-notation
+  36:46  ✖  Expected "0.25" to be "25%"                                     alpha-value-notation
+  48:1   ✖  Expected class selector ".searchInput" to be kebab-case         selector-class-pattern
+  57:1   ✖  Expected class selector ".searchButton" to be kebab-case        selector-class-pattern
+
+src/components/EventHomePage/EventCard/EventCard.module.css
+   1:1   ✖  Expected class selector ".eventCard" to be kebab-case         selector-class-pattern
+   9:1   ✖  Expected class selector ".eventContent" to be kebab-case      selector-class-pattern
+  17:1   ✖  Expected class selector ".eventTitle" to be kebab-case        selector-class-pattern
+  18:18  ✖  Unexpected quotes around "Inter"                              font-family-name-quotes
+  26:1   ✖  Expected class selector ".eventDescription" to be kebab-case  selector-class-pattern
+  27:14  ✖  Expected "25px 0 75px 0" to be "25px 0 75px"                  shorthand-property-no-redundant-values
+  28:18  ✖  Unexpected quotes around "Inter"                              font-family-name-quotes
+  34:1   ✖  Expected class selector ".eventPoster" to be kebab-case       selector-class-pattern
+  41:1   ✖  Expected class selector ".eventNavigation" to be kebab-case   selector-class-pattern
+
+src/pages/Events/AllEventList/EventsList.module.css
+   8:1   ✖  Expected class selector ".eventListView" to be kebab-case       selector-class-pattern
+  12:1   ✖  Expected class selector ".eventCard" to be kebab-case           selector-class-pattern
+  15:28  ✖  Expected "rgba" to be "rgb"                                     color-function-alias-notation
+  15:28  ✖  Expected modern color-function notation                         color-function-notation
+  15:42  ✖  Expected "0.1" to be "10%"                                      alpha-value-notation
+  21:1   ✖  Expected class selector ".eventCardContainer" to be kebab-case  selector-class-pattern
+  27:1   ✖  Expected class selector ".eventCard" to be kebab-case           selector-class-pattern
+  28:23  ✖  Expected "rgba" to be "rgb"                                     color-function-alias-notation
+  28:23  ✖  Expected modern color-function notation                         color-function-notation
+  31:1   ✖  Expected class selector ".eventCard" to be kebab-case           selector-class-pattern
+  40:1   ✖  Expected class selector ".eventCard" to be kebab-case           selector-class-pattern
+  46:1   ✖  Expected class selector ".eventCard" to be kebab-case           selector-class-pattern
+
+src/pages/Events/AllEventPage/AllEvents.module.css
+   3:1  ✖  Expected class selector ".allEvents" to be kebab-case               selector-class-pattern
+  10:1  ✖  Expected class selector ".eventsDisplayContainer" to be kebab-case  selector-class-pattern
+  20:1  ✖  Expected class selector ".myMasonryGrid" to be kebab-case           selector-class-pattern
+  26:1  ✖  Expected class selector ".myMasonryGridColumn" to be kebab-case     selector-class-pattern
+  31:1  ✖  Expected class selector ".myMasonryGridColumn" to be kebab-case     selector-class-pattern
+  35:1  ✖  Expected class selector ".skeletonWrapper" to be kebab-case         selector-class-pattern
+  40:8  ✖  Expected "context" media feature range notation                     media-feature-range-notation
+  41:5  ✖  Expected class selector ".myMasonryGrid" to be kebab-case           selector-class-pattern
+  44:5  ✖  Expected empty line before rule                                     rule-empty-line-before
+  44:5  ✖  Expected class selector ".myMasonryGridColumn" to be kebab-case     selector-class-pattern
+  49:8  ✖  Expected "context" media feature range notation                     media-feature-range-notation
+  50:5  ✖  Expected class selector ".filterContainer" to be kebab-case         selector-class-pattern
+  53:9  ✖  Expected empty line before comment                                  comment-empty-line-before
+  61:5  ✖  Expected class selector ".sortContainer" to be kebab-case           selector-class-pattern
+  64:9  ✖  Expected shorthand property "flex-flow"                             declaration-block-no-redundant-longhand-properties
+  70:5  ✖  Expected class selector ".sortContainer" to be kebab-case           selector-class-pattern
+  71:5  ✖  Expected class selector ".sortContainer" to be kebab-case           selector-class-pattern
+  76:5  ✖  Expected class selector ".sortContainer" to be kebab-case           selector-class-pattern
+  81:5  ✖  Expected class selector ".sortContainer" to be kebab-case           selector-class-pattern
+  86:5  ✖  Expected class selector ".eventsDisplayContainer" to be kebab-case  selector-class-pattern
+
+✖ 633 problems (633 errors, 0 warnings)
+  241 errors potentially fixable with the "--fix" option.
+

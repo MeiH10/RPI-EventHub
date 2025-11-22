@@ -1,12 +1,12 @@
 :root {
-  --modal-bg-color: #ffffff;
-  --modal-border-color: #000000;
-  --modal-title-color: #000000;
-  --modal-text-color: #000000;
-  --form-control-bg-color: #ffffff;
+  --modal-bg-color: var(--primary-white);
+  --modal-border-color: var(--primary-black);
+  --modal-title-color: var(--primary-black);
+  --modal-text-color: var(--primary-black);
+  --form-control-bg-color: var(--primary-white);
   --form-control-border-color: #ced4da;
-  --form-control-placeholder-color: #888888;
-  --form-control-text-color: #000000;
+  --form-control-placeholder-color: var(--light-gray);
+  --form-control-text-color: var(--primary-black);
   --button-primary-bg-color: #007bff;
   --button-secondary-bg-color: #6c757d;
   --alert-success-bg-color: #d4edda;
@@ -15,21 +15,21 @@
 }
 
 [data-theme='dark'] {
-  --modal-bg-color: #333333;
-  --modal-border-color: #ffffff;
-  --modal-title-color: #ffffff;
-  --modal-text-color: #ffffff;
+  --modal-bg-color: var(--dark-gray);
+  --modal-border-color: var(--primary-white);
+  --modal-title-color: var(--primary-white);
+  --modal-text-color: var(--primary-white);
   --form-control-bg-color: #444444; /* Changed to a darker grey */
   --form-control-border-color: #666666;
-  --form-control-placeholder-color: #cccccc;
-  --form-control-text-color: #ffffff;
+  --form-control-placeholder-color: var(--primary-white);
+  --form-control-text-color: var(--primary-white);
   --button-primary-bg-color: #0056b3;
   --button-secondary-bg-color: #494949;
   --alert-success-bg-color: #155724;
   --alert-danger-bg-color: #721c24;
-  --tag-button-bg-color: #555555; 
-  --tag-button-text-color: #ffffff;
-  --tag-button-border-color: #555555;
+  --tag-button-bg-color: var(--mid-gray); 
+  --tag-button-text-color: var(--primary-white);
+  --tag-button-border-color: var(--mid-gray);
 }
 
 .modalHeader {
@@ -69,7 +69,7 @@
 }
 
 .textDanger {
-  color: red ;
+  color: var(--primary-red) ;
 }
 
 .formControl {
@@ -101,12 +101,12 @@
 
 .buttonPrimary {
   background-color: var(--button-primary-bg-color) ;
-  color: #fff ;
+  color: var(--primary-white);
 }
 
 .buttonSecondary {
   background-color: var(--button-secondary-bg-color) ;
-  color: #fff ;
+  color: var(--primary-white);
 }
 
 .alert {
@@ -137,11 +137,11 @@
 
 .suggestedTagButton.selected {
   background-color: #0056b3 ;
-  color: #fff ;
+  color: var(--primary-white);
 }
 
 .fileDropArea {
-  border: 2px dashed #ccc ;
+  border: 2px dashed var(--primary-white) ;
   border-radius: 4px ;
   padding: 20px ;
   text-align: center ;
@@ -162,7 +162,7 @@
   cursor: pointer;
   padding: 8px ;
   background-color: var(--button-primary-bg-color) ;
-  color: #fff ;
+  color: var(--primary-white);
   max-width: 50% ;
   border-radius: 8px ;
 }

@@ -36,7 +36,7 @@
 }
 
 .navLogo {
-  color: #ff0000;
+  color: var(--primary-red);
   margin-left: 20px;
   margin-right: 20px;
   cursor: pointer;
@@ -64,7 +64,7 @@
 }
 
 .navLinks {
-  /* color: #ff0000; */
+  /* color: var(--primary-red); */
   text-decoration: none;
   padding: 0.5rem 1rem;
   border-bottom: 3px solid transparent;
@@ -87,17 +87,17 @@
 
 .navItem:hover:after {
   width: 100%;
-  background: #ff0000;
+  background: var(--primary-red);
 }
 
 .navItem .active {
-  color: #ff0000;
-  border: 1px solid #ff0000;
+  color: var(--primary-red);
+  border: 1px solid var(--primary-red);
 }
 .darkNavItem {
   line-height: 40px;
   margin-right: 1rem;
-  color: white;
+  color: var(--primary-white);
 }
 .darkNavItem:after {
   content: "";
@@ -109,16 +109,16 @@
 }
 .darkNavItem:hover:after {
   width: 100%;
-  background: #d6001c;
+  background: var(--primary-red);
 }
 
 .darkNavItem .active {
-  color: #d6001c;
-  border: 1px solid #d6001c;
+  color: var(--primary-red);
+  border: 1px solid var(--primary-red);
 }
 .navIcon {
   display: none;
-  color: #ff0000;
+  color: var(--primary-red);
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -163,7 +163,7 @@
 .drawerItem .navLinks {
   width: 100%;
   padding: 10px;
-  color: #ffffff;
+  color: var(--primary-white);
   text-decoration: none;
   font-size: 1.2rem;
 }

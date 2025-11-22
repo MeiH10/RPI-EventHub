@@ -21,7 +21,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: white; /* Optional, for better visibility */
+  background-color: var(--primary-white); /* Optional, for better visibility */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional, for better visibility */
 }
 
@@ -40,7 +40,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  color: #ffffff;
+  color: var(--primary-white);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -83,7 +83,7 @@
     bottom: 20px;
     right: 20px;
     border: none;
-    color: #ffffff;
+    color: var(--primary-white);
     padding: 10px;
     display: flex;
     align-items: center;
@@ -96,7 +96,7 @@
   }
 
   .liked {
-    background-color: #ff0000; 
+    background-color: var(--primary-red); 
   }
   
   .unliked {

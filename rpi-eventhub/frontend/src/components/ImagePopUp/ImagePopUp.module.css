@@ -13,7 +13,7 @@
     visibility: hidden;
     width: 120px;
     background-color: #e81616;
-    color: #fff;
+    color: var(--primary-white);
     text-align: center;
     padding: 5px 0;
     position: absolute;

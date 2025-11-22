@@ -1,17 +1,17 @@
 :root {
-    --background-color: white;
-    --text-color: black;
-    --border-color: black;
+    --background-color: var(--primary-white);
+    --text-color: var(--primary-black);
+    --border-color: var(--primary-black);
     --day-background: #f9f9f9;
-    --day-text-color: black;
+    --day-text-color: var(--primary-black);
 }
 
 [data-theme='dark'] {
     --background-color: rgb(89, 86, 86);
-    --text-color: white;
-    --border-color: white;
-    --day-background: #333;
-    --day-text-color: white;
+    --text-color: var(--primary-white);
+    --border-color: var(--primary-white);
+    --day-background: #333333;
+    --day-text-color: var(--primary-white);
 }
 
 .outterContainer {
@@ -86,7 +86,7 @@
     background-color: transparent;
     text-align: center;
     margin-bottom: 20px;
-    border: solid black 0.5px;
+    border: solid var(--primary-black) 0.5px;
 }
 
 .eventImage {
@@ -99,9 +99,9 @@
     align-items: center;
     justify-content: center;
     height: 200px;
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ccc;
+    background-color: var(--primary-white);
+    color: #333333;
+    border: 1px solid var(--primary-white);
     border-radius: 5px;
     font-size: 14px;
 }
@@ -126,7 +126,7 @@
     border: none;
     border-radius: 5px;
     background-color: #c2405e;
-    color: white;
+    color: var(--primary-white);
     font-size: 16px;
     cursor: pointer;
 }
@@ -181,13 +181,13 @@
         width: 90%;
         height: auto;
         margin: 10px 0;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
+        background-color: var(--primary-white);
+        border: 1px solid var(--primary-white);
         text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #666;
+        color: #666666;
         font-size: 14px;
         padding: 20px;
     }

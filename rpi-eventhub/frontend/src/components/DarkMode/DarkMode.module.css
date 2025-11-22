@@ -8,7 +8,6 @@
     border: 0;
     padding: 0;
     user-select: none;
-    tap-highlight-color: rgba(0, 0, 0, 0);
   }
   
   .track {
@@ -16,7 +15,7 @@
     height: 24px;
     padding: 0;
     border-radius: 30px;
-    background-color: #4d4d4d;
+    background-color: var(--light-gray);
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
@@ -24,7 +23,7 @@
   }
   
   .checkedTrack {
-    background-color: #19ab27;
+    background-color:var(--light-gray);
   }
   
   .trackIcon {
@@ -55,16 +54,16 @@
     left: 1px;
     width: 22px;
     height: 22px;
-    border: 1px solid #4d4d4d;
+    border: 1px solid var(--dark-gray); 
     border-radius: 50%;
-    background-color: #fafafa;
+    background-color: var(--primary-white);
     box-sizing: border-box;
     transition: all 0.25s ease;
   }
   
   .checkedThumb {
     left: 27px;
-    border-color: #19ab27;
+    border-color: var(--light-gray);
   }
   
   .focusThumb {

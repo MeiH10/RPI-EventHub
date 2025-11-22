@@ -94,3 +94,4 @@ npm run dev
 
 - Ensure both backend and frontend servers are running simultaneously.
 - Access the application locally at the provided development URL from the terminal output.
+

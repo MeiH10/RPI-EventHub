@@ -8,5 +8,17 @@
     --mid-gray:#626262;
     --dark-gray:#383838;
     --off-black:#272727;
+
+
+    /* used for RGBA transformations where opacity is needed */
+    --primary-white-rgb: 255, 255, 255;
+    --off-white-rgb-rgb: 244, 241, 234;
+    --primary-black-rgb: 0, 0, 0;
+    --primary-red-rgb: 214, 0, 28;
+    --off-red-rgb: 171, 35, 40;
+    --light-gray-rgb:119, 119, 119;
+    --mid-gray-rgb:98, 98, 98;
+    --dark-gray-rgb:56, 56, 56;
+    --off-black-rgb:39, 39, 39;
 }
 

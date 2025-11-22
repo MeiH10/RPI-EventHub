@@ -28,10 +28,10 @@
 }
 
 :root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-  --button-bg-color: #dddddd;
-  --button-text-color: #000000;
+  --bg-color: var(--primary-white);
+  --text-color: var(--primary-black);
+  --button-bg-color: var(--primary-white);
+  --button-text-color: var(--primary-black);
   --gradient-bg: linear-gradient(
     217deg,
     rgba(255, 101, 101, 0.8),
@@ -41,16 +41,16 @@
 }
 
 [data-theme='dark'] {
-  --bg-color: #333333;
-  --text-color: #ffffff;
-  --button-bg-color: #555555;
-  --button-text-color: #ffffff;
+  --bg-color: var(--dark-gray);
+  --text-color: var(--primary-white);
+  --button-bg-color: var(--mid-gray);
+  --button-text-color: var(--primary-white);
   --gradient-bg: linear-gradient(
     217deg,
-    rgba(55, 55, 55, 0.8),
+    rgba(var(--dark-gray-rgb), 0.8),
     rgb(0 0 0 / 0%) 70.71%
-  ), linear-gradient(127deg, rgba(55, 55, 55, 0.8), rgb(0 0 0 / 0%) 70.71%),
-  linear-gradient(336deg, rgba(55, 55, 55, 0.8), rgb(0 0 0 / 0%) 70.71%);
+  ), linear-gradient(127deg, rgba(var(--dark-gray-rgb), 0.8), rgb(0 0 0 / 0%) 70.71%),
+  linear-gradient(336deg, rgba(var(--dark-gray-rgb), 0.8), rgb(0 0 0 / 0%) 70.71%);
 }
 
 html, body {
@@ -58,7 +58,7 @@ html, body {
   font-family: "Georgia", "Arial", sans-serif !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
-  background: #F4F1EA !important;
+  background: var(--off-white) !important;
   color: var(--text-color); /* Default text color is black */
   display: flex !important;
   flex-direction: column !important;
@@ -113,8 +113,8 @@ footer {
 /* FullCalendar buttons */
 .fc .fc-button,
 .fc .fc-button-primary {
-  background-color: #AB2328;
-  color: #fff;
+  background-color: var(--off-red);
+  color: var(--primary-white);
   border: none;
   outline: none !important;
   box-shadow: none !important;
@@ -126,8 +126,8 @@ footer {
 .fc .fc-button-primary:active,
 .fc .fc-button.fc-button-active,
 .fc .fc-button-primary.fc-button-active {
-  background-color: #970F14 !important;
-  color: #fff !important;
+  background-color: var(--primary-white)14 !important;
+  color: var(--primary-white)!important;
   outline: none !important;
   box-shadow: none !important;
   filter: none !important;
@@ -136,13 +136,13 @@ footer {
 /* FullCalendar title */
 .fc .fc-toolbar-title {
   font-size: 50px !important;
-  color: black !important;
+  color: var(--primary-black) !important;
   font-family: sans-serif !important;
   font-weight: bold !important;
   text-align: center !important;
 }
 [data-theme='dark'] .fc .fc-toolbar-title{
-  color: white !important;
+  color: var(--primary-white) !important;
 }
 
 /* FullCalendar borders */
@@ -152,7 +152,7 @@ footer {
 .fc-theme-standard .fc-scrollgrid-sync-table,
 .fc-theme-standard .fc-col-header-cell,
 .fc-theme-standard .fc-daygrid-day {
-  border-color: #000 !important;
+  border-color: var(--primary-black)!important;
   border-width: 4px;
 }
 
@@ -170,7 +170,7 @@ footer {
 
 /* FullCalendar days of the week */
 .fc-theme-standard .fc-col-header-cell .fc-col-header-cell-cushion {
-  color: black !important;
+  color: var(--primary-black) !important;
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 25px;
@@ -180,9 +180,9 @@ footer {
 
 }
 [data-theme='dark'] .fc-theme-standard .fc-col-header-cell {
-  background: #777777 !important;
+  background: var(--light-gray) !important;
 }
 [data-theme='dark'] .fc-theme-standard .fc-col-header-cell .fc-col-header-cell-cushion {
-  color: white !important;
+  color: var(--primary-white) !important;
 }
 

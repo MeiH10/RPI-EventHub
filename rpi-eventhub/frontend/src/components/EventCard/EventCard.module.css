@@ -1,31 +1,32 @@
 :root {
-    --background-color: #ffffff;
-    --border-color: rgba(171, 35, 40, 1);
-    --box-shadow-color: rgba(0, 0, 0, 0.1);
+    --background-color: var(--primary-white);
+    --border-color: var(--off-red);
+    --box-shadow-color:var(--primary-black) opacity(0.1);
     --hover-box-shadow-color: rgba(0, 0, 0, 0.2);
     --overlay-bg-color: rgba(0, 0, 0, 0.5);
-    --text-color: #333;
-    --muted-text-color: #555;
-    --tag-bg-color: rgba(214, 0, 28, 1);
-    --tag-text-color: rgba(255, 255, 255, 1);
-    --delete-button-bg-color: red;
-    --delete-button-hover-bg-color: darkred;
-    --delete-button-text-color: white;
+    --text-color: var(--dark-gray);
+    --muted-text-color: var(--mid-gray);
+    --tag-bg-color: var(--primary-red);
+    --tag-text-color: var(--primary-white);
+    --delete-button-bg-color: var(--primary-red);
+    --delete-button-hover-bg-color: var(--off-red);
+    --delete-button-text-color: var(--primary-white);
   }
   
   [data-theme='dark'] {
-    --background-color: rgba(171, 35, 40, 1);
-    --border-color: rgba(39, 39, 39, 1);
-    --box-shadow-color: rgba(39, 39, 39, 1);
+    --background-color: var(--off-red);
+    --border-color: var(--off-black);
+    --box-shadow-color: var(--off-black);
+    --hover-box-shadow-color: rgba(var(--off-black-rgb), 0.5);
     --hover-box-shadow-color: rgba(23, 22, 22, 0.5);
-    --overlay-bg-color: rgba(39, 39, 39, 1);
-    --text-color: #ffffff;
-    --muted-text-color: #ffffff;
-    --tag-bg-color: rgba(56, 56, 56, 1);
-    --tag-text-color: rgba(214, 0, 28, 1);
-    --delete-button-bg-color: darkred;
-    --delete-button-hover-bg-color: red;
-    --delete-button-text-color: white;
+    --overlay-bg-color: var(--off-black);
+    --text-color: var(--primary-white);
+    --muted-text-color: var(--primary-white);
+    --tag-bg-color: var(--dark-gray);
+    --tag-text-color: var(--primary-red);
+    --delete-button-bg-color: var(--off-red);
+    --delete-button-hover-bg-color: var(--primary-red);
+    --delete-button-text-color: var(--primary-white);
   }
   
   .eventWrapper {
@@ -139,11 +140,13 @@
 .tag:hover {
   transform: scale(1.07);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+
+  
 }
 
 .tag.active {
   background-color: #6366f1; 
-  color: #ffffff;
+  color: var(--primary-white);
   box-shadow: 0 2px 4px rgba(99, 102, 241, 0.302);
 }
 
@@ -182,9 +185,9 @@
     align-items: center;
   }
   .likeButton {
-    background-color: #f0f0f0;
+    background-color: var(--primary-white);
     border: none;
-    color: #000000;
+    color: var(--primary-black);
     padding: 3px 8px;
     font-size: 18px;
     cursor: pointer;
@@ -197,7 +200,7 @@
   }
   .likeButton.liked {
     background-color: #ff5757;
-    color: #ffffff;
+    color: var(--primary-white);
   }
   
   .likeButton:hover {

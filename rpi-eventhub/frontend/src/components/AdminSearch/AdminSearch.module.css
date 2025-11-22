@@ -9,7 +9,7 @@
   width: 80%;
   padding: 0.75rem;
   font-size: 1.2rem;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--primary-white);
   border-radius: 4px;
   margin-bottom: 1rem;
 }
@@ -18,7 +18,7 @@
   width: 80%;
   padding: 0.75rem;
   font-size: 1.2rem;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--primary-white);
   background-color: rgb(90, 89, 94);
   border-radius: 4px;
   margin-bottom: 1rem;
@@ -29,13 +29,13 @@
   font-size: 1.1rem;
   border: none;
   background-color: #007bff;
-  color: white;
+  color: var(--primary-white);
   border-radius: 4px;
   cursor: pointer;
 }
 
 .error {
-  color: #ff0000;
+  color: var(--primary-red);
   margin-top: 0.5rem;
 }
 
@@ -54,12 +54,12 @@
   align-items: center;
   justify-content: space-evenly;
   padding: 0.5rem;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid var(--primary-white);
 }
 
 .promoteButton {
   background-color: #4CAF50;
-  color: #ffffff;
+  color: var(--primary-white);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -68,7 +68,7 @@
 
 .banButton {
   background-color: #f44336;
-  color: #ffffff;
+  color: var(--primary-white);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -76,7 +76,7 @@
 }
 .saveButton {
   background-color: #029905;
-  color: #ffffff;
+  color: var(--primary-white);
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border: none;
@@ -88,7 +88,7 @@
 
 .unbanButton {
   background-color: #4CAF50;
-  color: #ffffff;
+  color: var(--primary-white);
   padding: 0.5rem 1rem;
   padding-left: 6px;
   padding-right: 6px;
@@ -104,8 +104,8 @@
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+  background-color: var(--primary-white);
+  border: 1px solid var(--primary-white);
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds shadow for dropdown effect */
   z-index: 10;
@@ -117,7 +117,7 @@
   padding: 0.75rem;
   cursor: pointer;
   font-size: 1rem;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--primary-white);
 }
 
 .dropdownItem:last-child {
@@ -125,12 +125,12 @@
 }
 
 .dropdownItem:hover {
-  background-color: #f0f0f0;
+  background-color: var(--primary-white);
 }
 
 .noResult {
   padding: 0.75rem;
-  color: #888888;
+  color: var(--light-gray);
   font-size: 1rem;
   text-align: center;
 }

@@ -68,7 +68,7 @@
     margin: 20px 0;
     width: 100%;
     border: 0;
-    border-top: 1px solid #ffffff;
+    border-top: 1px solid var(--primary-white);
     border-bottom: 1px solid #2d0505;
 }
 
@@ -91,7 +91,7 @@ a:hover {
     color: darkblue;
 } 
 a:active { 
-    color: black;
+    color: var(--primary-black);
 }
 
 .devText {

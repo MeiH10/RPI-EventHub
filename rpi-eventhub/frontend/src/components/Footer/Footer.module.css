@@ -7,7 +7,7 @@
 
 
 .footer i {
-  color: #ffffff;
+  color: var(--primary-white);
 }
 
 .footer i:hover {

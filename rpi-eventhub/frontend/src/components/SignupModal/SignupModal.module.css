@@ -1,37 +1,37 @@
 :root {
-  --modal-bg-color: #fff;
-  --modal-border-color: #000;
-  --modal-title-color: #000;
-  --modal-text-color: #000;
-  --form-control-bg-color: #fff;
+  --modal-bg-color: var(--primary-white);
+  --modal-border-color: var(--primary-black);
+  --modal-title-color: var(--primary-black);
+  --modal-text-color: var(--primary-black);
+  --form-control-bg-color: var(--primary-white);
   --form-control-border-color: #ced4da;
-  --form-control-placeholder-color: #888;
+  --form-control-placeholder-color: var(--light-gray);
   --button-primary-bg-color: #007bff;
   --button-secondary-bg-color: #6c757d;
   --alert-success-bg-color: #d4edda;
   --alert-danger-bg-color: #f8d7da;
-  --agree-button-bg-color: #000000;
+  --agree-button-bg-color: var(--primary-black);
   --link-color: #007bff;
-  --accept-text-color: #000;
+  --accept-text-color: var(--primary-black);
   --modal-small-text-color: #5a5a5a;
 }
 
 [data-theme='dark'] {
-  --modal-bg-color: #333;
-  --modal-border-color: #fff;
-  --modal-title-color: #fff;
-  --modal-text-color: #fff;
-  --form-control-bg-color: #555;
-  --form-control-border-color: #666;
-  --form-control-placeholder-color: #ccc;
+  --modal-bg-color: #333333;
+  --modal-border-color: var(--primary-white);
+  --modal-title-color: var(--primary-white);
+  --modal-text-color: var(--primary-white);
+  --form-control-bg-color: #555555;
+  --form-control-border-color: #666666;
+  --form-control-placeholder-color: var(--primary-white);
   --button-primary-bg-color: #0056b3;
   --button-secondary-bg-color: #494949;
   --alert-success-bg-color: #155724;
   --alert-danger-bg-color: #721c24;
   --link-color: #80bdff;
-  --agree-button-bg-color: #ffffff;
-  --accept-text-color: #ccc;
-  --modal-small-text-color: #ccc;
+  --agree-button-bg-color: var(--primary-white);
+  --accept-text-color: var(--primary-white);
+  --modal-small-text-color: var(--primary-white);
 }
 
 .modalHeader {
@@ -90,7 +90,7 @@
 }
 
 .textDanger {
-  color: red !important;
+  color: var(--primary-red) !important;
 }
 
 .formControl {
@@ -119,12 +119,12 @@
 
 .buttonPrimary {
   background-color: var(--button-primary-bg-color) !important;
-  color: #fff !important;
+  color: var(--primary-white)!important;
 }
 
 .buttonSecondary {
   background-color: var(--button-secondary-bg-color) !important;
-  color: #fff !important;
+  color: var(--primary-white)!important;
 }
 
 .alert {
@@ -159,7 +159,7 @@
 }
 
 .error{
-    color: red;
+    color: var(--primary-red);
 }
 
 .formGroup input[type="checkbox"] {
