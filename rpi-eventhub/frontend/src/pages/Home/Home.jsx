@@ -51,13 +51,13 @@ const Home = () => {
       <div className="mt-[70px] flex flex-col gap-10 lg:hidden">
         <section className="px-5  pt-6  flex flex-col items-center">
           <div className="flex flex-col pb-6 text-center font-Afacad">
-            <h1 align = "center" className="text-[300%] text-[#AB2328] dark:text-white font-bold pb-6">
+            <h1 align = "center" className="text-[275%] text-[#AB2328] dark:text-white font-bold pb-6">
               RPI Eventhub
             </h1>
-            <h1 className="font-bold font-Afacad text-[#AB2328] dark:text-white tracking-wider text-4xl">
+            <h1 className="font-bold font-Afacad text-[#AB2328] dark:text-white tracking-wider text-3xl">
               All RPI Events,
             </h1>
-            <h1 className="font-bold font-Afacad text-[#AB2328] dark:text-white tracking-wider text-4xl">
+            <h1 className="font-bold font-Afacad text-[#AB2328] dark:text-white tracking-wider text-3xl">
               in one place...
             </h1>
           </div>
@@ -72,7 +72,7 @@ const Home = () => {
         <section className="px-4 flex w-full justify-center">
           <div className="w-full max-w-[760px] text-center font-Afacad">
             <h2 className="font-bold font-Afacad text-[200%] mt-[-10px] mb-4 text-[#AB2328] dark:text-white">About the website...</h2>
-            <p className="font-Afacad tracking-wider text-lg">
+            <p className="font-Afacad tracking-wider text-lg mb-4">
               A comprehensive platform for RPI students and staff to effortlessly create, advertise, and explore diverse campus events, fostering a vibrant and connected university community.
             </p>
           </div>
