@@ -41,6 +41,12 @@ const cvQR = new OpencvQr({
     sw: `${config.apiUrl}/assets/Models/sr.caffemodel`,
 });
 
+const decodeHtml = (str = "") => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
+};
+
 const EventDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isOwner, setIsOwner] = useState(false);
@@ -315,7 +321,13 @@ const EventDetails = () => {
     const eventEndTime = event.endDateTime ? formatTime(event.endDateTime) : formatTime(event.endTime);
     //#endregion
 
-    const eventShareDescription = "Join " + event.club + " for " + event.title + " on " + eventStartDateTime + " at " + eventStartTime + (event.location ? " in " + event.location : "") + ". " + event.description;
+    const eventShareDescription =
+        "Join " + decodeHtml(event.club || "") +
+        " for " + decodeHtml(event.title || "") +
+        " on " + eventStartDateTime +
+        " at " + eventStartTime +
+        (event.location ? " in " + decodeHtml(event.location) : "") +
+        ". " + decodeHtml(event.description || "");
 
     // Overlay for QR code
     const QRMaskOverlay = ({ qrCodes, onSelect }) => {
@@ -517,7 +529,7 @@ const EventDetails = () => {
                                     <img
                                         ref={imageRef}
                                         src={event.image || 'https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg'}
-                                        alt={event.title}
+                                        alt={decodeHtml(event.title)}
                                         className="w-4/5 max-w-[300px] h-auto md:w-full md:max-w-none min-[992px]:max-w-[450px]"
                                         onLoad={(e) => {
                                             setImageSize({
@@ -539,22 +551,22 @@ const EventDetails = () => {
                                 </div>
                             </div>
                             <div className="w-full md:flex-[2] md:ml-[30px] min-[992px]:ml-10 md:text-left">
-                                <h1 className="mb-5">{event.title}</h1>
-                                <p className="mb-2.5 text-left"><strong>About:</strong> {event.description}</p>
-                                <p className="mb-2.5 text-left"><strong>Club/Organization:</strong> {event.club}</p>
+                                <h1 className="mb-5">{decodeHtml(event.title || "")}</h1>
+                                <p className="mb-2.5 text-left"><strong>About:</strong> {decodeHtml(event.description || "")}</p>
+                                <p className="mb-2.5 text-left"><strong>Club/Organization:</strong> {decodeHtml(event.club || "")}</p>
                                 <p className="mb-2.5 text-left"><strong>Start:</strong> {eventStartDateTime} @ {eventStartTime}</p>
                                 {eventEndDateTime &&
                                     <p className="mb-2.5 text-left"><strong>End:</strong> {`${eventEndDateTime} @ ${eventEndTime}`}</p>}
-                                <p className="mb-2.5 text-left"><strong>Location:</strong> {event.location || 'Location Unavailable'}</p>
+                                <p className="mb-2.5 text-left"><strong>Location:</strong> {event.location ? decodeHtml(event.location) : 'Location Unavailable'}</p>
                                 {event.tags && event.tags.length > 0 && (
-                                    <p className="mb-2.5 text-left"><strong>Tags:</strong> {event.tags.join(', ')}</p>
+                                    <p className="mb-2.5 text-left"><strong>Tags:</strong> {event.tags.map(t => decodeHtml(t || "")).join(', ')}</p>
                                 )}
                                 {event.rsvp !== "" && <RsvpButton rsvp={event.rsvp} />}
                                 <canvas ref={qrcodeCanvasRef} style={{ display: 'none' }}></canvas>
 
                                 <ShareButtons
                                     url={window.location.href}
-                                    title={event.title}
+                                    title={decodeHtml(event.title || "")}
                                     description={eventShareDescription}
                                     image={event.image}
                                 />

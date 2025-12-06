@@ -17,6 +17,12 @@ const VERIFIED = 2;
 const OFFICER = 3;
 const ADMIN = 4;
 
+const decodeHtml = (str = "") => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
+};
+
 
 const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit, onTagClick, selectedTags = [] }) => {
   const {isLoggedIn} = useAuth();
@@ -143,10 +149,10 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
         </button>
       )}
       <div className={styles.eventDetails}>
-        <h2>{event.title}</h2>
-        <p>{event.description}</p>
+        <h2>{decodeHtml(event.title || "")}</h2>
+        <p>{decodeHtml(event.description || "")}</p>
         <p><strong>Date & Time:</strong> {`${eventTime} on ${eventDate}`}</p>
-        <p><strong>Location:</strong> {event.location || "Location not specified"}</p>
+        <p><strong>Location:</strong> {event.location ? decodeHtml(event.location) : "Location not specified"}</p>
         <div className={styles['tag-container']}>
           {event.tags && event.tags.length > 0 ? (
             event.tags.map(tag => (
@@ -156,7 +162,7 @@ const EventCard = ({ event, isLiked, onSelect, selected, showEditButton, onEdit,
                 onClick={() => handleTagClick(tag)}
                 style={{ cursor: 'pointer' }}
               >
-                {tag}
+                {decodeHtml(tag || "")}
               </span>
             ))
           ) : (
